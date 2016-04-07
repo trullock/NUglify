@@ -6,47 +6,27 @@ Microsoft Ajax Minifier Documentation
 - Author: Ron Logan
 - Last Update Date: 12/13/2009
 
-[1. Introduction to JavaScript Minification Concepts](#introduction-to-javaScript-minification-concepts)
-
-[2. Command-Line Usage](#command-line-usage)
-
-[3. Default JavaScript Minification](#default-javascript-minification)
-
-[4. Local Variable and Function Renaming](#local-variable-and-function-renaming)
-
-[5. Conditional Compilation Comments](#conditional-compilation-comments)
-
-[6. Variable Renaming With and Eval Statements – Not!](#variable-renaming-with-and-eval-statements-not)
-
-[7. Analyzing Your Script](#analyzing-your-script)
-
-[8. Specifying External Globals](#specifying-external-globals)
-
-[9. Maximizing Your Local Variables and Functions](#maximizing-your-local-variables-and-functions)
-
-[10. Cross-Browser Peculiarities](#cross-browser-peculiarities)
-
-[Ambiguous Try/Catch Variables](#ambiguous-trycatch-variables)
-
-[Ambiguous Named Function Expressions](#ambiguous-named-function-expressions)
-
-[11. Other Coding Tips](#other-coding-tips)
-
-[12. Introduction to CSS Minification](#introduction-to-css-minification)
-
-[13. Default CSS Minification](#default-css-minification)
-
-[14. CSS Minification Options](#css-minification-options)
-
-[15. CSS Comment-Based Hacks](#css-comment-based-hacks)
-
-[16. Merging Localized Resource Files](#merging-localized-resource-files)
-
-[17. Pretty Print](#pretty-print)
-
-[18. DLL Version of Microsoft Ajax Minifier](#dll-version-of-microsoft-ajax-minifier)
-
-[19. Error Ouput](#error-ouput)
+1.  [Introduction to JavaScript Minification Concepts](#introduction-to-javaScript-minification-concepts)
+2.  [Command-Line Usage](#command-line-usage)
+3.  [Default JavaScript Minification](#default-javascript-minification)
+4.  [Local Variable and Function Renaming](#local-variable-and-function-renaming)
+5.  [Conditional Compilation Comments](#conditional-compilation-comments)
+6.  [Variable Renaming With and Eval Statements – Not!](#variable-renaming-with-and-eval-statements-not)
+7.  [Analyzing Your Script](#analyzing-your-script)
+8.  [Specifying External Globals](#specifying-external-globals)
+9.  [Maximizing Your Local Variables and Functions](#maximizing-your-local-variables-and-functions)
+10. [Cross-Browser Peculiarities](#cross-browser-peculiarities)
+    - [Ambiguous Try/Catch Variables](#ambiguous-trycatch-variables)
+    - [Ambiguous Named Function Expressions](#ambiguous-named-function-expressions)
+11. [Other Coding Tips](#other-coding-tips)
+12. [Introduction to CSS Minification](#introduction-to-css-minification)
+13. [Default CSS Minification](#default-css-minification)
+14. [CSS Minification Options](#css-minification-options)
+15. [CSS Comment-Based Hacks](#css-comment-based-hacks)
+16. [Merging Localized Resource Files](#merging-localized-resource-files)
+17. [Pretty Print](#pretty-print)
+18. [DLL Version of Microsoft Ajax Minifier](#dll-version-of-microsoft-ajax-minifier)
+19. [Error Ouput](#error-ouput)
 
 Introduction to JavaScript Minification Concepts
 =================================================================================================================================================================================================================================================================================================================================================================================================================================
