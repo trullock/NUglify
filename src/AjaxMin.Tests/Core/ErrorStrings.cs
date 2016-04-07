@@ -70,6 +70,7 @@ namespace DllUnitTest
             Assert.IsFalse(hasFailed);
         }
 
+#if DEBUG
         [Test]
         public void JSErrorStringsExtra()
         {
@@ -109,5 +110,6 @@ namespace DllUnitTest
             Assert.IsFalse(hasFailed);
             Assert.IsTrue(count > 0, "didn't get ANY properties");
         }
+#endif
     }
 }
