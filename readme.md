@@ -1,16 +1,38 @@
 # AjaxMin
 
-AjaxMin is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/)
+AjaxMin enables you to improve the performance of your web applications by reducing the size of your Cascading Style Sheet and JavaScript files.
 
-# About
+This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/)
 
-The repository is under migration/refactoring.
+> NOTE: The repository is under migration/refactoring. See the [Background](#background) section below for more information.
+
+## Documentation
+
+The original documentation of the project is available [here](doc/readme.md)
+
+## Background
+
+You may wonder why this fork? Here are a few reasons:
+
+- Ron Logan announced that he is no longer able to maintain this project [here](http://ajaxmin.codeplex.com/discussions/587925)
+- While ASP.NET 5.0+ is now relying on the **node.js** ecosystem for its client side tooling (e.g: minify), AjaxMin is **still useful** in scenarios where we need to access this tooling from a .NET application (not necessarily an ASP one) without having to install another developer platform. I can't believe that Ajaxmin could be left behind while it is still valuable!
+- The original code was also hosted on codeplex making it a much less appealing code source platform to collaborate compare to github.
+- It was not possible to keep the history of the commits, as the Ajaxmin SVN codeplex seems to be completely down
+- I wanted the library to be compatible with CoreCLR/dotnet-cli scenarios
+- I may also take the time to cleanup a bit the code to:
+  - Rename namespaces
+  - Rename files and put them in a single class per file as much as possible
+  - Try to evaluate a some point if we couldn't collaborate with a project like [Jint](https://github.com/sebastienros/jint) to leverage on a common JavacScript parser infrastructure
+
+> **NOTE**: This is an open-source project and I don't claim to be the maintainer of this project, so contributors and PR are much welcome!
 
 ## License
 
-This software is released under the [BSD-Clause 2 license](http://opensource.org/licenses/BSD-2-Clause). 
+This software is released under the [BSD-Clause 2 license](http://opensource.org/licenses/BSD-2-Clause).
 The original Microsoft Ajax Minifier was released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0)
 
 ## Author
 
-Alexandre Mutel aka [xoofx](http://xoofx.com)
+AjaxMin was created and is maintained by Ron Logan, with contributions from Eugene Chigirinskiy, Rafael Correa, Kristoffer Henriksson, and Marcin Dobosz.
+
+This project has been ported and refactored to github by Alexandre Mutel aka [xoofx](http://xoofx.com)
