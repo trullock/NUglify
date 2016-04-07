@@ -27,6 +27,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjaxMinApp", "AjaxMinApp\Aj
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjaxMin.Tasks", "AjaxMin.Tasks\AjaxMin.Tasks.csproj", "{0C7BC471-4112-43CA-89AA-B7EBDB5689C1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CA85C41A-928F-4626-9025-0FE5991C7BE8} = {CA85C41A-928F-4626-9025-0FE5991C7BE8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
