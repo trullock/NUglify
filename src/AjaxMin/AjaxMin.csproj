@@ -115,7 +115,7 @@
     <Compile Include="JavaScript\Syntax\CustomNode.cs" />
     <Compile Include="JavaScript\Syntax\DebuggerNode.cs" />
     <Compile Include="JavaScript\Syntax\Declaration.cs" />
-    <Compile Include="JavaScript\DetachReferences.cs" />
+    <Compile Include="JavaScript\Visitors\DetachReferencesVisitor.cs" />
     <Compile Include="JavaScript\Syntax\DirectivePrologue.cs" />
     <Compile Include="JavaScript\DocumentContext.cs" />
     <Compile Include="JavaScript\Syntax\DoWhileStatement.cs" />
@@ -152,7 +152,7 @@
     <Compile Include="JavaScript\JSError.cs" />
     <Compile Include="JavaScript\JSKeyword.cs" />
     <Compile Include="JavaScript\JSON.cs" />
-    <Compile Include="JavaScript\JSONOutputVisitor.cs" />
+    <Compile Include="JavaScript\Visitors\JsonOutputVisitor.cs" />
     <Compile Include="JavaScript\JSParser.cs" />
     <Compile Include="JavaScript\JSScanner.cs" />
     <Compile Include="JavaScript\JSToken.cs" />

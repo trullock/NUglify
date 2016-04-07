@@ -121,7 +121,7 @@ namespace AjaxMin
                             // the settings we use to output THIS chunk are correct
                             if (settings.Format == JavaScriptFormat.JSON)
                             {
-                                if (!JSONOutputVisitor.Apply(writer, scriptBlock, settings))
+                                if (!JsonOutputVisitor.Apply(writer, scriptBlock, settings))
                                 {
                                     returnCode = 1;
                                 }

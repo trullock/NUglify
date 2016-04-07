@@ -17,15 +17,14 @@
 using System.Globalization;
 using System.IO;
 using AjaxMin.JavaScript.Syntax;
-using AjaxMin.JavaScript.Visitors;
 
-namespace AjaxMin.JavaScript
+namespace AjaxMin.JavaScript.Visitors
 {
 
     /// <summary>
     /// output JSON-compatible code
     /// </summary>
-    public class JSONOutputVisitor : IVisitor
+    public class JsonOutputVisitor : IVisitor
     {
         private TextWriter m_writer;
         private CodeSettings m_settings;
@@ -36,7 +35,7 @@ namespace AjaxMin.JavaScript
             private set;
         }
 
-        private JSONOutputVisitor(TextWriter writer, CodeSettings settings)
+        private JsonOutputVisitor(TextWriter writer, CodeSettings settings)
         {
             m_writer = writer;
             m_settings = settings;
@@ -47,7 +46,7 @@ namespace AjaxMin.JavaScript
         {
             if (node != null)
             {
-                var visitor = new JSONOutputVisitor(writer, settings);
+                var visitor = new JsonOutputVisitor(writer, settings);
                 node.Accept(visitor);
                 return visitor.IsValid;
             }

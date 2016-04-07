@@ -200,7 +200,7 @@ namespace AjaxMin
                             // minify the AST to the output
                             if (settings.Format == JavaScriptFormat.JSON)
                             {
-                                if (!JSONOutputVisitor.Apply(writer, block, settings))
+                                if (!JsonOutputVisitor.Apply(writer, block, settings))
                                 {
                                     Log.LogError(Strings.InvalidJSONOutput);
                                 }

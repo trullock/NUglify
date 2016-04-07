@@ -792,7 +792,7 @@ namespace AjaxMin.Tests.JavaScript.Common
                     if (switchParser.JSSettings.Format == JavaScriptFormat.JSON)
                     {
                         {
-                            if (!JSONOutputVisitor.Apply(writer, block, switchParser.JSSettings))
+                            if (!JsonOutputVisitor.Apply(writer, block, switchParser.JSSettings))
                             {
                                 Trace.WriteLine("JSON OUTPUT ERRORS!");
                             }

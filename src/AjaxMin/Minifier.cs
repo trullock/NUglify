@@ -128,7 +128,7 @@ namespace AjaxMin
                         {
                             // we're going to use a different output visitor -- one
                             // that specifically returns valid JSON.
-                            if (!JSONOutputVisitor.Apply(stringWriter, scriptBlock, codeSettings))
+                            if (!JsonOutputVisitor.Apply(stringWriter, scriptBlock, codeSettings))
                             {
                                 m_errorList.Add(new ContextError()
                                     {

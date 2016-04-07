@@ -1,4 +1,4 @@
-﻿// DetachReferences.cs
+﻿// DetachReferencesVisitor.cs
 //
 // Copyright 2012 Microsoft Corporation
 //
@@ -15,16 +15,15 @@
 // limitations under the License.
 
 using AjaxMin.JavaScript.Syntax;
-using AjaxMin.JavaScript.Visitors;
 
-namespace AjaxMin.JavaScript
+namespace AjaxMin.JavaScript.Visitors
 {
-    public class DetachReferences : TreeVisitor
+    public class DetachReferencesVisitor : TreeVisitor
     {
         // singleton
-        private static readonly DetachReferences s_instance = new DetachReferences();
+        private static readonly DetachReferencesVisitor s_instance = new DetachReferencesVisitor();
 
-        private DetachReferences()
+        private DetachReferencesVisitor()
         {
         }
 

@@ -157,7 +157,7 @@ namespace AjaxMin.JavaScript.Visitors
                                     new ConstantWrapper(node.OperatorToken == JSToken.StrictNotEqual, PrimitiveType.Boolean, node.Context));
 
                                 // because we are essentially removing the node from the AST, be sure to detach any references
-                                DetachReferences.Apply(node);
+                                DetachReferencesVisitor.Apply(node);
                             }
                         }
                     }
@@ -393,7 +393,7 @@ namespace AjaxMin.JavaScript.Visitors
                                 // delete the previous node.
                                 // first be sure to remove the lookup in the return operand from the references
                                 // to field.
-                                DetachReferences.Apply(returnNode.Operand);
+                                DetachReferencesVisitor.Apply(returnNode.Operand);
                                 returnNode.Operand = beforeExpr;
                                 node[ndx - 1] = null;
                             }
@@ -407,7 +407,7 @@ namespace AjaxMin.JavaScript.Visitors
                                 // we're eliminating the two lookups altogether, so remove them both from the
                                 // field's reference table.
                                 var varField = lookup.VariableField;
-                                DetachReferences.Apply(lookup, returnNode.Operand);
+                                DetachReferencesVisitor.Apply(lookup, returnNode.Operand);
 
                                 returnNode.Operand = beforeExpr.Operand2;
                                 node[ndx - 1] = null;
@@ -460,7 +460,7 @@ namespace AjaxMin.JavaScript.Visitors
                             if (lookup.VariableField != null)
                             {
                                 // we're getting rid of the lookup, so remove it from the field's list of references
-                                DetachReferences.Apply(returnNode.Operand);
+                                DetachReferencesVisitor.Apply(returnNode.Operand);
                             }
 
                             // remove the expression from the block and put it in the operand of
@@ -756,7 +756,7 @@ namespace AjaxMin.JavaScript.Visitors
                                         {
                                             if (declaration[ndxDecl].Initializer != null)
                                             {
-                                                DetachReferences.Apply(declaration[ndxDecl].Initializer);
+                                                DetachReferencesVisitor.Apply(declaration[ndxDecl].Initializer);
                                                 declaration[ndxDecl].Initializer = null;
                                             }
                                         }
@@ -765,7 +765,7 @@ namespace AjaxMin.JavaScript.Visitors
                                 else
                                 {
                                     // not a declaration -- remove it
-                                    DetachReferences.Apply(node[ndxRemove]);
+                                    DetachReferencesVisitor.Apply(node[ndxRemove]);
                                     node.RemoveAt(ndxRemove);
                                 }
                             }
@@ -1154,7 +1154,7 @@ namespace AjaxMin.JavaScript.Visitors
                                         // the condition is constant, and the returns return the same thing.
                                         // get rid of the if statement altogether.
                                         // transform: if(cond)return expr;return expr} to return expr}
-                                        DetachReferences.Apply(previousReturn.Operand);
+                                        DetachReferencesVisitor.Apply(previousReturn.Operand);
                                         node.RemoveAt(indexPrevious);
                                         somethingChanged = true;
                                     }
@@ -1164,7 +1164,7 @@ namespace AjaxMin.JavaScript.Visitors
                                         // create a new binary op with the condition and the final-return operand,
                                         // replace the operand on the final-return with the new binary operator,
                                         // and then delete the previous if-statement
-                                        DetachReferences.Apply(previousReturn.Operand);
+                                        DetachReferencesVisitor.Apply(previousReturn.Operand);
                                         lastReturn.Operand = CommaExpression.CombineWithComma(previousIf.Condition.Context.FlattenToStart(), previousIf.Condition, lastReturn.Operand);
                                         node.RemoveAt(indexPrevious);
                                         somethingChanged = true;
@@ -1325,7 +1325,7 @@ namespace AjaxMin.JavaScript.Visitors
                                         OperatorToken = JSToken.LogicalOr,
                                         TerminatingContext = ifNode.TerminatingContext ?? node.TerminatingContext
                                     };
-                                DetachReferences.Apply(currentExpr);
+                                DetachReferencesVisitor.Apply(currentExpr);
                                 node.RemoveAt(ndx);
                             }
                         }
@@ -2085,7 +2085,7 @@ namespace AjaxMin.JavaScript.Visitors
                         {
                             // we're going to be getting rid of the left-hand side in the false-block, 
                             // so we need to remove any references it may represent
-                            DetachReferences.Apply(falseAssign.Operand1);
+                            DetachReferencesVisitor.Apply(falseAssign.Operand1);
 
                             // transform: cond?lhs=expr1:lhs=expr2 to lhs=cond?expr1:expr2s
                             var binaryOp = new BinaryExpression(node.Context)
@@ -3670,7 +3670,7 @@ namespace AjaxMin.JavaScript.Visitors
                                 if (switchCase.Statements.Count == 0 && emptyStatements)
                                 {
                                     // remove this case statement because it falls through to a deleted case
-                                    DetachReferences.Apply(switchCase.CaseValue);
+                                    DetachReferencesVisitor.Apply(switchCase.CaseValue);
                                     node.Cases.RemoveAt(ndx);
                                 }
                                 else
@@ -3688,7 +3688,7 @@ namespace AjaxMin.JavaScript.Visitors
                                             deletedBreak = onlyBreak;
 
                                             // remove this case statement
-                                            DetachReferences.Apply(switchCase.CaseValue);
+                                            DetachReferencesVisitor.Apply(switchCase.CaseValue);
                                             node.Cases.RemoveAt(ndx);
                                             // make sure the flag is set so we delete any other empty
                                             // cases that fell through to this empty case block
@@ -3980,7 +3980,7 @@ namespace AjaxMin.JavaScript.Visitors
                                     {
                                         // replace the member with a lookup on the name.
                                         // first, detach the reference to window
-                                        DetachReferences.Apply(lookup);
+                                        DetachReferencesVisitor.Apply(lookup);
 
                                         // (just reuse the lookup for "window" by changing the name and doing
                                         // a formal reference lookup on it (which will generate fields if needed)
