@@ -1,4 +1,4 @@
-// AssemblyInfo.cs
+﻿// AssemblyInfo.cs
 //
 // Copyright 2010 Microsoft Corporation
 //
@@ -23,11 +23,18 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Ajax Minifier Library")]
-[assembly: AssemblyDescription("JavaScript and CSS minification Library")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTitle("Ajax Minifier MSBuild Task")]
+[assembly: AssemblyDescription("JavaScript and CSS minification MSBuild Task")]
 [assembly: AssemblyCulture("")]
+
+// minimum permission (execute) and nothing optional
+//[assembly: SecurityPermission(SecurityAction.RequestMinimum, Execution = true)]
+//[assembly: PermissionSet(SecurityAction.RequestOptional, Name = "Nothing")]
+//[assembly: SecurityCritical(SecurityCriticalScope.Explicit)]
+//[assembly: AllowPartiallyTrustedCallers]
+
+// we are compliant and not visible to COM by default
+[assembly: System.Runtime.InteropServices.ComVisible(false)]
+
+// Set neutral resources language for assembly.
 [assembly: NeutralResourcesLanguage("en")]
-
-
-
