@@ -74,7 +74,7 @@
     <Compile Include="Css\CssToken.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="JavaScript\ActivationObject2.cs" />
+    <Compile Include="JavaScript\ActivationObject.cs" />
     <Compile Include="JavaScript\AnalyzeNodeVisitor.cs" />
     <Compile Include="JavaScript\ArrayLiteral.cs" />
     <Compile Include="JavaScript\AspNetBlockNode.cs" />
@@ -106,7 +106,7 @@
     <Compile Include="JavaScript\ComprehensionNode.cs" />
     <Compile Include="JavaScript\conditional.cs" />
     <Compile Include="JavaScript\ConstStatement.cs" />
-    <Compile Include="JavaScript\ConstantWrapper2.cs" />
+    <Compile Include="JavaScript\ConstantWrapper.cs" />
     <Compile Include="JavaScript\ConstantWrapperPP.cs" />
     <Compile Include="JavaScript\Context.cs" />
     <Compile Include="JavaScript\ContinueNode.cs" />
