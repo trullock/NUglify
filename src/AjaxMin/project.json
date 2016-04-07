@@ -41,9 +41,9 @@
     "JavaScript/*.resx"
   ],
   "namedResource": {
-    "Microsoft.Ajax.Utilities.Css.CssStrings": "Css/CssStrings.resx",
-    "Microsoft.Ajax.Utilities.CommonStrings": "CommonStrings.resx",
-    "Microsoft.Ajax.Utilities.JavaScript.JScript": "JavaScript/JScript.resx"
+    "AjaxMin.Css.CssStrings": "Css/CssStrings.resx",
+    "AjaxMin.CommonStrings": "CommonStrings.resx",
+    "AjaxMin.JavaScript.JScript": "JavaScript/JScript.resx"
   },
   "frameworks": {
     "net35": {
