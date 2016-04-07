@@ -15,96 +15,96 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
   /// <summary>
   /// Summary description for CommandLine
   /// </summary>
-  [TestClass]
+  [TestFixture]
   public class CommandLine
   {
-    [TestMethod]
+    [Test]
     public void Usage()
     {
       // no input or output files
       TestHelper.Instance.RunTest(false, "-?");
     }
 
-    [TestMethod]
+    [Test]
     public void UnknownArg()
     {
       // no input or output files
       TestHelper.Instance.RunTest(false, "-foo");
     }
 
-    [TestMethod]
+    [Test]
     public void TermSemi1()
     {
       TestHelper.Instance.RunTest("-term -js:prog");
     }
 
-    [TestMethod]
+    [Test]
     public void TermSemi1_expr()
     {
         // it's not an expression!
         TestHelper.Instance.RunErrorTest("-js:expr", JSError.ExpressionExpected);
     }
 
-    [TestMethod]
+    [Test]
     public void TermSemi2()
     {
       TestHelper.Instance.RunTest("-term");
     }
 
-    [TestMethod]
+    [Test]
     public void Globals()
     {
       TestHelper.Instance.RunTest("-global:foobar,foo -global:bar");
     }
 
-    [TestMethod]
+    [Test]
     public void PreprocessOnly()
     {
         // there shouldn't be any errors
         TestHelper.Instance.RunErrorTest("-pponly -debug");
     }
 
-    [TestMethod]
+    [Test]
     public void JSON()
     {
         // there shouldn't be any errors
         TestHelper.Instance.RunErrorTest("-js:json");
     }
 
-    [TestMethod]
+    [Test]
     public void EventHandler()
     {
         // there shouldn't be any errors
         TestHelper.Instance.RunErrorTest("-js:evt");
     }
 
-    [TestMethod]
+    [Test]
     public void Expression()
     {
         TestHelper.Instance.RunTest("-js:expr -rename:all");
     }
 
-    [TestMethod]
+    [Test]
     public void Expression_prog()
     {
         TestHelper.Instance.RunTest("-js:prog -rename:all");
     }
 
-    [TestMethod]
+    [Test]
     public void Expression_json()
     {
         // not valid JSON
         TestHelper.Instance.RunTest("-js:json -rename:all");
     }
 
-    [TestMethod]
+    [Test]
     public void ConcatSemicolons()
     {
         // not valid JSON

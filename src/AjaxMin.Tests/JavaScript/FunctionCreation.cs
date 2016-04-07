@@ -15,7 +15,7 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
@@ -23,112 +23,112 @@ namespace JSUnitTest
     ///This is a test class for Microsoft.Ajax.Utilities.MainClass and is intended
     ///to contain all Microsoft.Ajax.Utilities.MainClass Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture]
     public class FunctionCreation
     {
-        [TestMethod()]
+        [Test]
         public void NewFunction()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Arguments()
         {
           TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void FuncExpr()
         {
           TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void NamedFuncExpr_reorder()
         {
             TestHelper.Instance.RunTest("-unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void NamedFuncExpr()
         {
             TestHelper.Instance.RunTest("-reorder:N -unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void NamedFuncExpr_nfe()
         {
             TestHelper.Instance.RunTest("-reorder:N -fnames:keep -unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void NamedFuncExpr_h()
         {
             TestHelper.Instance.RunTest("-reorder:N -rename:all -unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void NamedFuncExpr_hnfe()
         {
             TestHelper.Instance.RunTest("-reorder:N -rename:all -fnames:keep -unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void NamedFuncExpr_hlock()
         {
             TestHelper.Instance.RunTest("-reorder:N -rename:all -fnames:lock -unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void BadSemicolon()
         {
           TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void VarArgList()
         {
           TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void BadLocation()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void FunctionNames()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void ArrowFunctions()
         {
             TestHelper.Instance.RunErrorTest("-rename:none", JSError.ArgumentNotReferenced, JSError.ArgumentNotReferenced, JSError.ArgumentNotReferenced);
         }
 
-        [TestMethod()]
+        [Test]
         public void ArrowFunctions_h()
         {
             TestHelper.Instance.RunErrorTest(JSError.ArgumentNotReferenced, JSError.ArgumentNotReferenced, JSError.ArgumentNotReferenced);
         }
 
-        [TestMethod()]
+        [Test]
         public void DefaultValues()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Generator()
         {
             TestHelper.Instance.RunErrorTest(JSError.ArgumentNotReferenced);
         }
 
-        [TestMethod()]
+        [Test]
         public void ArrowConstructor()
         {
             TestHelper.Instance.RunErrorTest(JSError.ArrowCannotBeConstructor);

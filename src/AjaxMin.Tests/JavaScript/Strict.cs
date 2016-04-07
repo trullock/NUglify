@@ -15,17 +15,17 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for Strict
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Strict
     {
-        [TestMethod]
+        [Test]
         public void EvalArgsAssign()
         {
             TestHelper.Instance.RunErrorTest("-rename:none", 
@@ -37,7 +37,7 @@ namespace JSUnitTest
                 JSError.StrictModeInvalidPreOrPost);
         }
 
-        [TestMethod]
+        [Test]
         public void InvalidVarName()
         {
             TestHelper.Instance.RunErrorTest("-rename:none",
@@ -53,7 +53,7 @@ namespace JSUnitTest
                 JSError.SemicolonInsertion);
         }
 
-        [TestMethod]
+        [Test]
         public void DupArg()
         {
             TestHelper.Instance.RunErrorTest("-rename:none",
@@ -62,13 +62,13 @@ namespace JSUnitTest
                 JSError.SemicolonInsertion);
         }
 
-        [TestMethod]
+        [Test]
         public void With()
         {
             TestHelper.Instance.RunErrorTest("-rename:none", JSError.StrictModeNoWith, JSError.SemicolonInsertion);
         }
 
-        [TestMethod]
+        [Test]
         public void DupProperty()
         {
             TestHelper.Instance.RunErrorTest("-rename:none",
@@ -83,7 +83,7 @@ namespace JSUnitTest
                 JSError.SemicolonInsertion);
         }
 
-        [TestMethod]
+        [Test]
         public void InvalidDelete()
         {
             TestHelper.Instance.RunErrorTest("-rename:none",
@@ -92,7 +92,7 @@ namespace JSUnitTest
                 JSError.StrictModeInvalidDelete);
         }
 
-        [TestMethod]
+        [Test]
         public void FuncDeclLoc()
         {
             // throw a warning, even when not in strict mode. 
@@ -100,35 +100,35 @@ namespace JSUnitTest
             TestHelper.Instance.RunErrorTest("-rename:none", JSError.MisplacedFunctionDeclaration);
         }
 
-        [TestMethod]
+        [Test]
         public void FuncDeclStrict()
         {
             // error because it's in strict mode
             TestHelper.Instance.RunErrorTest("-rename:none", JSError.MisplacedFunctionDeclaration);
         }
 
-        [TestMethod]
+        [Test]
         public void ExtraUseStrict()
         {
             // error because it's in strict mode
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void StrictSwitchOn()
         {
             // error because it's in strict mode
             TestHelper.Instance.RunTest("-strict -xml");
         }
 
-        [TestMethod]
+        [Test]
         public void StrictPartial()
         {
             // error because it's in strict mode
             TestHelper.Instance.RunTest("-rename:all -xml");
         }
 
-        [TestMethod]
+        [Test]
         public void UnknownGlobal()
         {
             TestHelper.Instance.RunErrorTest("-rename:all", JSError.UndeclaredVariable, JSError.StrictModeUndefinedVariable, JSError.UndeclaredFunction, JSError.UndeclaredVariable, JSError.StrictModeInvalidPreOrPost);

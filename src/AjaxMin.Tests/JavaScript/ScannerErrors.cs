@@ -15,32 +15,32 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
-  [TestClass]
+  [TestFixture]
   public class ScannerErrors
   {
-    [TestMethod()]
+    [Test]
     public void BadHexDigit()
     {
       TestHelper.Instance.RunErrorTest(JSError.BadNumericLiteral);
     }
 
-    [TestMethod()]
+    [Test]
     public void StringEOF()
     {
       TestHelper.Instance.RunErrorTest(JSError.UnterminatedString);
     }
 
-    [TestMethod()]
+    [Test]
     public void StringEOL()
     {
         TestHelper.Instance.RunErrorTest(JSError.UnterminatedString, JSError.SemicolonInsertion);
     }
 
-    [TestMethod()]
+    [Test]
     public void UnexpectedNull()
     {
         TestHelper.Instance.RunErrorTest(JSError.IllegalChar);

@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
@@ -22,40 +22,40 @@ namespace JSUnitTest
     ///This is a test class for Microsoft.Ajax.Utilities.MainClass and is intended
     ///to contain all Microsoft.Ajax.Utilities.MainClass Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture]
     public class Assignments
     {
-        [TestMethod()]
+        [Test]
         public void Assign()
         {
             TestHelper.Instance.RunTest("-enc:out ascii");
         }
 
-        [TestMethod()]
+        [Test]
         public void Assign_utf8()
         {
             TestHelper.Instance.RunTest("-enc:out utf-8");
         }
 
-        [TestMethod()]
+        [Test]
         public void CompoundAssign()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void MultiVars()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void AssignAspNetBlock()
         {
             TestHelper.Instance.RunTest("-aspnet:true");
         }
 
-        [TestMethod()]
+        [Test]
         public void PlusAssignReturn()
         {
             TestHelper.Instance.RunTest();

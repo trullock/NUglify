@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
@@ -22,10 +22,10 @@ namespace JSUnitTest
     ///This is a test class for Microsoft.Ajax.Utilities.MainClass and is intended
     ///to contain all Microsoft.Ajax.Utilities.MainClass Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture]
     public class Booleans
     {
-        [TestMethod()]
+        [Test]
         public void Boolean()
         {
             TestHelper.Instance.RunTest();

@@ -15,7 +15,7 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
@@ -23,97 +23,97 @@ namespace JSUnitTest
     ///This is a test class for Microsoft.Ajax.Utilities.MainClass and is intended
     ///to contain all Microsoft.Ajax.Utilities.MainClass Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture]
     public class Declarations
     {
-        [TestMethod()]
+        [Test]
         public void New()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void This()
         {
             TestHelper.Instance.RunTest("-unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void Var()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Var_keep()
         {
             TestHelper.Instance.RunTest("-enc:out ascii -unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void With()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void With_H()
         {
             TestHelper.Instance.RunTest("-rename:all -unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void Function()
         {
             TestHelper.Instance.RunTest("-unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void Identifiers()
         {
             // just the one flag for "module"
             TestHelper.Instance.RunErrorTest("-rename:none");
         }
 
-        [TestMethod()]
+        [Test]
         public void Identifiers_h()
         {
             // just the one flag for "module"
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Identifiers_ascii()
         {
             // just the one flag for "module"
             TestHelper.Instance.RunErrorTest("-rename:none -enc:out ascii");
         }
 
-        [TestMethod()]
+        [Test]
         public void LocalizationVars()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void LocalizationVars_H()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod()]
+        [Test]
         public void LocalizationVars_HL()
         {
             TestHelper.Instance.RunTest("-rename:localization");
         }
 
-        [TestMethod()]
+        [Test]
         public void Const()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Const_moz()
         {
             TestHelper.Instance.RunTest("-const:moz");

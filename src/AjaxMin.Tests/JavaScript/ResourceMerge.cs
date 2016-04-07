@@ -14,41 +14,50 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.IO;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for ResourceMerge
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class ResourceMerge
     {
-        [TestMethod]
+        public ResourceMerge()
+        {
+            // Bug in Resharper
+            Environment.CurrentDirectory = Path.GetDirectoryName(typeof (ResourceMerge).Assembly.Location);
+        }
+
+
+        [Test]
         public void ResourceResx()
         {
             TestHelper.Instance.RunTest("-res:Strings");
         }
 
-        [TestMethod]
+        [Test]
         public void ResourceResx_I()
         {
             TestHelper.Instance.RunTest("-res:Strings -echo -enc:out ascii");
         }
 
-        [TestMethod]
+        [Test]
         public void Resources()
         {
             TestHelper.Instance.RunTest("-res:Strings -rename:all -literals:combine");
         }
 
-        [TestMethod]
+        [Test]
         public void StringsFooBar()
         {
             TestHelper.Instance.RunTest("-res:Strings.Foo.Bar");
         }
 
-        [TestMethod]
+        [Test]
         public void ReplacementTokens()
         {
             // parse replacement tokens without error

@@ -15,35 +15,35 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for Encoding
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Encodings
     {
-        [TestMethod]
+        [Test]
         public void UnicodeExtended()
         {
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod]
+        [Test]
         public void UnicodeExtended_ascii()
         {
             TestHelper.Instance.RunErrorTest("-enc:out ascii");
         }
 
-        [TestMethod]
+        [Test]
         public void SurrogateHighError()
         {
             TestHelper.Instance.RunErrorTest(JSError.HighSurrogate);
         }
 
-        [TestMethod]
+        [Test]
         public void SurrogateLowError()
         {
             TestHelper.Instance.RunErrorTest(JSError.LowSurrogate);

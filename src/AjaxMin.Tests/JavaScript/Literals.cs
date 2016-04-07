@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Microsoft.Ajax.Utilities;
 
 namespace JSUnitTest
@@ -22,187 +22,187 @@ namespace JSUnitTest
     /// <summary>
     /// Summary description for Literals
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Literals
     {
-        [TestMethod]
+        [Test]
         public void Boolean()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Number()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Strings()
         {
             TestHelper.Instance.RunTest("-inline:N -enc:out ascii -unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void Strings_utf()
         {
             TestHelper.Instance.RunTest("-inline:F -enc:out utf-8 -unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void Strings_h()
         {
             TestHelper.Instance.RunTest("-inline:false -rename:all -enc:out ascii   -unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void Strings_k()
         {
             TestHelper.Instance.RunTest("-inline:true -enc:out ascii -unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void Combined_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void Combined_hc()
         {
             TestHelper.Instance.RunTest("-rename:all -literals:combine");
         }
 
-        [TestMethod]
+        [Test]
         public void NestedCombine()
         {
             TestHelper.Instance.RunTest("-rename:all -literals:combine");
         }
 
-        [TestMethod]
+        [Test]
         public void ArrayLiteral()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLiteral()
         {
             TestHelper.Instance.RunTest("-enc:out ascii");
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectLiteral_quote()
         {
             TestHelper.Instance.RunTest("-obj:quote");
         }
 
-        [TestMethod]
+        [Test]
         public void InlineSafe()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void InlineSafe_no()
         {
             TestHelper.Instance.RunTest("-inline:no");
         }
 
-        [TestMethod]
+        [Test]
         public void CombineNegs()
         {
             TestHelper.Instance.RunTest("-literals:combine -rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void StrictEncoding()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Member()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Member_Preserve()
         {
             TestHelper.Instance.RunTest("-kill:0x200000");
         }
 
-        [TestMethod]
+        [Test]
         public void GetterSetter()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void AspNetString()
         {
             TestHelper.Instance.RunTest("-aspnet");
         }
 
-        [TestMethod]
+        [Test]
         public void InlineSafeErrors()
         {
             // default test - should have no errors
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod]
+        [Test]
         public void InlineSafeErrors_on()
         {
             // turn on the error checking -- should be two errors
             TestHelper.Instance.RunErrorTest("-inline:force", JSError.StringNotInlineSafe, JSError.StringNotInlineSafe);
         }
 
-        [TestMethod]
+        [Test]
         public void NullCharacter()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Octal()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void RegExp()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Replace()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void TemplateLiterals()
         {
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod]
+        [Test]
         public void TemplateLiterals_nomin()
         {
             // don't minify the string or template literals
             TestHelper.Instance.RunErrorTest("-kill:0x100000");
         }
 
-        [TestMethod]
+        [Test]
         public void LoneHighSurrogate()
         {
             TestHelper.Instance.RunErrorTest(JSError.HighSurrogate);
         }
 
-        [TestMethod]
+        [Test]
         public void LoneLowSurrogate()
         {
             TestHelper.Instance.RunErrorTest(JSError.LowSurrogate);

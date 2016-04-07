@@ -8,14 +8,14 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for StdIn
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class StdIn
     {
         public StdIn()
@@ -23,22 +23,6 @@ namespace JSUnitTest
         }
 
         private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
 
         public static string ExpectedFolder { get; private set; }
         public static string InputFolder { get; private set; }
@@ -48,11 +32,11 @@ namespace JSUnitTest
         //
         // You can use the following additional attributes as you write your tests:
         //
-        [ClassInitialize()]
-        public static void MyClassInitialize(TestContext testContext)
+        [SetUp]
+        public void Setup()
         {
-            var dataFolder = Path.Combine(testContext.TestDeploymentDir, @"JS");
-            var className = testContext.FullyQualifiedTestClassName.Substring(testContext.FullyQualifiedTestClassName.LastIndexOf('.') + 1);
+            var dataFolder = Path.Combine(TestContext.CurrentContext.TestDirectory, @"TestData\JS");
+            var className = TestContext.CurrentContext.Test.ClassName.Substring(TestContext.CurrentContext.Test.ClassName.LastIndexOf('.') + 1);
 
             ExpectedFolder = Path.Combine(Path.Combine(dataFolder, "Expected"), className);
             InputFolder = Path.Combine(Path.Combine(dataFolder, "Input"), className);
@@ -79,11 +63,11 @@ namespace JSUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void StdInTest()
         {
-            var ndxUnderscore = TestContext.TestName.IndexOf('_');
-            var testName = ndxUnderscore < 0 ? TestContext.TestName : TestContext.TestName.Substring(0, ndxUnderscore);
+            var ndxUnderscore = TestContext.CurrentContext.Test.Name.IndexOf('_');
+            var testName = ndxUnderscore < 0 ? TestContext.CurrentContext.Test.Name : TestContext.CurrentContext.Test.Name.Substring(0, ndxUnderscore);
 
             // get the input, output, and expected path names
             var inputPath = Path.ChangeExtension(Path.Combine(InputFolder, testName), ".js");

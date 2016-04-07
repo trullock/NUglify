@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for AstMods
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class AstMods
     {
         #region auto code
@@ -72,158 +72,158 @@ namespace JSUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void CallToMember()
         {
             TestHelper.Instance.RunTest("-enc:out ascii");
         }
 
-        [TestMethod]
+        [Test]
         public void DateGetTimeToUnaryPlus()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void DateGetTimeToUnaryPlus_H()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void LiteralExpressions()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void LiteralsToLeft()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void LiteralsFarToLeft()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void LiteralsToRight()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void LiteralsFarToRight()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void SimplifyStrToNum()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void SimplifyStrToNum_noeval()
         {
             TestHelper.Instance.RunTest("-literals:noeval");
         }
 
-        [TestMethod]
+        [Test]
         public void LiteralOverflows()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void StrictToRegular()
         {
             // turn off the "EvaluateNumericExpressions" feature
             TestHelper.Instance.RunTest("-kill:0x0000000020000000 -unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void MoveFunctions()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void VerticalTab()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void AspNet()
         {
             TestHelper.Instance.RunTest("-term");
         }
 
-        [TestMethod]
+        [Test]
         public void IfReturn()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void NestedIf()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ExpressionIf()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void IfContinue()
         {
             TestHelper.Instance.RunTest("-unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void NegShortcutIf()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ConstantIf()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ReturnAssignOp()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void EvalLength()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Amd()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Amd_amd()
         {
             TestHelper.Instance.RunTest("-amd");
         }
 
-        [TestMethod]
+        [Test]
         public void OpAssignCombine()
         {
             TestHelper.Instance.RunTest();

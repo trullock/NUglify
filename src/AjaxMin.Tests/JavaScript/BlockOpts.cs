@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for BlockOpts
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class BlockOpts
     {
         #region generated code 
@@ -72,80 +72,80 @@ namespace JSUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void VarReturn()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ReturnIfs()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void DirectivePrologue()
         {
             TestHelper.Instance.RunTest();
         }
 
-		[TestMethod]
+		[Test]
 		public void AspNetBlock()
 		{
 			TestHelper.Instance.RunTest("-aspnet:true");
 		}
 
-        [TestMethod]
+        [Test]
         public void AfterReturn()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void AfterReturn_noreloc()
         {
             // don't relocate function declarations
             TestHelper.Instance.RunTest("-kill:0x0000018000000000");
         }
 
-        [TestMethod]
+        [Test]
         public void VarIntoFor()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void IfReturnReturn()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ReturnVoid()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ExprReturn()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void KillIfReturn()
         {
             TestHelper.Instance.RunTest("-kill:-1");
         }
 
-        [TestMethod]
+        [Test]
         public void CombineAssign()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void VarAssign()
         {
             TestHelper.Instance.RunTest();

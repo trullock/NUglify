@@ -24,7 +24,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
@@ -56,13 +56,13 @@ namespace JSUnitTest
         /// regular expression used to remove the testresults path from actual output
         /// </summary>
         private static Regex s_testRunRegex = new Regex(
-            @"(/[/*]/#source\s+\d+\s+\d+\s+).+\\TestResults\\[^\\]+(\\.+)$",
+            @"(/[/*]/#source\s+\d+\s+\d+\s+).+\\TestData\\[^\\]+(\\.+)$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
         /// <summary>
         /// the name of the unit test folder under the main project folder
         /// </summary>
-        private const string c_unitTestsDataFolder = "JS";
+        private const string c_unitTestsDataFolder = "TestData\\JS";
 
         /// <summary>
         /// folder path for input files to tests

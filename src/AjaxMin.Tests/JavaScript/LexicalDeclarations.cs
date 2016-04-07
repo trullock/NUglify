@@ -17,77 +17,77 @@
 namespace JSUnitTest
 {
     using Microsoft.Ajax.Utilities;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Summary description for LexicalDeclarations
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class LexicalDeclarations
     {
-        [TestMethod()]
+        [Test]
         public void LexConst()
         {
             // we have one undeclared variable to make sure it doesn't resolve to the lexical scope
             TestHelper.Instance.RunErrorTest("-rename:all", JSError.UndeclaredVariable);
         }
 
-        [TestMethod()]
+        [Test]
         public void LexConst_mozilla()
         {
             TestHelper.Instance.RunErrorTest("-rename:all -const:moz");
         }
 
-        [TestMethod()]
+        [Test]
         public void LexConst_ES6()
         {
             TestHelper.Instance.RunErrorTest("-rename:all -const:ES6", JSError.UndeclaredVariable);
         }
 
-        [TestMethod()]
+        [Test]
         public void LexLet()
         {
             // we have one undeclared variable to make sure it doesn't resolve to the lexical scope
             TestHelper.Instance.RunErrorTest("-rename:all", JSError.UndeclaredVariable);
         }
 
-        [TestMethod()]
+        [Test]
         public void LexFor()
         {
             TestHelper.Instance.RunErrorTest("-rename:all");
         }
 
-        [TestMethod()]
+        [Test]
         public void LexForIn()
         {
             TestHelper.Instance.RunErrorTest("-rename:all");
         }
 
-        [TestMethod()]
+        [Test]
         public void LexSwitch()
         {
             TestHelper.Instance.RunErrorTest("-rename:all");
         }
 
-        [TestMethod()]
+        [Test]
         public void LexBlock()
         {
             TestHelper.Instance.RunErrorTest("-rename:all");
         }
 
-        [TestMethod()]
+        [Test]
         public void LexDuplicate()
         {
             TestHelper.Instance.RunErrorTest("-rename:all", JSError.DuplicateLexicalDeclaration, JSError.DuplicateLexicalDeclaration);
         }
 
-        [TestMethod()]
+        [Test]
         public void ConstAssign()
         {
             TestHelper.Instance.RunErrorTest("-rename:all", JSError.AssignmentToConstant, JSError.AssignmentToConstant);
         }
 
-        [TestMethod()]
+        [Test]
         public void LexVarCollision()
         {
             TestHelper.Instance.RunErrorTest("-rename:all", JSError.DuplicateLexicalDeclaration, JSError.DuplicateLexicalDeclaration);

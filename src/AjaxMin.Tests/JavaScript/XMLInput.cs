@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
@@ -22,48 +22,48 @@ namespace JSUnitTest
     /// unit tests dealing with the XML input fklag (-x) which can specify a series of
     /// input and output files in an XML file for a single instance of tool execution
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class XmlInput
     {
-        [TestMethod]
+        [Test]
         public void XmlOneOutputFile()
         {
             TestHelper.Instance.RunTest("-xml -reorder:0");
         }
 
-        [TestMethod]
+        [Test]
         public void XmlTwoOutputFiles()
         {
             TestHelper.Instance.RunTest("-xml -reorder:N");
         }
 
-        [TestMethod]
+        [Test]
         public void XmlWithSymbolMap()
         {
             TestHelper.Instance.RunTest("-xml -reorder:N");
         }
 
-        [TestMethod]
+        [Test]
         public void XmlMixedType()
         {
             TestHelper.Instance.RunTest("-xml -reorder:F");
         }
 
-        [TestMethod]
+        [Test]
         public void EncInputNone()
         {
             // neither Russian nor Chinese should be decoded properly
             TestHelper.Instance.RunTest("-xml");
         }
 
-        [TestMethod]
+        [Test]
         public void EncInputNone_koi8r()
         {
             // Russian will be decoded properly, but not the Chinese
             TestHelper.Instance.RunTest("-xml -enc:in koi8-r");
         }
 
-        [TestMethod]
+        [Test]
         public void EncInputRussian()
         {
             // Russian has encoding inline; will be decoded properly, but not the Chinese
@@ -71,7 +71,7 @@ namespace JSUnitTest
             TestHelper.Instance.RunTest("-xml -enc:out utf-8");
         }
 
-        [TestMethod]
+        [Test]
         public void EncInputRussian_big5()
         {
             // Russian has encoding inline; will be decoded properly.
@@ -79,7 +79,7 @@ namespace JSUnitTest
             TestHelper.Instance.RunTest("-xml -enc:in big5 -enc:out utf-8");
         }
 
-        [TestMethod]
+        [Test]
         public void EncInputRussian_big5out()
         {
             // Russian has encoding inline; will be decoded properly.

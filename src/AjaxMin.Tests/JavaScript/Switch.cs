@@ -15,233 +15,234 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for Switch
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Switch
     {
-        [TestMethod]
+        [Test]
         public void EmptyDefault()
         {
             TestHelper.Instance.RunTest("-unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void EmptyDefault_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void NoDefaultEmptyCases()
         {
             TestHelper.Instance.RunTest("-unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void NoDefaultEmptyCases_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void PromoteBreak()
         {
             TestHelper.Instance.RunTest("-unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void PromoteBreak_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void SwitchLabels()
         {
             TestHelper.Instance.RunTest("-unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void SwitchLabels_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void PrettyPrint()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void PrettyPrint_P()
         {
             TestHelper.Instance.RunTest("-pretty -clobber");
         }
 
-        [TestMethod]
+        [Test]
         public void PrettyPrint_same()
         {
             TestHelper.Instance.RunTest("-pretty -braces:same");
         }
 
-        [TestMethod]
+        [Test]
         public void MacQuirks()
         {
             TestHelper.Instance.RunTest("-mac:No");
         }
 
-        [TestMethod]
+        [Test]
         public void MacQuirks_M()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Unreachable()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void LineBreak()
         {
             TestHelper.Instance.RunTest("-line:10");
         }
 
-        [TestMethod]
+        [Test]
         public void LineBreak_Multi()
         {
             TestHelper.Instance.RunTest("-line:,multi");
         }
 
-        [TestMethod]
+        [Test]
         public void LineBreak_MultiIndent()
         {
             TestHelper.Instance.RunTest("-line:,multiple,8");
         }
 
-        [TestMethod]
+        [Test]
         public void LineBreak_BreakSingle()
         {
             TestHelper.Instance.RunTest("-line:10,single");
         }
 
-        [TestMethod]
+        [Test]
         public void LineBreak_BreakMultiIndent()
         {
             TestHelper.Instance.RunTest("-line:10,m,2");
         }
 
-        [TestMethod]
+        [Test]
         public void Braces()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Braces_new()
         {
             TestHelper.Instance.RunTest("-line:m -braces:new");
         }
 
-        [TestMethod]
+        [Test]
         public void Braces_same()
         {
             TestHelper.Instance.RunTest("-line:m -braces:same");
         }
 
-        [TestMethod]
+        [Test]
         public void Braces_source()
         {
             TestHelper.Instance.RunTest("-line:m -braces:source");
         }
 
-        [TestMethod]
+        [Test]
         public void IgnoreErrors()
         {
             TestHelper.Instance.RunErrorTest("-rename:none", JSError.ErrorEndOfFile, JSError.UnclosedFunction, JSError.UndeclaredFunction, JSError.UndeclaredVariable, JSError.NoRightParenthesis, JSError.VariableDefinedNotReferenced);
         }
 
-        [TestMethod]
+        [Test]
         public void IgnoreErrors_some()
         {
             TestHelper.Instance.RunErrorTest("-rename:none -ignore:js1138,JS1135,Js1268,jS1310", JSError.ErrorEndOfFile, JSError.UnclosedFunction, JSError.NoRightParenthesis);
         }
 
-        [TestMethod]
+        [Test]
         public void IgnoreErrors_all()
         {
             TestHelper.Instance.RunErrorTest("-rename:none -ignore:All");
         }
 
-        [TestMethod]
+        [Test]
         public void NoBreakThrow()
         {
             TestHelper.Instance.RunTest("-line:4");
         }
 
-        [TestMethod]
+        [Test]
         public void NoBreakBreak()
         {
             TestHelper.Instance.RunTest("-line:4 -unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void NoBreakContinue()
         {
             TestHelper.Instance.RunTest("-line:4 -unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void NoBreakReturn()
         {
             TestHelper.Instance.RunTest("-line:4");
         }
 
-        [TestMethod]
+        [Test]
         public void NoBreakPostInc()
         {
             TestHelper.Instance.RunTest("-line:4");
         }
 
-        [TestMethod]
+        [Test]
         public void NoBreakPostDec()
         {
             TestHelper.Instance.RunTest("-line:4");
         }
-
-        [TestMethod]
+        /*
+        [Test]
         public void Culture_fr()
         {
             TestHelper.Instance.RunTest("-culture:fr-fr");
         }
 
-        [TestMethod]
+        [Test]
         public void Culture_esZW()
         {
             // doesn't exist, but should use es instead
             TestHelper.Instance.RunTest("-culture:es-zw");
         }
 
-        [TestMethod]
+        [Test]
         public void Culture_hawUS()
         {
             // doesn't exist, but should use es instead
             TestHelper.Instance.RunTest("-culture:haw-US");
         }
 
-        [TestMethod]
+        [Test]
         public void Culture_zhCN()
         {
             // doesn't exist, but should use es instead
             TestHelper.Instance.RunTest("-culture:zh-cn");
         }
+        */
     }
 }

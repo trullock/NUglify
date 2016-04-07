@@ -15,14 +15,14 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for CatchVariable
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class CatchVariable
     {
         #region auto-gen
@@ -73,49 +73,49 @@ namespace JSUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void Ambiguous()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Ambiguous_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void OuterNotRef()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void OuterNotRef_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void NoOuter()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void NoOuter_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void OuterIsGlobal()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void Collision()
         {
             TestHelper.Instance.RunErrorTest("-rename:all", JSError.AmbiguousCatchVar, JSError.SemicolonInsertion, JSError.MisplacedFunctionDeclaration);

@@ -113,10 +113,18 @@
       <DependentUpon>ValueReplacement.resx</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="TestData\JS\Input\ResourceMerge\StringsFooBar.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringsFooBar.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="project.json" />
+    <Content Include="TestData\JS\Expected\SourceMap\SourceMapV3.js.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\CSS\Expected\AtRules\Charset.css">
@@ -739,710 +747,2125 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestData\JS\Expected\ArrayHandling\Array.js" />
-    <Content Include="TestData\JS\Expected\AstMods\amd.js" />
-    <Content Include="TestData\JS\Expected\AstMods\amd_amd.js" />
-    <Content Include="TestData\JS\Expected\AstMods\opAssignCombine.js" />
-    <Content Include="TestData\JS\Expected\Classes\ClassDecl.js" />
-    <Content Include="TestData\JS\Expected\Classes\ClassErrors.js" />
-    <Content Include="TestData\JS\Expected\Classes\ClassExpr.js" />
-    <Content Include="TestData\JS\Expected\Comprehensions\ArrayComp.js" />
-    <Content Include="TestData\JS\Expected\ArrayHandling\Array_L.js" />
-    <Content Include="TestData\JS\Expected\ArrayHandling\Join.js" />
-    <Content Include="TestData\JS\Expected\ArrayHandling\Length.js" />
-    <Content Include="TestData\JS\Expected\ArrayHandling\Reverse.js" />
-    <Content Include="TestData\JS\Expected\ArrayHandling\Sort.js" />
-    <Content Include="TestData\JS\Expected\ArrayHandling\Spread.js" />
-    <Content Include="TestData\JS\Expected\AspNet\Blocks.js" />
-    <Content Include="TestData\JS\Expected\AspNet\Expressions.js" />
-    <Content Include="TestData\JS\Expected\AspNet\Identifiers.js" />
-    <Content Include="TestData\JS\Expected\Assignments\Assign.js" />
-    <Content Include="TestData\JS\Expected\Assignments\AssignAspNetBlock.js" />
-    <Content Include="TestData\JS\Expected\Assignments\Assign_utf8.js" />
-    <Content Include="TestData\JS\Expected\Assignments\CompoundAssign.js" />
-    <Content Include="TestData\JS\Expected\Assignments\MultiVars.js" />
-    <Content Include="TestData\JS\Expected\Assignments\PlusAssignReturn.js" />
-    <Content Include="TestData\JS\Expected\AstMods\AspNet.js" />
-    <Content Include="TestData\JS\Expected\AstMods\CallToMember.js" />
-    <Content Include="TestData\JS\Expected\AstMods\ConstantIf.js" />
-    <Content Include="TestData\JS\Expected\AstMods\DateGetTimeToUnaryPlus.js" />
-    <Content Include="TestData\JS\Expected\AstMods\DateGetTimeToUnaryPlus_H.js" />
-    <Content Include="TestData\JS\Expected\AstMods\EvalLength.js" />
-    <Content Include="TestData\JS\Expected\AstMods\ExpressionIf.js" />
-    <Content Include="TestData\JS\Expected\AstMods\IfContinue.js" />
-    <Content Include="TestData\JS\Expected\AstMods\IfReturn.js" />
-    <Content Include="TestData\JS\Expected\AstMods\LiteralExpressions.js" />
-    <Content Include="TestData\JS\Expected\AstMods\LiteralOverflows.js" />
-    <Content Include="TestData\JS\Expected\AstMods\LiteralsFarToLeft.js" />
-    <Content Include="TestData\JS\Expected\AstMods\LiteralsFarToRight.js" />
-    <Content Include="TestData\JS\Expected\AstMods\LiteralsToLeft.js" />
-    <Content Include="TestData\JS\Expected\AstMods\LiteralsToRight.js" />
-    <Content Include="TestData\JS\Expected\AstMods\MoveFunctions.js" />
-    <Content Include="TestData\JS\Expected\AstMods\NegShortcutIf.js" />
-    <Content Include="TestData\JS\Expected\AstMods\NestedIf.js" />
-    <Content Include="TestData\JS\Expected\AstMods\ReturnAssignOp.js" />
-    <Content Include="TestData\JS\Expected\AstMods\SimplifyStrToNum.js" />
-    <Content Include="TestData\JS\Expected\AstMods\SimplifyStrToNum_noeval.js" />
-    <Content Include="TestData\JS\Expected\AstMods\StrictToRegular.js" />
-    <Content Include="TestData\JS\Expected\AstMods\VerticalTab.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\AfterReturn.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\AfterReturn_noreloc.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\AspNetBlock.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\CombineAssign.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\DirectivePrologue.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\ExprReturn.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\IfReturnReturn.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\KillIfReturn.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\ReturnIfs.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\ReturnVoid.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\VarAssign.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\VarIntoFor.js" />
-    <Content Include="TestData\JS\Expected\BlockOpts\VarReturn.js" />
-    <Content Include="TestData\JS\Expected\Booleans\Boolean.js" />
-    <Content Include="TestData\JS\Expected\CatchVariable\Ambiguous.js" />
-    <Content Include="TestData\JS\Expected\CatchVariable\Ambiguous_h.js" />
-    <Content Include="TestData\JS\Expected\CatchVariable\Collision.js" />
-    <Content Include="TestData\JS\Expected\CatchVariable\NoOuter.js" />
-    <Content Include="TestData\JS\Expected\CatchVariable\NoOuter_h.js" />
-    <Content Include="TestData\JS\Expected\CatchVariable\OuterIsGlobal.js" />
-    <Content Include="TestData\JS\Expected\CatchVariable\OuterNotRef.js" />
-    <Content Include="TestData\JS\Expected\CatchVariable\OuterNotRef_h.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\ConcatSemicolons.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\EventHandler.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\Expression.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\Expression_json.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\Expression_prog.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\Globals.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\json.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\PreprocessOnly.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\TermSemi1.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\TermSemi1_expr.js" />
-    <Content Include="TestData\JS\Expected\CommandLine\TermSemi2.js" />
-    <Content Include="TestData\JS\Expected\Comments\Comment.js" />
-    <Content Include="TestData\JS\Expected\Comments\EndWithImportantComment.js" />
-    <Content Include="TestData\JS\Expected\Comments\Globals.js" />
-    <Content Include="TestData\JS\Expected\Comments\ImportantComment.js" />
-    <Content Include="TestData\JS\Expected\Comments\ImportantComment_Off.js" />
-    <Content Include="TestData\JS\Expected\Comments\ImportantIgnore.js" />
-    <Content Include="TestData\JS\Expected\Comments\OnlyImportantComment.js" />
-    <Content Include="TestData\JS\Expected\Comments\TwoImportantComments.js" />
-    <Content Include="TestData\JS\Expected\Comprehensions\GeneratorComp.js" />
-    <Content Include="TestData\JS\Expected\Comprehensions\NoParens.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\EndEOF.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\FuncDecl.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\TypeComments.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\DoubleStart.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\IETest.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\IfElse.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\MultipleOn.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\MultipleOn_kill.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\NoEnd.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\PPConstant.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\PPOps.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\Set.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\SpecialCase.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\SpecialCase2.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\StartWithIf.js" />
-    <Content Include="TestData\JS\Expected\ConditionalCompilation\StartWithSet.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Break.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\CatchScope.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\CatchScope_Local.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Continue.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Continue_inv.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Debugger.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Debugger_D.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Debugger_OffCustom.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Debugger_OffNone.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Debugger_OnCustom.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\DoWhile.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\DoWhile_3.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\EncloseBlock.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\EncloseBlock_nominify.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\ForIn.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\ForNoIn.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\ForNoIn_kill.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\ForVar.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\ForVar_reorder.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\ForWhile.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\If.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Labels.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Labels_H.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Labels_keep.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Return.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Switch.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Switch_h.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Throw.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\Throw_M.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\TryCatch.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\TryCatch_m.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\While.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\While_ForNoVar.js" />
-    <Content Include="TestData\JS\Expected\ControlFlow\While_NoFor.js" />
-    <Content Include="TestData\JS\Expected\DebugNamespaces\ConsoleDebug.js" />
-    <Content Include="TestData\JS\Expected\DebugNamespaces\DebugAsKnownGlobal.js" />
-    <Content Include="TestData\JS\Expected\DebugNamespaces\DebugAsKnownGlobal_debug.js" />
-    <Content Include="TestData\JS\Expected\DebugNamespaces\DebugAsKnownGlobal_release.js" />
-    <Content Include="TestData\JS\Expected\DebugNamespaces\DebugNamespaceDirective.js" />
-    <Content Include="TestData\JS\Expected\DebugNamespaces\EmptyIf.js" />
-    <Content Include="TestData\JS\Expected\Declarations\Const.js" />
-    <Content Include="TestData\JS\Expected\Declarations\Const_moz.js" />
-    <Content Include="TestData\JS\Expected\Declarations\Function.js" />
-    <Content Include="TestData\JS\Expected\Declarations\Identifiers.js" />
-    <Content Include="TestData\JS\Expected\Declarations\Identifiers_ascii.js" />
-    <Content Include="TestData\JS\Expected\Declarations\Identifiers_h.js" />
-    <Content Include="TestData\JS\Expected\Declarations\LocalizationVars.js" />
-    <Content Include="TestData\JS\Expected\Declarations\LocalizationVars_H.js" />
-    <Content Include="TestData\JS\Expected\Declarations\LocalizationVars_HL.js" />
-    <Content Include="TestData\JS\Expected\Declarations\New.js" />
-    <Content Include="TestData\JS\Expected\Declarations\This.js" />
-    <Content Include="TestData\JS\Expected\Declarations\Var.js" />
-    <Content Include="TestData\JS\Expected\Declarations\Var_keep.js" />
-    <Content Include="TestData\JS\Expected\Declarations\With.js" />
-    <Content Include="TestData\JS\Expected\Declarations\With_H.js" />
-    <Content Include="TestData\JS\Expected\Encodings\SurrogateHighError.js" />
-    <Content Include="TestData\JS\Expected\Encodings\SurrogateLowError.js" />
-    <Content Include="TestData\JS\Expected\Encodings\UnicodeExtended.js" />
-    <Content Include="TestData\JS\Expected\Encodings\UnicodeExtended_ascii.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\Arguments.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\ArrowConstructor.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\ArrowFunctions.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\ArrowFunctions_h.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\BadLocation.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\BadSemicolon.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\DefaultValues.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\FuncExpr.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\FunctionNames.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\Generator.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_h.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_hlock.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_hnfe.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_nfe.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_reorder.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\NewFunction.js" />
-    <Content Include="TestData\JS\Expected\FunctionCreation\VarArgList.js" />
-    <Content Include="TestData\JS\Expected\GlobalMethods\AssumedGlobals.js" />
-    <Content Include="TestData\JS\Expected\GlobalMethods\BrowserSpecific.js" />
-    <Content Include="TestData\JS\Expected\GlobalMethods\DOMElements.js" />
-    <Content Include="TestData\JS\Expected\GlobalMethods\Eval.js" />
-    <Content Include="TestData\JS\Expected\GlobalMethods\GlobalObject.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\ConstAssign.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexBlock.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexConst.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexConst_ES6.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexConst_mozilla.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexDuplicate.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexFor.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexForIn.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexLet.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexSwitch.js" />
-    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexVarCollision.js" />
-    <Content Include="TestData\JS\Expected\Literals\ArrayLiteral.js" />
-    <Content Include="TestData\JS\Expected\Literals\AspNetString.js" />
-    <Content Include="TestData\JS\Expected\Literals\Boolean.js" />
-    <Content Include="TestData\JS\Expected\Literals\Combined_h.js" />
-    <Content Include="TestData\JS\Expected\Literals\Combined_hc.js" />
-    <Content Include="TestData\JS\Expected\Literals\CombineNegs.js" />
-    <Content Include="TestData\JS\Expected\Literals\GetterSetter.js" />
-    <Content Include="TestData\JS\Expected\Literals\InlineSafe.js" />
-    <Content Include="TestData\JS\Expected\Literals\InlineSafeErrors.js" />
-    <Content Include="TestData\JS\Expected\Literals\InlineSafeErrors_on.js" />
-    <Content Include="TestData\JS\Expected\Literals\InlineSafe_no.js" />
-    <Content Include="TestData\JS\Expected\Literals\LoneHighSurrogate.js" />
-    <Content Include="TestData\JS\Expected\Literals\LoneLowSurrogate.js" />
-    <Content Include="TestData\JS\Expected\Literals\Member.js" />
-    <Content Include="TestData\JS\Expected\Literals\Member_Preserve.js" />
-    <Content Include="TestData\JS\Expected\Literals\NestedCombine.js" />
-    <Content Include="TestData\JS\Expected\Literals\NullCharacter.js" />
-    <Content Include="TestData\JS\Expected\Literals\Number.js" />
-    <Content Include="TestData\JS\Expected\Literals\ObjectLiteral.js" />
-    <Content Include="TestData\JS\Expected\Literals\ObjectLiteral_quote.js" />
-    <Content Include="TestData\JS\Expected\Literals\Octal.js" />
-    <Content Include="TestData\JS\Expected\Literals\RegExp.js" />
-    <Content Include="TestData\JS\Expected\Literals\Replace.js" />
-    <Content Include="TestData\JS\Expected\Literals\StrictEncoding.js" />
-    <Content Include="TestData\JS\Expected\Literals\Strings.js" />
-    <Content Include="TestData\JS\Expected\Literals\Strings_3.js" />
-    <Content Include="TestData\JS\Expected\Literals\Strings_h.js" />
-    <Content Include="TestData\JS\Expected\Literals\strings_k.js" />
-    <Content Include="TestData\JS\Expected\Literals\Strings_utf.js" />
-    <Content Include="TestData\JS\Expected\Literals\TemplateLiterals.js" />
-    <Content Include="TestData\JS\Expected\Literals\TemplateLiterals_nomin.js" />
-    <Content Include="TestData\JS\Expected\Modules\BadExport.js" />
-    <Content Include="TestData\JS\Expected\Modules\CircularExternal.js" />
-    <Content Include="TestData\JS\Expected\Modules\ExportCombine.js" />
-    <Content Include="TestData\JS\Expected\Modules\ExportRename.js" />
-    <Content Include="TestData\JS\Expected\Modules\Exports.js" />
-    <Content Include="TestData\JS\Expected\Modules\ImportAssign.js" />
-    <Content Include="TestData\JS\Expected\Modules\NoExportExternal.js" />
-    <Content Include="TestData\JS\Expected\Modules\NoExportExternal_flatten.js" />
-    <Content Include="TestData\JS\Expected\Modules\NoExportInline.js" />
-    <Content Include="TestData\JS\Expected\Modules\ImportRename.js" />
-    <Content Include="TestData\JS\Expected\Modules\Imports.js" />
-    <Content Include="TestData\JS\Expected\Modules\Module.js" />
-    <Content Include="TestData\JS\Expected\Modules\NotModules.js" />
-    <Content Include="TestData\JS\Expected\Modules\ReExport.js" />
-    <Content Include="TestData\JS\Expected\NoMinify\EmptyElse.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\CompareObjects.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Constructor.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Constructor_H.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Constructor_hc.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\InstanceOf.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Object_hc.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Object_L.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Object_H.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\RegularExpressions.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Object.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Prototype.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Strings.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\Strings_Utf8.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\ToStr.js" />
-    <Content Include="TestData\JS\Expected\ObjectCreation\TypeOf.js" />
-    <Content Include="TestData\JS\Expected\Operators\Assign.js" />
-    <Content Include="TestData\JS\Expected\Operators\Associative.js" />
-    <Content Include="TestData\JS\Expected\Operators\Comma.js" />
-    <Content Include="TestData\JS\Expected\Operators\Conditional.js" />
-    <Content Include="TestData\JS\Expected\Operators\ConditionalPrecedence.js" />
-    <Content Include="TestData\JS\Expected\Operators\In.js" />
-    <Content Include="TestData\JS\Expected\Operators\InstanceOf.js" />
-    <Content Include="TestData\JS\Expected\Operators\Member.js" />
-    <Content Include="TestData\JS\Expected\Operators\New.js" />
-    <Content Include="TestData\JS\Expected\Operators\NewPrecedence.js" />
-    <Content Include="TestData\JS\Expected\Operators\Strict.js" />
-    <Content Include="TestData\JS\Expected\Operators\TypeOf.js" />
-    <Content Include="TestData\JS\Expected\Operators\Unary.js" />
-    <Content Include="TestData\JS\Expected\Operators\Void.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\BadDefines.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\BadIfDef.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\DebugClear.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\DebugSet.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\DebugSet_debug.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\DefineIf.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\DefineIf_defines.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\Defines.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\Defines_ackbar.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\Defines_ackbarmeow.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\Nested.js" />
-    <Content Include="TestData\JS\Expected\Preprocessor\SourceDirective.js" />
-    <Content Include="TestData\JS\Expected\Renaming\evalImmediate.js" />
-    <Content Include="TestData\JS\Expected\Renaming\IfFunction.js" />
-    <Content Include="TestData\JS\Expected\Renaming\LabelKeyword.js" />
-    <Content Include="TestData\JS\Expected\Renaming\ManualRename.js" />
-    <Content Include="TestData\JS\Expected\Renaming\ManualRename_all.js" />
-    <Content Include="TestData\JS\Expected\Renaming\ManualRename_cmd.js" />
-    <Content Include="TestData\JS\Expected\Renaming\ManualRename_collide.js" />
-    <Content Include="TestData\JS\Expected\Renaming\ManualRename_noprops.js" />
-    <Content Include="TestData\JS\Expected\Renaming\ManualRename_norename.js" />
-    <Content Include="TestData\JS\Expected\Renaming\ManualRename_rename.js" />
-    <Content Include="TestData\JS\Expected\Renaming\NestedGlobals.js" />
-    <Content Include="TestData\JS\Expected\Renaming\NoMunge.js" />
-    <Content Include="TestData\JS\Expected\Renaming\SafeAll.js" />
-    <Content Include="TestData\JS\Expected\Renaming\SafeAll_imm.js" />
-    <Content Include="TestData\JS\Expected\Renaming\Super.js" />
-    <Content Include="TestData\JS\Expected\ResourceMerge\ReplacementTokens.js" />
-    <Content Include="TestData\JS\Expected\ResourceMerge\ResourceJS.js" />
-    <Content Include="TestData\JS\Expected\ResourceMerge\ResourceResx.js" />
-    <Content Include="TestData\JS\Expected\ResourceMerge\ResourceResx_I.js" />
-    <Content Include="TestData\JS\Expected\ResourceMerge\Resources.js" />
-    <Content Include="TestData\JS\Expected\ResourceMerge\StringsFooBar.js" />
-    <Content Include="TestData\JS\Expected\ScannerErrors\BadHexDigit.js" />
-    <Content Include="TestData\JS\Expected\ScannerErrors\StringEOF.js" />
-    <Content Include="TestData\JS\Expected\ScannerErrors\StringEOL.js" />
-    <Content Include="TestData\JS\Expected\ScannerErrors\UnexpectedNull.js" />
-    <Content Include="TestData\JS\Expected\SourceMap\MapArgNotSpecified.js" />
-    <None Include="TestData\JS\Expected\SourceMap\ScriptSharpMap_TwoInputs.js.map" />
-    <Content Include="TestData\JS\Expected\SourceMap\ScriptSharpMap_TwoInputs.js" />
-    <Content Include="TestData\JS\Expected\SourceMap\SourceMapV3.js" />
-    <Content Include="TestData\JS\Expected\StdIn\StdInTest.js" />
-    <Content Include="TestData\JS\Expected\Strict\DupArg.js" />
-    <Content Include="TestData\JS\Expected\Strict\DupProperty.js" />
-    <Content Include="TestData\JS\Expected\Strict\EvalArgsAssign.js" />
-    <Content Include="TestData\JS\Expected\Strict\ExtraUseStrict.js" />
-    <Content Include="TestData\JS\Expected\Strict\FuncDeclLoc.js" />
-    <Content Include="TestData\JS\Expected\Strict\FuncDeclStrict.js" />
-    <Content Include="TestData\JS\Expected\Strict\InvalidDelete.js" />
-    <Content Include="TestData\JS\Expected\Strict\InvalidVarName.js" />
-    <Content Include="TestData\JS\Expected\Strict\StrictPartial.js" />
-    <Content Include="TestData\JS\Expected\Strict\StrictSwitchOn.js" />
-    <Content Include="TestData\JS\Expected\Strict\UnknownGlobal.js" />
-    <Content Include="TestData\JS\Expected\Strict\With.js" />
-    <Content Include="TestData\JS\Expected\Switch\Braces.js" />
-    <Content Include="TestData\JS\Expected\Switch\Braces_new.js" />
-    <Content Include="TestData\JS\Expected\Switch\Braces_same.js" />
-    <Content Include="TestData\JS\Expected\Switch\Braces_source.js" />
-    <Content Include="TestData\JS\Expected\Switch\culture_esZW.js" />
-    <Content Include="TestData\JS\Expected\Switch\culture_fr.js" />
-    <Content Include="TestData\JS\Expected\Switch\culture_hawUS.js" />
-    <Content Include="TestData\JS\Expected\Switch\culture_zhCN.js" />
-    <Content Include="TestData\JS\Expected\Switch\EmptyDefault.js" />
-    <Content Include="TestData\JS\Expected\Switch\EmptyDefault_h.js" />
-    <Content Include="TestData\JS\Expected\Switch\IgnoreErrors.js" />
-    <Content Include="TestData\JS\Expected\Switch\IgnoreErrors_all.js" />
-    <Content Include="TestData\JS\Expected\Switch\IgnoreErrors_some.js" />
-    <Content Include="TestData\JS\Expected\Switch\LineBreak.js" />
-    <Content Include="TestData\JS\Expected\Switch\LineBreak_BreakMultiIndent.js" />
-    <Content Include="TestData\JS\Expected\Switch\LineBreak_BreakSingle.js" />
-    <Content Include="TestData\JS\Expected\Switch\LineBreak_Multi.js" />
-    <Content Include="TestData\JS\Expected\Switch\LineBreak_MultiIndent.js" />
-    <Content Include="TestData\JS\Expected\Switch\MacQuirks.js" />
-    <Content Include="TestData\JS\Expected\Switch\MacQuirks_M.js" />
-    <Content Include="TestData\JS\Expected\Switch\NoBreakBreak.js" />
-    <Content Include="TestData\JS\Expected\Switch\NoBreakContinue.js" />
-    <Content Include="TestData\JS\Expected\Switch\NoBreakPostDec.js" />
-    <Content Include="TestData\JS\Expected\Switch\NoBreakPostInc.js" />
-    <Content Include="TestData\JS\Expected\Switch\NoBreakReturn.js" />
-    <Content Include="TestData\JS\Expected\Switch\NoDefaultEmptyCases.js" />
-    <Content Include="TestData\JS\Expected\Switch\NoDefaultEmptyCases_h.js" />
-    <Content Include="TestData\JS\Expected\Switch\NoBreakThrow.js" />
-    <Content Include="TestData\JS\Expected\Switch\PrettyPrint.js" />
-    <Content Include="TestData\JS\Expected\Switch\PrettyPrint_P.js" />
-    <Content Include="TestData\JS\Expected\Switch\PrettyPrint_same.js" />
-    <Content Include="TestData\JS\Expected\Switch\PromoteBreak.js" />
-    <Content Include="TestData\JS\Expected\Switch\PromoteBreak_h.js" />
-    <Content Include="TestData\JS\Expected\Switch\SwitchLabels.js" />
-    <Content Include="TestData\JS\Expected\Switch\SwitchLabels_h.js" />
-    <Content Include="TestData\JS\Expected\Switch\Unreachable.js" />
-    <Content Include="TestData\JS\Expected\Syntax\BindingPatterns.js" />
-    <Content Include="TestData\JS\Expected\Syntax\BOM.js" />
-    <Content Include="TestData\JS\Expected\Syntax\EmptyStatement.js" />
-    <Content Include="TestData\JS\Expected\Syntax\EmptyStatement_P.js" />
-    <Content Include="TestData\JS\Expected\Syntax\ES6.js" />
-    <Content Include="TestData\JS\Expected\Syntax\ES6_h.js" />
-    <Content Include="TestData\JS\Expected\Syntax\MissingMemberRoot.js" />
-    <Content Include="TestData\JS\Expected\Syntax\NestedBlocks.js" />
-    <Content Include="TestData\JS\Expected\Syntax\NonES6Yield.js" />
-    <Content Include="TestData\JS\Expected\Syntax\NonES6Yield_norename.js" />
-    <Content Include="TestData\JS\Expected\Syntax\SlashSpacing.js" />
-    <Content Include="TestData\JS\Expected\UnknownScope\Eval.js" />
-    <Content Include="TestData\JS\Expected\UnknownScope\Eval_Immediate.js" />
-    <Content Include="TestData\JS\Expected\UnknownScope\Eval_J.js" />
-    <Content Include="TestData\JS\Expected\UnknownScope\WindowEval.js" />
-    <Content Include="TestData\JS\Expected\UnknownScope\With.js" />
-    <Content Include="TestData\JS\Expected\VarDecls\OneRefIteration.js" />
-    <Content Include="TestData\JS\Expected\VarDecls\UnRefForIn.js" />
-    <Content Include="TestData\JS\Expected\VarDecls\UnRefVar.js" />
-    <Content Include="TestData\JS\Expected\XmlInput\Combined.css" />
-    <Content Include="TestData\JS\Expected\XmlInput\EncOutputNone.js" />
-    <Content Include="TestData\JS\Expected\XmlInput\EncOutputNone_koi8r.js" />
-    <Content Include="TestData\JS\Expected\XmlInput\EncOutputRussian.js" />
-    <Content Include="TestData\JS\Expected\XmlInput\EncOutputRussian_big5.js" />
-    <Content Include="TestData\JS\Expected\XmlInput\EncOutputRussian_big5out.js" />
-    <Content Include="TestData\JS\Expected\XmlInput\FirstOutputFile.js" />
-    <Content Include="TestData\JS\Expected\XmlInput\OneOutputFile.js" />
-    <Content Include="TestData\JS\Expected\XmlInput\SecondOutputFile.js" />
-    <Content Include="TestData\JS\Expected\XmlInput\SecondOutputFile.xml" />
-    <Content Include="TestData\JS\Input\ArrayHandling\Array.js" />
-    <Content Include="TestData\JS\Input\AstMods\amd.js" />
-    <Content Include="TestData\JS\Input\AstMods\opAssignCombine.js" />
-    <Content Include="TestData\JS\Input\Classes\ClassDecl.js" />
-    <Content Include="TestData\JS\Input\Classes\ClassErrors.js" />
-    <Content Include="TestData\JS\Input\Classes\ClassExpr.js" />
-    <Content Include="TestData\JS\Input\Comprehensions\ArrayComp.js" />
-    <Content Include="TestData\JS\Input\ArrayHandling\Join.js" />
-    <Content Include="TestData\JS\Input\ArrayHandling\Length.js" />
-    <Content Include="TestData\JS\Input\ArrayHandling\Reverse.js" />
-    <Content Include="TestData\JS\Input\ArrayHandling\Sort.js" />
-    <Content Include="TestData\JS\Input\ArrayHandling\Spread.js" />
-    <Content Include="TestData\JS\Input\AspNet\Blocks.js" />
-    <Content Include="TestData\JS\Input\AspNet\Expressions.js" />
-    <Content Include="TestData\JS\Input\AspNet\Identifiers.js" />
-    <Content Include="TestData\JS\Input\Assignments\Assign.js" />
-    <Content Include="TestData\JS\Input\Assignments\AssignAspNetBlock.js" />
-    <Content Include="TestData\JS\Input\Assignments\CompoundAssign.js" />
-    <Content Include="TestData\JS\Input\Assignments\MultiVars.js" />
-    <Content Include="TestData\JS\Input\Assignments\PlusAssignReturn.js" />
-    <Content Include="TestData\JS\Input\AstMods\AspNet.js" />
-    <Content Include="TestData\JS\Input\AstMods\CallToMember.js" />
-    <Content Include="TestData\JS\Input\AstMods\ConstantIf.js" />
-    <Content Include="TestData\JS\Input\AstMods\DateGetTimeToUnaryPlus.js" />
-    <Content Include="TestData\JS\Input\AstMods\EvalLength.js" />
-    <Content Include="TestData\JS\Input\AstMods\ExpressionIf.js" />
-    <Content Include="TestData\JS\Input\AstMods\IfContinue.js" />
-    <Content Include="TestData\JS\Input\AstMods\IfReturn.js" />
-    <Content Include="TestData\JS\Input\AstMods\LiteralExpressions.js" />
-    <Content Include="TestData\JS\Input\AstMods\LiteralOverflows.js" />
-    <Content Include="TestData\JS\Input\AstMods\LiteralsFarToLeft.js" />
-    <Content Include="TestData\JS\Input\AstMods\LiteralsFarToRight.js" />
-    <Content Include="TestData\JS\Input\AstMods\LiteralsToLeft.js" />
-    <Content Include="TestData\JS\Input\AstMods\LiteralsToRight.js" />
-    <Content Include="TestData\JS\Input\AstMods\MoveFunctions.js" />
-    <Content Include="TestData\JS\Input\AstMods\NegShortcutIf.js" />
-    <Content Include="TestData\JS\Input\AstMods\NestedIf.js" />
-    <Content Include="TestData\JS\Input\AstMods\ReturnAssignOp.js" />
-    <Content Include="TestData\JS\Input\AstMods\SimplifyStrToNum.js" />
-    <Content Include="TestData\JS\Input\AstMods\StrictToRegular.js" />
-    <Content Include="TestData\JS\Input\AstMods\VerticalTab.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\AfterReturn.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\AspNetBlock.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\CombineAssign.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\DirectivePrologue.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\ExprReturn.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\IfReturnReturn.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\KillIfReturn.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\ReturnIfs.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\ReturnVoid.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\VarAssign.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\VarIntoFor.js" />
-    <Content Include="TestData\JS\Input\BlockOpts\VarReturn.js" />
-    <Content Include="TestData\JS\Input\Booleans\Boolean.js" />
-    <Content Include="TestData\JS\Input\CatchVariable\Ambiguous.js" />
-    <Content Include="TestData\JS\Input\CatchVariable\Collision.js" />
-    <Content Include="TestData\JS\Input\CatchVariable\NoOuter.js" />
-    <Content Include="TestData\JS\Input\CatchVariable\OuterIsGlobal.js" />
-    <Content Include="TestData\JS\Input\CatchVariable\OuterNotRef.js" />
-    <Content Include="TestData\JS\Input\CommandLine\concat-partial1.js" />
-    <Content Include="TestData\JS\Input\CommandLine\concat-partial2.js" />
-    <Content Include="TestData\JS\Input\CommandLine\concat-partial3.js" />
-    <Content Include="TestData\JS\Input\CommandLine\concat-partial4.js" />
-    <Content Include="TestData\JS\Input\CommandLine\concat1.js" />
-    <Content Include="TestData\JS\Input\CommandLine\concat2.js" />
-    <Content Include="TestData\JS\Input\CommandLine\ConcatSemicolons.js" />
-    <Content Include="TestData\JS\Input\CommandLine\EventHandler.js" />
-    <Content Include="TestData\JS\Input\CommandLine\Expression.js" />
-    <Content Include="TestData\JS\Input\CommandLine\Globals.js" />
-    <Content Include="TestData\JS\Input\CommandLine\json.js" />
-    <Content Include="TestData\JS\Input\CommandLine\TermSemi1.js" />
-    <Content Include="TestData\JS\Input\CommandLine\TermSemi2.js" />
-    <Content Include="TestData\JS\Input\Comments\Comment.js" />
-    <Content Include="TestData\JS\Input\Comments\EndWithImportantComment.js" />
-    <Content Include="TestData\JS\Input\Comments\Globals.js" />
-    <Content Include="TestData\JS\Input\Comments\ImportantComment.js" />
-    <Content Include="TestData\JS\Input\Comments\ImportantIgnore.js" />
-    <Content Include="TestData\JS\Input\Comments\OnlyImportantComment.js" />
-    <Content Include="TestData\JS\Input\Comments\TwoImportantComments.js" />
-    <Content Include="TestData\JS\Input\Comprehensions\GeneratorComp.js" />
-    <Content Include="TestData\JS\Input\Comprehensions\NoParens.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\EndEOF.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\FuncDecl.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\TypeComments.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\DoubleStart.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\IETest.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\IfElse.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\MultipleOn.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\NoEnd.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\PPConstant.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\PPOps.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\Set.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\SpecialCase.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\SpecialCase2.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\StartWithIf.js" />
-    <Content Include="TestData\JS\Input\ConditionalCompilation\StartWithSet.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\Break.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\CatchScope.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\Continue.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\Debugger.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\EncloseBlock.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\ForNoIn.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\ForVar.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\Labels.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\DoWhile.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\ForIn.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\ForWhile.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\If.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\Return.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\Switch.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\Throw.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\TryCatch.js" />
-    <Content Include="TestData\JS\Input\ControlFlow\While.js" />
-    <Content Include="TestData\JS\Input\DebugNamespaces\ConsoleDebug.js" />
-    <Content Include="TestData\JS\Input\DebugNamespaces\DebugAsKnownGlobal.js" />
-    <Content Include="TestData\JS\Input\DebugNamespaces\DebugNamespaceDirective.js" />
-    <Content Include="TestData\JS\Input\DebugNamespaces\EmptyIf.js" />
-    <Content Include="TestData\JS\Input\Declarations\Const.js" />
-    <Content Include="TestData\JS\Input\Declarations\Function.js" />
-    <Content Include="TestData\JS\Input\Declarations\Identifiers.js" />
-    <Content Include="TestData\JS\Input\Declarations\LocalizationVars.js" />
-    <Content Include="TestData\JS\Input\Declarations\New.js" />
-    <Content Include="TestData\JS\Input\Declarations\This.js" />
-    <Content Include="TestData\JS\Input\Declarations\Var.js" />
-    <Content Include="TestData\JS\Input\Declarations\With.js" />
-    <Content Include="TestData\JS\Input\Encodings\SurrogateHighError.js" />
-    <Content Include="TestData\JS\Input\Encodings\SurrogateLowError.js" />
-    <Content Include="TestData\JS\Input\Encodings\UnicodeExtended.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\Arguments.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\ArrowConstructor.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\ArrowFunctions.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\BadLocation.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\BadSemicolon.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\DefaultValues.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\FuncExpr.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\FunctionNames.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\Generator.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\NamedFuncExpr.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\NewFunction.js" />
-    <Content Include="TestData\JS\Input\FunctionCreation\VarArgList.js" />
-    <Content Include="TestData\JS\Input\GlobalMethods\AssumedGlobals.js" />
-    <Content Include="TestData\JS\Input\GlobalMethods\BrowserSpecific.js" />
-    <Content Include="TestData\JS\Input\GlobalMethods\DOMElements.js" />
-    <Content Include="TestData\JS\Input\GlobalMethods\Eval.js" />
-    <Content Include="TestData\JS\Input\GlobalMethods\GlobalObject.js" />
-    <Content Include="TestData\JS\Input\LexicalDeclarations\ConstAssign.js" />
-    <Content Include="TestData\JS\Input\LexicalDeclarations\LexBlock.js" />
-    <Content Include="TestData\JS\Input\LexicalDeclarations\LexConst.js" />
-    <Content Include="TestData\JS\Input\LexicalDeclarations\LexDuplicate.js" />
-    <Content Include="TestData\JS\Input\LexicalDeclarations\LexFor.js" />
-    <Content Include="TestData\JS\Input\LexicalDeclarations\LexForIn.js" />
-    <Content Include="TestData\JS\Input\LexicalDeclarations\LexLet.js" />
-    <Content Include="TestData\JS\Input\LexicalDeclarations\LexSwitch.js" />
-    <Content Include="TestData\JS\Input\LexicalDeclarations\LexVarCollision.js" />
-    <Content Include="TestData\JS\Input\Literals\ArrayLiteral.js" />
-    <Content Include="TestData\JS\Input\Literals\AspNetString.js" />
-    <Content Include="TestData\JS\Input\Literals\Boolean.js" />
-    <Content Include="TestData\JS\Input\Literals\Combined.js" />
-    <Content Include="TestData\JS\Input\Literals\CombineNegs.js" />
-    <Content Include="TestData\JS\Input\Literals\GetterSetter.js" />
-    <Content Include="TestData\JS\Input\Literals\InlineSafe.js" />
-    <Content Include="TestData\JS\Input\Literals\InlineSafeErrors.js" />
-    <Content Include="TestData\JS\Input\Literals\LoneHighSurrogate.js" />
-    <Content Include="TestData\JS\Input\Literals\LoneLowSurrogate.js" />
-    <Content Include="TestData\JS\Input\Literals\Member.js" />
-    <Content Include="TestData\JS\Input\Literals\NestedCombine.js" />
-    <Content Include="TestData\JS\Input\Literals\NullCharacter.js" />
-    <Content Include="TestData\JS\Input\Literals\Number.js" />
-    <Content Include="TestData\JS\Input\Literals\ObjectLiteral.js" />
-    <Content Include="TestData\JS\Input\Literals\Octal.js" />
-    <Content Include="TestData\JS\Input\Literals\RegExp.js" />
-    <Content Include="TestData\JS\Input\Literals\Replace.js" />
-    <Content Include="TestData\JS\Input\Literals\StrictEncoding.js" />
-    <Content Include="TestData\JS\Input\Literals\Strings.js" />
-    <Content Include="TestData\JS\Input\Literals\TemplateLiterals.js" />
-    <Content Include="TestData\JS\Input\Modules\BadExport.js" />
-    <Content Include="TestData\JS\Input\Modules\CircularExternal.js" />
-    <Content Include="TestData\JS\Input\Modules\ExportCombine.js" />
-    <Content Include="TestData\JS\Input\Modules\ExportRename.js" />
-    <Content Include="TestData\JS\Input\Modules\Exports.js" />
-    <Content Include="TestData\JS\Input\Modules\ImportAssign.js" />
-    <Content Include="TestData\JS\Input\Modules\lib\Even.js" />
-    <Content Include="TestData\JS\Input\Modules\lib\Odd.js" />
-    <Content Include="TestData\JS\Input\Modules\NoExportExternal.js" />
-    <Content Include="TestData\JS\Input\Modules\NoExportInline.js" />
-    <Content Include="TestData\JS\Input\Modules\ImportRename.js" />
-    <Content Include="TestData\JS\Input\Modules\Imports.js" />
-    <Content Include="TestData\JS\Input\Modules\Module.js" />
-    <Content Include="TestData\JS\Input\Modules\NotModules.js" />
-    <Content Include="TestData\JS\Input\Modules\lib\TestModule.js" />
-    <Content Include="TestData\JS\Input\Modules\ReExport.js" />
-    <Content Include="TestData\JS\Input\NoMinify\EmptyElse.js" />
-    <Content Include="TestData\JS\Input\ObjectCreation\CompareObjects.js" />
-    <Content Include="TestData\JS\Input\ObjectCreation\Constructor.js" />
-    <Content Include="TestData\JS\Input\ObjectCreation\InstanceOf.js" />
-    <Content Include="TestData\JS\Input\ObjectCreation\Object.js" />
-    <Content Include="TestData\JS\Input\ObjectCreation\Prototype.js" />
-    <Content Include="TestData\JS\Input\ObjectCreation\RegularExpressions.js" />
-    <Content Include="TestData\JS\Input\ObjectCreation\Strings.js" />
-    <Content Include="TestData\JS\Input\ObjectCreation\ToStr.js" />
-    <Content Include="TestData\JS\Input\ObjectCreation\TypeOf.js" />
-    <Content Include="TestData\JS\Input\Operators\Assign.js" />
-    <Content Include="TestData\JS\Input\Operators\Associative.js" />
-    <Content Include="TestData\JS\Input\Operators\Comma.js" />
-    <Content Include="TestData\JS\Input\Operators\Conditional.js" />
-    <Content Include="TestData\JS\Input\Operators\ConditionalPrecedence.js" />
-    <Content Include="TestData\JS\Input\Operators\In.js" />
-    <Content Include="TestData\JS\Input\Operators\InstanceOf.js" />
-    <Content Include="TestData\JS\Input\Operators\Member.js" />
-    <Content Include="TestData\JS\Input\Operators\New.js" />
-    <Content Include="TestData\JS\Input\Operators\NewPrecedence.js" />
-    <Content Include="TestData\JS\Input\Operators\Strict.js" />
-    <Content Include="TestData\JS\Input\Operators\TypeOf.js" />
-    <Content Include="TestData\JS\Input\Operators\Unary.js" />
-    <Content Include="TestData\JS\Input\Operators\Void.js" />
-    <Content Include="TestData\JS\Input\Preprocessor\BadDefines.js" />
-    <Content Include="TestData\JS\Input\Preprocessor\BadIfDef.js" />
-    <Content Include="TestData\JS\Input\Preprocessor\DebugClear.js" />
-    <Content Include="TestData\JS\Input\Preprocessor\DebugSet.js" />
-    <Content Include="TestData\JS\Input\Preprocessor\DefineIf.js" />
-    <Content Include="TestData\JS\Input\Preprocessor\Defines.js" />
-    <Content Include="TestData\JS\Input\Preprocessor\Nested.js" />
-    <Content Include="TestData\JS\Input\Preprocessor\SourceDirective.js" />
-    <Content Include="TestData\JS\Input\Renaming\Collide.xml" />
-    <Content Include="TestData\JS\Input\Renaming\evalImmediate.js" />
-    <Content Include="TestData\JS\Input\Renaming\IfFunction.js" />
-    <Content Include="TestData\JS\Input\Renaming\LabelKeyword.js" />
-    <Content Include="TestData\JS\Input\Renaming\ManualRename.js" />
-    <Content Include="TestData\JS\Input\Renaming\NestedGlobals.js" />
-    <Content Include="TestData\JS\Input\Renaming\NoMunge.js" />
-    <Content Include="TestData\JS\Input\Renaming\NoRename.xml" />
-    <Content Include="TestData\JS\Input\Renaming\Rename.xml" />
-    <Content Include="TestData\JS\Input\Renaming\SafeAll.js" />
-    <Content Include="TestData\JS\Input\Renaming\Super.js" />
-    <Content Include="TestData\JS\Input\ResourceMerge\ReplacementTokens.js" />
-    <Content Include="TestData\JS\Input\ResourceMerge\ResourceResx.js" />
-    <Content Include="TestData\JS\Input\ResourceMerge\ResourceJS.js" />
-    <Content Include="TestData\JS\Input\ResourceMerge\ResourceJS_res.js" />
-    <Content Include="TestData\JS\Input\ResourceMerge\Resources.js" />
-    <Content Include="TestData\JS\Input\ResourceMerge\StringsFooBar.js" />
-    <Content Include="TestData\JS\Input\ScannerErrors\BadHexDigit.js" />
-    <Content Include="TestData\JS\Input\ScannerErrors\StringEOF.js" />
-    <Content Include="TestData\JS\Input\ScannerErrors\StringEOL.js" />
-    <Content Include="TestData\JS\Input\ScannerErrors\UnexpectedNull.js" />
-    <Content Include="TestData\JS\Input\SourceMap\ScriptSharpMap.js" />
-    <Content Include="TestData\JS\Input\SourceMap\MapArgNotSpecified.js" />
-    <Content Include="TestData\JS\Input\SourceMap\SourceMapV3.js" />
-    <Content Include="TestData\JS\Input\StdIn\StdInTest.js" />
-    <Content Include="TestData\JS\Input\Strict\DupArg.js" />
-    <Content Include="TestData\JS\Input\Strict\DupProperty.js" />
-    <Content Include="TestData\JS\Input\Strict\EvalArgsAssign.js" />
-    <Content Include="TestData\JS\Input\Strict\ExtraUseStrict.js" />
-    <Content Include="TestData\JS\Input\Strict\FuncDeclLoc.js" />
-    <Content Include="TestData\JS\Input\Strict\FuncDeclStrict.js" />
-    <Content Include="TestData\JS\Input\Strict\InvalidDelete.js" />
-    <Content Include="TestData\JS\Input\Strict\InvalidVarName.js" />
-    <Content Include="TestData\JS\Input\Strict\StrictPartial1.js" />
-    <Content Include="TestData\JS\Input\Strict\StrictPartial2.js" />
-    <Content Include="TestData\JS\Input\Strict\StrictPartial3.js" />
-    <Content Include="TestData\JS\Input\Strict\StrictSwitch1.js" />
-    <Content Include="TestData\JS\Input\Strict\StrictSwitch2.js" />
-    <Content Include="TestData\JS\Input\Strict\StrictSwitchOn.xml" />
-    <Content Include="TestData\JS\Input\Strict\StrictPartial.xml" />
-    <Content Include="TestData\JS\Input\Strict\UnknownGlobal.js" />
-    <Content Include="TestData\JS\Input\Strict\With.js" />
-    <Content Include="TestData\JS\Input\Switch\Braces.js" />
-    <Content Include="TestData\JS\Input\Switch\culture.js" />
-    <Content Include="TestData\JS\Input\Switch\EmptyDefault.js" />
-    <Content Include="TestData\JS\Input\Switch\IgnoreErrors.js" />
-    <Content Include="TestData\JS\Input\Switch\LineBreak.js" />
-    <Content Include="TestData\JS\Input\Switch\MacQuirks.js" />
-    <Content Include="TestData\JS\Input\Switch\NoBreakBreak.js" />
-    <Content Include="TestData\JS\Input\Switch\NoBreakContinue.js" />
-    <Content Include="TestData\JS\Input\Switch\NoBreakPostDec.js" />
-    <Content Include="TestData\JS\Input\Switch\NoBreakPostInc.js" />
-    <Content Include="TestData\JS\Input\Switch\NoBreakReturn.js" />
-    <Content Include="TestData\JS\Input\Switch\NoDefaultEmptyCases.js" />
-    <Content Include="TestData\JS\Input\CommandLine\PreprocessOnly.js" />
-    <Content Include="TestData\JS\Input\Switch\NoBreakThrow.js" />
-    <Content Include="TestData\JS\Input\Switch\PrettyPrint.js" />
-    <Content Include="TestData\JS\Input\Switch\PromoteBreak.js" />
-    <Content Include="TestData\JS\Input\Switch\SwitchLabels.js" />
-    <Content Include="TestData\JS\Input\Switch\Unreachable.js" />
-    <Content Include="TestData\JS\Input\Syntax\BindingPatterns.js" />
-    <Content Include="TestData\JS\Input\Syntax\BOM.js" />
-    <Content Include="TestData\JS\Input\Syntax\EmptyStatement.js" />
-    <Content Include="TestData\JS\Input\Syntax\ES6.js" />
-    <Content Include="TestData\JS\Input\Syntax\MissingMemberRoot.js" />
-    <Content Include="TestData\JS\Input\Syntax\NestedBlocks.js" />
-    <Content Include="TestData\JS\Input\Syntax\NonES6Yield.js" />
-    <Content Include="TestData\JS\Input\Syntax\SlashSpacing.js" />
-    <Content Include="TestData\JS\Input\UnknownScope\Eval.js" />
-    <Content Include="TestData\JS\Input\UnknownScope\WindowEval.js" />
-    <Content Include="TestData\JS\Input\UnknownScope\With.js" />
-    <Content Include="TestData\JS\Input\VarDecls\OneRefIteration.js" />
-    <Content Include="TestData\JS\Input\VarDecls\UnRefForIn.js" />
-    <Content Include="TestData\JS\Input\VarDecls\UnRefVar.js" />
-    <Content Include="TestData\JS\Input\XmlInput\EncInputRussian.xml" />
-    <Content Include="TestData\JS\Input\XmlInput\EncInput1.js" />
-    <Content Include="TestData\JS\Input\XmlInput\EncInput2.js" />
-    <Content Include="TestData\JS\Input\XmlInput\EncInputNone.xml" />
-    <Content Include="TestData\JS\Input\XmlInput\XmlWithSymbolMap.xml" />
-    <Content Include="TestData\JS\Input\XmlInput\Input1.css" />
-    <Content Include="TestData\JS\Input\XmlInput\Input1.js" />
-    <Content Include="TestData\JS\Input\XmlInput\Input2.css" />
-    <Content Include="TestData\JS\Input\XmlInput\Input2.js" />
-    <Content Include="TestData\JS\Input\XmlInput\Input3.js" />
-    <Content Include="TestData\JS\Input\XmlInput\XmlMixedType.xml" />
-    <Content Include="TestData\JS\Input\XmlInput\XmlTwoOutputFiles.xml" />
-    <Content Include="TestData\JS\Input\XmlInput\XmlOneOutputFile.xml" />
+    <Content Include="TestData\JS\Expected\ArrayHandling\Array.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\amd.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\amd_amd.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\opAssignCombine.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Classes\ClassDecl.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Classes\ClassErrors.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Classes\ClassExpr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comprehensions\ArrayComp.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ArrayHandling\Array_L.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ArrayHandling\Join.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ArrayHandling\Length.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ArrayHandling\Reverse.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ArrayHandling\Sort.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ArrayHandling\Spread.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AspNet\Blocks.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AspNet\Expressions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AspNet\Identifiers.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Assignments\Assign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Assignments\AssignAspNetBlock.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Assignments\Assign_utf8.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Assignments\CompoundAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Assignments\MultiVars.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Assignments\PlusAssignReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\AspNet.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\CallToMember.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\ConstantIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\DateGetTimeToUnaryPlus.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\DateGetTimeToUnaryPlus_H.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\EvalLength.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\ExpressionIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\IfContinue.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\IfReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\LiteralExpressions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\LiteralOverflows.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\LiteralsFarToLeft.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\LiteralsFarToRight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\LiteralsToLeft.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\LiteralsToRight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\MoveFunctions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\NegShortcutIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\NestedIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\ReturnAssignOp.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\SimplifyStrToNum.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\SimplifyStrToNum_noeval.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\StrictToRegular.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\AstMods\VerticalTab.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\AfterReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\AfterReturn_noreloc.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\AspNetBlock.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\CombineAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\DirectivePrologue.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\ExprReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\IfReturnReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\KillIfReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\ReturnIfs.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\ReturnVoid.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\VarAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\VarIntoFor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\VarReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Booleans\Boolean.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CatchVariable\Ambiguous.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CatchVariable\Ambiguous_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CatchVariable\Collision.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CatchVariable\NoOuter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CatchVariable\NoOuter_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CatchVariable\OuterIsGlobal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CatchVariable\OuterNotRef.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CatchVariable\OuterNotRef_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\ConcatSemicolons.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\EventHandler.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\Expression.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\Expression_json.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\Expression_prog.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\Globals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\json.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\PreprocessOnly.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\TermSemi1.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\TermSemi1_expr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\CommandLine\TermSemi2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comments\Comment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comments\EndWithImportantComment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comments\Globals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comments\ImportantComment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comments\ImportantComment_Off.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comments\ImportantIgnore.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comments\OnlyImportantComment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comments\TwoImportantComments.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comprehensions\GeneratorComp.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Comprehensions\NoParens.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\EndEOF.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\FuncDecl.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\TypeComments.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\DoubleStart.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\IETest.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\IfElse.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\MultipleOn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\MultipleOn_kill.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\NoEnd.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\PPConstant.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\PPOps.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\Set.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\SpecialCase.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\SpecialCase2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\StartWithIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ConditionalCompilation\StartWithSet.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Break.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\CatchScope.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\CatchScope_Local.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Continue.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Continue_inv.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Debugger.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Debugger_D.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Debugger_OffCustom.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Debugger_OffNone.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Debugger_OnCustom.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\DoWhile.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\DoWhile_3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\EncloseBlock.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\EncloseBlock_nominify.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\ForIn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\ForNoIn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\ForNoIn_kill.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\ForVar.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\ForVar_reorder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\ForWhile.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\If.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Labels.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Labels_H.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Labels_keep.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Return.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Switch.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Switch_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Throw.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\Throw_M.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\TryCatch.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\TryCatch_m.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\While.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\While_ForNoVar.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ControlFlow\While_NoFor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\DebugNamespaces\ConsoleDebug.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\DebugNamespaces\DebugAsKnownGlobal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\DebugNamespaces\DebugAsKnownGlobal_debug.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\DebugNamespaces\DebugAsKnownGlobal_release.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\DebugNamespaces\DebugNamespaceDirective.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\DebugNamespaces\EmptyIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\Const.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\Const_moz.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\Function.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\Identifiers.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\Identifiers_ascii.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\Identifiers_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\LocalizationVars.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\LocalizationVars_H.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\LocalizationVars_HL.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\New.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\This.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\Var.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\Var_keep.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\With.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Declarations\With_H.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Encodings\SurrogateHighError.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Encodings\SurrogateLowError.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Encodings\UnicodeExtended.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Encodings\UnicodeExtended_ascii.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\Arguments.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\ArrowConstructor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\ArrowFunctions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\ArrowFunctions_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\BadLocation.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\BadSemicolon.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\DefaultValues.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\FuncExpr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\FunctionNames.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\Generator.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_hlock.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_hnfe.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_nfe.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\NamedFuncExpr_reorder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\NewFunction.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\FunctionCreation\VarArgList.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\GlobalMethods\AssumedGlobals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\GlobalMethods\BrowserSpecific.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\GlobalMethods\DOMElements.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\GlobalMethods\Eval.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\GlobalMethods\GlobalObject.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\ConstAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexBlock.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexConst.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexConst_ES6.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexConst_mozilla.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexDuplicate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexFor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexForIn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexLet.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexSwitch.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\LexicalDeclarations\LexVarCollision.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\ArrayLiteral.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\AspNetString.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Boolean.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Combined_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Combined_hc.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\CombineNegs.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\GetterSetter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\InlineSafe.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\InlineSafeErrors.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\InlineSafeErrors_on.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\InlineSafe_no.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\LoneHighSurrogate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\LoneLowSurrogate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Member.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Member_Preserve.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\NestedCombine.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\NullCharacter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Number.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\ObjectLiteral.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\ObjectLiteral_quote.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Octal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\RegExp.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Replace.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\StrictEncoding.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Strings.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Strings_3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Strings_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\strings_k.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\Strings_utf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\TemplateLiterals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Literals\TemplateLiterals_nomin.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\BadExport.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\CircularExternal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\ExportCombine.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\ExportRename.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\Exports.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\ImportAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\NoExportExternal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\NoExportExternal_flatten.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\NoExportInline.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\ImportRename.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\Imports.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\Module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\NotModules.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Modules\ReExport.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\NoMinify\EmptyElse.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\CompareObjects.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Constructor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Constructor_H.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Constructor_hc.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\InstanceOf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Object_hc.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Object_L.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Object_H.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\RegularExpressions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Object.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Prototype.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Strings.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\Strings_Utf8.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\ToStr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ObjectCreation\TypeOf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\Assign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\Associative.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\Comma.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\Conditional.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\ConditionalPrecedence.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\In.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\InstanceOf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\Member.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\New.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\NewPrecedence.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\Strict.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\TypeOf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\Unary.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Operators\Void.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\BadDefines.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\BadIfDef.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\DebugClear.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\DebugSet.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\DebugSet_debug.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\DefineIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\DefineIf_defines.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\Defines.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\Defines_ackbar.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\Defines_ackbarmeow.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\Nested.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Preprocessor\SourceDirective.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\evalImmediate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\IfFunction.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\LabelKeyword.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\ManualRename.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\ManualRename_all.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\ManualRename_cmd.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\ManualRename_collide.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\ManualRename_noprops.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\ManualRename_norename.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\ManualRename_rename.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\NestedGlobals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\NoMunge.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\SafeAll.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\SafeAll_imm.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Renaming\Super.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ResourceMerge\ReplacementTokens.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ResourceMerge\ResourceJS.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ResourceMerge\ResourceResx.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ResourceMerge\ResourceResx_I.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ResourceMerge\Resources.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ResourceMerge\StringsFooBar.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ScannerErrors\BadHexDigit.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ScannerErrors\StringEOF.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ScannerErrors\StringEOL.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ScannerErrors\UnexpectedNull.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\SourceMap\MapArgNotSpecified.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\SourceMap\ScriptSharpMap_TwoInputs.js.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\SourceMap\ScriptSharpMap_TwoInputs.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\SourceMap\SourceMapV3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\StdIn\StdInTest.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\DupArg.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\DupProperty.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\EvalArgsAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\ExtraUseStrict.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\FuncDeclLoc.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\FuncDeclStrict.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\InvalidDelete.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\InvalidVarName.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\StrictPartial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\StrictSwitchOn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\UnknownGlobal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Strict\With.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\Braces.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\Braces_new.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\Braces_same.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\Braces_source.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\culture_esZW.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\culture_fr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\culture_hawUS.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\culture_zhCN.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\EmptyDefault.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\EmptyDefault_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\IgnoreErrors.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\IgnoreErrors_all.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\IgnoreErrors_some.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\LineBreak.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\LineBreak_BreakMultiIndent.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\LineBreak_BreakSingle.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\LineBreak_Multi.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\LineBreak_MultiIndent.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\MacQuirks.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\MacQuirks_M.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\NoBreakBreak.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\NoBreakContinue.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\NoBreakPostDec.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\NoBreakPostInc.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\NoBreakReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\NoDefaultEmptyCases.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\NoDefaultEmptyCases_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\NoBreakThrow.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\PrettyPrint.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\PrettyPrint_P.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\PrettyPrint_same.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\PromoteBreak.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\PromoteBreak_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\SwitchLabels.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\SwitchLabels_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Switch\Unreachable.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\BindingPatterns.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\BOM.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\EmptyStatement.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\EmptyStatement_P.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\ES6.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\ES6_h.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\MissingMemberRoot.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\NestedBlocks.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\NonES6Yield.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\NonES6Yield_norename.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Syntax\SlashSpacing.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\UnknownScope\Eval.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\UnknownScope\Eval_Immediate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\UnknownScope\Eval_J.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\UnknownScope\WindowEval.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\UnknownScope\With.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\VarDecls\OneRefIteration.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\VarDecls\UnRefForIn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\VarDecls\UnRefVar.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\Combined.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\EncOutputNone.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\EncOutputNone_koi8r.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\EncOutputRussian.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\EncOutputRussian_big5.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\EncOutputRussian_big5out.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\FirstOutputFile.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\OneOutputFile.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\SecondOutputFile.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\XmlInput\SecondOutputFile.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ArrayHandling\Array.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\amd.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\opAssignCombine.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Classes\ClassDecl.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Classes\ClassErrors.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Classes\ClassExpr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comprehensions\ArrayComp.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ArrayHandling\Join.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ArrayHandling\Length.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ArrayHandling\Reverse.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ArrayHandling\Sort.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ArrayHandling\Spread.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AspNet\Blocks.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AspNet\Expressions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AspNet\Identifiers.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Assignments\Assign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Assignments\AssignAspNetBlock.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Assignments\CompoundAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Assignments\MultiVars.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Assignments\PlusAssignReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\AspNet.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\CallToMember.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\ConstantIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\DateGetTimeToUnaryPlus.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\EvalLength.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\ExpressionIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\IfContinue.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\IfReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\LiteralExpressions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\LiteralOverflows.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\LiteralsFarToLeft.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\LiteralsFarToRight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\LiteralsToLeft.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\LiteralsToRight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\MoveFunctions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\NegShortcutIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\NestedIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\ReturnAssignOp.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\SimplifyStrToNum.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\StrictToRegular.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\AstMods\VerticalTab.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\AfterReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\AspNetBlock.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\CombineAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\DirectivePrologue.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\ExprReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\IfReturnReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\KillIfReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\ReturnIfs.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\ReturnVoid.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\VarAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\VarIntoFor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\VarReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Booleans\Boolean.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CatchVariable\Ambiguous.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CatchVariable\Collision.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CatchVariable\NoOuter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CatchVariable\OuterIsGlobal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CatchVariable\OuterNotRef.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\concat-partial1.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\concat-partial2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\concat-partial3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\concat-partial4.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\concat1.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\concat2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\ConcatSemicolons.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\EventHandler.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\Expression.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\Globals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\json.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\TermSemi1.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\TermSemi2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comments\Comment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comments\EndWithImportantComment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comments\Globals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comments\ImportantComment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comments\ImportantIgnore.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comments\OnlyImportantComment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comments\TwoImportantComments.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comprehensions\GeneratorComp.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Comprehensions\NoParens.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\EndEOF.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\FuncDecl.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\TypeComments.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\DoubleStart.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\IETest.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\IfElse.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\MultipleOn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\NoEnd.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\PPConstant.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\PPOps.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\Set.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\SpecialCase.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\SpecialCase2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\StartWithIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ConditionalCompilation\StartWithSet.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\Break.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\CatchScope.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\Continue.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\Debugger.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\EncloseBlock.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\ForNoIn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\ForVar.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\Labels.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\DoWhile.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\ForIn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\ForWhile.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\If.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\Return.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\Switch.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\Throw.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\TryCatch.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ControlFlow\While.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\DebugNamespaces\ConsoleDebug.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\DebugNamespaces\DebugAsKnownGlobal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\DebugNamespaces\DebugNamespaceDirective.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\DebugNamespaces\EmptyIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Declarations\Const.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Declarations\Function.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Declarations\Identifiers.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Declarations\LocalizationVars.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Declarations\New.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Declarations\This.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Declarations\Var.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Declarations\With.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Encodings\SurrogateHighError.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Encodings\SurrogateLowError.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Encodings\UnicodeExtended.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\Arguments.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\ArrowConstructor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\ArrowFunctions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\BadLocation.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\BadSemicolon.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\DefaultValues.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\FuncExpr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\FunctionNames.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\Generator.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\NamedFuncExpr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\NewFunction.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\FunctionCreation\VarArgList.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\GlobalMethods\AssumedGlobals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\GlobalMethods\BrowserSpecific.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\GlobalMethods\DOMElements.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\GlobalMethods\Eval.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\GlobalMethods\GlobalObject.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\LexicalDeclarations\ConstAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\LexicalDeclarations\LexBlock.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\LexicalDeclarations\LexConst.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\LexicalDeclarations\LexDuplicate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\LexicalDeclarations\LexFor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\LexicalDeclarations\LexForIn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\LexicalDeclarations\LexLet.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\LexicalDeclarations\LexSwitch.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\LexicalDeclarations\LexVarCollision.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\ArrayLiteral.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\AspNetString.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\Boolean.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\Combined.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\CombineNegs.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\GetterSetter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\InlineSafe.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\InlineSafeErrors.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\LoneHighSurrogate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\LoneLowSurrogate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\Member.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\NestedCombine.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\NullCharacter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\Number.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\ObjectLiteral.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\Octal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\RegExp.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\Replace.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\StrictEncoding.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\Strings.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Literals\TemplateLiterals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\BadExport.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\CircularExternal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\ExportCombine.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\ExportRename.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\Exports.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\ImportAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\lib\Even.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\lib\Odd.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\NoExportExternal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\NoExportInline.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\ImportRename.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\Imports.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\Module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\NotModules.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\lib\TestModule.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Modules\ReExport.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\NoMinify\EmptyElse.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ObjectCreation\CompareObjects.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ObjectCreation\Constructor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ObjectCreation\InstanceOf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ObjectCreation\Object.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ObjectCreation\Prototype.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ObjectCreation\RegularExpressions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ObjectCreation\Strings.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ObjectCreation\ToStr.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ObjectCreation\TypeOf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\Assign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\Associative.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\Comma.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\Conditional.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\ConditionalPrecedence.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\In.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\InstanceOf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\Member.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\New.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\NewPrecedence.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\Strict.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\TypeOf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\Unary.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Operators\Void.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Preprocessor\BadDefines.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Preprocessor\BadIfDef.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Preprocessor\DebugClear.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Preprocessor\DebugSet.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Preprocessor\DefineIf.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Preprocessor\Defines.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Preprocessor\Nested.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Preprocessor\SourceDirective.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\Collide.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\evalImmediate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\IfFunction.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\LabelKeyword.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\ManualRename.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\NestedGlobals.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\NoMunge.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\NoRename.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\Rename.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\SafeAll.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Renaming\Super.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ResourceMerge\ReplacementTokens.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ResourceMerge\ResourceResx.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ResourceMerge\ResourceJS.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ResourceMerge\ResourceJS_res.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ResourceMerge\Resources.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ResourceMerge\StringsFooBar.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ScannerErrors\BadHexDigit.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ScannerErrors\StringEOF.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ScannerErrors\StringEOL.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ScannerErrors\UnexpectedNull.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\SourceMap\ScriptSharpMap.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\SourceMap\MapArgNotSpecified.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\SourceMap\SourceMapV3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\StdIn\StdInTest.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\DupArg.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\DupProperty.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\EvalArgsAssign.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\ExtraUseStrict.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\FuncDeclLoc.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\FuncDeclStrict.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\InvalidDelete.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\InvalidVarName.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\StrictPartial1.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\StrictPartial2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\StrictPartial3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\StrictSwitch1.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\StrictSwitch2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\StrictSwitchOn.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\StrictPartial.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\UnknownGlobal.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Strict\With.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\Braces.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\culture.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\EmptyDefault.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\IgnoreErrors.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\LineBreak.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\MacQuirks.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\NoBreakBreak.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\NoBreakContinue.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\NoBreakPostDec.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\NoBreakPostInc.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\NoBreakReturn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\NoDefaultEmptyCases.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\CommandLine\PreprocessOnly.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\NoBreakThrow.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\PrettyPrint.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\PromoteBreak.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\SwitchLabels.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Switch\Unreachable.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Syntax\BindingPatterns.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Syntax\BOM.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Syntax\EmptyStatement.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Syntax\ES6.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Syntax\MissingMemberRoot.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Syntax\NestedBlocks.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Syntax\NonES6Yield.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Syntax\SlashSpacing.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\UnknownScope\Eval.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\UnknownScope\WindowEval.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\UnknownScope\With.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\VarDecls\OneRefIteration.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\VarDecls\UnRefForIn.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\VarDecls\UnRefVar.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\EncInputRussian.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\EncInput1.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\EncInput2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\EncInputNone.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\XmlWithSymbolMap.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\Input1.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\Input1.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\Input2.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\Input2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\Input3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\XmlMixedType.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\XmlTwoOutputFiles.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\XmlInput\XmlOneOutputFile.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TestData\JS\Input\ResourceMerge\ResourceResx.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\JS\Input\ResourceMerge\Resources.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\JS\Input\ResourceMerge\StringsFooBar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringsFooBar.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestData\CSS\Input\Replacements\ValueReplacement.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ValueReplacement.Designer.cs</LastGenOutput>

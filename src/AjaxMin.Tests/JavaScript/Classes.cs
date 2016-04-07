@@ -15,29 +15,29 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for Classes
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Classes
     {
-        [TestMethod]
+        [Test]
         public void ClassDecl()
         {
             TestHelper.Instance.RunErrorTest(JSError.ArgumentNotReferenced);
         }
 
-        [TestMethod]
+        [Test]
         public void ClassExpr()
         {
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ClassErrors()
         {
             TestHelper.Instance.RunErrorTest(JSError.NoIdentifier, JSError.NoIdentifier, JSError.NoLeftCurly, JSError.NoRightCurly);

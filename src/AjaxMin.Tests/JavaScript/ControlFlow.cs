@@ -15,7 +15,7 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
@@ -23,41 +23,41 @@ namespace JSUnitTest
     ///This is a test class for Microsoft.Ajax.Utilities.MainClass and is intended
     ///to contain all Microsoft.Ajax.Utilities.MainClass Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture]
     public class ControlFlow
     {
-        [TestMethod()]
+        [Test]
         public void Break()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Continue()
         {
             // don't optimize if(cond)continue;
             TestHelper.Instance.RunTest("-kill:0x800000000000");
         }
 
-        [TestMethod()]
+        [Test]
         public void Continue_inv()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Debugger()
         {
             TestHelper.Instance.RunTest("-debug:Y -kill:0x400000000000");
         }
 
-        [TestMethod()]
+        [Test]
         public void Debugger_D()
         {
             TestHelper.Instance.RunTest("-debug:N,Debug,$Debug,WAssert,Msn.Debug,Web.Debug -kill:0x400000000000");
         }
 
-        [TestMethod()]
+        [Test]
         public void Debugger_OnCustom()
         {
             // no flag is the same as Y -- and since turned on the debug
@@ -67,13 +67,13 @@ namespace JSUnitTest
             TestHelper.Instance.RunTest("-debug:,AckBar,FooBar -kill:0x400000000000");
         }
 
-        [TestMethod()]
+        [Test]
         public void Debugger_OffCustom()
         {
             TestHelper.Instance.RunTest("-debug:N,AckBar,FooBar,Debug,$Debug,Web.Debug -kill:0x400000000000");
         }
 
-        [TestMethod()]
+        [Test]
         public void Debugger_OffNone()
         {
             // adding the comma after means we want to specify the debug lookups.
@@ -82,103 +82,103 @@ namespace JSUnitTest
             TestHelper.Instance.RunTest("-debug:N, -kill:0x400000000000");
         }
 
-        [TestMethod()]
+        [Test]
         public void DoWhile()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void ForWhile()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void ForIn()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void ForVar_reorder()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void ForVar()
         {
             TestHelper.Instance.RunTest("-reorder:N");
         }
 
-        [TestMethod()]
+        [Test]
         public void If()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Labels()
         {
             TestHelper.Instance.RunErrorTest("-ignore:JS1267 -rename:none -unused:keep", JSError.NoLabel, JSError.NoLabel, JSError.UnusedLabel, JSError.UnusedLabel);
         }
 
-        [TestMethod()]
+        [Test]
         public void Labels_H()
         {
             TestHelper.Instance.RunErrorTest("-ignore:JS1267", JSError.NoLabel, JSError.NoLabel, JSError.UnusedLabel, JSError.UnusedLabel);
         }
 
-        [TestMethod()]
+        [Test]
         public void Labels_keep()
         {
             TestHelper.Instance.RunErrorTest("-ignore:JS1267 -unused:keep", JSError.NoLabel, JSError.NoLabel, JSError.UnusedLabel, JSError.UnusedLabel);
         }
 
-        [TestMethod()]
+        [Test]
         public void Return()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Switch()
         {
             TestHelper.Instance.RunTest("-unused:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void Switch_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod()]
+        [Test]
         public void TryCatch()
         {
             TestHelper.Instance.RunTest("-mac:FALSE");
         }
 
-        [TestMethod()]
+        [Test]
         public void TryCatch_m()
         {
             TestHelper.Instance.RunTest("-mac:Y");
         }
 
-        [TestMethod()]
+        [Test]
         public void CatchScope()
         {
             TestHelper.Instance.RunTest("-rename:none"); // we see the difference when hypercrunch is on
         }
 
-        [TestMethod()]
+        [Test]
         public void CatchScope_Local()
         {
             TestHelper.Instance.RunTest("-rename:all"); // catch-local switch and hypercrunch
         }
 
-        [TestMethod()]
+        [Test]
         public void EncloseBlock()
         {
             // kill switch: IfExpressionsToExpression, CombineAdjacentExpressionStatements, IfNotTrueFalseToIfFalseTrue,
@@ -186,49 +186,49 @@ namespace JSUnitTest
             TestHelper.Instance.RunTest("-reorder:no -kill:0x21804002000");
         }
 
-        [TestMethod()]
+        [Test]
         public void EncloseBlock_nominify()
         {
             TestHelper.Instance.RunTest("-minify:no");
         }
 
-        [TestMethod()]
+        [Test]
         public void Throw()
         {
             TestHelper.Instance.RunTest("-mac:N");
         }
 
-        [TestMethod()]
+        [Test]
         public void Throw_M()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void While()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void While_NoFor()
         {
             TestHelper.Instance.RunTest("-kill:0x400000000000");
         }
 
-        [TestMethod()]
+        [Test]
         public void While_ForNoVar()
         {
             TestHelper.Instance.RunTest("-kill:0x400");
         }
 
-        [TestMethod()]
+        [Test]
         public void ForNoIn()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void ForNoIn_kill()
         {
             TestHelper.Instance.RunTest("-kill:0x40000000000");

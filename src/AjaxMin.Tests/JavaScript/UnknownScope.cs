@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for UnknownScope
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class UnknownScope
     {
         public UnknownScope()
@@ -68,31 +68,31 @@ namespace JSUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void Eval()
         {
             TestHelper.Instance.RunTest("-evals:safeall -rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void WindowEval()
         {
             TestHelper.Instance.RunTest("-evals:safeall -rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void Eval_J()
         {
             TestHelper.Instance.RunTest("-rename:all -evals:ignore");
         }
 
-        [TestMethod]
+        [Test]
         public void Eval_Immediate()
         {
             TestHelper.Instance.RunTest("-rename:all -evals:immediate");
         }
 
-        [TestMethod]
+        [Test]
         public void With()
         {
             TestHelper.Instance.RunTest("-rename:all -debug:N,$Debug");

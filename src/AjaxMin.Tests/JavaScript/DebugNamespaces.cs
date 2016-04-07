@@ -15,14 +15,14 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for DebugNamespaces
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class DebugNamespaces
     {
         public DebugNamespaces()
@@ -69,14 +69,14 @@ namespace JSUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void DebugAsKnownGlobal()
         {
             // default parameters -- we SHOULD get an error for the unknown global Foo
             TestHelper.Instance.RunErrorTest("-rename:none", JSError.UndeclaredVariable);
         }
 
-        [TestMethod]
+        [Test]
         public void DebugAsKnownGlobal_debug()
         {
             // we should NOT get an unknown global error because we specified it as a debug namespace.
@@ -84,7 +84,7 @@ namespace JSUnitTest
             TestHelper.Instance.RunErrorTest("-rename:none -debug:Y,Foo.Bar,Bat,Foo.Cakes");
         }
 
-        [TestMethod]
+        [Test]
         public void DebugAsKnownGlobal_release()
         {
             // we should NOT get an unknown global error because we specified it as a debug namespace.
@@ -92,7 +92,7 @@ namespace JSUnitTest
             TestHelper.Instance.RunErrorTest("-rename:none -debug:N,Foo.Bar,Bat,Foo.Cakes");
         }
 
-        [TestMethod]
+        [Test]
         public void DebugNamespaceDirective()
         {
             // we should NOT get an unknown global error because we specified it as a debug namespace.
@@ -100,7 +100,7 @@ namespace JSUnitTest
             TestHelper.Instance.RunErrorTest("-rename:none -debug:N");
         }
 
-        [TestMethod]
+        [Test]
         public void EmptyIf()
         {
             // we should NOT get an unknown global error because we specified it as a debug namespace.
@@ -108,7 +108,7 @@ namespace JSUnitTest
             TestHelper.Instance.RunTest("-debug:N,console,window.console,Debug");
         }
 
-        [TestMethod]
+        [Test]
         public void ConsoleDebug()
         {
             TestHelper.Instance.RunErrorTest("-debug:N,console");

@@ -15,95 +15,95 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for Operators
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Operators
     {
-        [TestMethod()]
+        [Test]
         public void Member()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void In()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Void()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Unary()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Assign()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Conditional()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Comma()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void New()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void InstanceOf()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void NewPrecedence()
         {
             TestHelper.Instance.RunTest("-new:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void Associative()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Strict()
         {
             TestHelper.Instance.RunTest("-kill:0x0000001000000000");
         }
 
-        [TestMethod()]
+        [Test]
         public void ConditionalPrecedence()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void TypeOf()
         {
             TestHelper.Instance.RunErrorTest(JSError.WithNotRecommended);

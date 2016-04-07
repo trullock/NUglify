@@ -14,107 +14,107 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
   /// <summary>
   /// Summary description for ConditionalCompilation
   /// </summary>
-  [TestClass]
+  [TestFixture]
   public class ConditionalCompilation
   {
-    [TestMethod()]
+    [Test]
     public void IfElse()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void Set()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void PPConstant()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void PPOps()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void StartWithIf()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void StartWithSet()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void NoEnd()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void SpecialCase()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void SpecialCase2()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void DoubleStart()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void MultipleOn()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void MultipleOn_Kill()
     {
         TestHelper.Instance.RunTest("-kill:134217728");
     }
 
-    [TestMethod]
+    [Test]
     public void IETest()
     {
         TestHelper.Instance.RunTest("-rename:all");
     }
 
-    [TestMethod]
+    [Test]
     public void TypeComments()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void EndEOF()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void FuncDecl()
     {
         TestHelper.Instance.RunTest();

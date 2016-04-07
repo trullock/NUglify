@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
@@ -22,95 +22,95 @@ namespace JSUnitTest
   ///This is a test class for Microsoft.Ajax.Utilities.MainClass and is intended
   ///to contain all Microsoft.Ajax.Utilities.MainClass Unit Tests
   ///</summary>
-  [TestClass()]
+  [TestFixture]
   public class ObjectCreation
   {
-    [TestMethod()]
+    [Test]
     public void Object()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void Object_H()
     {
         TestHelper.Instance.RunTest("-rename:all");
     }
 
-    [TestMethod()]
+    [Test]
     public void Object_hc()
     {
         TestHelper.Instance.RunTest("-rename:all -literals:combine");
     }
 
-    [TestMethod()]
+    [Test]
     public void Object_L()
     {
       TestHelper.Instance.RunTest("-new:keep");
     }
 
-    [TestMethod()]
+    [Test]
     public void CompareObjects()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void Constructor()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void Constructor_H()
     {
         TestHelper.Instance.RunTest("-rename:all");
     }
 
-    [TestMethod()]
+    [Test]
     public void Constructor_hc()
     {
         TestHelper.Instance.RunTest("-rename:all -literals:combine");
     }
 
-    [TestMethod()]
+    [Test]
     public void Prototype()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void InstanceOf()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void ToStr()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void TypeOf()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void RegularExpressions()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod()]
+    [Test]
     public void Strings()
     {
       // outputs ascii-escaped characters
       TestHelper.Instance.RunTest("-enc:out ascii");
     }
 
-    [TestMethod()]
+    [Test]
     public void Strings_Utf8()
     {
       // outputs unicode characters

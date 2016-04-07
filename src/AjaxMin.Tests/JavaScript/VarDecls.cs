@@ -15,14 +15,14 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for VarDecls
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class VarDecls
     {
         public VarDecls()
@@ -69,19 +69,19 @@ namespace JSUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void OneRefIteration()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void UnRefForIn()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [TestMethod]
+        [Test]
         public void UnRefVar()
         {
             TestHelper.Instance.RunErrorTest("-rename:all", JSError.ArgumentNotReferenced, JSError.VariableDefinedNotReferenced);

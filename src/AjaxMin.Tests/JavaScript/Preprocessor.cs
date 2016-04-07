@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for Preprocessor
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Preprocessor
     {
         public Preprocessor()
@@ -52,73 +52,73 @@ namespace JSUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void Defines()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Defines_ackbar()
         {
             TestHelper.Instance.RunTest("-define:ackbar");
         }
 
-        [TestMethod]
+        [Test]
         public void Defines_ackbarmeow()
         {
             TestHelper.Instance.RunTest("-define:ackbar,meow");
         }
 
-        [TestMethod]
+        [Test]
         public void BadIfDef()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void BadDefines()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Nested()
         {
             TestHelper.Instance.RunTest("-define:foo");
         }
 
-        [TestMethod]
+        [Test]
         public void DebugSet()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void DebugSet_debug()
         {
             TestHelper.Instance.RunTest("-debug");
         }
 
-        [TestMethod]
+        [Test]
         public void DebugClear()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void DefineIf()
         {
             TestHelper.Instance.RunTest("-reorder:n");
         }
 
-        [TestMethod]
+        [Test]
         public void DefineIf_defines()
         {
             TestHelper.Instance.RunTest("-define:version=2.0,ackbar=ADMIRAL,MEOW=hiss -reorder:n");
         }
 
-        [TestMethod]
+        [Test]
         public void SourceDirective()
         {
             TestHelper.Instance.RunTest();

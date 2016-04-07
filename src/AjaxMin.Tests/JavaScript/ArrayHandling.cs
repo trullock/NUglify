@@ -15,7 +15,7 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
@@ -23,46 +23,46 @@ namespace JSUnitTest
     ///This is a test class for Microsoft.Ajax.Utilities.MainClass and is intended
     ///to contain all Microsoft.Ajax.Utilities.MainClass Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestFixture]
     public class ArrayHandling
     {
-        [TestMethod()]
+        [Test]
         public void Array()
         {
             TestHelper.Instance.RunErrorTest(JSError.UndeclaredFunction, JSError.ArrayLiteralTrailingComma, JSError.ArrayLiteralTrailingComma, JSError.ArrayLiteralTrailingComma, JSError.ArrayLiteralTrailingComma);
         }
 
-        [TestMethod()]
+        [Test]
         public void Array_L()
         {
             TestHelper.Instance.RunTest("-new:keep");
         }
 
-        [TestMethod()]
+        [Test]
         public void Join()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Length()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Reverse()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Sort()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod()]
+        [Test]
         public void Spread()
         {
             TestHelper.Instance.RunTest();

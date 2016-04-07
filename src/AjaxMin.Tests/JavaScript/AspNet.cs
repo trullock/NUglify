@@ -2,14 +2,14 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for AspNet
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class AspNet
     {
         public AspNet()
@@ -56,19 +56,19 @@ namespace JSUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void Blocks()
         {
             TestHelper.Instance.RunTest("-aspnet:1");
         }
 
-        [TestMethod]
+        [Test]
         public void Identifiers()
         {
             TestHelper.Instance.RunTest("-aspnet:1");
         }
 
-        [TestMethod]
+        [Test]
         public void Expressions()
         {
             TestHelper.Instance.RunTest("-aspnet:1");

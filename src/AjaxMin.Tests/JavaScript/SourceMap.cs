@@ -14,29 +14,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// unit tests dealing with the MAP input used to generate node mapping between source and output scripts
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class SourceMap
     {
-        [TestMethod]
+        [Test]
         public void MapArgNotSpecified()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ScriptSharpMap_TwoInputs()
         {
             TestHelper.Instance.RunTest("-map", "MapArgNotSpecified.js");
         }
 
-        [TestMethod]
+        [Test]
         public void SourceMapV3()
         {
             TestHelper.Instance.RunTest("-map:v3", "ScriptSharpMap.js", "MapArgNotSpecified.js");

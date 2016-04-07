@@ -39,7 +39,8 @@
   ],
   "namedResource": {
     "Microsoft.Ajax.Utilities.Css.CssStrings": "Css/CssStrings.resx",
-    "Microsoft.Ajax.Utilities.CommonStrings": "CommonStrings.resx"
+    "Microsoft.Ajax.Utilities.CommonStrings": "CommonStrings.resx",
+    "Microsoft.Ajax.Utilities.JavaScript.JScript": "JavaScript/JScript.resx"
   },
   "frameworks": {
     "net35": {

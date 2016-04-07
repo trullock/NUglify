@@ -15,83 +15,83 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
     /// <summary>
     /// Summary description for Syntax
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Syntax
     {
-        [TestMethod]
+        [Test]
         public void NestedBlocks()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void BOM()
         {
             TestHelper.Instance.RunTest("-term");
         }
 
-        [TestMethod]
+        [Test]
         public void SlashSpacing()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void EmptyStatement()
         {
             // don't change if-statements to expressions
             TestHelper.Instance.RunTest("-kill:0x800001000");
         }
 
-        [TestMethod]
+        [Test]
         public void EmptyStatement_P()
         {
             TestHelper.Instance.RunTest("-P");
         }
 
-        [TestMethod]
+        [Test]
         public void ES6()
         {
             // no errors
             TestHelper.Instance.RunErrorTest("-rename:none");
         }
 
-        [TestMethod]
+        [Test]
         public void ES6_h()
         {
             // no errors
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod]
+        [Test]
         public void NonES6Yield()
         {
             // no errors
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod]
+        [Test]
         public void NonES6Yield_norename()
         {
             // no errors
             TestHelper.Instance.RunErrorTest("-rename:none");
         }
 
-        [TestMethod]
+        [Test]
         public void BindingPatterns()
         {
             // no errors other than unreferenced arguments
             TestHelper.Instance.RunErrorTest("-ignore:JS1270,JS1268", JSError.BindingPatternRequiresInitializer);
         }
 
-        [TestMethod]
+        [Test]
         public void MissingMemberRoot()
         {
             // ignore the undefined variable, but make sure there's an expected-expression error

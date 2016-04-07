@@ -15,94 +15,94 @@
 // limitations under the License.
 
 using Microsoft.Ajax.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace JSUnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class Modules
     {
-        [TestMethod]
+        [Test]
         public void NotModules()
         {
             TestHelper.Instance.RunErrorTest("-unused:keep -ignore:JS1310,JS1135");
         }
 
-        [TestMethod]
+        [Test]
         public void Module()
         {
             TestHelper.Instance.RunErrorTest("-unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void Imports()
         {
             TestHelper.Instance.RunErrorTest("-unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void ImportRename()
         {
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Exports()
         {
             TestHelper.Instance.RunErrorTest("-unused:keep");
         }
 
-        [TestMethod]
+        [Test]
         public void ExportRename()
         {
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ExportCombine()
         {
             TestHelper.Instance.RunErrorTest();
         }
 
-        [TestMethod]
+        [Test]
         public void NoExportInline()
         {
             // if we analyze the exports of the inline module, we should see that the expected import isn't actually exported
             TestHelper.Instance.RunErrorTest(/*JSError.NoModuleExport*/);
         }
 
-        [TestMethod]
+        [Test]
         public void NoExportExternal()
         {
             // if we load the module and check, we should see that the expected import isn't actually exported
             TestHelper.Instance.RunErrorTest(/*JSError.NoModuleExport*/);
         }
 
-        [TestMethod]
+        [Test]
         public void ReExport()
         {
             TestHelper.Instance.RunErrorTest(JSError.UndeclaredFunction, JSError.UndeclaredVariable);
         }
 
-        [TestMethod]
+        [Test]
         public void BadExport()
         {
             TestHelper.Instance.RunErrorTest(JSError.ExportNotAtModuleLevel);
         }
 
-        [TestMethod]
+        [Test]
         public void ImportAssign()
         {
             TestHelper.Instance.RunErrorTest(JSError.AssignmentToConstant);
         }
 
-        //[TestMethod]
+        //[Test]
         //public void NoExportExternal_flatten()
         //{
         //    TestHelper.Instance.RunErrorTest("-imports:flatten", JSError.NoModuleExport);
         //}
 
-        //[TestMethod]
+        //[Test]
         //public void CircularExternal()
         //{
         //    TestHelper.Instance.RunErrorTest("-imports:flatten");
