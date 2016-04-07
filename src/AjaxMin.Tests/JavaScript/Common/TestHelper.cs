@@ -465,7 +465,7 @@ namespace AjaxMin.Tests.JavaScript.Common
                     TraceFileContents(outputPath);
 
                     // fail the test if the files do not match
-                    Assert.IsTrue(CompareTextFiles(outputPath, expectedPath), "The expected output ({1}) and actual output ({0}) do not match!", outputPath, expectedPath);
+                    AssertCompareTextFiles(outputPath, expectedPath);
                     //Assert.IsTrue(retValue == 0, "Run didn't succeed. Return code: {0}", retValue);
                 }
                 else if (File.Exists(expectedPath))
@@ -552,7 +552,7 @@ namespace AjaxMin.Tests.JavaScript.Common
                         }
 
                         // fail the entire test if the files do not match
-                        Assert.IsTrue(CompareTextFiles(outputPath, expectedPath), "The expected output ({1}) and actual output ({0}) do not match!", outputPath, expectedPath);
+                        AssertCompareTextFiles(outputPath, expectedPath);
                     }
                 }
                 else
@@ -883,7 +883,7 @@ namespace AjaxMin.Tests.JavaScript.Common
             Trace.WriteLine("---Resulting Code---");
             TraceFileContents(outputPath);
 
-            Assert.IsTrue(CompareTextFiles(outputPath, expectedPath), "The expected output ({1}) and actual output ({0}) do not match!", outputPath, expectedPath);
+            AssertCompareTextFiles(outputPath, expectedPath);
             Assert.IsTrue(testPassed, "Test failed");
         }
 
@@ -923,31 +923,32 @@ namespace AjaxMin.Tests.JavaScript.Common
             }
         }
 
-        private bool CompareTextFiles(string leftPath, string rightPath)
+        private void AssertCompareTextFiles(string outputPath, string expectedPath)
         {
             // the left file should always exist
-            Assert.IsTrue(File.Exists(leftPath),"File does not exist: {0}", leftPath);
+            Assert.IsTrue(File.Exists(outputPath),"File does not exist: {0}", outputPath);
+
+            var compareError = $"The expected output ({expectedPath}) and actual output ({outputPath}) do not match!";
 
             // right file may not exist -- if it doesn't, the left file must be empty to be the same
-            //Assert.IsTrue(File.Exists(rightPath),"File does not exist: {0}",rightPath);
+            //Assert.IsTrue(File.Exists(expectedPath),"File does not exist: {0}",expectedPath);
 
-            using (StreamReader leftReader = new StreamReader(leftPath))
+            using (StreamReader leftReader = new StreamReader(outputPath))
             {
                 // read the left file in its entirety
                 string left = s_testRunRegex.Replace(leftReader.ReadToEnd(), "$1TESTRUNPATH$2");
-                if (File.Exists(rightPath))
+                if (File.Exists(expectedPath))
                 {
-                    using (StreamReader rightReader = new StreamReader(rightPath))
+                    using (StreamReader rightReader = new StreamReader(expectedPath))
                     {
                         string right = s_testRunRegex.Replace(rightReader.ReadToEnd(), "$1TESTRUNPATH$2");
-
-                        return (string.Compare(left, right) == 0);
+                        Assert.AreEqual(right, left, compareError);
                     }
                 }
                 else
                 {
                     // right file doesn't exist -- compare against an empty string
-                    return (string.Compare(left, string.Empty) == 0);
+                    Assert.AreEqual(string.Empty, left, compareError);
                 }
             }
         }
@@ -962,7 +963,7 @@ namespace AjaxMin.Tests.JavaScript.Common
             Trace.WriteLine(string.Empty);
             Trace.WriteLine("-");
 
-            Assert.IsTrue(CompareTextFiles(leftPath, rightPath), "The expected map file ({1}) and actual map file ({0}) do not match!", leftPath, rightPath);
+            AssertCompareTextFiles(leftPath, rightPath);
         }
 
         private class XmlOutputData
