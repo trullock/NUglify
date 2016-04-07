@@ -151,7 +151,7 @@
     </Compile>
     <Compile Include="JavaScript\JSError.cs" />
     <Compile Include="JavaScript\JSKeyword.cs" />
-    <Compile Include="JavaScript\JSON.cs" />
+    <Compile Include="JavaScript\JsonParser.cs" />
     <Compile Include="JavaScript\Visitors\JsonOutputVisitor.cs" />
     <Compile Include="JavaScript\JSParser.cs" />
     <Compile Include="JavaScript\JSScanner.cs" />

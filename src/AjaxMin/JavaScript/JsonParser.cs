@@ -24,7 +24,7 @@ namespace AjaxMin.JavaScript
     /// a string representing the original JSON text with any whitespace
     /// removed.
     /// </summary>
-    public class JSON
+    public class JsonParser
     {
         private string m_jsonText;
         private int m_currentIndex;
@@ -54,7 +54,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        private JSON(string jsonText)
+        private JsonParser(string jsonText)
         {
             m_jsonText = jsonText;
             m_currentIndex = 0;
@@ -68,7 +68,7 @@ namespace AjaxMin.JavaScript
         /// <returns>null if not valid JSON; otherwise the original JSON text with whitespace removed</returns>
         public static string Validate(string jsonText)
         {
-            var jsonValidator = new JSON(jsonText);
+            var jsonValidator = new JsonParser(jsonText);
             return jsonValidator.IsValidValue() && jsonValidator.IsAtEnd ? jsonValidator.Minified : null;
         }
 

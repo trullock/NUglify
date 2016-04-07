@@ -1272,7 +1272,7 @@ namespace AjaxMin.JavaScript.Visitors
             {
                 // we have a match.
                 // if the string is valid JSON, the just output it as-is (well, with a little minification)
-                var json = JSON.Validate(replacement);
+                var json = JsonParser.Validate(replacement);
                 if (!json.IsNullOrWhiteSpace())
                 {
                     // use the minified JSON object
