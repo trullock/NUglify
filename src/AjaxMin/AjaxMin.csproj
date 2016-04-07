@@ -149,21 +149,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>JScript.resx</DependentUpon>
     </Compile>
-    <Compile Include="JavaScript\JSError.cs" />
-    <Compile Include="JavaScript\JSKeyword.cs" />
+    <Compile Include="JavaScript\JSError2.cs" />
+    <Compile Include="JavaScript\JSKeyword2.cs" />
     <Compile Include="JavaScript\JSON.cs" />
     <Compile Include="JavaScript\JSONOutputVisitor.cs" />
-    <Compile Include="JavaScript\JSParser.cs" />
-    <Compile Include="JavaScript\JSScanner.cs" />
-    <Compile Include="JavaScript\JSToken.cs" />
-    <Compile Include="JavaScript\JSVariableField.cs" />
+    <Compile Include="JavaScript\JSParser2.cs" />
+    <Compile Include="JavaScript\JSScanner2.cs" />
+    <Compile Include="JavaScript\JSToken2.cs" />
+    <Compile Include="JavaScript\JSVariableField2.cs" />
     <Compile Include="JavaScript\Syntax\LabeledStatement.cs" />
     <Compile Include="JavaScript\Syntax\LexicalDeclaration.cs" />
     <Compile Include="JavaScript\Visitors\LogicalNotVisitor.cs" />
     <Compile Include="JavaScript\Syntax\LookupExpression.cs" />
     <Compile Include="JavaScript\Visitors\MatchPropertiesVisitor.cs" />
     <Compile Include="JavaScript\Syntax\MemberExpression.cs" />
-    <Compile Include="JavaScript\Missing.cs" />
+    <Compile Include="JavaScript\Missing2.cs" />
     <Compile Include="JavaScript\Syntax\ModuleDeclaration.cs" />
     <Compile Include="JavaScript\Syntax\ModuleScope.cs" />
     <Compile Include="JavaScript\Visitors\NewParensVisitor.cs" />
