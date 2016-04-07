@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <arguments>-global:jQuery,$</arguments>
+  <output path="test1_pponly.js">
+    <arguments>-debug -rename:none -fnames:lock -reorder:N</arguments>
+    <symbolMap name="V3" path="test1_pponly.xml"/>
+    <input path="file1.js"/>
+    <input path="file2.js"/>
+    <input path="file3.js"/>
+    <input path="file4.js"/>
+    <input path="file5.js"/>
+  </output>
+  <output path="test2_pponly.js">
+    <arguments>-define:porkpie=42</arguments>
+    <symbolMap name="V3" path="test2_pponly.xml"/>
+    <input path="file1.js"/>
+    <input path="file2.js"/>
+    <input path="file3.js"/>
+    <input path="file4.js"/>
+    <input path="file5.js"/>
+  </output>
+</root>

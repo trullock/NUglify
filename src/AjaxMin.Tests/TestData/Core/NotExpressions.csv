@@ -1,0 +1,27 @@
+﻿source,expected
+foo[ndx] && ndx < 10,!foo[ndx]||ndx<10
+true,false
+false,true
+ralph || {},!ralph&&{}
+!(boo - 10) && foo <= 10,boo-10||foo<=10
+a == b,a!=b
+a != b,a==b
+a === b,a!==b
+a !== b,a===b
++5,!+5
+"[1,2,3]","![1,2,3]"
+a = b,!(a=b)
+"foo(),bar(),ack()","foo(),bar(),!ack()"
+a > b,!(a>b)
+a >= b,!(a>=b)
+a ? foo() : false,a?!foo():true
+"""string""","!""string"""
+delete a.foo,!delete a.foo
+a.foo,!a.foo
+--foo,!--foo
+/\s/i,!/\s/i
+this,!this
+typeof foo,!typeof foo
+void 0,!void 0
+!a.foo,a.foo
+a > 0 ? a + 13 : a - 13,!(a>0?a+13:a-13)

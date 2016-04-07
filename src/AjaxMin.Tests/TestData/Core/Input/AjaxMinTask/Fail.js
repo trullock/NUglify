@@ -1,0 +1,5 @@
+﻿while{
+    alert(;
+}
+
+/* unterminated comment

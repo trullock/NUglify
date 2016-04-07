@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+    <arguments>-w:0</arguments>
+    <output path="test_nowarn.js">
+        <input path="WithWarnings.js"/>
+    </output>
+</root>

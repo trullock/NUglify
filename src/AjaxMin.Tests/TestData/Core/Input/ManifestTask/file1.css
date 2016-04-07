@@ -1,0 +1,4 @@
+﻿.foo:nth-child(n+1) 
+{
+    border-left: 25.0px dashed lightgray;
+}

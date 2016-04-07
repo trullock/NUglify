@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <output path="test_resx.js">
+    <resource path="test.resx" name="Lyrics" />
+    <input path="file_resx.js"/>
+  </output>
+</root>

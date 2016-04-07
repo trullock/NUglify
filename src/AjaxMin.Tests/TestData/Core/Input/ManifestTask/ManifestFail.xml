@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+    <output path="outputfail.js">
+        <input path="HasError.js"/>
+    </output>
+    <output path="outputfail.csss">
+        <input path="HasError.css"/>
+    </output>
+</root>

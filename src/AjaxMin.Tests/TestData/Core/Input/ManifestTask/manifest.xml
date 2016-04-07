@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+    <arguments config="Debug">-debug -rename:none -fnames:lock -reorder:N</arguments>
+    <arguments config="Release">-global:jQuery,$</arguments>
+    <output path="test1.js">
+        <symbolMap name="ScriptSharp" path="test1.xml"/>
+        <input path="file1.js"/>
+        <input path="file2.js"/>
+        <input path="file3.js"/>
+        <input path="file4.js"/>
+        <input path="file5.js"/>
+    </output>
+    <output path="test2.js">
+        <arguments>-global:foobar -define:porkpie=42 -reorder:Y -fnames:onlyref -debug:N</arguments>
+        <resource name="Strings" path="strings.resx" />
+        <input path="file1.js"/>
+        <input path="file2.js"/>
+        <input path="file3.js"/>
+        <input path="file4.js"/>
+        <input path="file5.js"/>
+    </output>
+    <output path="test1.css">
+        <arguments>-colors:major</arguments>
+        <input path="file1.css"/>
+        <input path="file2.css"/>
+        <input path="file3.css"/>
+        <input path="file-missing.css" optional="true"/>
+    </output>
+</root>

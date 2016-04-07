@@ -1,0 +1,27 @@
+﻿/*/#source 10 1 foo.css            
+   this is the source directive */
+
+
+  body=nope
+  {
+      color: black;
+  }      
+  
+///#source 1024 1 bigfile.css
+
+=foo
+{
+    color: black;
+}      
+
+///#SoUrCe 5 42 fargo.htm       
+  <foot
+  {
+    color: red;
+  }
+
+/* line 19, bat.scss */
+#.ack
+{
+    color: yellow;
+}

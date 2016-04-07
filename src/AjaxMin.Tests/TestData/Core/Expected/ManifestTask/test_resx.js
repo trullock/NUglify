@@ -1,0 +1,1 @@
+﻿(function(n){n.alert("ʻO Kona kai ʻōpua i ka laʻi\nʻO pua hīnano i ka mālie")})(window)

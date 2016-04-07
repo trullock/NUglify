@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+    <arguments></arguments>
+    <output path="test_warn.js">
+        <input path="WithWarnings.js"/>
+    </output>
+</root>

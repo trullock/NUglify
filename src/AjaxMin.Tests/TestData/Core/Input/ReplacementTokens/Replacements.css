@@ -1,0 +1,20 @@
+﻿@media screen and (max-width: %MediaQueries.SnapMax%)
+{
+    div
+    {
+        font-size: %Dpi:full%;
+        background: %bing-orange% url('hash(/images/spyglass_%MetroSdk.Resolution:1x%.png)') no-repeat %Global.Right% 0.1rem;
+        float: %Global.Right%;
+        border: 1px solid %dim-gray%;
+        content: "%nofallback:none%";
+    }
+    .fg.%theme_name%:visited
+    {
+        content: "%Ellipsis_text%";
+        color: %dim-gray%;
+    }
+    #%module-id:id%
+    {
+        color: %Weather.Color:color%;
+    }
+}

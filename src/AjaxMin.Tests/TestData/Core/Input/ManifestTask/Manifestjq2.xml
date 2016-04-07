@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <arguments>-global:jQuery</arguments>
+  <output path="test_jq2.js">
+    <input path="jquery-2.0.0.min.js" origin="external" />
+    <input path="file5.js"/>
+  </output>
+</root>

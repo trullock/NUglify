@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <arguments config="Debug">-debug -rename:none -fnames:lock -reorder:N</arguments>
+  <arguments config="Release">-global:jQuery,$</arguments>
+  <output path="test_ext.js">
+    <input path="file1.js"/>
+    <input path="file2.js"/>
+    <input path="file3.js"/>
+    <input path="file4.js"/>
+    <input path="external.min.js" origin="external" />
+    <input path="file5.js"/>
+  </output>
+</root>
