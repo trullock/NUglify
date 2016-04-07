@@ -1,4 +1,4 @@
-# AjaxMin
+# AjaxMin [![Windows CI](https://ci.appveyor.com/api/projects/status/github/xoofx/ajaxmin?svg=true)](https://ci.appveyor.com/project/xoofx/ajaxmin/branch/master)
 
 AjaxMin enables you to improve the performance of your web applications by reducing the size of your Cascading Style Sheet and JavaScript files.
 
