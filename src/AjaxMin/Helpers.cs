@@ -14,6 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Reflection;
+using Microsoft.Ajax.Utilities.Css;
+using Microsoft.Ajax.Utilities.JavaScript;
+
 namespace Microsoft.Ajax.Utilities
 {
 #if NET_20
@@ -142,7 +147,7 @@ namespace Microsoft.Ajax.Utilities
             get
             {
                 var type = typeof(CssStrings);
-                var properties = type.GetProperties(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.NonPublic);
+                var properties = type.GetTypeInfo().GetDeclaredProperties();
                 foreach (var property in properties)
                 {
                     if (property.PropertyType == typeof(string))
@@ -158,7 +163,7 @@ namespace Microsoft.Ajax.Utilities
             get
             {
                 var type = typeof(JScript);
-                var properties = type.GetProperties(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.NonPublic);
+                var properties = type.GetTypeInfo().GetDeclaredProperties();
                 foreach (var property in properties)
                 {
                     if (property.PropertyType == typeof(string))

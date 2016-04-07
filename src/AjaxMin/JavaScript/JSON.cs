@@ -120,7 +120,6 @@ namespace Microsoft.Ajax.Utilities
             return isValid;
         }
 
-        [Localizable(false)]
         private bool IsFollowedBy(string text)
         {
             for (var ndx = 0; ndx < text.Length; ++ndx)

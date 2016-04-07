@@ -35,7 +35,7 @@
   "frameworks": {
     "net35": {
       "compilationOptions": {
-        "define": [ "NET_35" ]
+        "define": [ "NET_35", "NETPRE45" ]
       },
       "frameworkAssemblies": {
         "mscorlib": "",
@@ -45,6 +45,9 @@
       }
     },
     "net40": {
+      "compilationOptions": {
+        "define": [ "NETPRE45" ]
+      },
       "frameworkAssemblies": {
         "mscorlib": "",
         "System": "",

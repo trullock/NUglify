@@ -92,7 +92,7 @@ namespace Microsoft.Ajax.Utilities
                 {
                     //s_BuilderCapacity = builder.Capacity;
 #if DEBUG
-                    System.Diagnostics.Debug.WriteLine("StringBuilderPool: discarding builder of capacity {0}", builder.Capacity);
+                    System.Diagnostics.Debug.WriteLine("StringBuilderPool: discarding builder of capacity " + builder.Capacity);
 #endif
                 }
                 else

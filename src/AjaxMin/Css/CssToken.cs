@@ -32,7 +32,7 @@ namespace Microsoft.Ajax.Utilities
         private CssContext m_context;
         public CssContext Context { get { return m_context; } }
 
-        public CssToken(TokenType tokenType, [Localizable(false)] string text, CssContext context)
+        public CssToken(TokenType tokenType, string text, CssContext context)
         {
             m_tokenType = tokenType;
             m_text = text;

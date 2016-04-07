@@ -85,7 +85,7 @@ namespace Microsoft.Ajax.Utilities.Configuration
                 }
             }
 
-            reader.Close();
+            ((IDisposable)reader).Dispose();
             return configurationNode;
         }
 
@@ -177,7 +177,7 @@ namespace Microsoft.Ajax.Utilities.Configuration
                 }
             }
 
-            reader.Close();
+            ((IDisposable)reader).Dispose();
             return outputNode;
         }
 
@@ -209,7 +209,7 @@ namespace Microsoft.Ajax.Utilities.Configuration
                 renameIdentifiers[fromIdentifier] = toIdentifier;
             }
 
-            reader.Close();
+            ((IDisposable)reader).Dispose();
         }
 
         private static void ReadNoRenameElement(XmlReader reader, ICollection<string> noRenameIdentifiers)
@@ -238,7 +238,7 @@ namespace Microsoft.Ajax.Utilities.Configuration
                 noRenameIdentifiers.Add(identifier);
             }
 
-            reader.Close();
+            ((IDisposable)reader).Dispose();
         }
 
         private static SymbolMap ReadSymbolMapElement(XmlReader reader)
@@ -280,7 +280,7 @@ namespace Microsoft.Ajax.Utilities.Configuration
                 }
             }
 
-            reader.Close();
+            ((IDisposable)reader).Dispose();
             return symbolMapNode;
         }
 
@@ -319,7 +319,7 @@ namespace Microsoft.Ajax.Utilities.Configuration
                 }
             }
 
-            reader.Close();
+            ((IDisposable)reader).Dispose();
             return resourceNode;
         }
 
@@ -366,7 +366,7 @@ namespace Microsoft.Ajax.Utilities.Configuration
                 }
             }
 
-            reader.Close();
+            ((IDisposable)reader).Dispose();
             return inputNode;
         }
 
@@ -394,13 +394,13 @@ namespace Microsoft.Ajax.Utilities.Configuration
 
                     // get the string content of the element and add it to the dictionary
                     // using the target config as the key (or an empty string if there was no target)
-                    var arguments = reader.ReadString();
+                    var arguments = reader.ReadContentAsString();
                     configDictionary[targetConfiguration ?? string.Empty] = arguments;
                     break;
                 }
             }
 
-            reader.Close();
+            ((IDisposable)reader).Dispose();
         }
 
         #endregion

@@ -296,7 +296,7 @@ namespace Microsoft.Ajax.Utilities
                 m_writer.WriteLine();
                 m_writer.WriteLine("}");
 
-                m_writer.Close();
+                ((IDisposable)m_writer).Dispose();
                 m_writer = null;
             }
         }
@@ -456,7 +456,7 @@ namespace Microsoft.Ajax.Utilities
 
         private static string Normalize(string path)
         {
-            return Path.IsPathRooted(path) ? path : Path.Combine(Environment.CurrentDirectory, path);
+            return Path.IsPathRooted(path) ? path : Path.Combine(Directory.GetCurrentDirectory(), path);
         }
 
         private void WriteProperty(string name, int number)

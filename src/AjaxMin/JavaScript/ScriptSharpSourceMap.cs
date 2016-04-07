@@ -227,7 +227,7 @@ namespace Microsoft.Ajax.Utilities
             m_writer.WriteEndElement(); //sourceFiles
             m_writer.WriteEndElement(); //map
             m_writer.WriteEndDocument();
-            m_writer.Close();
+            ((IDisposable)m_writer).Dispose();
         }
 
         private int GetSourceFileIndex(string fileName)
@@ -266,7 +266,7 @@ namespace Microsoft.Ajax.Utilities
 
         private static string Normalize(string path)
         {
-            return Path.IsPathRooted(path) ? path : Path.Combine(Environment.CurrentDirectory, path);
+            return Path.IsPathRooted(path) ? path : Path.Combine(Directory.GetCurrentDirectory(), path);
         }
 
         #region internal symbol object class

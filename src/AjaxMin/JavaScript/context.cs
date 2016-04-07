@@ -16,6 +16,7 @@
 
 using System;
 using System.ComponentModel;
+using Microsoft.Ajax.Utilities.JavaScript;
 
 namespace Microsoft.Ajax.Utilities
 {
@@ -322,7 +323,6 @@ namespace Microsoft.Ajax.Utilities
             return true;
         }
 
-        [Localizable(false)]
         public bool Is(string text)
         {
             // the lengths needs to be the same before we'll even TRY looking at the document source.

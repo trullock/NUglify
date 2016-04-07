@@ -1376,7 +1376,7 @@ namespace Microsoft.Ajax.Utilities
                 }
                 else
                 {
-                    switch (char.GetUnicodeCategory(text, index))
+                    switch (CharUnicodeInfo.GetUnicodeCategory(text, index))
                     {
                         case UnicodeCategory.UppercaseLetter:
                         case UnicodeCategory.LowercaseLetter:
@@ -1410,7 +1410,7 @@ namespace Microsoft.Ajax.Utilities
                 }
                 else
                 {
-                    switch (char.GetUnicodeCategory(text, index))
+                    switch (CharUnicodeInfo.GetUnicodeCategory(text, index))
                     {
                         case UnicodeCategory.UppercaseLetter:
                         case UnicodeCategory.LowercaseLetter:
@@ -3346,7 +3346,7 @@ namespace Microsoft.Ajax.Utilities
                     return true;
 
                 default:
-                    return (c < 128) ? false : char.GetUnicodeCategory(c) == UnicodeCategory.SpaceSeparator;
+                    return (c >= 128) && CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.SpaceSeparator;
             }
         }
 

@@ -3280,7 +3280,7 @@ namespace Microsoft.Ajax.Utilities
 
         #region output methods
 
-        private void Output([Localizable(false)] string text)
+        private void Output(string text)
         {
             if (!string.IsNullOrEmpty(text))
             {

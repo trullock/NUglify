@@ -16,6 +16,7 @@
 
 using System;
 using System.Text;
+using Microsoft.Ajax.Utilities.Css;
 
 namespace Microsoft.Ajax.Utilities
 {

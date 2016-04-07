@@ -31,7 +31,6 @@ namespace Microsoft.Ajax.Utilities
 
         public virtual string Subcategory { get; set; }
 
-        [Localizable(false)]
         public virtual string ErrorCode { get; set; }
 
         public virtual int StartLine { get; set; }

@@ -4524,7 +4524,7 @@ namespace Microsoft.Ajax.Utilities
                 return new ConstantWrapper(((DateTime)item).ToString("s", CultureInfo.InvariantCulture), PrimitiveType.String, context);
             }
 
-            if (item.GetType().IsValueType)
+            if (item.GetType().GetTypeInfo().IsValueType)
             {
                 return new ConstantWrapper(item.ToString(), PrimitiveType.String, context);
             }

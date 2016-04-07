@@ -598,38 +598,6 @@ namespace Microsoft.Ajax.Utilities
                                 }
                                 break;
 
-                            case "CULTURE":
-                                if (paramPart.IsNullOrWhiteSpace())
-                                {
-                                    OnInvalidSwitch(switchPart, paramPart);
-                                }
-                                else
-                                {
-                                    CultureInfo cultureInfo;
-                                    if (!TryCreateCultureInfo(paramPart, out cultureInfo))
-                                    {
-                                        // no such culture. Try just the language part, if there is one and it's
-                                        // different than what we already tried
-                                        var cultureParts = paramPart.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                                        if (!cultureParts[0].Equals(paramPart, StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            TryCreateCultureInfo(cultureParts[0], out cultureInfo);
-                                        }
-                                    }
-
-                                    if (cultureInfo == null)
-                                    {
-                                        // not valid
-                                        OnInvalidSwitch(switchPart, paramPart);
-                                    }
-                                    else
-                                    {
-                                        // set the thread's current culture to what was specified
-                                        Thread.CurrentThread.CurrentCulture = cultureInfo;
-                                    }
-                                }
-                                break;
-
                             case "DEBUG":
                                 // if the -pretty switch has been specified, we have an incompatible set of switches.
                                 // this seems to be a common one for people to wonder why it's not working properly.
@@ -2047,25 +2015,6 @@ namespace Microsoft.Ajax.Utilities
         #endregion
 
         #region helper methods
-
-        private static bool TryCreateCultureInfo(string name, out CultureInfo cultureInfo)
-        {
-            try
-            {
-                cultureInfo = CultureInfo.GetCultureInfo(name);
-                return true;
-            }
-#if NET_20 || NET_35
-            catch (ArgumentException)
-#else
-            catch (CultureNotFoundException)
-#endif
-            {
-                // nope
-                cultureInfo = null;
-                return false;
-            }
-        }
 
         private static void AlignDebugDefine(bool stripDebugStatements, IDictionary<string, string> defines)
         {
