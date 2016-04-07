@@ -1,0 +1,1 @@
+﻿"use strict";function foo(p){function bar(q){return q+q}return bar(p)}

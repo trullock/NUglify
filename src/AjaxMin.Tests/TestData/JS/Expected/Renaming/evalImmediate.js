@@ -1,0 +1,1 @@
+﻿(function(Foo){function n(){for(var n=0;n<10;++n)Foo.bar=n;eval("alert('hi')")}return n})(window.Foo||(window.Foo={}))

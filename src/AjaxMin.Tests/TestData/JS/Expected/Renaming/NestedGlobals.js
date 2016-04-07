@@ -1,0 +1,1 @@
+﻿(function(){function n(){function n(t){g(t)&&n(t-1)}var t=location.href;n(10)}alert(g);n()})()

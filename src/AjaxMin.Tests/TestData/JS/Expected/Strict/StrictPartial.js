@@ -1,0 +1,1 @@
+﻿+function(n,t){"use strict";n.console&&console.log("start");n.foo||n.alert(t.location);n.console&&console.log("end")}(window,document)

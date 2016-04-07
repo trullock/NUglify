@@ -1,0 +1,1 @@
+function uxp_toggleElementVisibility_return(e){var o=e.style;return"none"===o.display?(o.display="",1):(o.display="none",0)}var t=foo(bar,(ack,gag)),y=(t,foo,bar);z=a;b;c;document

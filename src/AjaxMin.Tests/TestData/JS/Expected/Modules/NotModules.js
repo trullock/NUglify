@@ -1,0 +1,1 @@
+﻿module=42;module;"string literal with line break"

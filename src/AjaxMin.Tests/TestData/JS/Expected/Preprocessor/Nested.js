@@ -1,0 +1,1 @@
+﻿alert("not bar");alert("foo");alert("not bar1");alert("foo");alert("not bar2")

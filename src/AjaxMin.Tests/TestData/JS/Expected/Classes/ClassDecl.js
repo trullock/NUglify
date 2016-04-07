@@ -1,0 +1,1 @@
+﻿class Foo{constructor(){this.foo=42}get foo(){return this.foo}set foo(n){this.foo=n}}class Bar extends Foo{Bat(n,t){alert(n+t)}*Iter(){this.bat&&yield this.bat;yield super.foo}}

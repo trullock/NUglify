@@ -1,0 +1,1 @@
+﻿function Func(p1){var index,name="Thomas Jefferson",answer=42,counter,numpages=10,\u4f60\u597d="hello",x=index*(name,answer),y}

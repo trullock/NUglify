@@ -1,0 +1,1 @@
+﻿var obj,a;alert(obj.property);alert(obj["while"]);alert(obj.property);alert(obj.property);alert(obj[p+"roperty"]);alert(obj["while"]);alert(obj["1world"]);a=window.obj.foo.bar();alert(obj["enum"]);obj["\u00e3\u0ae9\u0ae9"];obj[null];obj[undefined];obj[!0];obj[!1];obj[3.1415927];obj["null"];obj["true"];obj["false"];obj["3.1415927"];obj.undefined

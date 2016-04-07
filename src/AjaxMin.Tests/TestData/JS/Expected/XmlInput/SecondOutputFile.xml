@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<map>
+  <headers>DstStartLine,DstStartColumn,DstEndLine,DstEndColumn,SrcStartPosition,SrcEndPosition,SrcStartLine,SrcStartColumn,SrcEndLine,SrcEndColumn,SrcFileId,SymbolType,ParentFunction</headers>
+  <scriptFiles>
+    <scriptFile path="SecondOutputFile.js">
+      <s>1,9,1,11,10,12,1,10,1,12,1,ConstantWrapper,</s>
+      <s>1,4,1,11,4,12,1,4,1,12,1,VariableDeclaration,</s>
+      <s>1,1,1,11,0,12,1,0,1,12,1,Var,</s>
+      <s>1,21,1,24,24,27,2,9,2,12,1,Lookup,ack</s>
+      <s>1,32,1,37,43,48,4,4,4,9,1,Lookup,ack</s>
+      <s>1,38,1,43,49,54,4,10,4,15,1,Lookup,ack</s>
+      <s>1,32,1,44,43,55,4,4,4,16,1,CallNode,ack</s>
+      <s>1,31,1,45,36,59,3,0,5,1,1,Block,ack</s>
+      <s>1,12,1,45,15,59,2,0,5,1,1,FunctionObject,ack</s>
+      <s>1,53,1,55,10,12,1,10,1,12,2,ConstantWrapper,</s>
+      <s>1,48,1,55,4,12,1,4,1,12,2,VariableDeclaration,</s>
+      <s>1,45,1,55,0,12,1,0,1,12,2,Var,</s>
+      <s>1,56,1,61,0,5,1,0,1,5,3,Lookup,</s>
+      <s>1,62,1,72,6,16,1,6,1,16,3,ConstantWrapper,</s>
+      <s>1,56,1,73,0,17,1,0,1,17,3,CallNode,</s>
+      <checksum value="C5-6E-59-36-F0-51-43-4F-1D-8E-A0-1B-BC-29-0B-0F" />
+    </scriptFile>
+  </scriptFiles>
+  <sourceFiles>
+    <sourceFile id="1" path="../../Input/XmlInput/input2.js" />
+    <sourceFile id="2" path="../../Input/XmlInput/input1.js" />
+    <sourceFile id="3" path="../../Input/XmlInput/input3.js" />
+  </sourceFiles>
+</map>

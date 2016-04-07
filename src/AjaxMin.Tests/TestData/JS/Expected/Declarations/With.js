@@ -1,0 +1,1 @@
+function Func(p1){var x,y,cos=function(){return"no such thing"};with(Math){x=cos(3*PI)+sin(LN10);y=tan(14*E);function wham(){return cos(y)}}}var someGlobal=12,unreferencedGlobal=42

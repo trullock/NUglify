@@ -1,0 +1,1 @@
+﻿function foo(n){for(var t=0;t<n;++t){const n=t*t;alert(n)}alert(squared)}

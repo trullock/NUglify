@@ -1,0 +1,1 @@
+﻿function foo(obj,name){for(var count=0,isThere=(name in obj),i=0;i<10;++i)isThere&&++count;return count}function bar(name,obj){for(var i=0,n=obj?(name in obj):0,m=!(name||name in obj);i<10;++i)return i}function ack(name,obj,isIn){var i=0;for(isIn=(name in obj);i<10;++i)return i}

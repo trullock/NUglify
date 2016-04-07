@@ -1,0 +1,1 @@
+﻿function test1(n,t){return n(t)}function test2(n){return n}

@@ -1,0 +1,1 @@
+﻿function test1(foo){if(foo);else;if(foo){}else{}if(foo){;}else{;}if(foo){{}}else{{}}}

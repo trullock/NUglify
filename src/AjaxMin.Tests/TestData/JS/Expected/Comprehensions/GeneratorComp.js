@@ -1,0 +1,1 @@
+﻿function test1(){for(var n in(for(n of[1,2,3,4,5])if(n%2)n*n))alert(n)}

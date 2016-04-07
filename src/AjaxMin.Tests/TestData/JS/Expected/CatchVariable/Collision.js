@@ -1,0 +1,1 @@
+﻿+function(n){+function(t,i){try{t+=i;function r(t){alert(t+n)}r("e: ")}catch(n){alert(n)}}(10,20)}(10)

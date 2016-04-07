@@ -1,0 +1,1 @@
+n:for(var a=0;a<10;++a){t:switch(a){case 1:a*=1;break;case 2:a*=2;break t;case 5:break n;case 99:a/=10}switch(a){case 2:a*=2;break;default:break n}t:switch(a){case 3:a*=3;break t;default:break n}}

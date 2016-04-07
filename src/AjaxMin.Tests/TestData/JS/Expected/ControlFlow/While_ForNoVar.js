@@ -1,0 +1,1 @@
+﻿var b=10;for(;;)if(!--b)break;for(;;)alert("infinite loop!")

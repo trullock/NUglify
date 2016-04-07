@@ -1,0 +1,1 @@
+﻿module"test1"{function n(n,t){return n+t}var t="bus driver",i="sewer rat";export{t as ralph,i as ed,n as sum,window as w}}

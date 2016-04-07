@@ -1,0 +1,1 @@
+﻿function ack(bar){return Foo.Bar.alert(bar),bar*bar}

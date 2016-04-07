@@ -1,0 +1,1 @@
+﻿module"lib/odd"{import even from"Even";export default function odd(n){return n!=0&&even(n-1)}}module"lib/even"{import odd from"Odd";export default function even(n){return n==0||odd(n-1)}}import even from"lib/even";alert(even(Number.MAX_VALUE))

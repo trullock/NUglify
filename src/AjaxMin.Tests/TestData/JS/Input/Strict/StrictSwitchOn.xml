@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+    <output path="..\..\Output\Strict\StrictSwitchOn.js">
+        <input path="StrictSwitch1.js"/>
+        <input path="StrictSwitch2.js"/>
+    </output>
+</root>

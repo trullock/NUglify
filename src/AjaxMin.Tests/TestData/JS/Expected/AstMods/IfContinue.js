@@ -1,0 +1,1 @@
+﻿for(var ndx=0;ndx<10;++ndx)ndx!=5&&alert("ndx: "+ndx);for(ndx=0;ndx<10;++ndx){if(ndx==5)continue ack;alert("ndx: "+ndx)}loop:for(ndx=0;ndx<10;++ndx)if(ndx==5){alert("ndx: "+ndx);break}foo:bar:for(ndx=0;ndx<10;++ndx)ndx!=5&&alert("ndx: "+ndx);for(ndx=0;++ndx<10;)if(ndx!=5&&ndx%2==1)break

@@ -1,0 +1,1 @@
+﻿var foo1="<\/script>",foo2="]\]>",foo3="while(0)<\/script>",foo4="foobar]\]>",bar1="<\/script>",bar2="<\/script>",bar3="<\/script>",bar4="]\]>",bar5="]\]>"

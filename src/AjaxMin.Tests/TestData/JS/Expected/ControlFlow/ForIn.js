@@ -1,0 +1,1 @@
+function Func(){var a,key,s="",i,j,k,obj;a={a:"Athens",b:"Belgrade",c:"Cairo"};for(key in a)s+=a[key]+"&ltBR>";for(i in[1,2,3])alert(i);for(j in[1,2,3])for(k in[1,2,3])alert(k);for(key in s);obj={};for(obj[key]in[1,2,3])alert(obj[key])}

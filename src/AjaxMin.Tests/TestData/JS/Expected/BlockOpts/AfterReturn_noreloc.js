@@ -1,0 +1,1 @@
+﻿function test(a,b){var d=foo(c);return a+b+d;var c;function foo(p){return"FOO"+p}}

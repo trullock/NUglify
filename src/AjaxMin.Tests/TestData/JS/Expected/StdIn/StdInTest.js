@@ -1,0 +1,1 @@
+﻿function foo(n,t){return n?t:!t}

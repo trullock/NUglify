@@ -1,0 +1,1 @@
+﻿var text="now is the time";

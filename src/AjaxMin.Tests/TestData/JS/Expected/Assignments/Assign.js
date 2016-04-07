@@ -1,0 +1,1 @@
+function Func(p1){var _a=1+p1,$b=2,\u4f60\u597d=5;return \u4f60\u597d+=18,a+$b*$b+3+4}

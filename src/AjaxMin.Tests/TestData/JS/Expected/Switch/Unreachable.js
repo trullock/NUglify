@@ -1,0 +1,1 @@
+﻿function foo(x){while(x){switch(x){case-1:case 0:case 1:return++x,0;case 42:--x;break;case 62:x*=-1;continue}++x}}

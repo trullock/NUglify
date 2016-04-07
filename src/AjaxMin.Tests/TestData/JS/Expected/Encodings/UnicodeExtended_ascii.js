@@ -1,0 +1,1 @@
+﻿var unicode="\ud83d\ude80",escape="\ud83d\ude80",surrogate="\ud83d\ude80"

@@ -1,0 +1,1 @@
+﻿function foo(bar){if(bar)alert("You called foo with "+bar);else alert("You called foo with [null]!!"+b)}foo("bar!");var a=""

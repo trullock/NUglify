@@ -1,0 +1,1 @@
+function Func(){/*@cc_on@if(1)alert("first");!0&&alert("second")@*/}

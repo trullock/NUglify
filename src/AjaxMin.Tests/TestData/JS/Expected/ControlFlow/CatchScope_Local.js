@@ -1,0 +1,1 @@
+function foo(){var t="local",n=10;try{n=100/0}catch(t){alert(t);n=5}alert(t);alert(n)}

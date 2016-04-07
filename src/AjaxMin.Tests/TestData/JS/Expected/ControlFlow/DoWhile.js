@@ -1,0 +1,1 @@
+function Func(p1){var i=0;do{if(i==p1)break;i++}while(i<100)}var a=0,ndx;if(1){do a=1;while(0)}else do a=2;while(0);if(1)do a=3;while(0);while(0)do a=4;while(0);for(ndx=0;ndx<10;++ndx)do a=ndx;while(0);do{do a=6;while(0)}while(0);if(0){for(ndx=0;ndx<10;++ndx)while(0)do a=ndx;while(0)}else a=10;alert(a);do if(a)throw"error";while(a)

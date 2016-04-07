@@ -1,0 +1,1 @@
+var t=function(x,y){return x in y};t["do"]in t;t in(Array||Object);t["do"]in(Array||Object)

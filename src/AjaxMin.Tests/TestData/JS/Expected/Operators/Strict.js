@@ -1,0 +1,1 @@
+﻿function test(a,b){typeof a=="foo";!1;!1;!1;typeof a==(a="arf");typeof a===(a,b);!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;!1;typeof a===a+b;typeof a===(a+=b);typeof a==typeof b+"foo";typeof a==b+"foo";typeof a=="foo"+b;!1;typeof a===(a&&b);typeof a===(a||b);!1;typeof a=="foo";!1;!0;typeof a=="foo";typeof a!="bar"}

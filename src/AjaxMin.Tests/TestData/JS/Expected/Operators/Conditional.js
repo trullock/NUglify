@@ -1,0 +1,1 @@
+function conditionals(left,right){var t=left==right?1:0,u=5+(left==right?5:-5),v=(left,right)?10:11,a=t?u=left:right,b=t?u=left:right,c=t?left:u=right,d=t?left:u=right;return left==right?1:left!=right?2:left===right?3:left!==right?4:left>right?5:left<right?6:left>=right?7:left<=right?8:void 0}

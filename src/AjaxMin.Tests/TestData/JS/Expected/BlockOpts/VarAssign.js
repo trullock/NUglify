@@ -1,0 +1,1 @@
+﻿function foo(ndx){var a=10+ndx;switch(ndx){case 1:ndx+=42;default:ndx*=2}return ndx+a}

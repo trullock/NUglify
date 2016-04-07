@@ -1,0 +1,1 @@
+﻿while(window.foo){const n=42;n+=2;++n;alert(n)}

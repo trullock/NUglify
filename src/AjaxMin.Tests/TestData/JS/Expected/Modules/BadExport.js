@@ -1,0 +1,1 @@
+﻿function foo(n){var t=n*n;export{t as BarSquared};return t}

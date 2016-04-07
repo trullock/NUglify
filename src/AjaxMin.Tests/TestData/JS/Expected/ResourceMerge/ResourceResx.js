@@ -1,0 +1,1 @@
+﻿function foo(bar){bar?alert("You called the 'foo' function "+bar):alert("You called the 'foo' function [null]!!"+b)}foo("bar!")

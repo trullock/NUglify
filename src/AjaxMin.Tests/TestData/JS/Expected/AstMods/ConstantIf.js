@@ -1,0 +1,1 @@
+﻿if(1)throw"true";if(0)throw"false";/*@cc_on@if(1)@*/alert("true");/*@elif(0)@*/alert("elif");/*@else@*/alert("false");/*@end@*/

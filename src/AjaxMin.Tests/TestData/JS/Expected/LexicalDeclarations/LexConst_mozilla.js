@@ -1,0 +1,1 @@
+﻿function foo(n){for(var t=0;t<n;++t){const i=t*t;alert(i)}alert(i)}

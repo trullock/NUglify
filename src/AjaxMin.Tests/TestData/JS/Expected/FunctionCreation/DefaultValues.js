@@ -1,0 +1,1 @@
+﻿+function(){function test1(a=init,b=[location.href,document.domain]){var init="inner";alert("a="+a+"; b=["+b[0]+","+b[1]+"]; init="+init)}test1()}("outer")

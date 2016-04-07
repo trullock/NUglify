@@ -1,0 +1,1 @@
+﻿var threeOne1="\0",threeOne1="\0xxx",threeTwo1="\02",threeTwo1="\02xxx",threeThree1="\123",threeThree2="\123xxx",twoOne1="\6",twoOne2="\6xxx",twoTwo="\46",twoTwo="\46xxx",twoTwoPlus="\773",concat='\123'+'\77'

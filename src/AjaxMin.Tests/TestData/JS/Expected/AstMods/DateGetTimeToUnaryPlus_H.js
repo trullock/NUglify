@@ -1,0 +1,1 @@
+﻿function foo(){function n(){}ticks=(new n).getTime()}function bar(n){var i=new Date(n).getTime(),t=(new Date).getTime("foo"),r=t+(new Date).getTime()}var ticks=(new Date).getTime(),nextYear=new Date((new Date).getTime()+31536e6)

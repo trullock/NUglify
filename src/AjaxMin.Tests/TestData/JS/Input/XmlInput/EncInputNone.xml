@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <output encoding="utf-8" path="..\..\Output\XmlInput\EncOutputNone.js">
+    <input path="encinput1.js"/>
+    <input path="encinput2.js"/>
+  </output>
+</root>

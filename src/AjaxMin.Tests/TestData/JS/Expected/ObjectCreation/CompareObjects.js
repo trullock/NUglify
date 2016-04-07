@@ -1,0 +1,1 @@
+function CompareObjects(){var add=new Function("x","y","return(x+y)"),add1=new Function("x","y","return(x+y)");add==add1&&alert("same function");delete add;delete add1}

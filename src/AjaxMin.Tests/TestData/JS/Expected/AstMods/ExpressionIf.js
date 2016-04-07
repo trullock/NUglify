@@ -1,0 +1,1 @@
+﻿function foo(a,b){var bar,p;if(a(b)&&(b="foo"),b!==null){bar="";for(p in b)bar+=p+b[p];return bar}}

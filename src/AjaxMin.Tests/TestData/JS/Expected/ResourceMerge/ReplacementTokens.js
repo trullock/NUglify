@@ -1,0 +1,1 @@
+﻿var foo=%SimpleName%,bar=%Complex.Name.With.Qualifiers%,bat=%ಠ_ಠ.ლ_ಠ益ಠ_ლ.123%,fallback1=%TokenName:string%,fallback2=%TokenName:num%,fallback3=%TokenName:%

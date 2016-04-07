@@ -1,0 +1,1 @@
+﻿module"lib/testmodule"{export function foo(n){alert("foo: "+n)}function n(n){alert("bar: "+n)}export var bat=42;export{n as bar}}import{arf}from"lib/testmodule";arf("hey, there!")

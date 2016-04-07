@@ -1,0 +1,1 @@
+﻿export{foo,bar}from"othermodule";foo(bar)

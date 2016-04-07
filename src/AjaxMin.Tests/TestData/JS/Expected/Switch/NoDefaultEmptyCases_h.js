@@ -1,0 +1,1 @@
+function f(n,t,i){var r="0";switch(n){case 2:r="2"}switch(t){case 1:r="1"}switch(i){}}

@@ -1,0 +1,1 @@
+function foo(){for(var n=0;n<10;++n)switch(n){case 1:n=0;break;case 5:n=1;continue;case 8:n=2;break;case 10:n=3;throw"error";case 12:return n=4,-1}}

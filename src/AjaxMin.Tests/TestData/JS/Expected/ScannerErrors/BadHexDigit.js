@@ -1,0 +1,1 @@
+﻿var badHex=0xRT

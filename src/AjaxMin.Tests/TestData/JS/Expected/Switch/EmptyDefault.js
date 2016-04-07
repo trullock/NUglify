@@ -1,0 +1,1 @@
+function f(a,b,c,d,e){var x="0";switch(a){case 1:x="1";break;case 2:x="2";break;default:break}switch(b){case 1:x="1";break;default:break;case 2:x="2";break}switch(c){default:break}switch(d){case 1:default:case 2:case 3:break;case 4:a=0;break}switch(e){case 1:a=1;break;default:}}

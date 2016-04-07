@@ -1,0 +1,1 @@
+function Func(){var index,x=index*42}

@@ -1,0 +1,1 @@
+﻿(function(log){function outer(){for(var x=0,ndx=0;ndx<100;++ndx)if(ndx==50){ndx+=++x;function foo(x){return x+x}alert(foo(ndx))}}function arf(d){return""+d}var outerVar,another;log=Math.LN2(unknownGlobal);outerVar=42;switch(log){case 0:return arf(0);default:return outer(log)}another=10})()

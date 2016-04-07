@@ -1,0 +1,1 @@
+﻿function foo(arf,bat){return arf+bat}

@@ -1,0 +1,1 @@
+﻿function foo(){var not=Strings.Ack.Bar.Not;return"First Resource String Second Resource String"}

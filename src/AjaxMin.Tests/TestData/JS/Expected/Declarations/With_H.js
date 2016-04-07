@@ -1,0 +1,1 @@
+function Func(n){function i(){var toodles,tart;with(n){toodles=goodbye;foo=x;bar=someGlobal*2;with(toodles)tart=treacle}}var x,y,cos=function(){return"no such thing"},t=16;with(Math){x=cos(3*PI)+sin(LN10);y=tan(14*E);function wham(){return cos(y)}}}var someGlobal=12,unreferencedGlobal=42

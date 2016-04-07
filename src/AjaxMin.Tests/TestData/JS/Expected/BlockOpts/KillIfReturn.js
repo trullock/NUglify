@@ -1,0 +1,1 @@
+﻿function foo(a,b){if(a)return b?void 0:false}

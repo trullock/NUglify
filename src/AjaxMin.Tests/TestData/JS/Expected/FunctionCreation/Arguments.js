@@ -1,0 +1,1 @@
+function Func(){var i,s,numargs=arguments.length;for(s=numargs,s+=numargs<2?" argument was passed to ArgTest. It was ":" arguments were passed to ArgTest. They were ",i=0;i<numargs;i++)s+=arguments[i]+" ";return s}

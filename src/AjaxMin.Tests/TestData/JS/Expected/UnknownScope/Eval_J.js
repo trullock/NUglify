@@ -1,0 +1,1 @@
+﻿function test1(n,t){var i=n+t;return window.eval("window."+i)}(function(){function i(n){eval(n+";")}function r(){var i=n+" boy-howdy! ";return n+i+t}var n="bar",t="gag";i("alert('"+r()+"')")})()

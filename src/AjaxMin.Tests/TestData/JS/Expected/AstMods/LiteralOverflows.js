@@ -1,0 +1,1 @@
+﻿var smallNum=2e-200,largeNum=2e200,a=smallNum*2e300*2e200,b=largeNum*2e-100/2e300

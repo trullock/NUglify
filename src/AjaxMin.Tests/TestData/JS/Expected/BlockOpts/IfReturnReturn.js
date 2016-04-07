@@ -1,0 +1,1 @@
+﻿function test1(a){if(a!=0){a==20;return}a==="foo"}function test2(a,b){function foo(a,b){return typeof a==typeof b}return foo(a,b),a+b}

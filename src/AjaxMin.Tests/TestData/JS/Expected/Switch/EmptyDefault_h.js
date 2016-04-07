@@ -1,0 +1,1 @@
+function f(n,t,i,r,u){var f="0";switch(n){case 1:f="1";break;case 2:f="2"}switch(t){case 1:f="1";break;case 2:f="2"}switch(i){}switch(r){case 4:n=0}switch(u){case 1:n=1}}

@@ -1,0 +1,1 @@
+﻿module"foo"{export function bar(n){alert("bar: "+n)}export function bat(n){alert("bat: "+n)}}import{arf}from"foo";arf("one more time")

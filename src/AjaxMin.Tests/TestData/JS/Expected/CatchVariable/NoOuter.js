@@ -1,0 +1,1 @@
+﻿(function(){var bar=12;bar*=(bar+13)%bar;try{alert(foo)}catch(err){alert(err)}})()

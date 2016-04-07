@@ -1,0 +1,1 @@
+﻿function test(){var a="foo"=="bar",b="foo"!="bar",c=typeof test=="function",d=typeof test!="undefined",e=!1,f=!0,g=!1,h=!0}

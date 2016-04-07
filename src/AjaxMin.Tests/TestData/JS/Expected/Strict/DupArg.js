@@ -1,0 +1,1 @@
+﻿function test1(){"use strict";function foo(one,two,three,one,four){return one+two+three+four}return foo()}function test2(){function bar(one,two,one,three){return one+two+three}return bar()}

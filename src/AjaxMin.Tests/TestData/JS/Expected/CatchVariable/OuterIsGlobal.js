@@ -1,0 +1,1 @@
+﻿var err;try{alert(foo)}catch(err){}alert(err)

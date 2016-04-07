@@ -1,0 +1,1 @@
+﻿function foo(n){n?alert("Calling all FOO:"+n):alert("Calling all FOO:[null]!!"+b)}foo("bar!")

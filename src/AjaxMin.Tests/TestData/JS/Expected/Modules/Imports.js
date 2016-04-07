@@ -1,0 +1,1 @@
+﻿import $ from"jquery-2.0.0.min";$(()=>alert("JQUERY!"));import{encrypt,decrypt}from"crypto";encrypt("this");decrypt("that");import{foo as bat}from"libraries/bat";bat();import mylib from"external/lib";alert(mylib);import"ack";import{draw as drawShape}from"shape";import{draw as drawGun}from"cowboy";drawShape();drawGun();import{sum,pi}from"math";alert(sum(pi,3))

@@ -1,0 +1,1 @@
+﻿(function(){function n(n,t,i,r){this.top=n;this.right=t;this.bottom=i;this.left=r}var t=new n(12345,12345,-12345,-12345)})(),function(){function n(n,t,i,r){this.top=n;this.right=t;this.bottom=i;this.left=r}var t=new n(-12345,-12345,12345,12345)}(),function(){function n(n,t,i,r){this.top=n;this.right=t;this.bottom=i;this.left=r}var t=new n(12345,-12345,-12345,-12345)}()

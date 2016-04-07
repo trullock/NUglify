@@ -1,0 +1,1 @@
+var pattern=/=|\^=|\$=|\*=/;/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/.test('{"foo":42}');var str="Now is the time for all good men",rep=str.replace(/\s+/g,"+"),re=/book/i;var trim=/^\s*(.*)\s*$/m.match(str),r1=new RegExp("\x07\b\t\n\x0b\f\r\x0e"),r2=new RegExp("\x07\b\t\n"+str+"\x0b\f\r\x0e")

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <output path="..\..\Output\XmlInput\EncOutputRussian.js">
+    <input path="encinput1.js"/>
+    <input path="encinput2.js" encoding="koi8-r"/>
+  </output>
+</root>

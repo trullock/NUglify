@@ -1,0 +1,1 @@
+var pi,flag;@set@foo=(22/7)pi=/*@foo@*/;@set@false=(!1)flag=/*@false@*/;alert(flag)

@@ -1,0 +1,1 @@
+﻿function Func(n){var u=new Object(1),t={},i={bar:42,"while":16,1:"bar"},r={bar:"bar","while":"bar",ack:"bar",42:16,get foo(){return 1},set foo(n){this.ack=n}};return u.foo="bar",t.b={get:42,set:"x"},i.c={one:1,two:2},r.d={},n(t,i,r)}

@@ -1,0 +1,1 @@
+﻿var base=class{construtor(n){this.arf=n}},derv=class extends base{constructor(n){super(n)}get Arf(){return this.arf}},noref=class extends derv{constructor(n){super(n*n)}},self=class n extends derv{constructor(n,t){super(n+t)}static Bat(n){return alert(this.Arf+n),n}DoIt(t){return n.Bar(t)}}

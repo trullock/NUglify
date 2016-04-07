@@ -1,0 +1,1 @@
+﻿if(location){let n=location.href,n=42;alert(n)}for(let n=0;n<10;++n){const n=42;alert(n*n)}

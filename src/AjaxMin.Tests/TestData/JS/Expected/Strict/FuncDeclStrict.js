@@ -1,0 +1,1 @@
+﻿"use strict";function foo(arf){if(arf){function bar(){alert("wow")}bar()}}

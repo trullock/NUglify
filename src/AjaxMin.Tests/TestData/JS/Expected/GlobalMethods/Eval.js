@@ -1,0 +1,1 @@
+function Func(){eval("var mydate = new Date();");eval(function(){return"arf"})}

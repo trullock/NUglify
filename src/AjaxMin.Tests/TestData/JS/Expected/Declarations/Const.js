@@ -1,0 +1,1 @@
+﻿const a=1,b=2,c=3;var d=4,e=5;const f=6,g=7

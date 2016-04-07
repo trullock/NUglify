@@ -1,0 +1,1 @@
+﻿function foo(){/*@cc_on@if(@_win32)addWindowOnload=!1;@end@*/}

@@ -1,0 +1,1 @@
+﻿function foo(){function MyButton::OnClick(){alert("CLICK!")}return 0}function window.onload(){alert("ONLOLAD!")}function(param1){return param1+param1}function bar{return 3}function{return 4}var f1=function ralph(){return ralph},f2=function(){return 2};alert(f1)

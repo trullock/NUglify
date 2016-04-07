@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<map>
+  <headers>DstStartLine,DstStartColumn,DstEndLine,DstEndColumn,SrcStartPosition,SrcEndPosition,SrcStartLine,SrcStartColumn,SrcEndLine,SrcEndColumn,SrcFileId,SymbolType,ParentFunction</headers>
+  <scriptFiles>
+    <scriptFile path="ScriptSharpMap_TwoInputs.js">
+      <s>1,10,1,24,30,44,3,9,3,23,1,Lookup,alertOnTimeout</s>
+      <s>1,27,1,37,54,64,4,4,4,14,1,Lookup,alertOnTimeout</s>
+      <s>1,38,1,53,65,80,4,15,4,30,1,ConstantWrapper,alertOnTimeout</s>
+      <s>1,54,1,57,82,86,4,32,4,36,1,ConstantWrapper,alertOnTimeout</s>
+      <s>1,27,1,58,54,87,4,4,4,37,1,CallNode,alertOnTimeout</s>
+      <s>1,26,1,59,47,91,3,26,5,1,1,Block,alertOnTimeout</s>
+      <s>1,1,1,59,21,91,3,0,5,1,1,FunctionObject,alertOnTimeout</s>
+      <s>1,68,1,79,104,115,7,9,7,20,1,Lookup,invokeAlert</s>
+      <s>1,82,1,87,125,130,8,4,8,9,1,Lookup,invokeAlert</s>
+      <s>1,88,1,95,131,138,8,10,8,17,1,ConstantWrapper,invokeAlert</s>
+      <s>1,82,1,96,125,139,8,4,8,18,1,CallNode,invokeAlert</s>
+      <s>1,81,1,97,118,143,7,23,9,1,1,Block,invokeAlert</s>
+      <s>1,59,1,97,95,143,7,0,9,1,1,FunctionObject,invokeAlert</s>
+      <s>1,106,1,111,87,92,6,9,6,14,2,Lookup,write</s>
+      <s>1,115,1,123,103,111,7,4,7,12,2,Lookup,write</s>
+      <s>1,115,1,129,103,117,7,4,7,18,2,Member,write</s>
+      <s>1,130,1,146,118,134,7,19,7,35,2,ConstantWrapper,write</s>
+      <s>1,147,1,148,137,138,7,38,7,39,2,Lookup,write</s>
+      <s>1,130,1,148,118,138,7,19,7,39,2,BinaryOperator,write</s>
+      <s>1,115,1,149,103,139,7,4,7,40,2,CallNode,write</s>
+      <s>1,150,1,158,146,154,8,4,8,12,2,Lookup,write</s>
+      <s>1,150,1,164,146,160,8,4,8,18,2,Member,write</s>
+      <s>1,165,1,173,161,169,8,19,8,27,2,ConstantWrapper,write</s>
+      <s>1,150,1,174,146,170,8,4,8,28,2,CallNode,write</s>
+      <s>1,114,1,175,96,178,6,18,9,1,2,Block,write</s>
+      <s>1,97,1,175,78,178,6,0,9,1,2,FunctionObject,write</s>
+      <s>1,175,1,189,0,14,1,0,1,14,1,Lookup,</s>
+      <s>1,175,1,191,0,16,1,0,1,16,1,CallNode,</s>
+      <s>1,202,1,203,8,9,1,8,1,9,2,ConstantWrapper,</s>
+      <s>1,199,1,203,4,9,1,4,1,9,2,VariableDeclaration,</s>
+      <s>1,206,1,207,21,22,2,9,2,10,2,ConstantWrapper,</s>
+      <s>1,204,1,207,17,22,2,5,2,10,2,VariableDeclaration,</s>
+      <s>1,196,1,207,0,22,1,0,2,10,2,Var,</s>
+      <s>1,208,1,209,24,25,2,12,2,13,2,Lookup,</s>
+      <s>1,211,1,214,29,32,2,17,2,20,2,ConstantWrapper,</s>
+      <s>1,208,1,214,24,32,2,12,2,20,2,BinaryOperator,</s>
+      <s>1,215,1,216,34,35,2,22,2,23,2,Lookup,</s>
+      <s>1,215,1,218,34,37,2,22,2,25,2,UnaryOperator,</s>
+      <s>1,219,1,220,50,51,3,8,3,9,2,Lookup,</s>
+      <s>1,221,1,222,54,55,3,12,3,13,2,ConstantWrapper,</s>
+      <s>1,219,1,222,50,55,3,8,3,13,2,BinaryOperator,</s>
+      <s>1,224,1,225,59,60,3,17,3,18,2,ConstantWrapper,</s>
+      <s>1,219,1,225,50,60,3,8,3,18,2,BinaryOperator,</s>
+      <s>1,227,1,232,62,67,3,20,3,25,2,Lookup,</s>
+      <s>1,233,1,234,68,69,3,26,3,27,2,Lookup,</s>
+      <s>1,227,1,235,62,70,3,20,3,28,2,CallNode,</s>
+      <s>1,219,1,235,46,70,3,4,3,28,2,BinaryOperator,</s>
+      <s>1,192,1,235,12,38,2,0,2,26,2,ForNode,</s>
+      <checksum value="B5-D5-2E-6B-E5-05-C1-44-BA-74-6C-27-49-BA-C3-BE" />
+    </scriptFile>
+  </scriptFiles>
+  <sourceFiles>
+    <sourceFile id="1" path="../../Input/SourceMap/ScriptSharpMap.js" />
+    <sourceFile id="2" path="../../Input/SourceMap/MapArgNotSpecified.js" />
+  </sourceFiles>
+</map>
