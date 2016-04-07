@@ -1,4 +1,4 @@
-**Table of Contents **
+**Table of Contents**
 
 > **note**: This document was converted to markdown from the original word document `ajaxmin.doc`
 
@@ -6,12 +6,12 @@ Microsoft Ajax Minifier Documentation
 - Author: Ron Logan
 - Last Update Date: 12/13/2009
 
-1.  [Introduction to JavaScript Minification Concepts](#introduction-to-javaScript-minification-concepts)
+1.  [Introduction to JavaScript Minification Concepts](#introduction-to-javascript-minification-concepts)
 2.  [Command-Line Usage](#command-line-usage)
 3.  [Default JavaScript Minification](#default-javascript-minification)
 4.  [Local Variable and Function Renaming](#local-variable-and-function-renaming)
 5.  [Conditional Compilation Comments](#conditional-compilation-comments)
-6.  [Variable Renaming With and Eval Statements – Not!](#variable-renaming-with-and-eval-statements-not)
+6.  [Variable Renaming With and Eval Statements – Not!](#variable-renaming-with-and-eval-statements--not-)
 7.  [Analyzing Your Script](#analyzing-your-script)
 8.  [Specifying External Globals](#specifying-external-globals)
 9.  [Maximizing Your Local Variables and Functions](#maximizing-your-local-variables-and-functions)
@@ -29,7 +29,7 @@ Microsoft Ajax Minifier Documentation
 19. [Error Ouput](#error-ouput)
 
 Introduction to JavaScript Minification Concepts
-=================================================================================================================================================================================================================================================================================================================================================================================================================================
+================================================
 
 JavaScript has the dubious quality of not being compiled. The source code text for the program is downloaded by the client, parsed, and the interpreted by the browser. Verbose, easy-to-maintain coding styles promoted by responsible software engineers actually hurts performance with JavaScript, as it greatly increases the page weight transmitted to the client.
 
