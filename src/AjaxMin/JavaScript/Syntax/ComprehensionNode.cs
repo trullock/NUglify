@@ -34,7 +34,7 @@ namespace AjaxMin.JavaScript.Syntax
 
         public bool MozillaOrdering { get; set; }
 
-        public Context OpenDelimiter { get; set; }
+        public SourceContext OpenDelimiter { get; set; }
 
         public AstNode Expression
         {
@@ -54,11 +54,11 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context CloseDelimiter { get; set; }
+        public SourceContext CloseDelimiter { get; set; }
 
         public BlockScope BlockScope { get; set; }
 
-        public ComprehensionNode(Context context)
+        public ComprehensionNode(SourceContext context)
             : base(context)
         {
         }

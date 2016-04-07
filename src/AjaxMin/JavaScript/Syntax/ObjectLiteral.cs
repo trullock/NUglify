@@ -54,7 +54,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ObjectLiteral(Context context)
+        public ObjectLiteral(SourceContext context)
             : base(context)
         {
         }

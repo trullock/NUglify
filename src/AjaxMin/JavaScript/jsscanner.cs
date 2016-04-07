@@ -72,7 +72,7 @@ namespace AjaxMin.JavaScript
         private bool m_inMultipleLineComment;
         private bool m_mightBeKeyword;
         private string m_decodedString;
-        private Context m_currentToken;
+        private SourceContext m_currentToken;
 
         private JSScanner m_peekClone;
 
@@ -150,7 +150,7 @@ namespace AjaxMin.JavaScript
         /// <summary>
         /// Gets the current token reference
         /// </summary>
-        public Context CurrentToken
+        public SourceContext CurrentToken
         {
             get { return m_currentToken; }
         }
@@ -188,7 +188,7 @@ namespace AjaxMin.JavaScript
 
             // create a new empty context. By default the constructor will make the context
             // represent the entire document, but we want to start it off at just the beginning of it.
-            m_currentToken = new Context(sourceContext)
+            m_currentToken = new SourceContext(sourceContext)
                 {
                     EndPosition = 0
                 };
@@ -318,7 +318,7 @@ namespace AjaxMin.JavaScript
         /// <returns>next token from the input</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity"), 
          System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "big case statement")]
-        public Context ScanNextToken()
+        public SourceContext ScanNextToken()
         {
             var token = JSToken.None;
 
@@ -1098,7 +1098,7 @@ namespace AjaxMin.JavaScript
             return m_currentToken;
         }
 
-        public Context UpdateToken(UpdateHint updateHint)
+        public SourceContext UpdateToken(UpdateHint updateHint)
         {
             if (updateHint == UpdateHint.RegularExpression 
                 && (m_currentToken.IsEither(JSToken.Divide, JSToken.DivideAssign)))
@@ -3975,7 +3975,7 @@ namespace AjaxMin.JavaScript
             return assignOp;
         }
 
-        public static OperatorPrecedence GetOperatorPrecedence(Context op)
+        public static OperatorPrecedence GetOperatorPrecedence(SourceContext op)
         {
             return op == null || op.Token == JSToken.None ? OperatorPrecedence.None : JSScanner.s_OperatorsPrec[op.Token - JSToken.FirstBinaryOperator];
         }

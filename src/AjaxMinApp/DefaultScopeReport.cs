@@ -475,7 +475,7 @@ namespace AjaxMin
             }
         }
 
-        private static Context GetFirstDeclaration(JSVariableField variableField)
+        private static SourceContext GetFirstDeclaration(JSVariableField variableField)
         {
             // only local fields that actually correspond to a declaration get the declaration
             // added to the declarations collection -- inner references don't get the declaration,
@@ -724,8 +724,8 @@ namespace AjaxMin
             public int Compare(ActivationObject left, ActivationObject right)
             {
                 int comparison = 0;
-                Context leftContext = GetContext(left);
-                Context rightContext = GetContext(right);
+                SourceContext leftContext = GetContext(left);
+                SourceContext rightContext = GetContext(right);
                 if (leftContext == null)
                 {
                     // if they're both null, return 0 (equal)
@@ -772,7 +772,7 @@ namespace AjaxMin
                 return scope.Owner.IfNotNull(o => o.HasOwnScope && o.EnclosingScope != scope);
             }
 
-            private static Context GetContext(ActivationObject obj)
+            private static SourceContext GetContext(ActivationObject obj)
             {
                 // return the owner context, or null
                 return obj.IfNotNull(s => s.Owner.Context);

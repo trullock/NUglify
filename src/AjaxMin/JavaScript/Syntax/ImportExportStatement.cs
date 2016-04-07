@@ -19,19 +19,19 @@ using System.Collections.Generic;
 namespace AjaxMin.JavaScript.Syntax
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-    public abstract class ImportExportStatement : AstNode, IEnumerable<AstNode>, IModuleReference
+    public abstract class ImportExportStatement : Statement, IEnumerable<AstNode>, IModuleReference
     {
         private List<AstNode> m_list;
 
-        public Context KeywordContext { get; set; }
+        public SourceContext KeywordContext { get; set; }
 
-        public Context OpenContext { get; set; }
+        public SourceContext OpenContext { get; set; }
 
-        public Context CloseContext { get; set; }
+        public SourceContext CloseContext { get; set; }
 
-        public Context FromContext { get; set; }
+        public SourceContext FromContext { get; set; }
 
-        public Context ModuleContext { get; set; }
+        public SourceContext ModuleContext { get; set; }
 
         public string ModuleName { get; set; }
 
@@ -46,7 +46,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        protected ImportExportStatement(Context context)
+        protected ImportExportStatement(SourceContext context)
             : base(context)
         {
             m_list = new List<AstNode>();

@@ -153,7 +153,7 @@ namespace AjaxMin.JavaScript
             return null;
         }
 
-        public void MarkSegment(AstNode node, int startLine, int startColumn, string name, Context context)
+        public void MarkSegment(AstNode node, int startLine, int startColumn, string name, SourceContext context)
         {
             if (node == null || string.IsNullOrEmpty(name))
             {
@@ -279,7 +279,7 @@ namespace AjaxMin.JavaScript
             private int m_endLine;
             private int m_startColumn;
             private int m_endColumn;
-            private Context m_sourceContext;
+            private SourceContext m_sourceContext;
             private int m_sourceFileId;
             private string m_symbolType;
             private string m_parentFunction;

@@ -43,7 +43,7 @@ namespace AjaxMin.JavaScript.Visitors
         void Visit(ConstantWrapper node);
         void Visit(ConstantWrapperPP node);
         void Visit(ConstStatement node);
-        void Visit(ContinueNode node);
+        void Visit(ContinueStatement node);
         void Visit(CustomNode node);
         void Visit(DebuggerNode node);
         void Visit(DirectivePrologue node);

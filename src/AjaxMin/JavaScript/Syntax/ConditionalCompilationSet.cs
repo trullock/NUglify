@@ -34,7 +34,7 @@ namespace AjaxMin.JavaScript.Syntax
 
         public string VariableName { get; set; }
 
-        public ConditionalCompilationSet(Context context)
+        public ConditionalCompilationSet(SourceContext context)
             : base(context)
         {
         }

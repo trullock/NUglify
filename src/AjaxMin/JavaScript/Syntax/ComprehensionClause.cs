@@ -22,13 +22,13 @@ namespace AjaxMin.JavaScript.Syntax
     /// </summary>
     public abstract class ComprehensionClause : AstNode
     {
-        public Context OperatorContext { get; set; }
+        public SourceContext OperatorContext { get; set; }
 
-        public Context OpenContext { get; set; }
+        public SourceContext OpenContext { get; set; }
 
-        public Context CloseContext { get; set; }
+        public SourceContext CloseContext { get; set; }
 
-        protected ComprehensionClause(Context context)
+        protected ComprehensionClause(SourceContext context)
             : base(context)
         {
         }

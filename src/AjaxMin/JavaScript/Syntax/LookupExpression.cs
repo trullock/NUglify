@@ -109,7 +109,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public LookupExpression(Context context)
+        public LookupExpression(SourceContext context)
             : base(context)
         {
             RefType = ReferenceType.Variable;

@@ -19,7 +19,7 @@ using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin.JavaScript.Syntax
 {
-    public sealed class SwitchStatement : AstNode
+    public sealed class SwitchStatement : Statement
     {
         private AstNode m_expression;
         private AstNodeList m_cases;
@@ -43,11 +43,11 @@ namespace AjaxMin.JavaScript.Syntax
         }
 
         public bool BraceOnNewLine { get; set; }
-        public Context BraceContext { get; set; }
+        public SourceContext BraceContext { get; set; }
 
         public ActivationObject BlockScope { get; set; }
 
-        public SwitchStatement(Context context)
+        public SwitchStatement(SourceContext context)
             : base(context)
         {
         }

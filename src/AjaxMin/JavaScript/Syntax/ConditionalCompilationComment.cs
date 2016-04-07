@@ -31,7 +31,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ConditionalCompilationComment(Context context)
+        public ConditionalCompilationComment(SourceContext context)
             : base(context)
         {
             Statements = new BlockStatement(context.FlattenToStart());

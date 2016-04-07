@@ -25,7 +25,7 @@ namespace AjaxMin.JavaScript.Syntax
     {
         private List<AstNode> m_list;
 
-        public override Context TerminatingContext
+        public override SourceContext TerminatingContext
         {
             get
             {
@@ -35,7 +35,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public AstNodeList(Context context)
+        public AstNodeList(SourceContext context)
             : base(context)
         {
             m_list = new List<AstNode>();

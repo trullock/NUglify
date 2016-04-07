@@ -296,7 +296,7 @@ namespace AjaxMin.JavaScript.Visitors
             Debug.Fail("shouldn't get here");
         }
 
-        public void Visit(ContinueNode node)
+        public void Visit(ContinueStatement node)
         {
             Debug.Fail("shouldn't get here");
         }

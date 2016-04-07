@@ -19,7 +19,7 @@ using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin.JavaScript.Syntax
 {
-    public sealed class ReturnStatement : AstNode
+    public sealed class ReturnStatement : Statement
     {
         private AstNode m_operand;
         public AstNode Operand
@@ -31,7 +31,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ReturnStatement(Context context)
+        public ReturnStatement(SourceContext context)
             : base(context)
         {
         }

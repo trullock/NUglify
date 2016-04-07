@@ -218,7 +218,7 @@ namespace AjaxMin.JavaScript.Visitors
             // starts with a 'const', so we don't care
         }
 
-        public void Visit(ContinueNode node)
+        public void Visit(ContinueStatement node)
         {
             // starts with a 'continue', so we don't care
         }

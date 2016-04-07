@@ -47,9 +47,9 @@ namespace AjaxMin.JavaScript.Syntax
             get { return (CaseValue == null); }
         }
 
-        public Context ColonContext { get; set; }
+        public SourceContext ColonContext { get; set; }
 
-        public SwitchCase(Context context)
+        public SwitchCase(SourceContext context)
             : base(context)
         {
         }

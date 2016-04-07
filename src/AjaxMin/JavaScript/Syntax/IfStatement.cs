@@ -20,7 +20,7 @@ using AjaxMin.JavaScript.Visitors;
 namespace AjaxMin.JavaScript.Syntax
 {
 
-    public sealed class IfStatement : AstNode
+    public sealed class IfStatement : Statement
     {
         private AstNode m_condition;
         private BlockStatement m_trueBlock;
@@ -53,9 +53,9 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context ElseContext { get; set; }
+        public SourceContext ElseContext { get; set; }
 
-        public override Context TerminatingContext
+        public override SourceContext TerminatingContext
         {
             get
             {
@@ -80,7 +80,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public IfStatement(Context context)
+        public IfStatement(SourceContext context)
             : base(context)
         {
         }

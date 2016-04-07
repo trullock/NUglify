@@ -44,11 +44,11 @@ namespace AjaxMin.JavaScript.Syntax
         /// <summary>
         /// Gets or sets the source context of this node
         /// </summary>
-        public Context Context { get; set; }
+        public SourceContext Context { get; set; }
 
         /// <summary>the context of any terminating character parsed after this node
         /// e.g. the semicolon after a statement or a comma in a parameter list</summary>
-        public virtual Context TerminatingContext { get; set; }
+        public virtual SourceContext TerminatingContext { get; set; }
 
         /// <summary>
         /// Gets a boolean flag indicating whether this node is an expression
@@ -166,7 +166,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        protected AstNode(Context context)
+        protected AstNode(SourceContext context)
         {
             if (context == null)
             {
@@ -260,7 +260,7 @@ namespace AjaxMin.JavaScript.Syntax
         /// <param name="visitor">visitor to accept</param>
         public abstract void Accept(IVisitor visitor);
 
-        public void UpdateWith(Context context)
+        public void UpdateWith(SourceContext context)
         {
             if (context != null)
             {

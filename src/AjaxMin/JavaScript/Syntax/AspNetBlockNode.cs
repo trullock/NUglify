@@ -24,7 +24,7 @@ namespace AjaxMin.JavaScript.Syntax
         public bool IsTerminatedByExplicitSemicolon { get; set; }
         public string AspNetBlockText { get; set; }
 
-        public AspNetBlockNode(Context context)
+        public AspNetBlockNode(SourceContext context)
             : base(context)
         {
         }

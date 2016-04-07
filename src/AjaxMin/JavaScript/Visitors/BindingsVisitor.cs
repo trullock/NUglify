@@ -329,7 +329,7 @@ namespace AjaxMin.JavaScript.Visitors
             ReportError(node);
         }
 
-        public void Visit(ContinueNode node)
+        public void Visit(ContinueStatement node)
         {
             ReportError(node);
         }

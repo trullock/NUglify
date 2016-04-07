@@ -42,11 +42,11 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context OperatorContext { get; set; }
+        public SourceContext OperatorContext { get; set; }
 
         public BlockScope BlockScope { get; set; }
 
-        public override Context TerminatingContext
+        public override SourceContext TerminatingContext
         {
             get
             {
@@ -55,7 +55,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ForInStatement(Context context)
+        public ForInStatement(SourceContext context)
             : base(context)
         {
         }

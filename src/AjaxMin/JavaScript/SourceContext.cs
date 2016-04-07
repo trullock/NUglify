@@ -19,7 +19,7 @@ using AjaxMin.JavaScript.Syntax;
 
 namespace AjaxMin.JavaScript
 {
-    public class Context
+    public class SourceContext
     {
         public DocumentContext Document { get; private set; }
 
@@ -114,7 +114,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        public Context(DocumentContext document)
+        public SourceContext(DocumentContext document)
         {
             if (document == null)
             {
@@ -134,7 +134,7 @@ namespace AjaxMin.JavaScript
             Token = JSToken.None;
         }
 
-        public Context(DocumentContext document, int startLineNumber, int startLinePosition, int startPosition, int endLineNumber, int endLinePosition, int endPosition, JSToken token)
+        public SourceContext(DocumentContext document, int startLineNumber, int startLinePosition, int startPosition, int endLineNumber, int endLinePosition, int endPosition, JSToken token)
             : this(document)
         {
             StartLineNumber = startLineNumber;
@@ -146,11 +146,11 @@ namespace AjaxMin.JavaScript
             Token = token;
         }
 
-        protected Context()
+        protected SourceContext()
         {
         }
 
-        public void SetData(Context input)
+        public void SetData(SourceContext input)
         {
             if (input != null)
             {
@@ -167,16 +167,16 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        public Context Clone()
+        public SourceContext Clone()
         {
-            Context clone = new Context();
+            SourceContext clone = new SourceContext();
 
             clone.SetData(this);
 
             return clone;
         }
 
-        public Context FlattenToStart()
+        public SourceContext FlattenToStart()
         {
             // clone the context and flatten the end to be the start position
             var clone = Clone();
@@ -187,7 +187,7 @@ namespace AjaxMin.JavaScript
             return clone;
         }
 
-        public Context FlattenToEnd()
+        public SourceContext FlattenToEnd()
         {
             // clone the context and flatten the start to the end position
             var clone = Clone();
@@ -203,9 +203,9 @@ namespace AjaxMin.JavaScript
         /// </summary>
         /// <param name="other">other context</param>
         /// <returns>new context instance</returns>
-        public Context CombineWith(Context other)
+        public SourceContext CombineWith(SourceContext other)
         {
-            var clone = new Context();
+            var clone = new SourceContext();
 
             clone.SetData(this);
 
@@ -218,7 +218,7 @@ namespace AjaxMin.JavaScript
         /// </summary>
         /// <param name="length">number of characters to trim off the front of this token</param>
         /// <returns>context for the trimmed-off portion</returns>
-        public Context SplitStart(int length)
+        public SourceContext SplitStart(int length)
         {
             // create the new context for the trimmed-off part
             // while adjusting this context to start after the trimmed-off part
@@ -234,7 +234,7 @@ namespace AjaxMin.JavaScript
         /// </summary>
         /// <param name="other">other context</param>
         /// <returns>current context for chaining purposes</returns>
-        public Context UpdateWith(Context other)
+        public SourceContext UpdateWith(SourceContext other)
         {
             if (other != null)
             {
@@ -390,7 +390,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        public bool IsBefore(Context other)
+        public bool IsBefore(SourceContext other)
         {
             // this context is BEFORE the other context if it starts on an earlier line,
             // OR if it starts on the same line but at an earlier column

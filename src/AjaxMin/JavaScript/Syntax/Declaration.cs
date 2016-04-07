@@ -20,13 +20,13 @@ using AjaxMin.JavaScript.Visitors;
 namespace AjaxMin.JavaScript.Syntax
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "AST statement")]
-    public abstract class Declaration : AstNode, IEnumerable<VariableDeclaration>
+    public abstract class Declaration : Statement, IEnumerable<VariableDeclaration>
     {
         private List<VariableDeclaration> m_list;
 
         public JSToken StatementToken { get; set; }
 
-        public Context KeywordContext { get; set; }
+        public SourceContext KeywordContext { get; set; }
 
         public int Count
         {
@@ -62,7 +62,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        protected Declaration(Context context)
+        protected Declaration(SourceContext context)
             : base(context)
         {
             m_list = new List<VariableDeclaration>();

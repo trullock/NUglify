@@ -18,9 +18,9 @@ using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin.JavaScript.Syntax
 {
-    public class EmptyStatement : AstNode
+    public class EmptyStatement : Statement
     {
-        public EmptyStatement(Context context)
+        public EmptyStatement(SourceContext context)
             : base(context)
         {
         }

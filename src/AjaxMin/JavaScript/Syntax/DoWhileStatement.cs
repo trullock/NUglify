@@ -33,9 +33,9 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context WhileContext { get; set; }
+        public SourceContext WhileContext { get; set; }
 
-        public DoWhileStatement(Context context)
+        public DoWhileStatement(SourceContext context)
             : base(context)
         {
         }

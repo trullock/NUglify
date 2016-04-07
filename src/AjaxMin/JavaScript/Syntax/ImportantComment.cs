@@ -33,7 +33,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ImportantComment(Context context)
+        public ImportantComment(SourceContext context)
             : base(context)
         {
             Comment = Context.Code;

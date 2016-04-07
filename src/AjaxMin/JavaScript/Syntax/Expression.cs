@@ -18,7 +18,7 @@ namespace AjaxMin.JavaScript.Syntax
 {
     public abstract class Expression : AstNode
     {
-        protected Expression(Context context)
+        protected Expression(SourceContext context)
             : base(context)
         {
         }

@@ -36,14 +36,14 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context FromContext { get; set; }
+        public SourceContext FromContext { get; set; }
 
         /// <summary>
         /// Gets or sets the module name
         /// </summary>
         public string ModuleName { get; set; }
 
-        public Context ModuleContext { get; set; }
+        public SourceContext ModuleContext { get; set; }
 
         public ModuleScope ReferencedModule { get; set; }
 
@@ -71,7 +71,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ModuleDeclaration(Context context)
+        public ModuleDeclaration(SourceContext context)
             : base(context)
         {
         }

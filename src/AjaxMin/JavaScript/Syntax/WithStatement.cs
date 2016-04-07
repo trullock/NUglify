@@ -19,7 +19,7 @@ using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin.JavaScript.Syntax
 {
-    public sealed class WithStatement : AstNode
+    public sealed class WithStatement : Statement
     {
         private AstNode m_withObject;
         private BlockStatement m_body;
@@ -42,7 +42,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public override Context TerminatingContext
+        public override SourceContext TerminatingContext
         {
             get
             {
@@ -51,7 +51,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public WithStatement(Context context)
+        public WithStatement(SourceContext context)
             : base(context)
         {
         }

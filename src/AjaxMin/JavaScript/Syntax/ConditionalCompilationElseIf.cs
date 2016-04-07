@@ -32,7 +32,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ConditionalCompilationElseIf(Context context)
+        public ConditionalCompilationElseIf(SourceContext context)
             : base(context)
         {
         }

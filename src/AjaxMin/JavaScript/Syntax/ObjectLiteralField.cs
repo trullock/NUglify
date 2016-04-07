@@ -23,9 +23,9 @@ namespace AjaxMin.JavaScript.Syntax
     {
         public bool IsIdentifier { get; set; }
 
-        public Context ColonContext { get; set; }
+        public SourceContext ColonContext { get; set; }
 
-        public ObjectLiteralField(Object value, PrimitiveType primitiveType, Context context)
+        public ObjectLiteralField(Object value, PrimitiveType primitiveType, SourceContext context)
             : base(value, primitiveType, context)
         {
         }

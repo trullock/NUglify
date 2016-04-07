@@ -35,7 +35,7 @@ namespace AjaxMin.JavaScript.Syntax
         private AstNode m_heritage;
         private AstNodeList m_elements;
 
-        public Context ClassContext { get; set; }
+        public SourceContext ClassContext { get; set; }
 
         public AstNode Binding
         {
@@ -46,7 +46,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context ExtendsContext { get; set; }
+        public SourceContext ExtendsContext { get; set; }
 
         public AstNode Heritage
         {
@@ -57,7 +57,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context OpenBrace { get; set; }
+        public SourceContext OpenBrace { get; set; }
 
         public AstNodeList Elements
         {
@@ -68,7 +68,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context CloseBrace { get; set; }
+        public SourceContext CloseBrace { get; set; }
 
         public ClassType ClassType { get; set; }
 
@@ -92,7 +92,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ClassNode(Context context)
+        public ClassNode(SourceContext context)
             : base(context)
         {
         }

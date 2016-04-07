@@ -35,7 +35,7 @@ namespace AjaxMin.JavaScript.Syntax
 
         public bool IsInOperation { get; set; }
 
-        public Context OfContext { get; set; }
+        public SourceContext OfContext { get; set; }
 
         public AstNode Expression
         {
@@ -46,7 +46,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ComprehensionForClause(Context context)
+        public ComprehensionForClause(SourceContext context)
             : base(context)
         {
         }

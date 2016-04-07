@@ -24,7 +24,7 @@ namespace AjaxMin.JavaScript.Syntax
     {
         public bool IsGetter { get; set; }
 
-        public GetterSetter(String identifier, bool isGetter, Context context)
+        public GetterSetter(String identifier, bool isGetter, SourceContext context)
             : base(identifier, PrimitiveType.String, context)
         {
             IsGetter = isGetter;

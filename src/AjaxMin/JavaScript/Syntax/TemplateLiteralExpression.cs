@@ -34,9 +34,9 @@ namespace AjaxMin.JavaScript.Syntax
 
         public string Text { get; set; }
 
-        public Context TextContext { get; set; }
+        public SourceContext TextContext { get; set; }
 
-        public TemplateLiteralExpression(Context context)
+        public TemplateLiteralExpression(SourceContext context)
             : base(context)
         {
         }

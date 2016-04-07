@@ -183,7 +183,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ConstantWrapper(Object value, PrimitiveType primitiveType, Context context)
+        public ConstantWrapper(Object value, PrimitiveType primitiveType, SourceContext context)
             : base(context)
         {
             PrimitiveType = primitiveType;

@@ -282,7 +282,7 @@ namespace AjaxMin.JavaScript.Visitors
             }
         }
 
-        public virtual void Visit(ContinueNode node)
+        public virtual void Visit(ContinueStatement node)
         {
             // no children
         }

@@ -53,10 +53,10 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context QuestionContext { get; set; }
-        public Context ColonContext { get; set; }
+        public SourceContext QuestionContext { get; set; }
+        public SourceContext ColonContext { get; set; }
 
-        public Conditional(Context context)
+        public Conditional(SourceContext context)
             : base(context)
         {
         }

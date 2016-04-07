@@ -24,7 +24,7 @@ namespace AjaxMin.JavaScript.Syntax
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "AST statement")]
     public sealed class VarDeclaration : Declaration
     {
-        public VarDeclaration(Context context)
+        public VarDeclaration(SourceContext context)
             : base(context)
         {
         }

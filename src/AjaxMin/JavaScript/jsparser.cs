@@ -22,7 +22,6 @@ using System.IO;
 using System.Reflection;
 using AjaxMin.JavaScript.Syntax;
 using AjaxMin.JavaScript.Visitors;
-using SwitchStatement = AjaxMin.JavaScript.Syntax.SwitchStatement;
 
 namespace AjaxMin.JavaScript
 {
@@ -45,14 +44,14 @@ namespace AjaxMin.JavaScript
 
         private GlobalScope m_globalScope;
         private JSScanner m_scanner;
-        private Context m_currentToken;
+        private SourceContext m_currentToken;
 
         private bool m_newModule;
 
         private CodeSettings m_settings;// = null;
 
         private bool m_foundEndOfLine;
-        private IList<Context> m_importantComments;
+        private IList<SourceContext> m_importantComments;
 
         private Dictionary<string, LabelInfo> m_labelInfo;
 
@@ -60,7 +59,7 @@ namespace AjaxMin.JavaScript
 
         #region private properties
 
-        private Context CurrentPositionContext
+        private SourceContext CurrentPositionContext
         {
             get
             {
@@ -162,7 +161,7 @@ namespace AjaxMin.JavaScript
         /// </summary>
         public JSParser()
         {
-            m_importantComments = new List<Context>();
+            m_importantComments = new List<SourceContext>();
             m_labelInfo = new Dictionary<string, LabelInfo>();
         }
 
@@ -659,7 +658,7 @@ namespace AjaxMin.JavaScript
 
                                 // add a new implicit module declaration to the new global block, with the block
                                 // we've been processing as its body. we'll return the new global block.
-                                returnBlock.Append(new ModuleDeclaration(new Context(m_currentToken.Document))
+                                returnBlock.Append(new ModuleDeclaration(new SourceContext(m_currentToken.Document))
                                     {
                                         IsImplicit = true,
                                         Body = block,
@@ -1028,7 +1027,7 @@ namespace AjaxMin.JavaScript
 
         private AstNode ParseStatementLevelConditionalComment(bool fSourceElement)
         {
-            Context context = m_currentToken.Clone();
+            SourceContext context = m_currentToken.Clone();
             ConditionalCompilationComment conditionalComment = new ConditionalCompilationComment(context);
 
             GetNextToken();
@@ -1055,7 +1054,7 @@ namespace AjaxMin.JavaScript
 
         private ConditionalCompilationSet ParseConditionalCompilationSet()
         {
-            Context context = m_currentToken.Clone();
+            SourceContext context = m_currentToken.Clone();
             string variableName = null;
             AstNode value = null;
             GetNextToken();
@@ -1097,7 +1096,7 @@ namespace AjaxMin.JavaScript
 
         private ConditionalCompilationStatement ParseConditionalCompilationIf(bool isElseIf)
         {
-            Context context = m_currentToken.Clone();
+            SourceContext context = m_currentToken.Clone();
             AstNode condition = null;
             GetNextToken();
             if (m_currentToken.Is(JSToken.LeftParenthesis))
@@ -1291,12 +1290,12 @@ namespace AjaxMin.JavaScript
 
         private VariableDeclaration ParseVarDecl(JSToken inToken)
         {
-            Context context = m_currentToken.Clone();
+            SourceContext context = m_currentToken.Clone();
             VariableDeclaration varDecl = null;
             var binding = ParseBinding();
             if (binding != null)
             {
-                Context assignContext = null;
+                SourceContext assignContext = null;
                 AstNode initializer = null;
 
                 bool ccSpecialCase = false;
@@ -1472,11 +1471,11 @@ namespace AjaxMin.JavaScript
         //---------------------------------------------------------------------------------------
         private IfStatement ParseIfStatement()
         {
-            Context ifCtx = m_currentToken.Clone();
+            SourceContext ifCtx = m_currentToken.Clone();
             AstNode condition = null;
             AstNode trueBranch = null;
             AstNode falseBranch = null;
-            Context elseCtx = null;
+            SourceContext elseCtx = null;
 
             // parse condition
             GetNextToken();
@@ -1589,7 +1588,7 @@ namespace AjaxMin.JavaScript
         private AstNode ParseForStatement()
         {
             AstNode forNode = null;
-            Context forCtx = m_currentToken.Clone();
+            SourceContext forCtx = m_currentToken.Clone();
             GetNextToken();
             if (m_currentToken.Is(JSToken.LeftParenthesis))
             {
@@ -1601,9 +1600,9 @@ namespace AjaxMin.JavaScript
             }
 
             AstNode initializer = null, condOrColl = null, increment = null;
-            Context operatorContext = null;
-            Context separator1Context = null;
-            Context separator2Context = null;
+            SourceContext operatorContext = null;
+            SourceContext separator1Context = null;
+            SourceContext separator2Context = null;
 
             if (m_currentToken.IsOne(JSToken.Var, JSToken.Let, JSToken.Const))
             {
@@ -1759,8 +1758,8 @@ namespace AjaxMin.JavaScript
         private DoWhileStatement ParseDoStatement()
         {
             var doCtx = m_currentToken.Clone();
-            Context whileContext = null;
-            Context terminatorContext = null;
+            SourceContext whileContext = null;
+            SourceContext terminatorContext = null;
             AstNode body = null;
             AstNode condition = null;
 
@@ -1847,7 +1846,7 @@ namespace AjaxMin.JavaScript
         //---------------------------------------------------------------------------------------
         private WhileStatement ParseWhileStatement()
         {
-            Context whileCtx = m_currentToken.Clone();
+            SourceContext whileCtx = m_currentToken.Clone();
             AstNode condition = null;
             AstNode body = null;
 
@@ -1914,9 +1913,9 @@ namespace AjaxMin.JavaScript
         // Regardless of error conditions, on exit the parser points to the first token after
         // the continue statement
         //---------------------------------------------------------------------------------------
-        private ContinueNode ParseContinueStatement()
+        private ContinueStatement ParseContinueStatement()
         {
-            var continueNode = new ContinueNode(m_currentToken.Clone());
+            var continueNode = new ContinueStatement(m_currentToken.Clone());
             GetNextToken();
 
             string label = null;
@@ -2040,7 +2039,7 @@ namespace AjaxMin.JavaScript
         //---------------------------------------------------------------------------------------
         private WithStatement ParseWithStatement()
         {
-            Context withCtx = m_currentToken.Clone();
+            SourceContext withCtx = m_currentToken.Clone();
             AstNode obj = null;
 
             GetNextToken();
@@ -2105,11 +2104,11 @@ namespace AjaxMin.JavaScript
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         private AstNode ParseSwitchStatement()
         {
-            Context switchCtx = m_currentToken.Clone();
+            SourceContext switchCtx = m_currentToken.Clone();
             AstNode expr = null;
             AstNodeList cases = null;
             var braceOnNewLine = false;
-            Context braceContext = null;
+            SourceContext braceContext = null;
 
             // read switch(expr)
             GetNextToken();
@@ -2152,7 +2151,7 @@ namespace AjaxMin.JavaScript
                 SwitchCase caseClause = null;
                 AstNode caseValue = null;
                 var caseCtx = m_currentToken.Clone();
-                Context colonContext = null;
+                SourceContext colonContext = null;
                 if (m_currentToken.Is(JSToken.Case))
                 {
                     // get the case
@@ -2269,12 +2268,12 @@ namespace AjaxMin.JavaScript
         //---------------------------------------------------------------------------------------
         private AstNode ParseTryStatement()
         {
-            Context tryCtx = m_currentToken.Clone();
+            SourceContext tryCtx = m_currentToken.Clone();
             BlockStatement body = null;
-            Context catchContext = null;
+            SourceContext catchContext = null;
             ParameterDeclaration catchParameter = null;
             BlockStatement catchBlock = null;
-            Context finallyContext = null;
+            SourceContext finallyContext = null;
             BlockStatement finallyBlock = null;
 
             bool catchOrFinally = false;
@@ -2372,10 +2371,10 @@ namespace AjaxMin.JavaScript
             GetNextToken();
 
             string moduleName = null;
-            Context moduleContext = null;
+            SourceContext moduleContext = null;
             BlockStatement body = null;
             BindingIdentifier binding = null;
-            Context fromContext = null;
+            SourceContext fromContext = null;
             if (m_currentToken.Is(JSToken.StringLiteral))
             {
                 if (m_foundEndOfLine)
@@ -2537,8 +2536,8 @@ namespace AjaxMin.JavaScript
                                     };
                                 GetNextToken();
 
-                                Context asContext = null;
-                                Context nameContext = null;
+                                SourceContext asContext = null;
+                                SourceContext nameContext = null;
                                 string externalName = null;
                                 if (m_currentToken.Is("as"))
                                 {
@@ -2659,7 +2658,7 @@ namespace AjaxMin.JavaScript
                                 var specifierContext = nameContext.Clone();
                                 GetNextToken();
 
-                                Context asContext = null;
+                                SourceContext asContext = null;
                                 AstNode localIdentifier = null;
                                 if (m_currentToken.Is("as"))
                                 {
@@ -2773,7 +2772,7 @@ namespace AjaxMin.JavaScript
         //    Identifier, IdentifierList
         //---------------------------------------------------------------------------------------
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private FunctionObject ParseFunction(FunctionType functionType, Context fncCtx)
+        private FunctionObject ParseFunction(FunctionType functionType, SourceContext fncCtx)
         {
             BindingIdentifier name = null;
             AstNodeList formalParameters = null;
@@ -2987,7 +2986,7 @@ namespace AjaxMin.JavaScript
                     GetNextToken();
                     if (m_currentToken.IsNot(JSToken.RightParenthesis))
                     {
-                        Context restContext = null;
+                        SourceContext restContext = null;
                         if (m_currentToken.Is(JSToken.RestSpread))
                         {
                             ParsedVersion = ScriptVersion.EcmaScript6;
@@ -3080,10 +3079,10 @@ namespace AjaxMin.JavaScript
                 ReportError(JSError.NoIdentifier, binding.IfNotNull(b => b.Context));
             }
 
-            Context extendsContext = null;
+            SourceContext extendsContext = null;
             AstNode heritage = null;
-            Context openBrace = null;
-            Context closeBrace = null;
+            SourceContext openBrace = null;
+            SourceContext closeBrace = null;
             if (m_currentToken.Is(JSToken.Extends))
             {
                 extendsContext = m_currentToken.Clone();
@@ -3291,7 +3290,7 @@ namespace AjaxMin.JavaScript
         private AstNode ParseExpression(AstNode leftHandSide, bool single, bool bCanAssign, JSToken inToken)
         {
             // new op stack with dummy op
-            Stack<Context> opsStack = null;
+            Stack<SourceContext> opsStack = null;
 
             // term stack, push left-hand side onto it
             Stack<AstNode> termStack = null;
@@ -3310,7 +3309,7 @@ namespace AjaxMin.JavaScript
                 {
                     if (opsStack == null)
                     {
-                        opsStack = new Stack<Context>();
+                        opsStack = new Stack<SourceContext>();
                         opsStack.Push(null);
 
                         termStack = new Stack<AstNode>();
@@ -3362,7 +3361,7 @@ namespace AjaxMin.JavaScript
                         // get expr1 in logOrExpr ? expr1 : expr2
                         AstNode operand1 = ParseExpression(true);
 
-                        Context colonCtx = null;
+                        SourceContext colonCtx = null;
                         if (m_currentToken.IsNot(JSToken.Colon))
                         {
                             ReportError(JSError.NoColon);
@@ -3493,7 +3492,7 @@ namespace AjaxMin.JavaScript
         {
             isLeftHandSideExpr = false;
             bool dummy = false;
-            Context exprCtx = null;
+            SourceContext exprCtx = null;
             AstNode expr = null;
 
         TryItAgain:
@@ -3684,7 +3683,7 @@ namespace AjaxMin.JavaScript
         private AstNode ParsePostfixExpression(AstNode ast, out bool isLeftHandSideExpr)
         {
             isLeftHandSideExpr = true;
-            Context exprCtx = null;
+            SourceContext exprCtx = null;
             if (null != ast)
             {
                 if (!m_foundEndOfLine)
@@ -3749,7 +3748,7 @@ namespace AjaxMin.JavaScript
         private AstNode ParseLeftHandSideExpression(bool isMinus)
         {
             AstNode ast = null;
-            List<Context> newContexts = null;
+            List<SourceContext> newContexts = null;
 
         TryItAgain:
 
@@ -3757,7 +3756,7 @@ namespace AjaxMin.JavaScript
             while (m_currentToken.Is(JSToken.New))
             {
                 if (null == newContexts)
-                    newContexts = new List<Context>(4);
+                    newContexts = new List<SourceContext>(4);
                 newContexts.Add(m_currentToken.Clone());
                 GetNextToken();
             }
@@ -3845,7 +3844,7 @@ namespace AjaxMin.JavaScript
                 case JSToken.IntegerLiteral:
                 case JSToken.NumericLiteral:
                     {
-                        Context numericContext = m_currentToken.Clone();
+                        SourceContext numericContext = m_currentToken.Clone();
                         double doubleValue;
                         if (ConvertNumericLiteralToDouble(m_currentToken.Code, (token == JSToken.IntegerLiteral), out doubleValue))
                         {
@@ -4305,7 +4304,7 @@ namespace AjaxMin.JavaScript
             var list = new AstNodeList(CurrentPositionContext);
             var hasTrailingCommas = false;
 
-            Context commaContext = null;
+            SourceContext commaContext = null;
             do
             {
                 GetNextToken();
@@ -4344,7 +4343,7 @@ namespace AjaxMin.JavaScript
                 else
                 {
                     // see if we have a spread token
-                    Context spreadContext = null;
+                    SourceContext spreadContext = null;
                     if (m_currentToken.Is(JSToken.RestSpread))
                     {
                         ParsedVersion = ScriptVersion.EcmaScript6;
@@ -4420,13 +4419,13 @@ namespace AjaxMin.JavaScript
                 };
         }
 
-        private ComprehensionNode ParseComprehension(bool isArray, Context openDelimiter, AstNode expression)
+        private ComprehensionNode ParseComprehension(bool isArray, SourceContext openDelimiter, AstNode expression)
         {
             // we will be on the first FOR token, but Mozilla-style will have already
             // parsed the expression node
             var isMozilla = expression != null;
             var context = openDelimiter.Clone();
-            Context closeDelimiter = null;
+            SourceContext closeDelimiter = null;
             expression.IfNotNull(e => context.UpdateWith(e.Context));
 
             var clauseList = new AstNodeList(m_currentToken.Clone());
@@ -4487,7 +4486,7 @@ namespace AjaxMin.JavaScript
             GetNextToken();
 
             // open parenthesis
-            Context leftParen = null;
+            SourceContext leftParen = null;
             if (m_currentToken.IsNot(JSToken.LeftParenthesis))
             {
                 ReportError(JSError.NoLeftParenthesis, forOrIfContext);
@@ -4501,7 +4500,7 @@ namespace AjaxMin.JavaScript
 
             AstNode expression = null;
             AstNode binding = null;
-            Context ofContext = null;
+            SourceContext ofContext = null;
             var isInOperation = false;
             if (forOrIfContext.Is(JSToken.For))
             {
@@ -4532,7 +4531,7 @@ namespace AjaxMin.JavaScript
             }
 
             // close paren
-            Context rightParen = null;
+            SourceContext rightParen = null;
             if (m_currentToken.IsNot(JSToken.RightParenthesis))
             {
                 ReportError(JSError.NoRightParenthesis);
@@ -4573,7 +4572,7 @@ namespace AjaxMin.JavaScript
 
         private ObjectLiteral ParseObjectLiteral(bool isBindingPattern)
         {
-            Context objCtx = m_currentToken.Clone();
+            SourceContext objCtx = m_currentToken.Clone();
             var propertyList = new AstNodeList(CurrentPositionContext);
 
             do
@@ -4611,7 +4610,7 @@ namespace AjaxMin.JavaScript
 
             // peek at the NEXT token so we can check if we have name followed by ':'
             var nextToken = PeekToken();
-            Context propertyContext = m_currentToken.Clone();
+            SourceContext propertyContext = m_currentToken.Clone();
             if (nextToken == JSToken.Colon)
             {
                 // regular field name followed by a colon
@@ -4816,7 +4815,7 @@ namespace AjaxMin.JavaScript
         //  There is state in instance variable that is saved on the calling stack in some function
         //  (i.e ParseFunction and ParseClass) and you don't want to blow up the stack
         //---------------------------------------------------------------------------------------
-        private AstNode ParseMemberExpression(AstNode expression, List<Context> newContexts)
+        private AstNode ParseMemberExpression(AstNode expression, List<SourceContext> newContexts)
         {
             for (; ; )
             {
@@ -4896,7 +4895,7 @@ namespace AjaxMin.JavaScript
 
                         string name = null;
                         // we want the name context to start with the dot
-                        Context nameContext = m_currentToken.Clone();
+                        SourceContext nameContext = m_currentToken.Clone();
                         GetNextToken();
                         if (m_currentToken.IsNot(JSToken.Identifier))
                         {
@@ -4987,7 +4986,7 @@ namespace AjaxMin.JavaScript
                 else if (m_currentToken.IsNot(terminator))
                 {
                     // if there's a spread context, save it now
-                    Context spreadContext = null;
+                    SourceContext spreadContext = null;
                     if (m_currentToken.Is(JSToken.RestSpread))
                     {
                         ParsedVersion = ScriptVersion.EcmaScript6;
@@ -5098,7 +5097,7 @@ namespace AjaxMin.JavaScript
         //
         //  Create the proper AST object according to operator
         //---------------------------------------------------------------------------------------
-        private static AstNode CreateExpressionNode(Context operatorContext, AstNode operand1, AstNode operand2)
+        private static AstNode CreateExpressionNode(SourceContext operatorContext, AstNode operand1, AstNode operand2)
         {
             Debug.Assert(operatorContext != null);
 
@@ -5346,7 +5345,7 @@ namespace AjaxMin.JavaScript
             return skippableTokens;
         }
 
-        private Context ScanNextToken()
+        private SourceContext ScanNextToken()
         {
             if (EchoWriter != null)
             {
@@ -5512,7 +5511,7 @@ namespace AjaxMin.JavaScript
         /// <param name="skipToken">true to move to the next token when GetNextToken is called; false to stay on this token</param>
         /// <param name="context">context to report against, or current token if null</param>
         /// <param name="forceToError">whether to force to an error, or use the default severity</param>
-        private void ReportError(JSError errorId, Context context = null, bool forceToError = false)
+        private void ReportError(JSError errorId, SourceContext context = null, bool forceToError = false)
         {
             context = context ?? m_currentToken.Clone();
             // EOF error is special and it's the last error we can possibly get
@@ -5526,7 +5525,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        private void CCTooComplicated(Context context)
+        private void CCTooComplicated(SourceContext context)
         {
             // we ONLY support /*@id@*/ or /*@cc_on@id@*/ or /*@!@*/ or /*@cc_on!@*/ in expressions right now. 
             // throw an error, skip to the end of the comment, then ignore it and start
@@ -5546,7 +5545,7 @@ namespace AjaxMin.JavaScript
 
     public sealed class UndefinedReference
     {
-        private Context m_context;
+        private SourceContext m_context;
 
         private LookupExpression m_lookup;
         public AstNode LookupNode
@@ -5598,7 +5597,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        internal UndefinedReference(LookupExpression lookup, Context context)
+        internal UndefinedReference(LookupExpression lookup, SourceContext context)
         {
             m_lookup = lookup;
             m_name = lookup.Name;

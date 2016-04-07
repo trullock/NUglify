@@ -52,7 +52,7 @@ namespace AjaxMin.Tests.Core
                     JSError errorCode;
                     if (Enum.TryParse(jsErrorName, out errorCode))
                     {
-                        var message = Context.GetErrorString(errorCode);
+                        var message = SourceContext.GetErrorString(errorCode);
                         if (message.IsNullOrWhiteSpace())
                         {
                             Trace.WriteLine(jsErrorName + " has no corresponding error message");

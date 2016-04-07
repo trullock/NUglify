@@ -21,7 +21,7 @@ namespace AjaxMin.JavaScript.Syntax
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public class ImportStatement : ImportExportStatement
     {
-        public ImportStatement(Context context)
+        public ImportStatement(SourceContext context)
             : base(context)
         {
         }

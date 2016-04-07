@@ -21,7 +21,7 @@ namespace AjaxMin.JavaScript.Syntax
     public sealed class ThisLiteral : Expression
     {
 
-        public ThisLiteral(Context context)
+        public ThisLiteral(SourceContext context)
             : base(context)
         {
         }

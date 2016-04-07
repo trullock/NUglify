@@ -21,7 +21,7 @@ namespace AjaxMin.JavaScript.Syntax
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "AST statement")]
     public class LexicalDeclaration : Declaration
     {
-        public LexicalDeclaration(Context context)
+        public LexicalDeclaration(SourceContext context)
             : base(context)
         {
         }

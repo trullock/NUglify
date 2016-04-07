@@ -27,7 +27,7 @@ namespace AjaxMin.JavaScript.Syntax
         public bool HasIssues { get; set; }
     }
 
-    public sealed class LabeledStatement : AstNode
+    public sealed class LabeledStatement : Statement
     {
         private AstNode m_statement;
 
@@ -42,13 +42,13 @@ namespace AjaxMin.JavaScript.Syntax
 
         public string Label { get; set; }
 
-        public Context LabelContext { get; set; }
+        public SourceContext LabelContext { get; set; }
 
         public LabelInfo LabelInfo { get; set; }
 
-        public Context ColonContext { get; set; }
+        public SourceContext ColonContext { get; set; }
 
-        public LabeledStatement(Context context)
+        public LabeledStatement(SourceContext context)
             : base(context)
         {
         }

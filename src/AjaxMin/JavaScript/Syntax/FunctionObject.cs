@@ -27,7 +27,7 @@ namespace AjaxMin.JavaScript.Syntax
 
         public bool IsStatic { get; set; }
 
-        public Context StaticContext { get; set; }
+        public SourceContext StaticContext { get; set; }
 
         public BindingIdentifier Binding
         {
@@ -100,7 +100,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public FunctionObject(Context functionContext)
+        public FunctionObject(SourceContext functionContext)
             : base(functionContext)
         {
         }

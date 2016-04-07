@@ -21,7 +21,7 @@ namespace AjaxMin.JavaScript.Syntax
     public sealed class DebuggerNode : AstNode
     {
 
-        public DebuggerNode(Context context)
+        public DebuggerNode(SourceContext context)
             : base(context)
         {
         }

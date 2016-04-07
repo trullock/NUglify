@@ -32,7 +32,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ComprehensionIfClause(Context context)
+        public ComprehensionIfClause(SourceContext context)
             : base(context)
         {
         }

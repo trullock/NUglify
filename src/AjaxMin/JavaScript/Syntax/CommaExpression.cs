@@ -19,13 +19,13 @@ namespace AjaxMin.JavaScript.Syntax
 {
     public class CommaExpression : BinaryExpression
     {
-        public CommaExpression(Context context)
+        public CommaExpression(SourceContext context)
             : base(context)
         {
             this.OperatorToken = JSToken.Comma;
         }
 
-        public static AstNode CombineWithComma(Context context, AstNode operand1, AstNode operand2)
+        public static AstNode CombineWithComma(SourceContext context, AstNode operand1, AstNode operand2)
         {
             var comma = new CommaExpression(context);
 

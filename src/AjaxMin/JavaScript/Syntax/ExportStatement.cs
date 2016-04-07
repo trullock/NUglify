@@ -23,9 +23,9 @@ namespace AjaxMin.JavaScript.Syntax
     {
         public bool IsDefault { get; set; }
 
-        public Context DefaultContext { get; set; }
+        public SourceContext DefaultContext { get; set; }
 
-        public ExportStatement(Context context)
+        public ExportStatement(SourceContext context)
             : base(context)
         {
         }

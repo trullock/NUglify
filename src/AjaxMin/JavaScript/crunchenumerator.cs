@@ -261,7 +261,7 @@ namespace AjaxMin.JavaScript
             return delta;
         }
 
-        private static int CompareContext(Context left, Context right)
+        private static int CompareContext(SourceContext left, SourceContext right)
         {
             // same number of refcounts. Check the line number where they were declared
             var delta = 0;

@@ -19,14 +19,14 @@ using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin.JavaScript.Syntax
 {
-    public sealed class BreakStatement : AstNode
+    public sealed class BreakStatement : Statement
     {
         public string Label { get; set; }
-        public Context LabelContext { get; set; }
+        public SourceContext LabelContext { get; set; }
 
         public LabelInfo LabelInfo { get; set; }
 
-        public BreakStatement(Context context)
+        public BreakStatement(SourceContext context)
             : base(context)
         {
         }

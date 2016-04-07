@@ -25,7 +25,7 @@ namespace AjaxMin.JavaScript.Syntax
     /// </summary>
     public class CustomNode : AstNode
     {
-        public CustomNode(Context context)
+        public CustomNode(SourceContext context)
             : base(context)
         {
         }

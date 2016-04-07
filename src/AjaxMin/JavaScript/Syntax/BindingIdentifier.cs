@@ -76,7 +76,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public BindingIdentifier(Context context)
+        public BindingIdentifier(SourceContext context)
             : base(context)
         {
         }

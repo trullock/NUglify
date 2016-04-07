@@ -37,7 +37,7 @@ namespace AjaxMin.JavaScript.Syntax
         /// <summary>
         /// Gets or sets the source context for the rest token (if any)
         /// </summary>
-        public Context RestContext { get; set; }
+        public SourceContext RestContext { get; set; }
 
         /// <summary>
         // Gets or sets the binding node
@@ -54,7 +54,7 @@ namespace AjaxMin.JavaScript.Syntax
         /// <summary>
         /// Gets or sets the context for the optional default-value assignment token
         /// </summary>
-        public Context AssignContext { get; set; }
+        public SourceContext AssignContext { get; set; }
 
         /// <summary>
         /// Gets or sets the optional default value for the parameter
@@ -89,7 +89,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ParameterDeclaration(Context context)
+        public ParameterDeclaration(SourceContext context)
             : base(context)
         {
         }

@@ -35,7 +35,7 @@ namespace AjaxMin.JavaScript.Syntax
 
         public string Text { get; set; }
 
-        public Context TextContext { get; set; }
+        public SourceContext TextContext { get; set; }
 
         public AstNodeList Expressions
         {
@@ -46,7 +46,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public TemplateLiteral(Context context)
+        public TemplateLiteral(SourceContext context)
             : base(context)
         {
         }

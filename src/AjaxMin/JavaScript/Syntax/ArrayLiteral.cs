@@ -73,7 +73,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ArrayLiteral(Context context)
+        public ArrayLiteral(SourceContext context)
             : base(context)
         {
         }

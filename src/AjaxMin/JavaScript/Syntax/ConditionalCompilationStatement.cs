@@ -16,9 +16,9 @@
 
 namespace AjaxMin.JavaScript.Syntax
 {
-    public abstract class ConditionalCompilationStatement : AstNode
+    public abstract class ConditionalCompilationStatement : Statement
     {
-        protected ConditionalCompilationStatement(Context context)
+        protected ConditionalCompilationStatement(SourceContext context)
             : base(context)
         {
         }

@@ -25,7 +25,7 @@ namespace AjaxMin.JavaScript
         void StartPackage(string sourcePath, string mapPath);
         void EndPackage();
         object StartSymbol(AstNode node, int startLine, int startColumn);
-        void MarkSegment(AstNode node, int startLine, int startColumn, string name, Context context);
+        void MarkSegment(AstNode node, int startLine, int startColumn, string name, SourceContext context);
         void EndSymbol(object symbol, int endLine, int endColumn, string parentContext);
         void EndOutputRun(int lineNumber, int columnPosition);
         void EndFile(TextWriter writer, string newLine);

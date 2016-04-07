@@ -34,9 +34,9 @@ namespace AjaxMin.JavaScript.Syntax
         }
 
         public string Name { get; set; }
-        public Context NameContext { get; set; }
+        public SourceContext NameContext { get; set; }
 
-        public MemberExpression(Context context)
+        public MemberExpression(SourceContext context)
             : base(context)
         {
         }

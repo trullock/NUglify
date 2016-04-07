@@ -35,7 +35,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public GroupingOperator(Context context)
+        public GroupingOperator(SourceContext context)
             : base(context)
         {
         }

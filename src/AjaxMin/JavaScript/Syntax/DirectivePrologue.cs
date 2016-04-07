@@ -20,7 +20,7 @@ namespace AjaxMin.JavaScript.Syntax
 {
     public class DirectivePrologue : ConstantWrapper
     {
-        public DirectivePrologue(string value, Context context)
+        public DirectivePrologue(string value, SourceContext context)
             : base(value, PrimitiveType.String, context)
         {
             // this is a "use strict" directive if the source context is EXACTLY "use strict"

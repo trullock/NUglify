@@ -32,7 +32,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public override Context TerminatingContext
+        public override SourceContext TerminatingContext
         {
             get
             {
@@ -41,7 +41,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public WhileStatement(Context context)
+        public WhileStatement(SourceContext context)
             : base(context)
         {
         }

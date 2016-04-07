@@ -55,7 +55,7 @@ namespace AjaxMin.JavaScript.Syntax
             set;
         }
 
-        public CallExpression(Context context)
+        public CallExpression(SourceContext context)
             : base(context)
         {
         }

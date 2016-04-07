@@ -19,7 +19,7 @@ using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin.JavaScript.Syntax
 {
-    public sealed class TryStatement : AstNode
+    public sealed class TryStatement : Statement
     {
         private BlockStatement m_tryBlock;
         private BlockStatement m_catchBlock;
@@ -62,11 +62,11 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context CatchContext { get; set; }
+        public SourceContext CatchContext { get; set; }
 
-        public Context FinallyContext { get; set; }
+        public SourceContext FinallyContext { get; set; }
 
-        public TryStatement(Context context)
+        public TryStatement(SourceContext context)
             : base(context)
         {
         }

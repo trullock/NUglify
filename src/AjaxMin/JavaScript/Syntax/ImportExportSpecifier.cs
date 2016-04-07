@@ -23,11 +23,11 @@ namespace AjaxMin.JavaScript.Syntax
     {
         private AstNode m_localIdentifier;
 
-        public Context NameContext { get; set; }
+        public SourceContext NameContext { get; set; }
 
         public string ExternalName { get; set; }
 
-        public Context AsContext { get; set; }
+        public SourceContext AsContext { get; set; }
 
         public AstNode LocalIdentifier
         {
@@ -80,7 +80,7 @@ namespace AjaxMin.JavaScript.Syntax
         /// </summary>
         public JSVariableField VariableField { get; set; }
 
-        public ImportExportSpecifier(Context context)
+        public ImportExportSpecifier(SourceContext context)
             : base(context)
         {
         }

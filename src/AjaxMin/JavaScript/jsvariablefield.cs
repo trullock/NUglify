@@ -50,7 +50,7 @@ namespace AjaxMin.JavaScript
         private bool m_isGenerated;
         private string m_crunchedName;// = null;
 
-        public Context OriginalContext { get; set; }
+        public SourceContext OriginalContext { get; set; }
         public string Name { get; private set; }
         public FieldType FieldType { get; set; }
         public FieldAttributes Attributes { get; set; }

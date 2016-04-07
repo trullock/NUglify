@@ -16,7 +16,7 @@
 
 namespace AjaxMin.JavaScript.Syntax
 {
-    public abstract class IterationStatement : AstNode
+    public abstract class IterationStatement : Statement
     {
         private BlockStatement m_body;
 
@@ -29,7 +29,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        protected IterationStatement(Context context)
+        protected IterationStatement(SourceContext context)
             : base(context)
         {
         }

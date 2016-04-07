@@ -54,14 +54,14 @@ namespace AjaxMin.JavaScript.Syntax
         }
 
         /// <summary>Context for the first semicolon, separating the initializer and the condition</summary>
-        public Context Separator1Context { get; set; }
+        public SourceContext Separator1Context { get; set; }
 
         /// <summary>Context for the second semicolon, separating the condition and the incrementor</summary>
-        public Context Separator2Context { get; set; }
+        public SourceContext Separator2Context { get; set; }
 
         public BlockScope BlockScope { get; set; }
 
-        public override Context TerminatingContext
+        public override SourceContext TerminatingContext
         {
             get
             {
@@ -70,7 +70,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public ForStatement(Context context)
+        public ForStatement(SourceContext context)
             : base(context)
         {
         }

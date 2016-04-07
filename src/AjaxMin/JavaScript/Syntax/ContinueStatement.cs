@@ -19,14 +19,14 @@ using AjaxMin.JavaScript.Visitors;
 namespace AjaxMin.JavaScript.Syntax
 {
 
-    public sealed class ContinueNode : AstNode
+    public sealed class ContinueStatement : Statement
     {
         public string Label { get; set; }
-        public Context LabelContext { get; set; }
+        public SourceContext LabelContext { get; set; }
 
         public LabelInfo LabelInfo { get; set; }
 
-        public ContinueNode(Context context)
+        public ContinueStatement(SourceContext context)
             : base(context)
         {
         }

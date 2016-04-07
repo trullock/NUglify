@@ -23,7 +23,7 @@ namespace AjaxMin.JavaScript.Syntax
         public bool IsCCSpecialCase { get; set; }
         public bool UseCCOn { get; set; }
 
-        public VariableDeclaration(Context context)
+        public VariableDeclaration(SourceContext context)
             : base(context)
         {
         }

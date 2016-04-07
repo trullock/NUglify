@@ -1353,7 +1353,7 @@ namespace AjaxMin.JavaScript.Visitors
             }
         }
 
-        public void Visit(ContinueNode node)
+        public void Visit(ContinueStatement node)
         {
             if (node != null)
             {
@@ -4006,7 +4006,7 @@ namespace AjaxMin.JavaScript.Visitors
 
         #region numeric formatting methods
 
-        public static string NormalizeNumber(double numericValue, Context originalContext)
+        public static string NormalizeNumber(double numericValue, SourceContext originalContext)
         {
             // numerics are doubles in JavaScript, so force it now as a shortcut
             if (double.IsNaN(numericValue) || double.IsInfinity(numericValue))
@@ -4511,7 +4511,7 @@ namespace AjaxMin.JavaScript.Visitors
             return null;
         }
 
-        private void MarkSegment(AstNode node, string name, Context context)
+        private void MarkSegment(AstNode node, string name, SourceContext context)
         {
             if (m_settings.SymbolsMap != null && node != null)
             {
@@ -4537,7 +4537,7 @@ namespace AjaxMin.JavaScript.Visitors
 
         #region context output position methods
 
-        private void SetContextOutputPosition(Context context)
+        private void SetContextOutputPosition(SourceContext context)
         {
             if (context != null)
             {
@@ -4547,7 +4547,7 @@ namespace AjaxMin.JavaScript.Visitors
             }
         }
 
-        private static void SetContextOutputPosition(Context context, Context fromContext)
+        private static void SetContextOutputPosition(SourceContext context, SourceContext fromContext)
         {
             if (context != null && fromContext != null)
             {

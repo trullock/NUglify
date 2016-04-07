@@ -75,6 +75,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="JavaScript\Syntax\ActivationObject.cs" />
+    <Compile Include="JavaScript\Syntax\Statement.cs" />
     <Compile Include="JavaScript\Visitors\AnalyzeNodeVisitor.cs" />
     <Compile Include="JavaScript\Syntax\ArrayLiteral.cs" />
     <Compile Include="JavaScript\Syntax\AspNetBlockNode.cs" />
@@ -108,8 +109,8 @@
     <Compile Include="JavaScript\Syntax\ConstStatement.cs" />
     <Compile Include="JavaScript\Syntax\ConstantWrapper.cs" />
     <Compile Include="JavaScript\Syntax\ConstantWrapperPP.cs" />
-    <Compile Include="JavaScript\Context.cs" />
-    <Compile Include="JavaScript\Syntax\ContinueNode.cs" />
+    <Compile Include="JavaScript\SourceContext.cs" />
+    <Compile Include="JavaScript\Syntax\ContinueStatement.cs" />
     <Compile Include="JavaScript\CrunchEnumerator.cs" />
     <Compile Include="JavaScript\Syntax\CustomNode.cs" />
     <Compile Include="JavaScript\Syntax\DebuggerNode.cs" />

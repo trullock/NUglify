@@ -915,7 +915,7 @@ namespace AjaxMin.JavaScript.Visitors
             }
         }
 
-        public void Visit(ContinueNode node)
+        public void Visit(ContinueStatement node)
         {
             if (node != null)
             {

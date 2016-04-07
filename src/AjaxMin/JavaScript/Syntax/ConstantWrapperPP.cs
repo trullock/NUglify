@@ -24,7 +24,7 @@ namespace AjaxMin.JavaScript.Syntax
 
         public bool ForceComments { get; set; }
 
-        public ConstantWrapperPP(Context context)
+        public ConstantWrapperPP(SourceContext context)
             : base(context)
         {
         }

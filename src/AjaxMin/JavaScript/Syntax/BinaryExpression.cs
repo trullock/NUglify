@@ -44,9 +44,9 @@ namespace AjaxMin.JavaScript.Syntax
         }
 
         public JSToken OperatorToken { get; set; }
-        public Context OperatorContext { get; set; }
+        public SourceContext OperatorContext { get; set; }
 
-        public override Context TerminatingContext
+        public override SourceContext TerminatingContext
         {
             get
             {
@@ -55,7 +55,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public BinaryExpression(Context context)
+        public BinaryExpression(SourceContext context)
             : base(context)
         {
         }

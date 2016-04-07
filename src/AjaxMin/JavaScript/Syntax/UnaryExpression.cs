@@ -32,7 +32,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context OperatorContext { get; set; }
+        public SourceContext OperatorContext { get; set; }
 
         public JSToken OperatorToken { get; set; }
         public bool IsPostfix { get; set; }
@@ -42,7 +42,7 @@ namespace AjaxMin.JavaScript.Syntax
         // only useful for yield operators
         public bool IsDelegator { get; set; }
 
-        public UnaryExpression(Context context)
+        public UnaryExpression(SourceContext context)
             : base(context)
         {
         }

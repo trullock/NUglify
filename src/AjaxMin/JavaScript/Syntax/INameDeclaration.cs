@@ -19,7 +19,7 @@ namespace AjaxMin.JavaScript.Syntax
     public interface INameDeclaration
     {
         string Name { get; }
-        Context Context { get; }
+        SourceContext Context { get; }
         AstNode Parent { get; }
         AstNode Initializer { get; }
         bool IsParameter { get; }

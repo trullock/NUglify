@@ -31,7 +31,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public RegExpLiteral(Context context)
+        public RegExpLiteral(SourceContext context)
             : base(context)
         {
         }

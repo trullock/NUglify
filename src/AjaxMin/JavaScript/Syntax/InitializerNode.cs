@@ -36,7 +36,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public Context AssignContext { get; set; }
+        public SourceContext AssignContext { get; set; }
 
         public AstNode Initializer
         {
@@ -57,7 +57,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public InitializerNode(Context context)
+        public InitializerNode(SourceContext context)
             : base(context)
         {
         }

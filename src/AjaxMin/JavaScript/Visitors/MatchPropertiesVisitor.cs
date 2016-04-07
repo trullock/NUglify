@@ -246,7 +246,7 @@ namespace AjaxMin.JavaScript.Visitors
             // not applicable; terminate
         }
 
-        public void Visit(ContinueNode node)
+        public void Visit(ContinueStatement node)
         {
             // not applicable; terminate
         }

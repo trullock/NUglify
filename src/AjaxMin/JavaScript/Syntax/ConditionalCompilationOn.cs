@@ -20,7 +20,7 @@ namespace AjaxMin.JavaScript.Syntax
 {
     public class ConditionalCompilationOn : ConditionalCompilationStatement
     {
-        public ConditionalCompilationOn(Context context)
+        public ConditionalCompilationOn(SourceContext context)
             : base(context)
         {
         }

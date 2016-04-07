@@ -23,7 +23,7 @@ namespace AjaxMin.JavaScript.Syntax
     /// Block of statements
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-    public sealed class BlockStatement : AstNode, IEnumerable<AstNode>
+    public sealed class BlockStatement : Statement, IEnumerable<AstNode>
     {
         private List<AstNode> m_list;
 
@@ -69,7 +69,7 @@ namespace AjaxMin.JavaScript.Syntax
         /// </summary>
         public bool IsModule { get; set; }
 
-        public override Context TerminatingContext
+        public override SourceContext TerminatingContext
         {
             get
             {
@@ -117,7 +117,7 @@ namespace AjaxMin.JavaScript.Syntax
             }
         }
 
-        public BlockStatement(Context context)
+        public BlockStatement(SourceContext context)
             : base(context)
         {
             m_list = new List<AstNode>();

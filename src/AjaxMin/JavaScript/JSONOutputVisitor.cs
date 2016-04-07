@@ -419,7 +419,7 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(ContinueNode node)
+        public void Visit(ContinueStatement node)
         {
             // invalid! ignore
             IsValid = false;
@@ -693,7 +693,7 @@ namespace AjaxMin.JavaScript
 
         #region numeric formatting methods
 
-        public void OutputNumber(double numericValue, Context originalContext)
+        public void OutputNumber(double numericValue, SourceContext originalContext)
         {
             // numerics are doubles in JavaScript, so force it now as a shortcut
             if (double.IsNaN(numericValue) || double.IsInfinity(numericValue))

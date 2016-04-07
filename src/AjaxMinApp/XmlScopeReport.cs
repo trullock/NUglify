@@ -497,7 +497,7 @@ namespace AjaxMin
 
         #endregion
 
-        private void OutputContextPosition(Context context)
+        private void OutputContextPosition(SourceContext context)
         {
             if (context != null)
             {

@@ -730,7 +730,7 @@ namespace AjaxMin.JavaScript.Visitors
                         }
                         else if (node[ndx] is ReturnStatement
                             || node[ndx] is BreakStatement
-                            || node[ndx] is ContinueNode
+                            || node[ndx] is ContinueStatement
                             || node[ndx] is ThrowStatement)
                         {
                             // we have an exit node -- no statments afterwards will be executed, so clear them out.
@@ -1421,7 +1421,7 @@ namespace AjaxMin.JavaScript.Visitors
                                 && ifNode.TrueBlock != null
                                 && ifNode.TrueBlock.Count == 1)
                             {
-                                var continueNode = ifNode.TrueBlock[0] as ContinueNode;
+                                var continueNode = ifNode.TrueBlock[0] as ContinueStatement;
 
                                 // if there's no label, then we're good. Otherwise we can only make this optimization
                                 // if the label refers to the parent iterator node.
@@ -2230,7 +2230,7 @@ namespace AjaxMin.JavaScript.Visitors
             }
         }
 
-        public override void Visit(ContinueNode node)
+        public override void Visit(ContinueStatement node)
         {
             if (node != null)
             {
@@ -3712,7 +3712,7 @@ namespace AjaxMin.JavaScript.Visitors
                                             // we'll need to append the deleted break statement if it doesn't already have
                                             // a flow-changing statement: break, continue, return, or throw
                                             AstNode lastStatement = switchCase.Statements[switchCase.Statements.Count - 1];
-                                            if (!(lastStatement is BreakStatement) && !(lastStatement is ContinueNode)
+                                            if (!(lastStatement is BreakStatement) && !(lastStatement is ContinueStatement)
                                               && !(lastStatement is ReturnStatement) && !(lastStatement is ThrowStatement))
                                             {
                                                 switchCase.Statements.Append(deletedBreak);
@@ -4362,7 +4362,7 @@ namespace AjaxMin.JavaScript.Visitors
             }
         }
 
-        private static UnaryExpression CreateVoidNode(Context context)
+        private static UnaryExpression CreateVoidNode(SourceContext context)
         {
             return new UnaryExpression(context.FlattenToStart())
                 {
@@ -4371,7 +4371,7 @@ namespace AjaxMin.JavaScript.Visitors
                 };
         }
 
-        private static void ValidateIdentifier(bool isStrict, string identifier, Context context, JSError error)
+        private static void ValidateIdentifier(bool isStrict, string identifier, SourceContext context, JSError error)
         {
             // check the name of the variable for reserved words that aren't allowed
             if (JSScanner.IsKeyword(identifier, isStrict))
@@ -4489,7 +4489,7 @@ namespace AjaxMin.JavaScript.Visitors
             return node;
         }
 
-        private static AstNode CreateNodeFromObject(Context context, object item)
+        private static AstNode CreateNodeFromObject(SourceContext context, object item)
         {
             if (item == null)
             {
