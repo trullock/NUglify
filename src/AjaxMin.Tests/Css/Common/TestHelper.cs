@@ -21,8 +21,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
@@ -38,7 +37,7 @@ namespace CssUnitTest
         /// <summary>
         /// the name of the unit test folder under the main project folder
         /// </summary>
-        private const string c_unitTestsDataFolder = "CSS";
+        private const string c_unitTestsDataFolder = "TestData\\CSS";
         
         /// <summary>
         /// folder path for input files to tests
@@ -72,7 +71,7 @@ namespace CssUnitTest
             // start with the unit test DLL. All test data folders will be deployed there by testrun configuration.
             // In order to do that, make sure that "Deployment" section in .testrunconfig file contains the "TestData" folder. If
             // this is the case, then everything in the folder will be copied down right next to unit test DLL.
-            DirectoryInfo directoryInfo = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var directoryInfo = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
             // Initialize the input, output and expected folders
             m_inputFolder = Path.Combine(Path.Combine(directoryInfo.FullName, c_unitTestsDataFolder), "Input");

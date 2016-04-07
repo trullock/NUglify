@@ -15,14 +15,14 @@
 // limitations under the License.
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
-    [TestClass]
+    [TestFixture]
     public class Switches
     {
-        [TestMethod]
+        [Test]
         public void EchoInput()
         {
             TestHelper.Instance.RunTest("-echo");

@@ -14,53 +14,53 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
   /// <summary>
   /// Summary description for Collapse
   /// </summary>
-  [TestClass]
+  [TestFixture]
   public class Collapse
   {
-    [TestMethod]
+    [Test]
     public void RGB()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void RGB_h()
     {
       TestHelper.Instance.RunTest("-comments:hacks");
     }
 
-    [TestMethod]
+    [Test]
     public void rrggbb()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Numbers()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void TermSemis()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void TermSemis_t()
     {
       TestHelper.Instance.RunTest("-term");
     }
 
-    [TestMethod]
+    [Test]
     public void StringBreaks()
     {
       TestHelper.Instance.RunTest();

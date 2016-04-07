@@ -14,29 +14,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
     /// <summary>
     /// Summary description for Encoding
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Encoding
     {
-        [TestMethod]
+        [Test]
         public void Escaped()
         {
             TestHelper.Instance.RunTest("-enc:out ascii");
         }
 
-        [TestMethod]
+        [Test]
         public void Escaped_utf8()
         {
             TestHelper.Instance.RunTest("-enc:out utf-8");
         }
 
-        [TestMethod]
+        [Test]
         public void Empty()
         {
             TestHelper.Instance.RunTest("-enc:in ascii");

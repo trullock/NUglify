@@ -14,35 +14,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
     /// <summary>
     /// Summary description for Declarations
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Declarations
     {
-        [TestMethod]
+        [Test]
         public void TrailingSemicolon()
         {
             TestHelper.Instance.RunTest("-css:decls");
         }
 
-        [TestMethod]
+        [Test]
         public void TrailingSemicolon_Term()
         {
             TestHelper.Instance.RunTest("-css:decls -term -colors:strict");
         }
 
-        [TestMethod]
+        [Test]
         public void NoTrailingSemicolon()
         {
             TestHelper.Instance.RunTest("-css:decls");
         }
 
-        [TestMethod]
+        [Test]
         public void NoTrailingSemicolon_Term()
         {
             TestHelper.Instance.RunTest("-css:decls -term:1 -colors:strict");

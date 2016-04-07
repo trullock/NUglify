@@ -2,60 +2,60 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
     /// <summary>
     /// Summary description for Values
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Values
     {
-        [TestMethod]
+        [Test]
         public void Calc()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Cycle()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Attr()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void ProgID()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Grids()
         {
             var retValue = TestHelper.Instance.RunTest();
             Assert.IsTrue(retValue == 0, "shouldn't have any errors");
         }
 
-        [TestMethod]
+        [Test]
         public void Units()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Zeros()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Toggle()
         {
             TestHelper.Instance.RunTest();

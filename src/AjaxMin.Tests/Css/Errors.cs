@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
     /// <summary>
     /// Summary description for Errors
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class Errors
     {
         #region generated
@@ -72,31 +72,31 @@ namespace CssUnitTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void ParsingErrors()
         {
             TestHelper.Instance.RunTest("-colors:strict");
         }
 
-        [TestMethod]
+        [Test]
         public void UnterminatedString()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void InvalidClassName()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void BadRGB()
         {
             TestHelper.Instance.RunTest();
         }
 
-        [TestMethod]
+        [Test]
         public void Exponent()
         {
             TestHelper.Instance.RunTest();

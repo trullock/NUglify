@@ -14,95 +14,95 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
   /// <summary>
   /// Summary description for AtRules
   /// </summary>
-  [TestClass]
+  [TestFixture]
   public class AtRules
   {
-    [TestMethod]
+    [Test]
     public void Media()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Import()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Page()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void FontFace()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Charset()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Namespace()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Other()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void ImportComment()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
       public void ImportComment_c()
     {
         TestHelper.Instance.RunTest("-comments:all");
     }
 
-    [TestMethod]
+    [Test]
     public void ImportComment_x()
     {
         TestHelper.Instance.RunTest("-pretty");
     }
 
-    [TestMethod]
+    [Test]
     public void KeyFrames()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void KeyFrames_p()
     {
         TestHelper.Instance.RunTest("-pretty");
     }
 
-    [TestMethod]
+    [Test]
     public void KeyFrames_same()
     {
         TestHelper.Instance.RunTest("-pretty -braces:same");
     }
 
-    [TestMethod]
+    [Test]
     public void KeyFrames_source()
     {
         TestHelper.Instance.RunTest("-pretty -braces:source");

@@ -14,23 +14,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
     /// <summary>
     /// Summary description for AtRules
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class EmbeddedAspNetBlock
     {
-        [TestMethod]
+        [Test]
         public void TopLevel()
         {
             TestHelper.Instance.RunTest("-aspnet:true");
         }
 
-        [TestMethod]
+        [Test]
         public void StringWithBlock()
         {
             TestHelper.Instance.RunTest("-aspnet:Y");

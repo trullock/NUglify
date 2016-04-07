@@ -14,143 +14,143 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
   /// <summary>
   /// Summary description for CommentHacks
   /// </summary>
-  [TestClass]
+  [TestFixture]
   public class CommentHacks
   {
-    [TestMethod]
+    [Test]
     public void HideFromMacIE()
     {
       TestHelper.Instance.RunTest("-comments:hacks");
     }
 
-    [TestMethod]
+    [Test]
     public void HideFromMacIE_nc()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void HideFromNS4()
     {
         TestHelper.Instance.RunTest("-comments:hacks");
     }
 
-    [TestMethod]
+    [Test]
     public void HideFromNS4_nc()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void OnlyNS4()
     {
         TestHelper.Instance.RunTest("-comments:hacks");
     }
 
-    [TestMethod]
+    [Test]
     public void OnlyNS4_nc()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void HideFromIE5()
     {
         TestHelper.Instance.RunTest("-comments:hacks");
     }
 
-    [TestMethod]
+    [Test]
     public void HideFromIE5_nc()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void HideFromIE6()
     {
         TestHelper.Instance.RunTest("-comments:hacks");
     }
 
-    [TestMethod]
+    [Test]
     public void HideFromIE6_nc()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void EmptyComments()
     {
         TestHelper.Instance.RunTest("-comments:hacks");
     }
 
-    [TestMethod]
+    [Test]
     public void EmptyComments_nc()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void ImportantComment()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void TwoImportantComments()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void TwoImportantComments_pretty()
     {
         TestHelper.Instance.RunTest("-p");
     }
 
-    [TestMethod]
+    [Test]
     public void EmbeddedImportantComment()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void EmbeddedImportantComment_pretty()
     {
         TestHelper.Instance.RunTest("-p");
     }
 
-    [TestMethod]
+    [Test]
     public void ImportantCommentHacks()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void ImportantComment_Kill()
     {
         TestHelper.Instance.RunTest("-kill:1");
     }
 
-    [TestMethod]
+    [Test]
     public void ImportantComment_None()
     {
         TestHelper.Instance.RunTest("-comments:none");
     }
 
-    [TestMethod]
+    [Test]
     public void ImportantComment_All()
     {
         TestHelper.Instance.RunTest("-comments:all");
     }
 
-    [TestMethod]
+    [Test]
     public void SingleLine()
     {
         // even though we say all comments, we won't persist single-line comments since
@@ -158,13 +158,13 @@ namespace CssUnitTest
         TestHelper.Instance.RunTest("-comments:all");
     }
 
-    [TestMethod]
+    [Test]
     public void SharepointThemes()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void SharepointThemes_None()
     {
         TestHelper.Instance.RunTest("-comments:none");

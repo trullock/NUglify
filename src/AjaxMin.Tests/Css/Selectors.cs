@@ -14,113 +14,113 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
   /// <summary>
   /// Summary description for Selectors
   /// </summary>
-  [TestClass]
+  [TestFixture]
   public class Selectors
   {
-    [TestMethod]
+    [Test]
     public void Simple()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Combinator()
     {
       TestHelper.Instance.RunTest("-colors:hex");
     }
 
-    [TestMethod]
+    [Test]
     public void PseudoClass_utf8()
     {
         TestHelper.Instance.RunTest("-enc:out utf-8 -colors:strict");
     }
 
-    [TestMethod]
+    [Test]
     public void PseudoClass()
     {
         TestHelper.Instance.RunTest("-enc:out ascii");
     }
 
-    [TestMethod]
+    [Test]
     public void PseudoElement()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Attribute()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Universal()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Grouping()
     {
       TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Not()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void CSS3()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void CSS3_all()
     {
         TestHelper.Instance.RunTest("-unused:keep");
     }
 
-    [TestMethod]
+    [Test]
     public void CSS3_pretty()
     {
         TestHelper.Instance.RunTest("-pretty");
     }
 
-    [TestMethod]
+    [Test]
     public void Namespace()
     {
         TestHelper.Instance.RunTest("-css:full -colors:strict");
     }
 
-    [TestMethod]
+    [Test]
     public void NoSpaceUniversal()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void MatchCasing()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Escapes()
     {
         TestHelper.Instance.RunTest();
     }
 
-    [TestMethod]
+    [Test]
     public void Any()
     {
         TestHelper.Instance.RunTest();

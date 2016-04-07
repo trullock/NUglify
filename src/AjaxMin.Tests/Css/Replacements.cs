@@ -14,66 +14,66 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CssUnitTest
 {
   /// <summary>
   /// Summary description for Replacements
   /// </summary>
-  [TestClass]
+  [TestFixture]
   public class Replacements
   {
-      [TestMethod]
+      [Test]
       public void ValueReplacement()
       {
           TestHelper.Instance.RunTest("-res");
       }
 
-      [TestMethod]
+      [Test]
       public void MajorColors()
       {
           TestHelper.Instance.RunTest("-colors:major");
       }
 
-      [TestMethod]
+      [Test]
       public void MajorColors_strict()
       {
           TestHelper.Instance.RunTest("-colors:strict");
       }
 
-      [TestMethod]
+      [Test]
       public void ColorNames_strict()
       {
           TestHelper.Instance.RunTest("-colors:strict");
       }
 
-      [TestMethod]
+      [Test]
       public void ColorNames_hex()
       {
           TestHelper.Instance.RunTest("-colors:hex");
       }
 
-      [TestMethod]
+      [Test]
       public void ColorNames_major()
       {
           TestHelper.Instance.RunTest("-colors:major");
       }
 
-      [TestMethod]
+      [Test]
       public void ColorNames_noswap()
       {
           // noswap
           TestHelper.Instance.RunTest("-colors:noswap");
       }
 
-      [TestMethod]
+      [Test]
       public void CssReplacementTokens()
       {
           TestHelper.Instance.RunTest();
       }
 
-      [TestMethod]
+      [Test]
       public void Ie8Eot()
       {
           TestHelper.Instance.RunTest();
