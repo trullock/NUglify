@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using AjaxMin.JavaScript;
+using AjaxMin.JavaScript.Syntax;
 
 namespace AjaxMin
 {

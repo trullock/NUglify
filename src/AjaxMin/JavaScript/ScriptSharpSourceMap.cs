@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Xml;
+using AjaxMin.JavaScript.Syntax;
 
 namespace AjaxMin.JavaScript
 {
@@ -177,7 +178,7 @@ namespace AjaxMin.JavaScript
                 // for this format we want to output a separate segment for. It used to be its own Lookup
                 // node child of the function object, so we need to create a fake node here, start a new 
                 // symbol from it, end the symbol, then write it.
-                var fakeLookup = new Lookup(context) { Name = name };
+                var fakeLookup = new LookupExpression(context) { Name = name };
                 var nameSymbol = JavaScriptSymbol.StartNew(fakeLookup, startLine, startColumn, GetSourceFileIndex(functionObject.Context.Document.FileContext));
 
                 // the name will never end on a different line -- it's a single unbreakable token. The length is just

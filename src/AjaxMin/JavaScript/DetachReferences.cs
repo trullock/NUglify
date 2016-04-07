@@ -14,6 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using AjaxMin.JavaScript.Syntax;
+using AjaxMin.JavaScript.Visitors;
+
 namespace AjaxMin.JavaScript
 {
     public class DetachReferences : TreeVisitor
@@ -44,7 +47,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        public override void Visit(Lookup node)
+        public override void Visit(LookupExpression node)
         {
             // only lookups need to be detached.
             if (node != null)

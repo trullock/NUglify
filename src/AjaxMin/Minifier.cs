@@ -20,6 +20,7 @@ using System.Globalization;
 using System.IO;
 using AjaxMin.Css;
 using AjaxMin.JavaScript;
+using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin
 {

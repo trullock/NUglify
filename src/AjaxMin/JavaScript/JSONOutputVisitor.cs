@@ -16,6 +16,8 @@
 
 using System.Globalization;
 using System.IO;
+using AjaxMin.JavaScript.Syntax;
+using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin.JavaScript
 {
@@ -136,7 +138,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        public void Visit(Block node)
+        public void Visit(BlockStatement node)
         {
             if (node != null && node.Count > 0)
             {
@@ -182,7 +184,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        public void Visit(UnaryOperator node)
+        public void Visit(UnaryExpression node)
         {
             if (node != null)
             {
@@ -309,7 +311,7 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(BinaryOperator node)
+        public void Visit(BinaryExpression node)
         {
             // invalid! ignore
             IsValid = false;
@@ -321,7 +323,7 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(Break node)
+        public void Visit(BreakStatement node)
         {
             // invalid! ignore
             IsValid = false;
@@ -351,7 +353,7 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(CallNode node)
+        public void Visit(CallExpression node)
         {
             // invalid! ignore
             IsValid = false;
@@ -435,7 +437,7 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(DoWhile node)
+        public void Visit(DoWhileStatement node)
         {
             // invalid! ignore
             IsValid = false;
@@ -447,19 +449,19 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(ExportNode node)
+        public void Visit(ExportStatement node)
         {
             // invalid! ignore
             IsValid = false;
         }
 
-        public void Visit(ForIn node)
+        public void Visit(ForInStatement node)
         {
             // invalid! ignore
             IsValid = false;
         }
 
-        public void Visit(ForNode node)
+        public void Visit(ForStatement node)
         {
             // invalid! ignore
             IsValid = false;
@@ -488,7 +490,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        public void Visit(IfNode node)
+        public void Visit(IfStatement node)
         {
             // invalid! ignore
             IsValid = false;
@@ -506,7 +508,7 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(ImportNode node)
+        public void Visit(ImportStatement node)
         {
             // invalid! ignore
             IsValid = false;
@@ -530,13 +532,13 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(Lookup node)
+        public void Visit(LookupExpression node)
         {
             // invalid! ignore
             IsValid = false;
         }
 
-        public void Visit(Member node)
+        public void Visit(MemberExpression node)
         {
             // invalid! ignore
             IsValid = false;
@@ -560,13 +562,13 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(ReturnNode node)
+        public void Visit(ReturnStatement node)
         {
             // invalid! ignore
             IsValid = false;
         }
 
-        public void Visit(Switch node)
+        public void Visit(SwitchStatement node)
         {
             // invalid! ignore
             IsValid = false;
@@ -596,19 +598,19 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(ThrowNode node)
+        public void Visit(ThrowStatement node)
         {
             // invalid! ignore
             IsValid = false;
         }
 
-        public void Visit(TryNode node)
+        public void Visit(TryStatement node)
         {
             // invalid! ignore
             IsValid = false;
         }
 
-        public void Visit(Var node)
+        public void Visit(VarDeclaration node)
         {
             // invalid! ignore
             IsValid = false;
@@ -620,13 +622,13 @@ namespace AjaxMin.JavaScript
             IsValid = false;
         }
 
-        public void Visit(WhileNode node)
+        public void Visit(WhileStatement node)
         {
             // invalid! ignore
             IsValid = false;
         }
 
-        public void Visit(WithNode node)
+        public void Visit(WithStatement node)
         {
             // invalid! ignore
             IsValid = false;
@@ -812,7 +814,7 @@ namespace AjaxMin.JavaScript
             // a primitive in the list (array or object)
             foreach (var child in nodeList)
             {
-                if (!(child is ConstantWrapper) && !(child is UnaryOperator))
+                if (!(child is ConstantWrapper) && !(child is UnaryExpression))
                 {
                     return true;
                 }

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using AjaxMin.JavaScript.Syntax;
 
 namespace AjaxMin.JavaScript
 {

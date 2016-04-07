@@ -22,6 +22,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using AjaxMin.JavaScript;
+using AjaxMin.JavaScript.Syntax;
+using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin
 {

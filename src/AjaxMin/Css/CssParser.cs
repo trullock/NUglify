@@ -21,6 +21,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using AjaxMin.JavaScript;
+using AjaxMin.JavaScript.Visitors;
 
 namespace AjaxMin.Css
 {

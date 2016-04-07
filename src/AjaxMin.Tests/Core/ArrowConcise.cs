@@ -1,4 +1,6 @@
 ﻿using AjaxMin.JavaScript;
+using AjaxMin.JavaScript.Syntax;
+using AjaxMin.JavaScript.Visitors;
 using NUnit.Framework;
 
 namespace AjaxMin.Tests.Core
@@ -28,7 +30,7 @@ namespace AjaxMin.Tests.Core
             // and the first statement should be a return node.
             body.Append(new DebuggerNode(body[0].Context.FlattenToEnd()));
             Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body[0] is ReturnNode);
+            Assert.IsTrue(body[0] is ReturnStatement);
             Assert.IsTrue(body[1] is DebuggerNode);
 
             // make sure output is what we expect
@@ -47,7 +49,7 @@ namespace AjaxMin.Tests.Core
             body.InsertAfter(body[0], new DebuggerNode(body[0].Context.FlattenToEnd()));
             Assert.IsFalse(body.IsConcise);
             Assert.IsTrue(body.Count == 2);
-            Assert.IsTrue(body[0] is ReturnNode);
+            Assert.IsTrue(body[0] is ReturnStatement);
             Assert.IsTrue(body[1] is DebuggerNode);
 
             // make sure output is what we expect
@@ -67,7 +69,7 @@ namespace AjaxMin.Tests.Core
             Assert.IsFalse(body.IsConcise);
             Assert.IsTrue(body.Count == 2);
             Assert.IsTrue(body[0] is DebuggerNode);
-            Assert.IsTrue(body[1] is ReturnNode);
+            Assert.IsTrue(body[1] is ReturnStatement);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
@@ -85,9 +87,9 @@ namespace AjaxMin.Tests.Core
             body.InsertRange(0, new AstNode[] { GetLookupToFirstParameter(body.Parent as FunctionObject), new DebuggerNode(body[0].Context.FlattenToStart()) });
             Assert.IsFalse(body.IsConcise);
             Assert.IsTrue(body.Count == 3);
-            Assert.IsTrue(body[0] is Lookup);
+            Assert.IsTrue(body[0] is LookupExpression);
             Assert.IsTrue(body[1] is DebuggerNode);
-            Assert.IsTrue(body[2] is ReturnNode);
+            Assert.IsTrue(body[2] is ReturnStatement);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
@@ -192,7 +194,7 @@ namespace AjaxMin.Tests.Core
             body.ReplaceChild(body[0], GetLookupToFirstParameter(body.Parent as FunctionObject));
             Assert.IsTrue(body.IsConcise);
             Assert.IsTrue(body.Count == 1);
-            Assert.IsTrue(body[0] is Lookup);
+            Assert.IsTrue(body[0] is LookupExpression);
             Assert.IsTrue(body[0].IsExpression);
 
             // make sure output is what we expect
@@ -200,32 +202,32 @@ namespace AjaxMin.Tests.Core
             Assert.AreEqual(justLookup, minified);
         }
 
-        private Block GetParsedArrowFunctionCode(CodeSettings settings)
+        private BlockStatement GetParsedArrowFunctionCode(CodeSettings settings)
         {
             var parser = new JSParser();
             return parser.Parse(source, settings);
         }
 
-        private Block GetArrowFunctionBody(Block block)
+        private BlockStatement GetArrowFunctionBody(BlockStatement block)
         {
             // there should be a block, containing a var, containing a vardecl, which has an initializer that's a FunctionObject,
             // that is an arrow funtion with a body that is concise.
-            var arrowFunction = (block[0] as Var).IfNotNull(v => v[0].Initializer as FunctionObject);
+            var arrowFunction = (block[0] as VarDeclaration).IfNotNull(v => v[0].Initializer as FunctionObject);
             Assert.IsNotNull(arrowFunction);
             Assert.IsTrue(arrowFunction.FunctionType == FunctionType.ArrowFunction);
             Assert.IsTrue(arrowFunction.Body.Count == 1);
-            Assert.IsFalse(arrowFunction.Body[0] is ReturnNode);
+            Assert.IsFalse(arrowFunction.Body[0] is ReturnStatement);
             Assert.IsTrue(arrowFunction.Body[0].IsExpression);
             Assert.IsTrue(arrowFunction.Body.IsConcise);
 
             return arrowFunction.Body;
         }
 
-        private Lookup GetLookupToFirstParameter(FunctionObject function)
+        private LookupExpression GetLookupToFirstParameter(FunctionObject function)
         {
             var firstParameter = function.ParameterDeclarations[0] as ParameterDeclaration;
             var bindingIdentifier = firstParameter.Binding as BindingIdentifier;
-            return new Lookup(function.Body.Context.FlattenToStart())
+            return new LookupExpression(function.Body.Context.FlattenToStart())
                 {
                     Name = bindingIdentifier.Name,
                     VariableField = bindingIdentifier.VariableField

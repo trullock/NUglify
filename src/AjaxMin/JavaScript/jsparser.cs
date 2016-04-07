@@ -20,6 +20,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using AjaxMin.JavaScript.Syntax;
+using AjaxMin.JavaScript.Visitors;
+using SwitchStatement = AjaxMin.JavaScript.Syntax.SwitchStatement;
 
 namespace AjaxMin.JavaScript
 {
@@ -183,7 +186,7 @@ namespace AjaxMin.JavaScript
         /// </summary>
         /// <param name="sourceContext">source code with context</param>
         /// <returns>a Block object representing the series of statements in abstract syntax tree form</returns>
-        public Block Parse(DocumentContext sourceContext)
+        public BlockStatement Parse(DocumentContext sourceContext)
         {
             SetDocumentContext(sourceContext);
 
@@ -207,7 +210,7 @@ namespace AjaxMin.JavaScript
         /// <param name="sourceContext">source code with context</param>
         /// <param name="settings">settings to use for the parse operation</param>
         /// <returns>a Block object representing the series of statements in abstract syntax tree form</returns>
-        public Block Parse(DocumentContext sourceContext, CodeSettings settings)
+        public BlockStatement Parse(DocumentContext sourceContext, CodeSettings settings)
         {
             this.Settings = settings;
             return Parse(sourceContext);
@@ -218,7 +221,7 @@ namespace AjaxMin.JavaScript
         /// </summary>
         /// <param name="source">source code with no context</param>
         /// <returns>a Block object representing the series of statements in abstract syntax tree form</returns>
-        public Block Parse(string source)
+        public BlockStatement Parse(string source)
         {
             return Parse(new DocumentContext(source));
         }
@@ -229,7 +232,7 @@ namespace AjaxMin.JavaScript
         /// <param name="source">source code to parse</param>
         /// <param name="settings">settings to use for the parse operation</param>
         /// <returns>a Block object representing the series of statements in abstract syntax tree form</returns>
-        public Block Parse(string source, CodeSettings settings)
+        public BlockStatement Parse(string source, CodeSettings settings)
         {
             this.Settings = settings;
             return Parse(source);
@@ -242,7 +245,7 @@ namespace AjaxMin.JavaScript
         /// <param name="settings">code settings to use to process the source code</param>
         /// <returns>root Block node representing the top-level statements</returns>
         [Obsolete("This method will be removed in version 6. Please use the default constructor and use a Parse override that is passed the source.", false)]
-        public Block Parse(CodeSettings settings)
+        public BlockStatement Parse(CodeSettings settings)
         {
             if (m_scanner == null)
             {
@@ -267,7 +270,7 @@ namespace AjaxMin.JavaScript
         /// through various combinations of constructor/properties/Parse methods.
         /// </summary>
         /// <returns>Parsed Block node</returns>
-        private Block InternalParse()
+        private BlockStatement InternalParse()
         {
             // if the settings list is not null, use it to initialize a new list
             // with the same settings. If it is null, initialize an empty list 
@@ -318,8 +321,8 @@ namespace AjaxMin.JavaScript
             // get the first token.
             GetNextToken();
 
-            Block scriptBlock = null;
-            Block returnBlock = null;
+            BlockStatement scriptBlock = null;
+            BlockStatement returnBlock = null;
             switch (m_settings.SourceMode)
             {
                 case JavaScriptSourceMode.Program:
@@ -327,7 +330,7 @@ namespace AjaxMin.JavaScript
                     // however, when parsing this block, we mght determine it's really part of
                     // a larger structure, and we could return a different block that we would need
                     // to continue processing.
-                    scriptBlock = returnBlock = ParseStatements(new Block(CurrentPositionContext)
+                    scriptBlock = returnBlock = ParseStatements(new BlockStatement(CurrentPositionContext)
                         {
                             EnclosingScope = this.GlobalScope
                         });
@@ -337,14 +340,14 @@ namespace AjaxMin.JavaScript
                     // an implicit module as referenced by an import statement.
                     // create a root block with the global scope, add a module with its module body,
                     // then parse the input as statements into the module body.
-                    returnBlock = scriptBlock = new Block(CurrentPositionContext)
+                    returnBlock = scriptBlock = new BlockStatement(CurrentPositionContext)
                         {
                             EnclosingScope = this.GlobalScope
                         };
                     var module = new ModuleDeclaration(CurrentPositionContext)
                         {
                             IsImplicit = true,
-                            Body = new Block(CurrentPositionContext)
+                            Body = new BlockStatement(CurrentPositionContext)
                                 {
                                     IsModule = true
                                 }
@@ -362,7 +365,7 @@ namespace AjaxMin.JavaScript
                 case JavaScriptSourceMode.Expression:
                     // create a block, get the first token, add in the parse of a single expression, 
                     // and we'll go fron there.
-                    returnBlock = scriptBlock = new Block(CurrentPositionContext)
+                    returnBlock = scriptBlock = new BlockStatement(CurrentPositionContext)
                         {
                             EnclosingScope = this.GlobalScope
                         };
@@ -386,7 +389,7 @@ namespace AjaxMin.JavaScript
                     // parameter named "event", and then we're going to parse the input as the body of that
                     // function expression. We're going to resolve the global block, but only return the body
                     // of the function.
-                    scriptBlock = new Block(CurrentPositionContext)
+                    scriptBlock = new BlockStatement(CurrentPositionContext)
                         {
                             EnclosingScope = this.GlobalScope
                         };
@@ -405,7 +408,7 @@ namespace AjaxMin.JavaScript
                         {
                             FunctionType = FunctionType.Expression,
                             ParameterDeclarations = parameters,
-                            Body = new Block(CurrentPositionContext)
+                            Body = new BlockStatement(CurrentPositionContext)
                         };
                     scriptBlock.Append(funcExpression);
                     ParseFunctionBody(funcExpression.Body);
@@ -513,14 +516,14 @@ namespace AjaxMin.JavaScript
         /// parameter, if it's a string literal. Only the last define with a given name is preserved.
         /// </summary>
         /// <param name="scriptBlock">script block to remove defines from; not recursed</param>
-        private static void RemoveDuplicateDefines(Block scriptBlock)
+        private static void RemoveDuplicateDefines(BlockStatement scriptBlock)
         {
             var defines = new HashSet<string>();
 
             // walk backwards so we keep the last one
             for(var ndx = scriptBlock.Count - 1; ndx >= 0; --ndx)
             {
-                var callNode = scriptBlock[ndx] as CallNode;
+                var callNode = scriptBlock[ndx] as CallExpression;
                 if (callNode != null)
                 {
                     if (callNode.Function.IsGlobalNamed("define") 
@@ -581,7 +584,7 @@ namespace AjaxMin.JavaScript
         //   statement statements
         //
         //---------------------------------------------------------------------------------------
-        private Block ParseStatements(Block block)
+        private BlockStatement ParseStatements(BlockStatement block)
         {
             // by default we should return the block we were passed in.
             // the only time we might return a different block is if we decide later on if
@@ -638,7 +641,7 @@ namespace AjaxMin.JavaScript
                         // if this was an export statement, then we know the block as a module.
                         // if we didn't know that before, then we have some conversion to take
                         // care of.
-                        if (ast is ExportNode && !block.IsModule)
+                        if (ast is ExportStatement && !block.IsModule)
                         {
                             // this block will be the module body
                             block.IsModule = true;
@@ -648,7 +651,7 @@ namespace AjaxMin.JavaScript
                             {
                                 // create a new block that has the global scope and remove the
                                 // global scope from this block
-                                returnBlock = new Block(block.Context.Clone())
+                                returnBlock = new BlockStatement(block.Context.Clone())
                                     {
                                         EnclosingScope = block.EnclosingScope
                                     };
@@ -890,7 +893,7 @@ namespace AjaxMin.JavaScript
             if (statement != null)
             {
                 // look for labels
-                var lookup = statement as Lookup;
+                var lookup = statement as LookupExpression;
                 if (lookup != null && m_currentToken.Is(JSToken.Colon))
                 {
                     statement = ParseLabeledStatement(lookup, fSourceElement);
@@ -919,7 +922,7 @@ namespace AjaxMin.JavaScript
                         }
                     }
 
-                    var binaryOp = statement as BinaryOperator;
+                    var binaryOp = statement as BinaryExpression;
                     if (binaryOp != null
                         && (binaryOp.OperatorToken == JSToken.Equal || binaryOp.OperatorToken == JSToken.StrictEqual))
                     {
@@ -928,7 +931,7 @@ namespace AjaxMin.JavaScript
                         binaryOp.OperatorContext.IfNotNull(c => c.HandleError(JSError.SuspectEquality, false));
                     }
 
-                    lookup = statement as Lookup;
+                    lookup = statement as LookupExpression;
                     if (lookup != null
                         && lookup.Name.StartsWith("<%=", StringComparison.Ordinal) && lookup.Name.EndsWith("%>", StringComparison.Ordinal))
                     {
@@ -963,7 +966,7 @@ namespace AjaxMin.JavaScript
             return statement;
         }
 
-        private LabeledStatement ParseLabeledStatement(Lookup lookup, bool fSourceElement)
+        private LabeledStatement ParseLabeledStatement(LookupExpression lookup, bool fSourceElement)
         {
             // can be a label
             var id = lookup.Name;
@@ -1146,13 +1149,13 @@ namespace AjaxMin.JavaScript
         //  Block :
         //    '{' OptionalStatements '}'
         //---------------------------------------------------------------------------------------
-        private Block ParseBlock()
+        private BlockStatement ParseBlock()
         {
             // set the force-braces property to true because we are assuming this is only called
             // when we encounter a left-brace and we will want to keep it going forward. If we are optimizing
             // the code, we will reset these properties as we encounter them so that unneeded curly-braces 
             // can be removed.
-            Block codeBlock = new Block(m_currentToken.Clone())
+            BlockStatement codeBlock = new BlockStatement(m_currentToken.Clone())
                 {
                     ForceBraces = true
                 };
@@ -1237,7 +1240,7 @@ namespace AjaxMin.JavaScript
             Declaration varList;
             if (m_currentToken.Is(JSToken.Var))
             {
-                varList = new Var(m_currentToken.Clone())
+                varList = new VarDeclaration(m_currentToken.Clone())
                     {
                         StatementToken = m_currentToken.Token,
                         KeywordContext = m_currentToken.Clone()
@@ -1467,7 +1470,7 @@ namespace AjaxMin.JavaScript
         //    <empty> |
         //    'else' Statement
         //---------------------------------------------------------------------------------------
-        private IfNode ParseIfStatement()
+        private IfStatement ParseIfStatement()
         {
             Context ifCtx = m_currentToken.Clone();
             AstNode condition = null;
@@ -1505,7 +1508,7 @@ namespace AjaxMin.JavaScript
             // if this is an assignment, throw a warning in case the developer
             // meant to use == instead of =
             // but no warning if the condition is wrapped in parens.
-            var binOp = condition as BinaryOperator;
+            var binOp = condition as BinaryExpression;
             if (binOp != null && binOp.OperatorToken == JSToken.Assign)
             {
                 condition.Context.HandleError(JSError.SuspectAssignment);
@@ -1556,7 +1559,7 @@ namespace AjaxMin.JavaScript
                 }
             }
 
-            return new IfNode(ifCtx)
+            return new IfStatement(ifCtx)
                 {
                     Condition = condition,
                     TrueBlock = AstNode.ForceToBlock(trueBranch),
@@ -1607,7 +1610,7 @@ namespace AjaxMin.JavaScript
                 Declaration declaration;
                 if (m_currentToken.Is(JSToken.Var))
                 {
-                    declaration = new Var(m_currentToken.Clone())
+                    declaration = new VarDeclaration(m_currentToken.Clone())
                         {
                             StatementToken = m_currentToken.Token,
                             KeywordContext = m_currentToken.Clone()
@@ -1714,7 +1717,7 @@ namespace AjaxMin.JavaScript
             var body = ParseStatement(false, true);
             if (isForIn)
             {
-                forNode = new ForIn(forCtx)
+                forNode = new ForInStatement(forCtx)
                     {
                         Variable = initializer,
                         OperatorContext = operatorContext,
@@ -1727,13 +1730,13 @@ namespace AjaxMin.JavaScript
                 // if the condition is an assignment, throw a warning in case the developer
                 // meant to use == instead of =
                 // but no warning if the condition is wrapped in parens.
-                var binOp = condOrColl as BinaryOperator;
+                var binOp = condOrColl as BinaryExpression;
                 if (binOp != null && binOp.OperatorToken == JSToken.Assign)
                 {
                     condOrColl.Context.HandleError(JSError.SuspectAssignment);
                 }
 
-                forNode = new ForNode(forCtx)
+                forNode = new ForStatement(forCtx)
                     {
                         Initializer = initializer,
                         Separator1Context = separator1Context,
@@ -1753,7 +1756,7 @@ namespace AjaxMin.JavaScript
         //  DoStatement:
         //    'do' Statement 'while' '(' Expression ')'
         //---------------------------------------------------------------------------------------
-        private DoWhile ParseDoStatement()
+        private DoWhileStatement ParseDoStatement()
         {
             var doCtx = m_currentToken.Clone();
             Context whileContext = null;
@@ -1821,13 +1824,13 @@ namespace AjaxMin.JavaScript
             // if this is an assignment, throw a warning in case the developer
             // meant to use == instead of =
             // but no warning if the condition is wrapped in parens.
-            var binOp = condition as BinaryOperator;
+            var binOp = condition as BinaryExpression;
             if (binOp != null && binOp.OperatorToken == JSToken.Assign)
             {
                 condition.Context.HandleError(JSError.SuspectAssignment);
             }
 
-            return new DoWhile(doCtx)
+            return new DoWhileStatement(doCtx)
                 {
                     Body = AstNode.ForceToBlock(body),
                     WhileContext = whileContext,
@@ -1842,7 +1845,7 @@ namespace AjaxMin.JavaScript
         //  WhileStatement :
         //    'while' '(' Expression ')' Statement
         //---------------------------------------------------------------------------------------
-        private WhileNode ParseWhileStatement()
+        private WhileStatement ParseWhileStatement()
         {
             Context whileCtx = m_currentToken.Clone();
             AstNode condition = null;
@@ -1873,7 +1876,7 @@ namespace AjaxMin.JavaScript
             // if this is an assignment, throw a warning in case the developer
             // meant to use == instead of =
             // but no warning if the condition is wrapped in parens.
-            var binOp = condition as BinaryOperator;
+            var binOp = condition as BinaryExpression;
             if (binOp != null && binOp.OperatorToken == JSToken.Assign)
             {
                 condition.Context.HandleError(JSError.SuspectAssignment);
@@ -1889,7 +1892,7 @@ namespace AjaxMin.JavaScript
             // and ignore any important comments that spring up right here.
             body = ParseStatement(false, true);
 
-            return new WhileNode(whileCtx)
+            return new WhileStatement(whileCtx)
                 {
                     Condition = condition,
                     Body = AstNode.ForceToBlock(body)
@@ -1956,9 +1959,9 @@ namespace AjaxMin.JavaScript
         // Regardless of error conditions, on exit the parser points to the first token after
         // the break statement.
         //---------------------------------------------------------------------------------------
-        private Break ParseBreakStatement()
+        private BreakStatement ParseBreakStatement()
         {
-            var breakNode = new Break(m_currentToken.Clone());
+            var breakNode = new BreakStatement(m_currentToken.Clone());
             GetNextToken();
 
             string label = null;
@@ -2001,9 +2004,9 @@ namespace AjaxMin.JavaScript
         // Regardless of error conditions, on exit the parser points to the first token after
         // the return statement.
         //---------------------------------------------------------------------------------------
-        private ReturnNode ParseReturnStatement()
+        private ReturnStatement ParseReturnStatement()
         {
-            var returnNode = new ReturnNode(m_currentToken.Clone());
+            var returnNode = new ReturnStatement(m_currentToken.Clone());
             GetNextToken();
 
             // CAN'T have a line-break between the "return" and its expression.
@@ -2035,7 +2038,7 @@ namespace AjaxMin.JavaScript
         //  WithStatement :
         //    'with' '(' Expression ')' Statement
         //---------------------------------------------------------------------------------------
-        private WithNode ParseWithStatement()
+        private WithStatement ParseWithStatement()
         {
             Context withCtx = m_currentToken.Clone();
             AstNode obj = null;
@@ -2072,7 +2075,7 @@ namespace AjaxMin.JavaScript
             // and ignore any important comments that spring up right here.
             var statement = ParseStatement(false, true);
 
-            return new WithNode(withCtx)
+            return new WithStatement(withCtx)
                 {
                     WithObject = obj,
                     Body = AstNode.ForceToBlock(statement)
@@ -2188,7 +2191,7 @@ namespace AjaxMin.JavaScript
                 }
 
                 // read the statements inside the case or default
-                var statements = new Block(m_currentToken.Clone());
+                var statements = new BlockStatement(m_currentToken.Clone());
                 while (m_currentToken.IsNotAny(JSToken.RightCurly, JSToken.Case, JSToken.Default, JSToken.EndOfFile))
                 {
                     // parse a Statement, not a SourceElement
@@ -2208,7 +2211,7 @@ namespace AjaxMin.JavaScript
             switchCtx.UpdateWith(m_currentToken);
             GetNextToken();
 
-            return new Switch(switchCtx)
+            return new SwitchStatement(switchCtx)
                 {
                     Expression = expr,
                     BraceContext = braceContext,
@@ -2226,7 +2229,7 @@ namespace AjaxMin.JavaScript
         //---------------------------------------------------------------------------------------
         private AstNode ParseThrowStatement()
         {
-            var throwNode = new ThrowNode(m_currentToken.Clone());
+            var throwNode = new ThrowStatement(m_currentToken.Clone());
             GetNextToken();
 
             // cannot have a line break between "throw" and it's expression
@@ -2267,12 +2270,12 @@ namespace AjaxMin.JavaScript
         private AstNode ParseTryStatement()
         {
             Context tryCtx = m_currentToken.Clone();
-            Block body = null;
+            BlockStatement body = null;
             Context catchContext = null;
             ParameterDeclaration catchParameter = null;
-            Block catchBlock = null;
+            BlockStatement catchBlock = null;
             Context finallyContext = null;
-            Block finallyBlock = null;
+            BlockStatement finallyBlock = null;
 
             bool catchOrFinally = false;
             GetNextToken();
@@ -2350,7 +2353,7 @@ namespace AjaxMin.JavaScript
                 ReportError(JSError.NoCatch);
             }
 
-            return new TryNode(tryCtx)
+            return new TryStatement(tryCtx)
                 {
                     TryBlock = body,
                     CatchContext = catchContext,
@@ -2370,7 +2373,7 @@ namespace AjaxMin.JavaScript
 
             string moduleName = null;
             Context moduleContext = null;
-            Block body = null;
+            BlockStatement body = null;
             BindingIdentifier binding = null;
             Context fromContext = null;
             if (m_currentToken.Is(JSToken.StringLiteral))
@@ -2454,7 +2457,7 @@ namespace AjaxMin.JavaScript
         {
             // we know we're parsing an ES6 export
             ParsedVersion = ScriptVersion.EcmaScript6;
-            var exportNode = new ExportNode(m_currentToken.Clone())
+            var exportNode = new ExportStatement(m_currentToken.Clone())
                 {
                     KeywordContext = m_currentToken.Clone(),
                 };
@@ -2499,7 +2502,7 @@ namespace AjaxMin.JavaScript
                 if (m_currentToken.Is(JSToken.Identifier) || JSKeyword.CanBeIdentifier(m_currentToken.Token) != null)
                 {
                     // export identifier ;
-                    var lookup = new Lookup(m_currentToken.Clone())
+                    var lookup = new LookupExpression(m_currentToken.Clone())
                     {
                         Name = m_scanner.Identifier
                     };
@@ -2528,7 +2531,7 @@ namespace AjaxMin.JavaScript
                             if (m_currentToken.Is(JSToken.Identifier) || (identifier = JSKeyword.CanBeIdentifier(m_currentToken.Token)) != null)
                             {
                                 var specifierContext = m_currentToken.Clone();
-                                var lookup = new Lookup(m_currentToken.Clone())
+                                var lookup = new LookupExpression(m_currentToken.Clone())
                                     {
                                         Name = identifier ?? m_scanner.Identifier
                                     };
@@ -2624,7 +2627,7 @@ namespace AjaxMin.JavaScript
         {
             // we know we're parsing an ES6 import
             ParsedVersion = ScriptVersion.EcmaScript6;
-            var importNode = new ImportNode(m_currentToken.Clone())
+            var importNode = new ImportStatement(m_currentToken.Clone())
                 {
                     KeywordContext = m_currentToken.Clone(),
                 };
@@ -2774,7 +2777,7 @@ namespace AjaxMin.JavaScript
         {
             BindingIdentifier name = null;
             AstNodeList formalParameters = null;
-            Block body = null;
+            BlockStatement body = null;
             bool inExpression = (functionType == FunctionType.Expression);
 
             // skip the opening token (function, get, or set).
@@ -2882,7 +2885,7 @@ namespace AjaxMin.JavaScript
             try
             {
                 // parse the block locally to get the exact end of function
-                body = new Block(m_currentToken.Clone());
+                body = new BlockStatement(m_currentToken.Clone());
                 body.BraceOnNewLine = m_foundEndOfLine;
                 GetNextToken();
 
@@ -2925,7 +2928,7 @@ namespace AjaxMin.JavaScript
                 };
         }
 
-        private void ParseFunctionBody(Block body)
+        private void ParseFunctionBody(BlockStatement body)
         {
             var possibleDirectivePrologue = true;
             while (m_currentToken.IsNot(JSToken.RightCurly)
@@ -3347,7 +3350,7 @@ namespace AjaxMin.JavaScript
                         // if this is an assignment, throw a warning in case the developer
                         // meant to use == instead of =
                         // but no warning if the condition is wrapped in parens.
-                        var binOp = condition as BinaryOperator;
+                        var binOp = condition as BinaryExpression;
                         if (binOp != null && binOp.OperatorToken == JSToken.Assign)
                         {
                             condition.Context.HandleError(JSError.SuspectAssignment);
@@ -3451,13 +3454,13 @@ namespace AjaxMin.JavaScript
 
             if (term != null)
             {
-                if (term.Context.Token == JSToken.Yield && term is Lookup)
+                if (term.Context.Token == JSToken.Yield && term is LookupExpression)
                 {
                     var expression = ParseExpression(true);
                     if (expression != null)
                     {
                         // yield expression
-                        term = new UnaryOperator(term.Context.CombineWith(expression.Context))
+                        term = new UnaryExpression(term.Context.CombineWith(expression.Context))
                             {
                                 OperatorToken = JSToken.Yield,
                                 OperatorContext = term.Context,
@@ -3519,7 +3522,7 @@ namespace AjaxMin.JavaScript
                     exprCtx = m_currentToken.Clone();
                     GetNextToken();
                     expr = ParseUnaryExpression(out dummy, false);
-                    ast = new UnaryOperator(exprCtx.CombineWith(expr.Context))
+                    ast = new UnaryExpression(exprCtx.CombineWith(expr.Context))
                         {
                             Operand = expr,
                             OperatorContext = exprCtx,
@@ -3576,7 +3579,7 @@ namespace AjaxMin.JavaScript
                                 expr = ParseUnaryExpression(out dummy, false);
                                 exprCtx.UpdateWith(expr.Context);
 
-                                var unary = new UnaryOperator(exprCtx)
+                                var unary = new UnaryExpression(exprCtx)
                                     {
                                         Operand = expr,
                                         OperatorContext = operatorContext,
@@ -3612,7 +3615,7 @@ namespace AjaxMin.JavaScript
                             expr = ParseUnaryExpression(out dummy, false);
                             exprCtx.UpdateWith(expr.Context);
 
-                            var unary = new UnaryOperator(exprCtx)
+                            var unary = new UnaryExpression(exprCtx)
                                 {
                                     Operand = expr,
                                     OperatorContext = operatorContext,
@@ -3691,7 +3694,7 @@ namespace AjaxMin.JavaScript
                         isLeftHandSideExpr = false;
                         exprCtx = ast.Context.Clone();
                         exprCtx.UpdateWith(m_currentToken);
-                        ast = new UnaryOperator(exprCtx)
+                        ast = new UnaryExpression(exprCtx)
                             {
                                 Operand = ast,
                                 OperatorToken = m_currentToken.Token,
@@ -3705,7 +3708,7 @@ namespace AjaxMin.JavaScript
                         isLeftHandSideExpr = false;
                         exprCtx = ast.Context.Clone();
                         exprCtx.UpdateWith(m_currentToken);
-                        ast = new UnaryOperator(exprCtx)
+                        ast = new UnaryExpression(exprCtx)
                             {
                                 Operand = ast,
                                 OperatorToken = m_currentToken.Token,
@@ -3763,7 +3766,7 @@ namespace AjaxMin.JavaScript
             {
                 // primary expression
                 case JSToken.Identifier:
-                    ast = new Lookup(m_currentToken.Clone())
+                    ast = new LookupExpression(m_currentToken.Clone())
                         {
                             Name = m_scanner.Identifier
                         };
@@ -3970,7 +3973,7 @@ namespace AjaxMin.JavaScript
                                 ast = ParseExpression(true);
                                 if (ast != null)
                                 {
-                                    ast = new UnaryOperator(restContext.CombineWith(ast.Context))
+                                    ast = new UnaryExpression(restContext.CombineWith(ast.Context))
                                         {
                                             OperatorContext = restContext,
                                             OperatorToken = JSToken.RestSpread,
@@ -4074,7 +4077,7 @@ namespace AjaxMin.JavaScript
                         {
                             // we need to protect against non-ES6 code using "yield" as a variable name versus the
                             // Mozilla yield syntax. We'll do that further upstream.
-                            ast = new Lookup(m_currentToken.Clone())
+                            ast = new LookupExpression(m_currentToken.Clone())
                                 {
                                     Name = "yield"
                                 };
@@ -4087,7 +4090,7 @@ namespace AjaxMin.JavaScript
                     var identifier = JSKeyword.CanBeIdentifier(m_currentToken.Token);
                     if (identifier != null)
                     {
-                        ast = new Lookup(m_currentToken.Clone())
+                        ast = new LookupExpression(m_currentToken.Clone())
                             {
                                 Name = identifier
                             };
@@ -4160,7 +4163,7 @@ namespace AjaxMin.JavaScript
             var literalContext = m_currentToken.Clone();
             var textContext = m_currentToken.Clone();
 
-            Lookup lookup = null;
+            LookupExpression lookup = null;
             var text = m_scanner.StringLiteralValue;
 
             // see if it starts with an identifier
@@ -4172,7 +4175,7 @@ namespace AjaxMin.JavaScript
                 var tagContext = textContext.SplitStart(indexBackquote);
 
                 // TODO: figure out how to get a context on just the literal part!
-                lookup = new Lookup(tagContext)
+                lookup = new LookupExpression(tagContext)
                     {
                         Name = literalName
                     };
@@ -4258,7 +4261,7 @@ namespace AjaxMin.JavaScript
                 context.UpdateWith(expression.Context);
             }
 
-            return new UnaryOperator(context)
+            return new UnaryExpression(context)
                 {
                     OperatorContext = operatorContext,
                     OperatorToken = JSToken.Yield,
@@ -4287,7 +4290,7 @@ namespace AjaxMin.JavaScript
             else
             {
                 // parse an assignment expression as a concise block
-                functionObject.Body = Block.ForceToBlock(ParseExpression(true));
+                functionObject.Body = BlockStatement.ForceToBlock(ParseExpression(true));
                 functionObject.Body.IsConcise = true;
             }
 
@@ -4372,7 +4375,7 @@ namespace AjaxMin.JavaScript
                     // if we had a spread operator on this item, wrap it in a special unary node
                     if (spreadContext != null)
                     {
-                        element = new UnaryOperator(spreadContext.CombineWith(element.Context))
+                        element = new UnaryExpression(spreadContext.CombineWith(element.Context))
                             {
                                 Operand = element,
                                 OperatorToken = JSToken.RestSpread,
@@ -4823,7 +4826,7 @@ namespace AjaxMin.JavaScript
                         AstNodeList args = null;
                         args = ParseExpressionList(JSToken.RightParenthesis);
 
-                        expression = new CallNode(expression.Context.CombineWith(args.Context))
+                        expression = new CallExpression(expression.Context.CombineWith(args.Context))
                             {
                                 Function = expression,
                                 Arguments = args,
@@ -4833,9 +4836,9 @@ namespace AjaxMin.JavaScript
                         if (null != newContexts && newContexts.Count > 0)
                         {
                             (newContexts[newContexts.Count - 1]).UpdateWith(expression.Context);
-                            if (!(expression is CallNode))
+                            if (!(expression is CallExpression))
                             {
-                                expression = new CallNode(newContexts[newContexts.Count - 1])
+                                expression = new CallExpression(newContexts[newContexts.Count - 1])
                                     {
                                         Function = expression,
                                         Arguments = new AstNodeList(CurrentPositionContext)
@@ -4846,7 +4849,7 @@ namespace AjaxMin.JavaScript
                                 expression.Context = newContexts[newContexts.Count - 1];
                             }
 
-                            ((CallNode)expression).IsConstructor = true;
+                            ((CallExpression)expression).IsConstructor = true;
                             newContexts.RemoveAt(newContexts.Count - 1);
                         }
 
@@ -4873,7 +4876,7 @@ namespace AjaxMin.JavaScript
                             args.Append(accessor);
                         }
 
-                        expression = new CallNode(expression.Context.CombineWith(m_currentToken))
+                        expression = new CallExpression(expression.Context.CombineWith(m_currentToken))
                             {
                                 Function = expression,
                                 Arguments = args,
@@ -4932,7 +4935,7 @@ namespace AjaxMin.JavaScript
                         }
 
                         GetNextToken();
-                        expression = new Member(expression != null ? expression.Context.CombineWith(nameContext) : nameContext.Clone())
+                        expression = new MemberExpression(expression != null ? expression.Context.CombineWith(nameContext) : nameContext.Clone())
                             {
                                 Root = expression,
                                 Name = name,
@@ -4945,12 +4948,12 @@ namespace AjaxMin.JavaScript
                             while (newContexts.Count > 0)
                             {
                                 (newContexts[newContexts.Count - 1]).UpdateWith(expression.Context);
-                                expression = new CallNode(newContexts[newContexts.Count - 1])
+                                expression = new CallExpression(newContexts[newContexts.Count - 1])
                                     {
                                         Function = expression,
                                         Arguments = new AstNodeList(CurrentPositionContext)
                                     };
-                                ((CallNode)expression).IsConstructor = true;
+                                ((CallExpression)expression).IsConstructor = true;
                                 newContexts.RemoveAt(newContexts.Count - 1);
                             }
                         }
@@ -4997,7 +5000,7 @@ namespace AjaxMin.JavaScript
 
                     if (spreadContext != null)
                     {
-                        item = new UnaryOperator(spreadContext.CombineWith(item.Context))
+                        item = new UnaryExpression(spreadContext.CombineWith(item.Context))
                             {
                                 Operand = item,
                                 OperatorToken = JSToken.RestSpread,
@@ -5141,7 +5144,7 @@ namespace AjaxMin.JavaScript
                 case JSToken.UnsignedRightShift:
                 case JSToken.UnsignedRightShiftAssign:
                     // regular binary operator
-                    return new BinaryOperator(context)
+                    return new BinaryExpression(context)
                         {
                             Operand1 = operand1,
                             Operand2 = operand2,
@@ -5153,7 +5156,7 @@ namespace AjaxMin.JavaScript
                     // use the special comma-operator class derived from binary operator.
                     // it has special logic to combine adjacent comma operators into a single
                     // node with an ast node list rather than nested binary operators
-                    return CommaOperator.CombineWithComma(context, operand1, operand2);
+                    return CommaExpression.CombineWithComma(context, operand1, operand2);
 
                 default:
                     // shouldn't get here!
@@ -5289,7 +5292,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        private void AppendImportantComments(Block block)
+        private void AppendImportantComments(BlockStatement block)
         {
             if (block != null)
             {
@@ -5545,7 +5548,7 @@ namespace AjaxMin.JavaScript
     {
         private Context m_context;
 
-        private Lookup m_lookup;
+        private LookupExpression m_lookup;
         public AstNode LookupNode
         {
             get { return m_lookup; }
@@ -5595,7 +5598,7 @@ namespace AjaxMin.JavaScript
             }
         }
 
-        internal UndefinedReference(Lookup lookup, Context context)
+        internal UndefinedReference(LookupExpression lookup, Context context)
         {
             m_lookup = lookup;
             m_name = lookup.Name;

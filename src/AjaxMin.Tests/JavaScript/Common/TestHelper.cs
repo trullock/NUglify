@@ -23,6 +23,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using AjaxMin.JavaScript;
+using AjaxMin.JavaScript.Visitors;
 using NUnit.Framework;
 
 namespace AjaxMin.Tests.JavaScript.Common

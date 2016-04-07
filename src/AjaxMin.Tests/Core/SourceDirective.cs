@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AjaxMin.JavaScript;
+using AjaxMin.JavaScript.Visitors;
 using NUnit.Framework;
 
 namespace AjaxMin.Tests.Core
