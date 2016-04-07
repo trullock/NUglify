@@ -1,0 +1,1 @@
+﻿@namespace foo url(http://www.example.com);@namespace ack "http://www.contoso.com";E:nth-of-type(2n){float:left}E:nth-of-type(2n+1){float:right}*:target{color:#f00}*:target::before{content:url(target.png)}foo|h1{color:#00f}foo|*{color:#ff0}|h1{color:#f00}*|h1{color:#008000}h1{color:#008000}

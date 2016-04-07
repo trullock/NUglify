@@ -1,0 +1,19 @@
+﻿body
+{
+    /* [ReplaceBGImage] */
+    /* [ReplaceColor(themeColor:"BodyText")] */ color:#444;
+    /* [ReplaceColor(themeColor:"BackgroundOverlay",opacity:"0.5")] */ background-color:#fff;
+    /* [ReplaceFont(themeFont:"body")] */ font-family:"Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+}
+
+.foo
+{
+    /* [RecolorImage(themeColor:"SubtleBodyText",method:"Tinting")] */ 
+    background-image:url("/_layouts/15/images/tabtitlerowbottombg.png?rev=23");
+}
+
+.bar
+{
+    /* [RecolorImage(themeColor:"BodyText",method:"Filling",includeRectangle:{x:161,y:178,width:16;height:16})] */
+    background:url("/_layouts/15/images/spcommon.png?rev=23") no-repeat -161px -178px;
+}

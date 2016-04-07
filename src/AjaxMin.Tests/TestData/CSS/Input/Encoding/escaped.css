@@ -1,0 +1,15 @@
+﻿\4f60\597d\3e4e4 /* escaped unicode characters */
+{
+  b\000061ckgr\006fund: url(你好.g\69 f); /* unicode characters */
+  foo: \d8b9\dce4; /* unicode surrogate pair! */
+}
+
+br:before   
+{
+    content: "\\\"'\A NO\c ARF\d\1f ARF"; /* some escapes should remain escaped within a string */
+} 
+
+foobar   
+{
+    content: '\7 BEL\'"'; /* some escapes should remain escaped within a string */
+} 

@@ -1,0 +1,8 @@
+﻿img {
+    height: attr(height, px, auto);
+    width: attr(width, px, auto);
+
+    margin: attr(length em);
+    padding: attr(fooattr px, 0);
+    color: attr(clr);
+}

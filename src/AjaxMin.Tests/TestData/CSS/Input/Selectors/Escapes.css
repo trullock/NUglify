@@ -1,0 +1,5 @@
+﻿/* the period is escaped so it's part of the identifier, not a class operator */
+.foo\.bar
+{
+    bar:foo;
+}

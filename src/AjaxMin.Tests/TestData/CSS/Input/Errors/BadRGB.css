@@ -1,0 +1,6 @@
+﻿foo
+{
+    color: rgb(100%,ralph);
+    background-color: #NotAColor;
+    border-color: foo(#Nope /* bad color */, #neither/* another bad color */);
+}

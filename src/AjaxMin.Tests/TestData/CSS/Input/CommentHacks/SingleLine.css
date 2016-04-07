@@ -1,0 +1,8 @@
+﻿// single-line comments don't get persisted, even if we pass -comments:all
+// on the command-line because they aren't actually valid CSS comments.
+body
+{
+        // make it red
+        color: #ff0000;
+}
+// eof

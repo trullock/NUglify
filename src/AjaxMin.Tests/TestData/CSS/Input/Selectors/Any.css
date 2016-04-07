@@ -1,0 +1,54 @@
+﻿:-moz-any(.a, .d)
+{
+    color: red;
+}
+:-webkit-any(#km-ios)
+{
+    color : green;
+}
+:-moz-any(li, span)
+{
+    color: blue;
+}
+:any(foo.bar, 
+    #id,    
+    .bat)
+{
+    color: white;
+}
+
+/* selectors standard 4 will use :matches() */
+:matches(foo.bar, #id, .bat)
+{
+    color: black;
+}
+
+*|*:matches(:hover, :focus)
+{
+    color: lime;
+}
+
+*|*:matches(*:hover, *:focus)
+{
+    color: gray;
+}
+
+/* Level 0 */
+h1 {
+  font-size: 30px;
+}
+/* Level 1 */
+:-moz-any(section, article, aside, nav) h1 {
+  font-size: 25px;
+}
+/* Level 2 */
+:-moz-any(section, article, aside, nav)
+:-moz-any(section, article, aside, nav) h1 {
+  font-size: 20px;
+}
+/* Level 3 */
+:-moz-any(section, article, aside, nav)
+:-moz-any(section, article, aside, nav)
+:-moz-any(section, article, aside, nav) h1 {
+  font-size: 15px;
+}

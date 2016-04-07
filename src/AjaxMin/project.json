@@ -32,6 +32,15 @@
       }
     }
   },
+  "resource": [
+    "*.resx",
+    "Css/*.resx",
+    "JavaScript/*.resx"
+  ],
+  "namedResource": {
+    "Microsoft.Ajax.Utilities.Css.CssStrings": "Css/CssStrings.resx",
+    "Microsoft.Ajax.Utilities.CommonStrings": "CommonStrings.resx"
+  },
   "frameworks": {
     "net35": {
       "compilationOptions": {
@@ -72,7 +81,7 @@
         "Microsoft.CSharp": "4.0.1-beta-23516",
         "System.Globalization.Extensions": "4.0.1-beta-23516",
         "System.Security.Cryptography.Encoding": "4.0.0-beta-23516",
-        "System.Security.Cryptography.Algorithms":  "4.0.0-beta-23516"
+        "System.Security.Cryptography.Algorithms": "4.0.0-beta-23516"
       }
     }
   }

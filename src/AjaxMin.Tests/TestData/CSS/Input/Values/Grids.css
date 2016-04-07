@@ -1,0 +1,4 @@
+﻿#grid {
+    width: 500px;
+    grid-columns: "a" auto "b" minmax(min-content, 1fr) "b" "c" "d" ("e" 40px)[2] (auto)[5];
+}
