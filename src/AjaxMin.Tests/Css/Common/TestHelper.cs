@@ -318,7 +318,7 @@ namespace AjaxMin.Tests.Css.Common
                 TraceFileContents(outputPath);
 
                 // fail the test if the files do not match
-                Assert.IsTrue(CompareTextFiles(outputPath, expectedPath), "The expected output ({1}) and actual output ({0}) do not match!", outputPath, expectedPath);
+                AssertCompareTextFiles(outputPath, expectedPath);
             }
             else
             {
@@ -362,19 +362,19 @@ namespace AjaxMin.Tests.Css.Common
             }
         }
 
-        private bool CompareTextFiles(string leftPath, string rightPath)
+        private void AssertCompareTextFiles(string outputPath, string expectedPath)
         {
-            Debug.Assert(File.Exists(leftPath));
-            Debug.Assert(File.Exists(rightPath));
+            Assert.True(File.Exists(outputPath), $"Output file [{outputPath}] does no exist");
+            Assert.True(File.Exists(expectedPath), $"Expected file [{outputPath}] does no exist");
 
-            using (StreamReader leftReader = new StreamReader(leftPath))
+            using (StreamReader leftReader = new StreamReader(outputPath))
             {
-                using (StreamReader rightReader = new StreamReader(rightPath))
+                using (StreamReader rightReader = new StreamReader(expectedPath))
                 {
-                    string left = s_testRunRegex.Replace(leftReader.ReadToEnd(), "$1TESTRUNPATH$2");
-                    string right = s_testRunRegex.Replace(rightReader.ReadToEnd(), "$1TESTRUNPATH$2");
+                    string output = s_testRunRegex.Replace(leftReader.ReadToEnd(), "$1TESTRUNPATH$2");
+                    string expected = s_testRunRegex.Replace(rightReader.ReadToEnd(), "$1TESTRUNPATH$2");
 
-                    return (string.Compare(left, right) == 0);
+                    Assert.AreEqual(expected, output, "The expected output ({1}) and actual output ({0}) do not match!", expectedPath, outputPath);
                 }
             }
         }
