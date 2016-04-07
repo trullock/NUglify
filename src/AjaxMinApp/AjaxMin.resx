@@ -1,0 +1,624 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BlockScopeHeader" xml:space="preserve">
+    <value>{0} - starts at line {1}, col {2} {3}</value>
+  </data>
+  <data name="BlockTypeCatch" xml:space="preserve">
+    <value>Catch Scope</value>
+  </data>
+  <data name="BlockTypeWith" xml:space="preserve">
+    <value>With Scope</value>
+  </data>
+  <data name="CrunchedTo" xml:space="preserve">
+    <value> [{1} references renamed to {0}]</value>
+  </data>
+  <data name="FunctionHeader" xml:space="preserve">
+    <value>{6}{0} {1} - starts at line {2}, col {3} {4} {5}</value>
+  </data>
+  <data name="FunctionTypeFunction" xml:space="preserve">
+    <value>Function</value>
+  </data>
+  <data name="FunctionTypePropGet" xml:space="preserve">
+    <value>Property Get</value>
+  </data>
+  <data name="FunctionTypePropSet" xml:space="preserve">
+    <value>Property Set</value>
+  </data>
+  <data name="GlobalObjectsHeader" xml:space="preserve">
+    <value>Global Objects</value>
+  </data>
+  <data name="InvalidArgument" xml:space="preserve">
+    <value>Invalid switch: {0}</value>
+  </data>
+  <data name="MemberInfoFormat" xml:space="preserve">
+    <value>  {0} [{1}{2}]{3}{4}</value>
+  </data>
+  <data name="MemberInfoBuiltInMethod" xml:space="preserve">
+    <value>function</value>
+  </data>
+  <data name="MemberInfoBuiltInProperty" xml:space="preserve">
+    <value>property</value>
+  </data>
+  <data name="MemberInfoFunction" xml:space="preserve">
+    <value>function</value>
+  </data>
+  <data name="MemberInfoLiteral" xml:space="preserve">
+    <value>literal var</value>
+  </data>
+  <data name="MemberInfoVar" xml:space="preserve">
+    <value>var</value>
+  </data>
+  <data name="MemberInfoPossiblyUndefined" xml:space="preserve">
+    <value>possibly undefined</value>
+  </data>
+  <data name="MemberInfoScopeLocal" xml:space="preserve">
+    <value>local </value>
+  </data>
+  <data name="MemberInfoScopeOuter" xml:space="preserve">
+    <value>outer </value>
+  </data>
+  <data name="MemberInfoScopeGlobalObject" xml:space="preserve">
+    <value>built-in Global </value>
+  </data>
+  <data name="MemberInfoTypeArgument" xml:space="preserve">
+    <value>argument</value>
+  </data>
+  <data name="MemberInfoTypeArguments" xml:space="preserve">
+    <value>arguments array</value>
+  </data>
+  <data name="MultipleOutputArg" xml:space="preserve">
+    <value>Output file already specified</value>
+  </data>
+  <data name="NoParsedCode" xml:space="preserve">
+    <value>No parsed code block</value>
+  </data>
+  <data name="NotKnown" xml:space="preserve">
+    <value>NOT KNOWN</value>
+  </data>
+  <data name="OutputArgNeedsPath" xml:space="preserve">
+    <value>-O parameter must be followed by output path</value>
+  </data>
+  <data name="OutputEmpty" xml:space="preserve">
+    <value>Minified output is EMPTY!</value>
+  </data>
+  <data name="MultipleMapArg" xml:space="preserve">
+    <value>Symbol map file already specified</value>
+  </data>
+  <data name="MapArgNeedsPath" xml:space="preserve">
+    <value>-O parameter must be followed by symbol map file path</value>
+  </data>
+  <data name="MapAndXmlArgs" xml:space="preserve">
+    <value>-MAP and -XML switches are not compatible</value>
+  </data>
+  <data name="SourceFileIsFolder" xml:space="preserve">
+    <value>Source file cannot be a folder: {0}</value>
+  </data>
+  <data name="SourceFileNotExist" xml:space="preserve">
+    <value>Source file does not exist: {0}</value>
+  </data>
+  <data name="UndefinedGlobalHeader" xml:space="preserve">
+    <value>Undefined Global References:</value>
+  </data>
+  <data name="UndefinedInfo" xml:space="preserve">
+    <value>  {0} [{3}] at Line {1}, Column {2}</value>
+  </data>
+  <data name="Unreachable" xml:space="preserve">
+    <value>UNREACHABLE</value>
+  </data>
+  <data name="PrettyAndEchoArgs" xml:space="preserve">
+    <value>Pretty-print (-PRETTY) and Echo-input (-ECHO) switches are not compatible</value>
+  </data>
+  <data name="InputXmlError" xml:space="preserve">
+    <value>Error processing input XML: {0}</value>
+  </data>
+  <data name="MultipleXmlArgs" xml:space="preserve">
+    <value>Cannot specify multiple -XML arguments</value>
+  </data>
+  <data name="NoInput" xml:space="preserve">
+    <value>No input files to process</value>
+  </data>
+  <data name="OutputFileError" xml:space="preserve">
+    <value>Output file returned an error code: {0}</value>
+  </data>
+  <data name="OutputGroupError" xml:space="preserve">
+    <value>Output group #{0} returned an error code: {1}</value>
+  </data>
+  <data name="XmlArgHasInputFiles" xml:space="preserve">
+    <value>Cannot specify -XML argument AND input files</value>
+  </data>
+  <data name="XmlArgNeedsPath" xml:space="preserve">
+    <value>Argument -XML must be followed by XML file path</value>
+  </data>
+  <data name="InvalidSwitchArg" xml:space="preserve">
+    <value>Invalid switch argument {0} for switch -{1}</value>
+  </data>
+  <data name="SwitchRequiresArg" xml:space="preserve">
+    <value>Switch -{0} requires an argument</value>
+  </data>
+  <data name="ResourceArgInvalidName" xml:space="preserve">
+    <value>Resource argument '{0}' must be valid boolean or numeric literal</value>
+  </data>
+  <data name="Usage" xml:space="preserve">
+    <value>Usage:
+{0} [([-JS] [JSOPTS])|([-CSS[:CSSTYP]] [CSSOPTS])] OPTS* ((IFILE* [-out OFILE] [-map MFILE])|(-xml XFILE [-out ODIR]))
+
+Valid OPTS are zero or more of:
+  -aspnet[:BOOL] &gt; whether to allow for inline ASP.NET-style substitutions,
+        &lt;% ... %&gt; Default is False. 
+  -braces:(new|same|source) &gt; when output is set to multiple lines, 
+        determines whether opening braces are written on their own new line, 
+        at the end of the previous line, or reflecting what is in the source
+        code. Default is new.
+  -noclobber[:BOOL] &gt; when the Boolean flag is true (or not supplied), will
+        never overwrite an existing file. When false, the default behavior is
+        applied: will overwrite an existing file only if it is not marked as
+        read-only.
+  -clobber[:BOOL] &gt; when the Boolean flag is true (or not supplied), will 
+        always overwrite an existing file, even if it is marked as read-only.
+        When false, the default behavior is applied: will overwrite an
+        existing file only if it is not marked as read-only.
+  -define:NAME(,NAME)* &gt; add defined case-insensitive names to the list used 
+        by the preprocessor.
+  -echo &gt; output is an echo of the original input.
+  -enc:(in|out) ENC &gt; input or output file text encoding.
+  -help or -? &gt; display this usage message.
+  -ignore:ERRCODE(,ERRCODE)* &gt; ignore one or more possible errors
+  -line[:[N][,[multiple|single][,[N]]]] &gt; set the line-break treatments. 
+        The first integer value is the line-break threshold: after reaching 
+        that many characters in a single line, the line will break at the next
+        opportunity; default is really big (int.MaxValue - 1000). The second 
+        options is whether to break statements along multiple indented lines 
+        (multiple) or to put them all on the same line (single), according to
+        the previous threshold value; default is single. The last option is 
+        how many spaces to use for each indent level if multi-line output is 
+        used; default is 4. Any or all of the three value may be omitted to
+        indicate the default value.
+  -out OFILE &gt; output file to create from concatenating all input files.
+  -pretty[:N] &gt; causes output to be on multiple lines, with N spaces per tab
+        stop (default N is 4). Also turns off all local renaming and other 
+        code-optimizations, unless otherwise explicitly turned on via other
+        switches.
+  -res[:IDENT] RFILE &gt; use a resource file to specify localization strings
+        using non-existent object IDENT, Strings if not specified.
+  -silent &gt; silent mode; no error, warning, or message output.
+  -term &gt; ensure output ends in semicolon or other valid terminator.
+  -warn[:N] &gt; warning level for error messages sent to stderr.
+  -xml XFILE &gt; optional XML input file.
+  -out ODIR &gt; used in conjunction with -xml switch to specify output
+        directory.
+  
+Valid JSOPTS are zero or more of:
+  -analyze[:AOPTS [APATH]] &gt; provide extra code analysis output.
+  -cc[:BOOL] &gt; turn on or off support for conditional-compilation comments.
+        Default is true.
+  -comments:(none|important) &gt; whether to remove all comments (none), 
+        or preserve important comments. Default is important.
+  -debug[:BOOL(,NS)*] &gt; debug mode does not remove debug 
+        statements or function expression names. Default is False (remove).
+        Default debug lookups: Debug, $Debug, WAssert, Web.Debug and Msn.Debug.
+        To specify debug lookups to remove, add them comma-separated after the
+        boolean flag. Specifying lookups on the command line REPLACES the
+        defaults; blank lookups are allowed and will be ignored.
+  -esc[:BOOL] &gt; whether to always escape non-ascii characters in the output
+        as a \uXXXX sequence (true), or to leave the escaping up to the output
+        encoding. Default is False.
+  -evals:(ignore|immediate|safeall) &gt; ignore eval statements or ensure that
+        that the immediate scope is safe, or all possibly-affected scopes are 
+        safe. Default is ignore.
+  -fnames:(lock|keep|onlyref) &gt; how to treat function names. Lock does not 
+        allow ANY function names to be removed or renamed; keep does not remove
+        unreferenced function expression names, but does allow functions to be 
+        renamed; onlyref removes unreferenced function expression names and 
+        allows all function names to be renamed. Default is onlyref.
+  -global:IDENT(,IDENT)* &gt; specify one or more external global variables the
+        code references. May be repeated as needed.
+  -inline[:(BOOL|force|noforce)(,(BOOL|force|noforce))*] &gt; whether to make 
+        sure strings are safe for HTML inline script, and whether to force 
+        inline-safety in the source by throwing an error (FORCE) when 
+        potentially unsafe literals are encountered. Default is True and 
+        noforce.
+  -kill:DEC or -kill:0xHEX &gt; specify one more more kill switches.
+        Default is 0.
+  -literals:(eval|noeval) &gt; whether to evaluate literal expressions or 
+        keep them. Default is eval.
+  -mac[:BOOL] &gt; whether to add code to ensure output works in Mac Safari
+        browsers. Default is True.
+  -map:MAPTYPE MFILE &gt; source map implementation name and the path to
+        the output map file.
+  -minify[:BOOL] &gt; whether to run any minification optimizations beyond
+        simple white-space and comment-removal on the parsed JavaScript code. 
+        Default is True.
+  -new:(keep|collapse) &gt; whether to collapse certain constructors with known
+        literals. Default is collapse.
+  -obj:(min|quote) &gt; whether to minify object literal property names or to
+        always quote them. Default is to minify.
+  -norename:IDENT(,IDENT)* &gt; specify one or more comma-separated identifiers
+        that should not be automatically renamed. May be repeated as necessary.
+  -rename:(all|localization|none) &gt; automatic local variable and function 
+        renaming methodology. Default is all.
+  -rename:IDENT=IDENT(,IDENT=IDENT)* &gt; specify one or more comma-separated
+        from=to identifier pairs for manual renaming of variables, functions
+        or properties. May be repeated as needed.
+  -rename NFILE &gt; open the XML file with path NFILE and use the &lt;rename&gt;
+        elements for manual renaming of variables, function and properties, and
+        &lt;norename&gt; elements for excluding identifiers from automatic
+        renaming processes. May be repeated as needed.
+  -rename:NOPROPS &gt; when using the manual renaming options above, this option
+        will turn off property-renaming (renaming only variables and functions).
+  -reorder[:BOOL] &gt; whether or not to reorder function declarations, putting
+        then at the top of their respective scopes. Default is True.
+  -strict[:BOOL] &gt; whether to force the input script into ECMA5 strict-mode.
+        When in strict mode, additional strict-mode related checks will be 
+        made, and a "use strict" directive prologue will be added to the output
+        script. Default is false.
+  -unused:(remove|keep) &gt; whether to keep or remove unused code. Default
+        is remove.
+
+Valid CSSOPTS are zero or more of:
+  -comments:(none|all|hacks|important) &gt; whether to keep all comments, 
+        remove all, keep only the set of supported comment-based hacks, or
+        keep only important comments. Default is important.
+  -colors:(hex|strict|major|noswap) &gt; how to treat color names: always
+        convert to hexadecimal values, use strict color names if shorter, or 
+        use major-browser color names if shorter, or never swap names for hex.
+        Default is hex.
+  -expr:(minify|raw) &gt; how to treat CSS expressions: leave them as-is (raw),
+        or minify them as JavaScript expressions (minify). Default is minify.
+  -ie8fix[:BOOL] &gt; whether or not to add a question-mark (query string) to
+        .EOT font URLs (if a query string isn't already present) in order to 
+        fix an IE8 client request bug. Default is true.
+   -novendor[:IDENT[,IDENT]*] &t; list of vendor-specific prefixes to exclude 
+        from the output. For example, specifying "webkit" would remove all
+        -webkit-PROPERTY identifiers from the output. Do not include hyphens
+        in the prefix identifiers. Multiple -novendor switches are additive; 
+        if no identifiers are supplied, any existing excluded vendors will be
+        cleared. Currently only works on properties; vendor-specific functions
+        or at-keywords that match are not excluded at this time.
+  -unused:(remove|keep) &gt; whether to keep or remove rules or directives that
+        have empty blocks. Default is remove.
+
+CSSTYP can be full (full style sheet) or decls (just a declaration list).
+        Default is full.
+BOOL can be (true|false|t|f|yes|no|y|n|1|0); case-insensitive.
+N is a valid non-negative integer: (0|1|2|3|4|5|6|7|8|9)+. 
+DEC is a valid decimal integer: [+|-]DEC. 
+HEX is a valid case-insensitive hexadecimal integer: (DEC|a|b|c|d|e|f)+. 
+ERRCODE is a case-insensitive error code (e.g.: JS1028 or CSS1059) 
+        or the word “ALL”. 
+IDENT is a valid JavaScript identifier (case-sensitive).
+NAME is a valid JavaScript identifier (case-insensitive).
+NS is a valid case-sensitive JavaScript namespace: IDENT[.IDENT]*.
+ENC is a valid .NET text encoding scheme name (e.g.: UTF-8).
+IFILE is a valid path to an existing source file.
+OFILE is a valid path to the output file. Existing files will be clobbered
+        if the -CLOBBER option is specified.
+XFILE is a valid path to an existing XML input file.
+ODIR is a valid path to an output folder. 
+RFILE is a valid path to an existing .RESX or .RESOURCES file.
+NFILE is a valid path to an existing XML input file.
+MFILE is a valid path to a writable output source map file. 
+CSSTYP can be full (default; expects full style sheet), or decls (only list
+        of declarations, as in the style attribute of an HTML element). 
+AOPTS is a comma-separated list of analyze options. Currently the only
+        two tokens supported are XML and OUT. By default, analyze output is
+        in text format; specifying the XML token provides the output in XML
+        format for easier programmatic processing. By default, the output
+        is sent to the output stream; specifying the OUT token sends the 
+        output to the AFILE path specified as the next argument.
+AFILE is a valid path to an analyze output file, but is only present if the
+        OUT token is specified in the -analyze switch AOPTS.
+MAPTYPE is a valid, case-insensitive source map implementation name.
+        V3  : JSON format that can be used in Firefox and Chrome.
+        XML : (default) - XML format.
+
+XFILE XML format (XML element names and attributes are case-sensitive):
+    &lt;root&gt;
+      &lt;output path="[OFILE]"&gt;
+        &lt;resource path="[RFILE]" name="[IDENT]" /&gt;
+        &lt;input path="[IFILE]" /&gt;
+      &lt;/output&gt;
+    &lt;/root&gt;
+  Must have one or more &lt;output&gt; nodes.
+  Each &lt;output&gt; node must have one or more &lt;input&gt; nodes and a
+       single optional &lt;resource&gt; node.
+  Attribute 'path' is optional for &lt;output&gt; nodes; required for
+       &lt;input&gt; and &lt;resource&gt; nodes.
+       
+NFILE XML format (XML element names and attributes are case-sensitive):
+    &lt;root&gt;
+      &lt;rename from="[IDENT]" to="[IDENT]" /&gt;
+      &lt;norename id="[IDENT]" /&gt;
+    &lt;/root&gt;
+  File can contain any number of &lt;rename&gt; or &lt;norename&gt; elements.
+  Each &lt;rename&gt; element must have both from and to attributes.
+  Each &lt;norename&gt; element must have an id attribute.
+  All [IDENT] values must be valid JavaScript identifiers.
+  
+Everything is case-insensitive unless otherwise noted.
+If no OFILE specified, output sent to STDOUT.
+If no IFILE and no XFILE, input comes from STDIN.
+If input comes from STDIN, -JS or -CSS option must be specified.
+Multiple IFILE files will be concatenated to the output.
+
+Online documentation: http://ajaxmin.codeplex.com/documentation </value>
+  </data>
+  <data name="ResourceArgNeedsPath" xml:space="preserve">
+    <value>-RES parameter must be followed by path to existing resource file</value>
+  </data>
+  <data name="ReadingResourceFile" xml:space="preserve">
+    <value>Processing resource script {0}...</value>
+  </data>
+  <data name="ResourceArgInvalidType" xml:space="preserve">
+    <value>Invalid resource file type: {0}. Must be .JS, .RESX, or .RESOURCES.</value>
+  </data>
+  <data name="OutputFileErrorSubCat" xml:space="preserve">
+    <value>output file</value>
+  </data>
+  <data name="OutputGroupErrorSubCat" xml:space="preserve">
+    <value>output group</value>
+  </data>
+  <data name="MemberInfoFunctionExpression" xml:space="preserve">
+    <value>function expression</value>
+  </data>
+  <data name="FunctionInfoReferences" xml:space="preserve">
+    <value>{0} references</value>
+  </data>
+  <data name="FunctionTypeExpression" xml:space="preserve">
+    <value>Function Expression</value>
+  </data>
+  <data name="ConflictingInputType" xml:space="preserve">
+    <value>Conflicting input type switches or input file extensions (JS and CSS)</value>
+  </data>
+  <data name="UnknownInputType" xml:space="preserve">
+    <value>Unknown input type. Please use either the -JS or -CSS switch.</value>
+  </data>
+  <data name="NoClobberError" xml:space="preserve">
+    <value>File already exists and clobber option is not set to true. Output not created: {0}</value>
+  </data>
+  <data name="MemberInfoWithField" xml:space="preserve">
+    <value>object property</value>
+  </data>
+  <data name="MemberInfoWithPossibly" xml:space="preserve">
+    <value>[or {0}{1}]</value>
+  </data>
+  <data name="SavingsGzipMessage" xml:space="preserve">
+    <value>Gzip of minified output approx. {0} bytes ({1}% compression)</value>
+  </data>
+  <data name="SavingsMessage" xml:space="preserve">
+    <value>Original Size: {0} bytes; reduced size: {1} bytes ({2}% minification)</value>
+  </data>
+  <data name="RenameArgMissingParameterOrFilePath" xml:space="preserve">
+    <value>Rename switch must either have valid parameter parts or be followed by valid file path</value>
+  </data>
+  <data name="MiniUsageMessage" xml:space="preserve">
+    <value>See the '-?' command-line option for usage details.</value>
+  </data>
+  <data name="MemberInfoConst" xml:space="preserve">
+    <value>const</value>
+  </data>
+  <data name="MemberInfoDefinedLocation" xml:space="preserve">
+    <value> [defined ({0},{1})]</value>
+  </data>
+  <data name="MemberInfoReferences" xml:space="preserve">
+    <value>[{0} references]</value>
+  </data>
+  <data name="BlockTypeLexical" xml:space="preserve">
+    <value>Lexical Scope</value>
+  </data>
+  <data name="MemberInfoWithLexDecl" xml:space="preserve">
+    <value>[or lexical declaration]</value>
+  </data>
+  <data name="MemberInfoWithLexFunc" xml:space="preserve">
+    <value>[or lexical function]</value>
+  </data>
+  <data name="MemberInfoTypeCatchEror" xml:space="preserve">
+    <value>catch error</value>
+  </data>
+  <data name="AnonymousName" xml:space="preserve">
+    <value>[Anonymous]</value>
+  </data>
+  <data name="SavingsGzipSourceMessage" xml:space="preserve">
+    <value>Gzip of source input approx. {0} bytes ({1}% compression)</value>
+  </data>
+  <data name="TimerFormat" xml:space="preserve">
+    <value>Parse time: {1:F0}ms.</value>
+  </data>
+  <data name="TimerMultiFormat" xml:space="preserve">
+    <value>Parse time for input group {0}: {1:F0}ms.</value>
+  </data>
+  <data name="MinifyFromStdIn" xml:space="preserve">
+    <value>Minifying from STDIN</value>
+  </data>
+  <data name="MinifyingMultipleInputs" xml:space="preserve">
+    <value>Combining and minifying:</value>
+  </data>
+  <data name="MinifySingleInput" xml:space="preserve">
+    <value>Minifying '{0}'</value>
+  </data>
+  <data name="FunctionTypeArrow" xml:space="preserve">
+    <value>Arrow Function</value>
+  </data>
+  <data name="FunctionTypeMethod" xml:space="preserve">
+    <value>Method</value>
+  </data>
+  <data name="FunctionTypeGenerator" xml:space="preserve">
+    <value>Generator </value>
+  </data>
+  <data name="MemberInfoTypeSuper" xml:space="preserve">
+    <value>super</value>
+  </data>
+  <data name="ScopeIsStrictFlag" xml:space="preserve">
+    <value>[strict]</value>
+  </data>
+  <data name="BlockTypeClass" xml:space="preserve">
+    <value>Class {0}</value>
+  </data>
+  <data name="BlockTypeModule" xml:space="preserve">
+    <value>Module {0}</value>
+  </data>
+  <data name="StepAnalyzeNode" xml:space="preserve">
+    <value>Analyzing Nodes</value>
+  </data>
+  <data name="StepAnalyzeScope" xml:space="preserve">
+    <value>Analyzing Scopes</value>
+  </data>
+  <data name="StepAutoRename" xml:space="preserve">
+    <value>Auto-Renaming</value>
+  </data>
+  <data name="StepEvaluateLiterals" xml:space="preserve">
+    <value>Evaluating Literals</value>
+  </data>
+  <data name="StepFinalPass" xml:space="preserve">
+    <value>Final Pass</value>
+  </data>
+  <data name="StepParse" xml:space="preserve">
+    <value>Parsing</value>
+  </data>
+  <data name="StepReorder" xml:space="preserve">
+    <value>Reordering</value>
+  </data>
+  <data name="StepResolve" xml:space="preserve">
+    <value>Resolving References</value>
+  </data>
+  <data name="StepValidateNames" xml:space="preserve">
+    <value>Validating Generated Names</value>
+  </data>
+  <data name="TimerStepFormat" xml:space="preserve">
+    <value>    Step {0}: {1,4:F0}ms {2}</value>
+  </data>
+  <data name="MemberInfoClass" xml:space="preserve">
+    <value>class</value>
+  </data>
+  <data name="MemberInfoScopeExported" xml:space="preserve">
+    <value>exported </value>
+  </data>
+  <data name="MemberInfoScopeGlobal" xml:space="preserve">
+    <value>global</value>
+  </data>
+  <data name="ModuleNameImplicit" xml:space="preserve">
+    <value>[implicit]</value>
+  </data>
+  <data name="ModuleHasDefaultExport" xml:space="preserve">
+    <value>  [Module has default export]</value>
+  </data>
+  <data name="ModuleIncompleteFlag" xml:space="preserve">
+    <value>[incomplete]</value>
+  </data>
+</root>
