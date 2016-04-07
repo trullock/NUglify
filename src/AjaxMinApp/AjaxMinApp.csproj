@@ -33,10 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxMin">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\artifacts\bin\AjaxMin\$(Configuration)\net40\AjaxMin.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -73,6 +69,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AjaxMin\AjaxMin.xproj">
+      <Project>{CA85C41A-928F-4626-9025-0FE5991C7BE8}</Project>
+      <Name>AjaxMin</Name>
+    </ProjectReference>  
     <EmbeddedResource Include="AjaxMin.resx">
       <LastGenOutput>AjaxMin.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>

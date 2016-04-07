@@ -41,10 +41,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxMin">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\artifacts\bin\AjaxMin\$(Configuration)\net40\AjaxMin.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -3125,6 +3121,10 @@
     <ProjectReference Include="..\AjaxMinApp\AjaxMinApp.csproj">
       <Project>{6ed835a6-8a8a-44ec-8679-7ebbe2a0dbe4}</Project>
       <Name>AjaxMinApp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AjaxMin\AjaxMin.xproj">
+      <Project>{CA85C41A-928F-4626-9025-0FE5991C7BE8}</Project>
+      <Name>AjaxMin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

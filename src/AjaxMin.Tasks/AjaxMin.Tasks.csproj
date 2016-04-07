@@ -93,10 +93,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="AjaxMin">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\artifacts\bin\AjaxMin\$(Configuration)\net40\AjaxMin.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\AjaxMin\AjaxMin.xproj">
+      <Project>{CA85C41A-928F-4626-9025-0FE5991C7BE8}</Project>
+      <Name>AjaxMin</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
