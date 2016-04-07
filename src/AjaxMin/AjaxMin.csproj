@@ -98,7 +98,7 @@
     <Compile Include="JavaScript\Syntax\ConditionalCompilationSet.cs" />
     <Compile Include="JavaScript\Syntax\ConditionalCompilationStatement.cs" />
     <Compile Include="JavaScript\Syntax\ClassNode.cs" />
-    <Compile Include="JavaScript\CodeSettings2.cs" />
+    <Compile Include="JavaScript\CodeSettings.cs" />
     <Compile Include="JavaScript\Syntax\CommaExpression.cs" />
     <Compile Include="JavaScript\Syntax\ComprehensionClause.cs" />
     <Compile Include="JavaScript\Syntax\ComprehensionForClause.cs" />
@@ -108,7 +108,7 @@
     <Compile Include="JavaScript\Syntax\ConstStatement.cs" />
     <Compile Include="JavaScript\Syntax\ConstantWrapper.cs" />
     <Compile Include="JavaScript\Syntax\ConstantWrapperPP.cs" />
-    <Compile Include="JavaScript\Context2.cs" />
+    <Compile Include="JavaScript\Context.cs" />
     <Compile Include="JavaScript\Syntax\ContinueNode.cs" />
     <Compile Include="JavaScript\CrunchEnumerator.cs" />
     <Compile Include="JavaScript\Syntax\CustomNode.cs" />
