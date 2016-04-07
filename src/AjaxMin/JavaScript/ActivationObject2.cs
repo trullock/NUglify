@@ -20,19 +20,6 @@ using System.Reflection;
 
 namespace AjaxMin.JavaScript
 {
-    public enum ScopeType
-    {
-        None = 0,
-        Global,
-        Function,
-        Block,
-        With,
-        Catch,
-        Class,
-        Lexical,
-        Module,
-    }
-
     public abstract class ActivationObject
     {
         #region private fields

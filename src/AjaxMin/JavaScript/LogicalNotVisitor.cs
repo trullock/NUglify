@@ -16,7 +16,7 @@
 
 namespace AjaxMin.JavaScript
 {
-    public class LogicalNot : TreeVisitor
+    public class LogicalNotVisitor : TreeVisitor
     {
         private AstNode m_expression;
         private bool m_measure;
@@ -24,12 +24,12 @@ namespace AjaxMin.JavaScript
 
         public bool MinifyBooleans { get; set; }
 
-        public LogicalNot(AstNode node)
+        public LogicalNotVisitor(AstNode node)
             : this(node, null)
         {
         }
 
-        public LogicalNot(AstNode node, CodeSettings codeSettings)
+        public LogicalNotVisitor(AstNode node, CodeSettings codeSettings)
         {
             m_expression = node;
             
@@ -57,7 +57,7 @@ namespace AjaxMin.JavaScript
 
         public static void Apply(AstNode node, CodeSettings codeSettings)
         {
-            var logicalNot = new LogicalNot(node, codeSettings);
+            var logicalNot = new LogicalNotVisitor(node, codeSettings);
             logicalNot.Apply();
         }
 
@@ -349,11 +349,11 @@ namespace AjaxMin.JavaScript
                 // The first is guaranteed 3 additional characters. We have to check the delta for
                 // each branch and add them together to know how much the second would cost. If it's 
                 // greater than 3, then we just want to not the whole thing.
-                var notTrue = new LogicalNot(node.TrueExpression)
+                var notTrue = new LogicalNotVisitor(node.TrueExpression)
                     {
                         MinifyBooleans = this.MinifyBooleans
                     };
-                var notFalse = new LogicalNot(node.FalseExpression)
+                var notFalse = new LogicalNotVisitor(node.FalseExpression)
                     {
                         MinifyBooleans = this.MinifyBooleans
                     };

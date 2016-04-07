@@ -195,7 +195,7 @@ namespace AjaxMin.JavaScript
                         // expr1||expr2; ==> if(!expr1)expr2;
                         // let's check to see if the not of expr1 is smaller. If so, we can not the expression
                         // and change the operator
-                        var logicalNot = new LogicalNot(node.Operand1, m_parser.Settings);
+                        var logicalNot = new LogicalNotVisitor(node.Operand1, m_parser.Settings);
                         if (logicalNot.Measure() < 0)
                         {
                             // it would be smaller! Change it.
@@ -1272,7 +1272,7 @@ namespace AjaxMin.JavaScript
                                 // transform: ...;return cond?void 0;expr} to ...;if(!cond)return expr}
                                 // (only works at the function level because of the implicit return)
                                 // get the logical-not of the conditional
-                                var logicalNot = new LogicalNot(conditional.Condition, m_parser.Settings);
+                                var logicalNot = new LogicalNotVisitor(conditional.Condition, m_parser.Settings);
                                 logicalNot.Apply();
 
                                 // create a new if-node based on the condition, with the branches swapped 
@@ -1350,7 +1350,7 @@ namespace AjaxMin.JavaScript
                                 // we have if(cond)return;
                                 // logical-not the condition, remove the return statement,
                                 // and move all subsequent sibling statements inside the if-statement.
-                                LogicalNot.Apply(ifNode.Condition, m_parser.Settings);
+                                LogicalNotVisitor.Apply(ifNode.Condition, m_parser.Settings);
                                 ifNode.TrueBlock.Clear();
 
                                 var ndxMove = ndx + 1;
@@ -1433,7 +1433,7 @@ namespace AjaxMin.JavaScript
                                         // we have if(cond)continue;st1;...stn;
                                         // logical-not the condition, remove the continue statement,
                                         // and move all subsequent sibling statements inside the if-statement.
-                                        LogicalNot.Apply(ifNode.Condition, m_parser.Settings);
+                                        LogicalNotVisitor.Apply(ifNode.Condition, m_parser.Settings);
                                         ifNode.TrueBlock.Clear();
 
                                         // TODO: if we removed a labeled continue, do we need to fix up some label references?
@@ -2754,7 +2754,7 @@ namespace AjaxMin.JavaScript
                         // because the blocks are expressions, we know they only have ONE statement in them,
                         // so we can just dereference them directly.
                         Conditional conditional;
-                        var logicalNot = new LogicalNot(node.Condition, m_parser.Settings);
+                        var logicalNot = new LogicalNotVisitor(node.Condition, m_parser.Settings);
                         if (logicalNot.Measure() < 0)
                         {
                             // applying a logical-not makes the condition smaller -- reverse the branches
@@ -2786,7 +2786,7 @@ namespace AjaxMin.JavaScript
                     else
                     {
                         // see if logical-notting the condition produces something smaller
-                        var logicalNot = new LogicalNot(node.Condition, m_parser.Settings);
+                        var logicalNot = new LogicalNotVisitor(node.Condition, m_parser.Settings);
                         if (logicalNot.Measure() < 0)
                         {
                             // it does -- not the condition and swap the branches
@@ -2843,7 +2843,7 @@ namespace AjaxMin.JavaScript
                         // so determine which one is smaller: a or !a
                         // assume we'll use the logical-or, since that doesn't require changing the condition
                         var newOperator = JSToken.LogicalOr;
-                        var logicalNot = new LogicalNot(node.Condition, m_parser.Settings);
+                        var logicalNot = new LogicalNotVisitor(node.Condition, m_parser.Settings);
                         if (logicalNot.Measure() < 0)
                         {
                             // !a is smaller, so apply it and use the logical-or operator
@@ -2868,7 +2868,7 @@ namespace AjaxMin.JavaScript
                     {
                         // logical-not the condition
                         // if(cond);else stmt ==> if(!cond)stmt
-                        var logicalNot = new LogicalNot(node.Condition, m_parser.Settings);
+                        var logicalNot = new LogicalNotVisitor(node.Condition, m_parser.Settings);
                         logicalNot.Apply();
 
                         // and swap the branches
@@ -2942,7 +2942,7 @@ namespace AjaxMin.JavaScript
             // so determine which one is smaller: a or !a
             // assume we'll use the logical-and, since that doesn't require changing the condition
             var newOperator = JSToken.LogicalAnd;
-            var logicalNot = new LogicalNot(ifNode.Condition, m_parser.Settings);
+            var logicalNot = new LogicalNotVisitor(ifNode.Condition, m_parser.Settings);
             if (logicalNot.Measure() < 0)
             {
                 // !a is smaller, so apply it and use the logical-or operator
