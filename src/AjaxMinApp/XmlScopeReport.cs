@@ -18,8 +18,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
+using AjaxMin.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
     public sealed class XmlScopeReport : IScopeReport
     {

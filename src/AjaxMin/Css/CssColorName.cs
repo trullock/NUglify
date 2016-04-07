@@ -14,11 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Microsoft.Ajax.Utilities
-{
-    using System.Collections.Generic;
-    using System.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
+namespace AjaxMin.Css
+{
     /// <summary>
     /// ColorSlice class
     /// </summary>

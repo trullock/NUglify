@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     /// <summary>
     /// This visitor has a Match method that takes a node and an string representing an identifier list separated by periods: IDENT(.IDENT)*

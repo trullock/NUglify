@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     /// <summary>
     /// Old-style const-statement, pre-ES6, for those browsers that basically implemented

@@ -15,10 +15,8 @@
 // limitations under the License.
 
 using System;
-using System.ComponentModel;
-using Microsoft.Ajax.Utilities.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public class Context
     {

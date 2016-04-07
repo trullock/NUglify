@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public sealed class FunctionScope : ActivationObject
     {

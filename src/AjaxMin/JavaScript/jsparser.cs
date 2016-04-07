@@ -20,9 +20,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using Microsoft.Ajax.Utilities.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public enum ScriptVersion
     {

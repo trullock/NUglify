@@ -14,11 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Microsoft.Ajax.Utilities
-{
-    using System;
-    using System.Text;
+using System;
+using System.Text;
 
+namespace AjaxMin
+{
     /// <summary>
     /// Static class for caching StringBuilders so we don't have to keep creating/destroying them all the time
     /// </summary>
@@ -103,7 +103,7 @@ namespace Microsoft.Ajax.Utilities
                         if (list[index] == null)
                         {
                             list[index] = builder;
-                            builder.Clear();
+                            builder.Length = 0;
                             return;
                         }
                     }

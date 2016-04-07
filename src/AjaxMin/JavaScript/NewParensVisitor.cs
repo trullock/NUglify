@@ -14,7 +14,7 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     /// <summary>
     /// Determines whether or not a node needs parentheses around it within a new operator

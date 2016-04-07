@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using AjaxMin.Css;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
     public partial class MainClass
     {
@@ -59,7 +59,7 @@ namespace Microsoft.Ajax.Utilities
                     parser.CssError += (sender, ea) =>
                     {
                         var error = ea.Error;
-                        if (inputGroup.Origin == Configuration.SourceOrigin.Project || error.Severity == 0)
+                        if (inputGroup.Origin == SourceOrigin.Project || error.Severity == 0)
                         {
                             // ignore severity values greater than our severity level
                             if (error.Severity <= switchParser.WarningLevel)

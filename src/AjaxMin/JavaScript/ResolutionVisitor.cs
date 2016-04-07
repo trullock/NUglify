@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     /// <summary>
     /// Traverse the tree to build up scope lexically-declared names, var-declared names,

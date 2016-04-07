@@ -1,10 +1,7 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AjaxMin.Tests.JavaScript.Common;
 using NUnit.Framework;
 
-namespace JSUnitTest
+namespace AjaxMin.Tests.JavaScript
 {
     /// <summary>
     /// Summary description for AspNet

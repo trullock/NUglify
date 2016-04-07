@@ -23,7 +23,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 
-namespace CssUnitTest
+namespace AjaxMin.Tests.Css.Common
 {
     sealed class TestHelper
     {
@@ -291,7 +291,7 @@ namespace CssUnitTest
             // call the CSSCRUNCH main function
             Trace.WriteLine(string.Empty);
             Trace.WriteLine("CSSCRUNCH Debug:");
-            int retValue = Microsoft.Ajax.Utilities.MainClass.Main(mainArguments);
+            int retValue = MainClass.Main(mainArguments);
 
             // after the run, the output file BETTER exist...
             if (File.Exists(outputPath))

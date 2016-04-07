@@ -14,11 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace JSUnitTest
-{
-    using Microsoft.Ajax.Utilities;
-    using NUnit.Framework;
+using AjaxMin.JavaScript;
+using AjaxMin.Tests.JavaScript.Common;
+using NUnit.Framework;
 
+namespace AjaxMin.Tests.JavaScript
+{
     /// <summary>
     /// Summary description for LexicalDeclarations
     /// </summary>

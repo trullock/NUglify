@@ -14,12 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Microsoft.Ajax.Utilities.Configuration
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Xml;
+using System;
+using System.Collections.Generic;
+using System.Xml;
+using AjaxMin.JavaScript;
 
+namespace AjaxMin
+{
     public static class ManifestFactory
     {
         #region constants

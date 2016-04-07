@@ -1,13 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Diagnostics;
+using AjaxMin.JavaScript;
 using NUnit.Framework;
 
-using Microsoft.Ajax.Utilities;
-
-namespace DllUnitTest
+namespace AjaxMin.Tests.Core
 {
     /// <summary>
     /// Summary description for MinifiedNames

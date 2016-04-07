@@ -10,7 +10,7 @@ namespace AjaxMin.Tests
     {
         public static void Main()
         {
-            var minifier = new Microsoft.Ajax.Utilities.Minifier();
+            var minifier = new Minifier();
             var result = minifier.MinifyStyleSheet("div { color: #FFF; }");
         }
     }

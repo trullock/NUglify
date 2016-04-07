@@ -24,8 +24,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-
-
 #if NET_20
 
 namespace System.Runtime.CompilerServices
@@ -45,10 +43,8 @@ namespace System.Runtime.CompilerServices
 
 #endif
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
-    using Configuration;
-
     public static class ManifestUtilities
     {
         #region private static fields

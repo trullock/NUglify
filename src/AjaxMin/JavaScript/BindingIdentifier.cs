@@ -15,7 +15,7 @@
 // limitations under the License.
 
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     /// <summary>
     /// Simple Binding identifier node class. Represents a name that is declared in a binding (parameter, vardecl, catch, etc)

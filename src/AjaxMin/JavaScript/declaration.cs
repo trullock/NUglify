@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "AST statement")]
     public abstract class Declaration : AstNode, IEnumerable<VariableDeclaration>

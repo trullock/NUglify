@@ -14,13 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Diagnostics;
-
-using Microsoft.Ajax.Utilities;
 using NUnit.Framework;
 
-namespace DllUnitTest
+namespace AjaxMin.Tests.Core
 {
     /// <summary>
     /// Summary description for CssErrorStrings

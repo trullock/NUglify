@@ -7,7 +7,7 @@
     <ProjectGuid>{CA85C41A-928F-4626-9025-0FE5991C7BE8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Ajax.Utilities</RootNamespace>
+    <RootNamespace>AjaxMin</RootNamespace>
     <AssemblyName>AjaxMin</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -74,7 +74,6 @@
     <Compile Include="Css\CssToken.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="JavaScript\activationobject.cs" />
     <Compile Include="JavaScript\AnalyzeNodeVisitor.cs" />
     <Compile Include="JavaScript\arrayliteral.cs" />
@@ -201,6 +200,7 @@
     <Compile Include="Minifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\ProductAssemblyInfo.cs" />
+    <Compile Include="ReflectionHelper.cs" />
     <Compile Include="ResourceStrings.cs" />
     <Compile Include="StringBuilderPool.cs" />
     <Compile Include="SwitchParser.cs" />

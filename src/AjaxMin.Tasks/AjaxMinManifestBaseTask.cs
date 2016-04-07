@@ -20,12 +20,10 @@ using System.IO;
 using System.Security;
 using System.Text;
 using System.Xml;
-using Microsoft.Ajax.Utilities;
-using Microsoft.Ajax.Utilities.Configuration;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace Microsoft.Ajax.Minifier.Tasks
+namespace AjaxMin
 {
     public abstract class AjaxMinManifestBaseTask : Task
     {

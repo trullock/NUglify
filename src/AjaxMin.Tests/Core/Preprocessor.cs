@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Ajax.Utilities;
+using AjaxMin.Css;
+using AjaxMin.JavaScript;
 using NUnit.Framework;
 
-namespace DllUnitTest
+namespace AjaxMin.Tests.Core
 {
     [TestFixture]
     public class Preprocessor

@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public class ConditionalCompilationSet : ConditionalCompilationStatement
     {

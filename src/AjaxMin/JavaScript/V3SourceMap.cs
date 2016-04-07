@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     /// <summary>
     /// Standard JSON source map format, version 3

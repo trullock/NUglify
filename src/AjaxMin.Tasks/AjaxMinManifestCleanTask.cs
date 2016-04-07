@@ -18,13 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Xml;
-using Microsoft.Ajax.Utilities;
-using Microsoft.Ajax.Utilities.Configuration;
 using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 
-namespace Microsoft.Ajax.Minifier.Tasks
+namespace AjaxMin
 {
     /// <summary>
     /// Use this task to clean the outputs for a given set of Manifest files

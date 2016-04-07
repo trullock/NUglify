@@ -15,7 +15,7 @@
 // limitations under the License.
 
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public sealed class AspNetBlockNode : AstNode
     {

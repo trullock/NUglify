@@ -14,10 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using AjaxMin.JavaScript;
+using AjaxMin.Tests.JavaScript.Common;
 using NUnit.Framework;
-using Microsoft.Ajax.Utilities;
 
-namespace JSUnitTest
+namespace AjaxMin.Tests.JavaScript
 {
     /// <summary>
     /// Summary description for Literals

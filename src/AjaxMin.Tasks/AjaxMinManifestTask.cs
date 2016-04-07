@@ -19,13 +19,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Xml;
-using Microsoft.Ajax.Utilities;
-using Microsoft.Ajax.Utilities.Configuration;
-using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
+using AjaxMin.Css;
+using AjaxMin.JavaScript;
 
-namespace Microsoft.Ajax.Minifier.Tasks
+namespace AjaxMin
 {
     /// <summary>
     /// MSBuild task for AjaxMin manifest files

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Ajax.Utilities {
+namespace AjaxMin {
     using System;
     using System.Reflection;
     
@@ -38,7 +38,7 @@ namespace Microsoft.Ajax.Utilities {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Ajax.Utilities.CommonStrings", typeof(CommonStrings).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AjaxMin.CommonStrings", typeof(CommonStrings).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

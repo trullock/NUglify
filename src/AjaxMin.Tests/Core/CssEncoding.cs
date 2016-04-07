@@ -2,11 +2,10 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-
-using Microsoft.Ajax.Utilities;
+using AjaxMin.Css;
 using NUnit.Framework;
 
-namespace DllUnitTest
+namespace AjaxMin.Tests.Core
 {
     /// <summary>
     /// Summary description for CssEncoding

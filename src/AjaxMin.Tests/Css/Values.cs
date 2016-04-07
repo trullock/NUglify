@@ -1,10 +1,7 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AjaxMin.Tests.Css.Common;
 using NUnit.Framework;
 
-namespace CssUnitTest
+namespace AjaxMin.Tests.Css
 {
     /// <summary>
     /// Summary description for Values

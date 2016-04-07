@@ -1,12 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-
-using Microsoft.Ajax.Utilities;
+using AjaxMin.Css;
+using AjaxMin.JavaScript;
 using NUnit.Framework;
 
-namespace DllUnitTest
+namespace AjaxMin.Tests.Core
 {
     /// <summary>
     /// Summary description for ReplacementTokens

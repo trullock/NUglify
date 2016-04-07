@@ -16,7 +16,7 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     /// <summary>
     /// Determines if a node at the beginning of a statement needs parentheses around it

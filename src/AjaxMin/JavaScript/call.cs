@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public sealed class CallNode : Expression
     {

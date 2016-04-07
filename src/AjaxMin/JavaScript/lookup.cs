@@ -16,7 +16,7 @@
 
 using System;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public enum ReferenceType
     {

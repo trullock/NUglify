@@ -20,7 +20,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Xml;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public sealed class ScriptSharpSourceMap : ISourceMap
     {

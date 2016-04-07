@@ -21,11 +21,10 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
+using AjaxMin.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
-    using Configuration;
-
     public partial class MainClass
     {
         #region file processing

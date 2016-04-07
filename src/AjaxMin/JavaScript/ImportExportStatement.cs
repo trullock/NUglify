@@ -15,9 +15,8 @@
 // limitations under the License.
 
 using System.Collections.Generic;
-using System.Text;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public abstract class ImportExportStatement : AstNode, IEnumerable<AstNode>, IModuleReference

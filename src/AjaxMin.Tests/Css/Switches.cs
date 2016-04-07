@@ -14,10 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
+using AjaxMin.Tests.Css.Common;
 using NUnit.Framework;
 
-namespace CssUnitTest
+namespace AjaxMin.Tests.Css
 {
     [TestFixture]
     public class Switches

@@ -15,7 +15,7 @@
 // limitations under the License.
 
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     /// <summary>
     /// Base class for ComprehensionForClause and ComprehensionIfClause

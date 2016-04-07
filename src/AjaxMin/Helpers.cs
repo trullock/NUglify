@@ -14,12 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
+using AjaxMin.Css;
+using AjaxMin.JavaScript;
 using System.Reflection;
-using Microsoft.Ajax.Utilities.Css;
-using Microsoft.Ajax.Utilities.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
 #if NET_20
     using System.Collections;

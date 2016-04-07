@@ -16,7 +16,7 @@
 
 using System.Reflection;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public class BlockScope : ActivationObject
     {

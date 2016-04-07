@@ -14,17 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Xml;
-using Microsoft.Ajax.Utilities;
-using Microsoft.Ajax.Utilities.Configuration;
-using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 
-namespace Microsoft.Ajax.Minifier.Tasks
+namespace AjaxMin
 {
     /// <summary>
     /// Use this task to bundle input files to output files based on a Manifest file without processing the contents

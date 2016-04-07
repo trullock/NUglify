@@ -14,9 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using AjaxMin.Tests.Css.Common;
 using NUnit.Framework;
 
-namespace CssUnitTest
+namespace AjaxMin.Tests.Css
 {
     /// <summary>
     /// Summary description for Declarations

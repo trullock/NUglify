@@ -17,7 +17,7 @@
 using System;
 using System.IO;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public static class SourceMapFactory
     {

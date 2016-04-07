@@ -18,7 +18,7 @@
 //Used by the Parser to parse expressions
 //***************************************************************************************
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public enum OperatorPrecedence
     {

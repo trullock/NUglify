@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Ajax.Utilities.Css {
+namespace AjaxMin.Css {
     using System;
     using System.Reflection;
     
@@ -38,7 +38,7 @@ namespace Microsoft.Ajax.Utilities.Css {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Ajax.Utilities.Css.CssStrings", typeof(CssStrings).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AjaxMin.Css.CssStrings", typeof(CssStrings).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

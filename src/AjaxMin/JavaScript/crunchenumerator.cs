@@ -16,9 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     public class CrunchEnumerator
     {

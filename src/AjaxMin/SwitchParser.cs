@@ -18,9 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using System.Threading;
+using AjaxMin.Css;
+using AjaxMin.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
     public class InvalidSwitchEventArgs : EventArgs
     {

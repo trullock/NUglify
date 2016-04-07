@@ -14,15 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.Ajax.Utilities.Css;
+using System;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.Css
 {
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Text.RegularExpressions;
-
     /// <summary>
     /// Scanner takes input stream and breaks it into Tokens
     /// </summary>
@@ -279,7 +277,7 @@ namespace Microsoft.Ajax.Utilities
 
         private CssToken ScanWhiteSpace()
         {
-            m_scanBuilder.Clear();
+            m_scanBuilder.Length = 0;
             while (IsSpace(m_currentChar))
             {
                 if (m_currentChar == '\r' || m_currentChar == '\n' || m_currentChar == '\f')
@@ -302,7 +300,7 @@ namespace Microsoft.Ajax.Utilities
 
             // build up the comment text in a string builder so we can look at it
             // afterwards, because we might not outut it if it's a special comment.
-            m_scanBuilder.Clear();
+            m_scanBuilder.Length = 0;
             if (m_currentChar == '*')
             {
                 NextChar();
@@ -483,7 +481,7 @@ namespace Microsoft.Ajax.Utilities
 
         private CssToken ScanAspNetBlock()
         {
-            m_scanBuilder.Clear();
+            m_scanBuilder.Length = 0;
             char prev = ' ';
             while (m_currentChar != '\0' &&
                    !(m_currentChar == '>' && prev == '%'))
@@ -839,7 +837,7 @@ namespace Microsoft.Ajax.Utilities
         {
             // when called, the current character is the character *after* U+
             CssToken token = null;
-            m_scanBuilder.Clear();
+            m_scanBuilder.Length = 0;
             m_scanBuilder.Append("U+");
 
             bool hasQuestions = false;
@@ -987,7 +985,7 @@ namespace Microsoft.Ajax.Utilities
             }
             else if (ReadString("URL("))
             {
-                m_scanBuilder.Clear();
+                m_scanBuilder.Length = 0;
                 m_scanBuilder.Append("url(");
 
                 GetW();
@@ -1202,7 +1200,7 @@ namespace Microsoft.Ajax.Utilities
         private CssToken ScanProgId()
         {
             CssToken token = null;
-            m_scanBuilder.Clear();
+            m_scanBuilder.Length = 0;
             m_scanBuilder.Append("progid:");
             string ident = GetIdent();
             while (ident != null)
@@ -1640,7 +1638,7 @@ namespace Microsoft.Ajax.Utilities
                 char delimiter = m_currentChar;
                 NextChar();
 
-                m_literalBuilder.Clear();
+                m_literalBuilder.Length = 0;
                 m_literalBuilder.Append(delimiter);
 
                 while (m_currentChar != '\0' && m_currentChar != delimiter)
@@ -1795,7 +1793,7 @@ namespace Microsoft.Ajax.Utilities
             string ident = GetNmStart();
             if (ident != null)
             {
-                m_literalBuilder.Clear();
+                m_literalBuilder.Length = 0;
                 m_literalBuilder.Append(ident);
                 while (m_currentChar != '\0' && (ident = GetNmChar()) != null)
                 {
@@ -1811,7 +1809,7 @@ namespace Microsoft.Ajax.Utilities
             string name = GetNmChar();
             if (name != null)
             {
-                m_literalBuilder.Clear();
+                m_literalBuilder.Length = 0;
                 m_literalBuilder.Append(name);
                 while (m_currentChar != '\0' && (name = GetNmChar()) != null)
                 {
@@ -1831,7 +1829,7 @@ namespace Microsoft.Ajax.Utilities
 
             if (IsD(m_currentChar))
             {
-                m_literalBuilder.Clear();
+                m_literalBuilder.Length = 0;
                 m_literalBuilder.Append(m_currentChar);
                 NextChar();
                 while (IsD(m_currentChar))
@@ -1849,7 +1847,7 @@ namespace Microsoft.Ajax.Utilities
                     // move over the decimal point
                     NextChar();
 
-                    m_literalBuilder.Clear();
+                    m_literalBuilder.Length = 0;
                     // check for extra digits
                     while (IsD(m_currentChar))
                     {
@@ -1934,7 +1932,7 @@ namespace Microsoft.Ajax.Utilities
 
         private string GetUrl()
         {
-            m_literalBuilder.Clear();
+            m_literalBuilder.Length = 0;
             while (m_currentChar != '\0')
             {
                 string escape = GetEscape();

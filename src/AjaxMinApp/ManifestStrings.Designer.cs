@@ -8,10 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Ajax.Utilities {
-    using System;
-    
-    
+namespace AjaxMin {
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -39,7 +36,7 @@ namespace Microsoft.Ajax.Utilities {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Ajax.Utilities.ManifestStrings", typeof(ManifestStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AjaxMin.ManifestStrings", typeof(ManifestStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

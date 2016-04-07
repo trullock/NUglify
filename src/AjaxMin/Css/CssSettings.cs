@@ -14,9 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Microsoft.Ajax.Utilities
+using System.Collections.Generic;
+
+namespace AjaxMin.Css
 {
-    using System.Collections.Generic;
 
     #region public enums
 

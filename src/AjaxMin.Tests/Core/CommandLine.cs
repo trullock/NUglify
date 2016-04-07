@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Diagnostics;
 using System.Reflection;
+using AjaxMin.Css;
+using AjaxMin.JavaScript;
 using NUnit.Framework;
 
-namespace DllUnitTest
+namespace AjaxMin.Tests.Core
 {
-    using Microsoft.Ajax.Utilities;
-
     /// <summary>
     /// Summary description for CommandLine
     /// </summary>

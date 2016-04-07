@@ -1,16 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
-
-using Microsoft.Ajax.Utilities;
 using NUnit.Framework;
 
-namespace JSUnitTest
+namespace AjaxMin.Tests.JavaScript
 {
     /// <summary>
     /// Summary description for StdIn

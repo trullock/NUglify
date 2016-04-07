@@ -14,9 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using AjaxMin.Tests.JavaScript.Common;
 using NUnit.Framework;
 
-namespace JSUnitTest
+namespace AjaxMin.Tests.JavaScript
 {
     /// <summary>
     /// Summary description for BlockOpts

@@ -23,11 +23,12 @@ using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Microsoft.Ajax.Utilities;
+using AjaxMin.Css;
+using AjaxMin.JavaScript;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace Microsoft.Ajax.Minifier.Tasks
+namespace AjaxMin
 {
     /// <summary>
     /// Provides the MS Build task for Microsoft Ajax Minifier. Please see the list of supported properties below.
@@ -45,7 +46,7 @@ namespace Microsoft.Ajax.Minifier.Tasks
         /// <summary>
         /// AjaxMin Minifier
         /// </summary>
-        private readonly Utilities.Minifier m_minifier = new Utilities.Minifier();
+        private readonly global::AjaxMin.Minifier m_minifier = new global::AjaxMin.Minifier();
 
         /// <summary>
         /// AjaxMin command-line switch parser
@@ -126,7 +127,7 @@ namespace Microsoft.Ajax.Minifier.Tasks
                                 {
                                     // let the manifest factory do all the heavy lifting of parsing the XML
                                     // into config objects
-                                    var config = Microsoft.Ajax.Utilities.Configuration.ManifestFactory.Create(reader);
+                                    var config = ManifestFactory.Create(reader);
                                     if (config != null)
                                     {
                                         // add any rename pairs

@@ -16,8 +16,9 @@
 
 using System;
 using System.IO;
+using AjaxMin.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
     public interface IScopeReport : IDisposable
     {

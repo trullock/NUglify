@@ -15,10 +15,8 @@
 // limitations under the License.
 
 using System;
-using System.ComponentModel;
-using System.Text;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
     public class ContextError
     {

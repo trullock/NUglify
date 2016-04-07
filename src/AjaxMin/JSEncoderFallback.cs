@@ -17,7 +17,7 @@
 using System;
 using System.Text;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
     /// <summary>
     /// JSEncoderFallback encodes invalid encoder characters as Unicode escapes:

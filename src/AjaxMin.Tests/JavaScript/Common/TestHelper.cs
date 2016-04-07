@@ -15,18 +15,17 @@
 // limitations under the License.
 
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-
-using Microsoft.Ajax.Utilities;
+using AjaxMin.JavaScript;
 using NUnit.Framework;
 
-namespace JSUnitTest
+namespace AjaxMin.Tests.JavaScript.Common
 {
     /// <summary>
     /// This class implements a Singleton Pattern.
@@ -424,7 +423,7 @@ namespace JSUnitTest
             Trace.WriteLine("AJAXMIN Debug Spew:");
 
             // call Main directly
-            int retValue = Microsoft.Ajax.Utilities.MainClass.Main(mainArguments);
+            int retValue = MainClass.Main(mainArguments);
 
             Trace.Write("RETURN CODE: ");
             Trace.WriteLine(retValue);

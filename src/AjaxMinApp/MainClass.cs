@@ -26,11 +26,10 @@ using System.Resources;
 using System.Security;
 using System.Text;
 using System.Xml;
+using AjaxMin.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
-    using Configuration;
-
     /// <summary>
     /// Application entry point
     /// </summary>

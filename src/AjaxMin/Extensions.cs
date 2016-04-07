@@ -14,6 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+
 #if NET_20
 
 namespace System.Runtime.CompilerServices
@@ -33,14 +39,8 @@ namespace System.Runtime.CompilerServices
 
 #endif
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Text;
-
     public static class AjaxMinExtensions
     {
         public static string FormatInvariant(this string format, params object[] args)

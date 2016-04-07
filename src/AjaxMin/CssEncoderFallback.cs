@@ -16,9 +16,9 @@
 
 using System;
 using System.Text;
-using Microsoft.Ajax.Utilities.Css;
+using AjaxMin.Css;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
     /// <summary>
     /// CssFallback encodes invalid encoder characters as Unicode escapes:

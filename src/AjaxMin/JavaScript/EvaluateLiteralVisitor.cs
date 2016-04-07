@@ -15,9 +15,8 @@
 // limitations under the License.
 
 using System;
-using System.Text;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     internal class EvaluateLiteralVisitor : TreeVisitor
     {

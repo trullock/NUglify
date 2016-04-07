@@ -1,10 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
-using Microsoft.Ajax.Utilities;
+using AjaxMin.JavaScript;
 using NUnit.Framework;
 
-namespace DllUnitTest
+namespace AjaxMin.Tests.Core
 {
     [TestFixture]
     public class SymbolsMapTests

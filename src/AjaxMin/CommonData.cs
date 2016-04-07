@@ -14,10 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Microsoft.Ajax.Utilities
-{
-    using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
+namespace AjaxMin
+{
     /// <summary>
     /// Helper class to hold common data elements
     /// </summary>

@@ -14,17 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.Ajax.Utilities.Css;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using AjaxMin.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.Css
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Text;
-    using System.Text.RegularExpressions;
-
     /// <summary>
     /// Parser takes Tokens and parses them into rules and statements
     /// </summary>

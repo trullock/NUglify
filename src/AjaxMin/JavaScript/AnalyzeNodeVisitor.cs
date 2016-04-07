@@ -21,7 +21,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
     internal class AnalyzeNodeVisitor : TreeVisitor

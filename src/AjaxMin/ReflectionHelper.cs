@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
     internal static class ReflectionHelper
     {

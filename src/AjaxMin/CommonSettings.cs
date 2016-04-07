@@ -17,9 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
+using AjaxMin.JavaScript;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin
 {
     /// <summary>
     /// Output mode setting
@@ -187,7 +187,7 @@ namespace Microsoft.Ajax.Utilities
         {
             get
             {
-                return OutputMode == Utilities.OutputMode.MultipleLines ? "\r\n" : "\n";
+                return OutputMode == OutputMode.MultipleLines ? "\r\n" : "\n";
             }
         }
 

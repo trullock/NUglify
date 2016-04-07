@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
-
-using Microsoft.Ajax.Utilities;
+using AjaxMin.JavaScript;
 using NUnit.Framework;
 
-namespace DllUnitTest
+namespace AjaxMin.Tests.Core
 {
     /// <summary>
     /// Summary description for DebugBlock

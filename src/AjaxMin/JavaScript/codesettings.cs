@@ -16,9 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Microsoft.Ajax.Utilities
+namespace AjaxMin.JavaScript
 {
     /// <summary>
     /// Settings for how local variables and functions can be renamed
