@@ -36,5 +36,10 @@ namespace NUglify
         /// Gets the errors. Empty if no errors.
         /// </summary>
         public List<UglifyError> Errors { get; }
+
+        public override string ToString()
+        {
+            return Code;
+        }
     }
 }
