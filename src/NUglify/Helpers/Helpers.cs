@@ -16,6 +16,7 @@
 
 using NUglify.Css;
 using NUglify.JavaScript;
+using System.Reflection;
 
 namespace NUglify.Helpers
 {
