@@ -3122,11 +3122,8 @@
       <Project>{6ed835a6-8a8a-44ec-8679-7ebbe2a0dbe4}</Project>
       <Name>AjaxMinApp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AjaxMin\AjaxMin.xproj">
-      <Project>{CA85C41A-928F-4626-9025-0FE5991C7BE8}</Project>
-      <Name>AjaxMin</Name>
-    </ProjectReference>
   </ItemGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\AjaxMin.shared.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
