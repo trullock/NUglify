@@ -7,7 +7,7 @@
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>CA85C41A-928F-4626-9025-0FE5991C7BE8</ProjectGuid>
-    <RootNamespace>AjaxMin</RootNamespace>
+    <RootNamespace>NUglify</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">..\..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
@@ -17,7 +17,7 @@
     <TypeScriptCompileBlocked>True</TypeScriptCompileBlocked>
     <!-- NOTE: Add TargetDir/TargetPath so that it will be possible to reference this xproj from a csproj -->
     <TargetDir>$(MSBuildThisFileDirectory)\$(OutputPath)\$(Configuration)\net40\</TargetDir>
-    <TargetPath>$(TargetDir)AjaxMin.dll</TargetPath>
+    <TargetPath>$(TargetDir)NUglify.dll</TargetPath>
   </PropertyGroup>
   <!-- NOTE: Add GetTargetDir so that it will be possible to reference this xproj from a csproj -->
   <Target Name="GetTargetDir" Outputs="$(_TargetDir)">

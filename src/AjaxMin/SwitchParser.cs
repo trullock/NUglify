@@ -18,10 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using AjaxMin.Css;
-using AjaxMin.JavaScript;
+using NUglify.Css;
+using NUglify.JavaScript;
 
-namespace AjaxMin
+namespace NUglify
 {
     public class InvalidSwitchEventArgs : EventArgs
     {

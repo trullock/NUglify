@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AjaxMin {
+namespace NUglify {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace AjaxMin {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AjaxMin.ManifestStrings", typeof(ManifestStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NUglify.ManifestStrings", typeof(ManifestStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

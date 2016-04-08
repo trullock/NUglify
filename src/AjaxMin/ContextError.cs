@@ -16,7 +16,7 @@
 
 using System;
 
-namespace AjaxMin
+namespace NUglify
 {
     public class ContextError
     {

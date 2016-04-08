@@ -16,9 +16,9 @@
 
 using System.Globalization;
 using System.IO;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript.Visitors
+namespace NUglify.JavaScript.Visitors
 {
 
     /// <summary>

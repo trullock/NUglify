@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="ArrowConcise.cs" />
     <Compile Include="CommandLine.cs" />
-    <Compile Include="AjaxMinTask.cs" />
+    <Compile Include="NUglifyTask.cs" />
     <Compile Include="CssEncoding.cs" />
     <Compile Include="ErrorStrings.cs" />
     <Compile Include="DebugBlock.cs" />
@@ -88,14 +88,14 @@
     <None Include="TestData\Dll\NotExpressions.csv" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestData\Dll\Expected\AjaxMinTask\Combined.min.css" />
-    <Content Include="TestData\Dll\Expected\AjaxMinTask\Combined.min.js" />
-    <Content Include="TestData\Dll\Expected\AjaxMinTask\CombinedKill.min.css" />
-    <Content Include="TestData\Dll\Expected\AjaxMinTask\CombinedKill.min.js" />
-    <Content Include="TestData\Dll\Expected\AjaxMinTask\file1.min.js" />
-    <Content Include="TestData\Dll\Expected\AjaxMinTask\file2.min.js" />
-    <Content Include="TestData\Dll\Expected\AjaxMinTask\test1.min.css" />
-    <Content Include="TestData\Dll\Expected\AjaxMinTask\test2.min.css" />
+    <Content Include="TestData\Dll\Expected\NUglifyTask\Combined.min.css" />
+    <Content Include="TestData\Dll\Expected\NUglifyTask\Combined.min.js" />
+    <Content Include="TestData\Dll\Expected\NUglifyTask\CombinedKill.min.css" />
+    <Content Include="TestData\Dll\Expected\NUglifyTask\CombinedKill.min.js" />
+    <Content Include="TestData\Dll\Expected\NUglifyTask\file1.min.js" />
+    <Content Include="TestData\Dll\Expected\NUglifyTask\file2.min.js" />
+    <Content Include="TestData\Dll\Expected\NUglifyTask\test1.min.css" />
+    <Content Include="TestData\Dll\Expected\NUglifyTask\test2.min.css" />
     <Content Include="TestData\Dll\Expected\ManifestTask\test1.css" />
     <Content Include="TestData\Dll\Expected\ManifestTask\test1.js" />
     <Content Include="TestData\Dll\Expected\ManifestTask\test_bundle.css" />
@@ -107,12 +107,12 @@
     <Content Include="TestData\Dll\Expected\ManifestTask\test_resx.js" />
     <Content Include="TestData\Dll\Expected\ReplacementTokens\Replacements.css" />
     <Content Include="TestData\Dll\Expected\SourceChange.js" />
-    <Content Include="TestData\Dll\Input\AjaxMinTask\Fail.css" />
-    <Content Include="TestData\Dll\Input\AjaxMinTask\Fail.js" />
-    <Content Include="TestData\Dll\Input\AjaxMinTask\file1.js" />
-    <Content Include="TestData\Dll\Input\AjaxMinTask\file2.js" />
-    <Content Include="TestData\Dll\Input\AjaxMinTask\test1.css" />
-    <Content Include="TestData\Dll\Input\AjaxMinTask\test2.css" />
+    <Content Include="TestData\Dll\Input\NUglifyTask\Fail.css" />
+    <Content Include="TestData\Dll\Input\NUglifyTask\Fail.js" />
+    <Content Include="TestData\Dll\Input\NUglifyTask\file1.js" />
+    <Content Include="TestData\Dll\Input\NUglifyTask\file2.js" />
+    <Content Include="TestData\Dll\Input\NUglifyTask\test1.css" />
+    <Content Include="TestData\Dll\Input\NUglifyTask\test2.css" />
     <Content Include="TestData\Dll\Input\CssEncoding\empty.css" />
     <Content Include="TestData\Dll\Input\CssEncoding\utf16.css" />
     <Content Include="TestData\Dll\Input\CssEncoding\utf8none.css" />
@@ -163,13 +163,13 @@
     <Content Include="TestData\Dll\Input\ManifestTask\manifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AjaxMinDll\AjaxMinDll.csproj">
+    <ProjectReference Include="..\NUglifyDll\NUglifyDll.csproj">
       <Project>{DFDB930E-1162-4514-A91D-C8595A807F13}</Project>
-      <Name>AjaxMinDll</Name>
+      <Name>NUglifyDll</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AjaxMinTask\AjaxMinTask.csproj">
+    <ProjectReference Include="..\NUglifyTask\NUglifyTask.csproj">
       <Project>{0C7BC471-4112-43CA-89AA-B7EBDB5689C1}</Project>
-      <Name>AjaxMinTask</Name>
+      <Name>NUglifyTask</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

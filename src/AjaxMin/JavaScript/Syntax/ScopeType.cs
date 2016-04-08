@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     public enum ScopeType
     {

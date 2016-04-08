@@ -15,9 +15,9 @@
 // limitations under the License.
 
 using System;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     public class SourceContext
     {

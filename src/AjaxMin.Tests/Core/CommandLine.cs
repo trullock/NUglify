@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Reflection;
-using AjaxMin.Css;
-using AjaxMin.JavaScript;
+using NUglify.Css;
+using NUglify.JavaScript;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Core
+namespace NUglify.Tests.Core
 {
     /// <summary>
     /// Summary description for CommandLine

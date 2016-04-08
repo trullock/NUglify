@@ -8,8 +8,8 @@
     <ProjectGuid>{0C7BC471-4112-43CA-89AA-B7EBDB5689C1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AjaxMin</RootNamespace>
-    <AssemblyName>AjaxMin.Tasks</AssemblyName>
+    <RootNamespace>NUglify</RootNamespace>
+    <AssemblyName>NUglify.Tasks</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -43,17 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AjaxMinApp\ManifestUtilities.cs">
+    <Compile Include="..\NUglifyApp\ManifestUtilities.cs">
       <Link>ManifestUtilities.cs</Link>
     </Compile>
-    <Compile Include="..\AjaxMin\Properties\ProductAssemblyInfo.cs">
+    <Compile Include="..\NUglify\Properties\ProductAssemblyInfo.cs">
       <Link>Properties\ProductAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AjaxMinBundleTask.cs" />
-    <Compile Include="AjaxMinManifestBaseTask.cs" />
-    <Compile Include="AjaxMinManifestCleanTask.cs" />
-    <Compile Include="AjaxMinManifestTask.cs" />
-    <Compile Include="AjaxMinBuildTask.cs" />
+    <Compile Include="NUglifyBundleTask.cs" />
+    <Compile Include="NUglifyManifestBaseTask.cs" />
+    <Compile Include="NUglifyManifestCleanTask.cs" />
+    <Compile Include="NUglifyManifestTask.cs" />
+    <Compile Include="NUglifyBuildTask.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ManifestStrings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -68,14 +68,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AjaxMin.tasks">
+    <None Include="NUglify.tasks">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="AjaxMin.targets">
+    <None Include="NUglify.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="AjaxMinTask.targets">
+    <None Include="NUglifyTask.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="install.ps1" />
@@ -97,7 +97,7 @@
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
-  <Import Project="$(MSBuildThisFileDirectory)..\AjaxMin.shared.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)..\NUglify.shared.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

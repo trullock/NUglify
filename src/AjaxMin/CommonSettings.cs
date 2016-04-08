@@ -17,9 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using AjaxMin.JavaScript;
+using NUglify.JavaScript;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// Output mode setting

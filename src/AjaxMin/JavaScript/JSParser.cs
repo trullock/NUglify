@@ -20,10 +20,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using AjaxMin.JavaScript.Syntax;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript.Syntax;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     public enum ScriptVersion
     {

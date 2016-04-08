@@ -10,7 +10,7 @@
     /// Summary description for LegacyTask
     /// </summary>
     [TestFixture]
-    public class AjaxMinTask
+    public class NUglifyTask
     {
         #region private fields
 
@@ -59,7 +59,7 @@
         #endregion
 
         [Test]
-        public void TestAjaxMinTask()
+        public void TestNUglifyTask()
         {
             // create the task
             var task = CreateTaskWithInputs();
@@ -104,10 +104,10 @@
         }
 
         [Test]
-        public void TestAjaxMinTaskFail()
+        public void TestNUglifyTaskFail()
         {
             // create the task
-            var task = new AjaxMin();
+            var task = new NUglify();
 
             // common settings
             task.JsKnownGlobalNames = "jQuery,$";
@@ -116,12 +116,12 @@
 
             // set up the JS files
             task.JsSourceFiles = new[] { 
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\fail.js" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\fail.js" },
             };
 
             // set up the CSS files
             task.CssSourceFiles = new[] {
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\fail.css" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\fail.css" },
             };
 
             // our mockup build engine
@@ -149,14 +149,14 @@
         }
 
         [Test]
-        public void TestAjaxMinCombinedTask()
+        public void TestNUglifyCombinedTask()
         {
             // create the task
             var task = CreateTaskWithInputs();
 
             // set up the combined file outputs
-            task.JsCombinedFileName = @"Dll\Output\AjaxMinTask\Combined.min.js";
-            task.CssCombinedFileName = @"Dll\Output\AjaxMinTask\Combined.min.css";
+            task.JsCombinedFileName = @"Dll\Output\NUglifyTask\Combined.min.js";
+            task.CssCombinedFileName = @"Dll\Output\NUglifyTask\Combined.min.css";
 
             var success = ExecuteAndReport(task);
 
@@ -176,10 +176,10 @@
         }
 
         [Test]
-        public void TestAjaxMinCombinedFail()
+        public void TestNUglifyCombinedFail()
         {
             // create the task
-            var task = new AjaxMin();
+            var task = new NUglify();
 
             // common settings
             task.JsKnownGlobalNames = "jQuery,$";
@@ -188,14 +188,14 @@
 
             // set up the JS files
             task.JsSourceFiles = new[] { 
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\file1.js" },
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\fail.js" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\file1.js" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\fail.js" },
             };
 
             // set up the CSS files
             task.CssSourceFiles = new[] {
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\test1.css" },
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\fail.css" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\test1.css" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\fail.css" },
             };
 
             // our mockup build engine
@@ -205,8 +205,8 @@
             };
 
             // set up the combined file outputs
-            task.JsCombinedFileName = @"Dll\Output\AjaxMinTask\CombinedFail.min.js";
-            task.CssCombinedFileName = @"Dll\Output\AjaxMinTask\CombinedFail.min.css";
+            task.JsCombinedFileName = @"Dll\Output\NUglifyTask\CombinedFail.min.js";
+            task.CssCombinedFileName = @"Dll\Output\NUglifyTask\CombinedFail.min.css";
 
             var success = ExecuteAndReport(task);
 
@@ -219,14 +219,14 @@
         }
 
         [Test]
-        public void TestAjaxMinCombinedKillTask()
+        public void TestNUglifyCombinedKillTask()
         {
             // create the task
             var task = CreateTaskWithInputs();
 
             // set up the combined file outputs
-            task.JsCombinedFileName = @"Dll\Output\AjaxMinTask\CombinedKill.min.js";
-            task.CssCombinedFileName = @"Dll\Output\AjaxMinTask\CombinedKill.min.css";
+            task.JsCombinedFileName = @"Dll\Output\NUglifyTask\CombinedKill.min.js";
+            task.CssCombinedFileName = @"Dll\Output\NUglifyTask\CombinedKill.min.css";
             task.Switches += " -kill:-1";
 
             var success = ExecuteAndReport(task);
@@ -246,10 +246,10 @@
             Assert.IsTrue(testCssVerify, "CombinedKill.min.css output doesn't match");
         }
 
-        private AjaxMin CreateTaskWithInputs()
+        private NUglify CreateTaskWithInputs()
         {
             // create the task, set it up, and execute it
-            var task = new AjaxMin();
+            var task = new NUglify();
 
             // common settings
             task.JsKnownGlobalNames = "jQuery,$";
@@ -258,14 +258,14 @@
 
             // set up the JS files
             task.JsSourceFiles = new[] { 
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\file1.js" },
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\file2.js" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\file1.js" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\file2.js" },
             };
 
             // set up the CSS files
             task.CssSourceFiles = new[] {
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\test1.css" },
-                new TaskItem() { ItemSpec = @"Dll\Input\AjaxMinTask\test2.css" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\test1.css" },
+                new TaskItem() { ItemSpec = @"Dll\Input\NUglifyTask\test2.css" },
             };
 
             // our mockup build engine
@@ -277,7 +277,7 @@
             return task;
         }
 
-        private bool ExecuteAndReport(AjaxMin task)
+        private bool ExecuteAndReport(NUglify task)
         {
             var success = task.Execute();
             Trace.Write("TASK RESULT: ");

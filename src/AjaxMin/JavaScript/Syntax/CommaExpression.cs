@@ -15,7 +15,7 @@
 // limitations under the License.
 
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     public class CommaExpression : BinaryExpression
     {

@@ -17,7 +17,7 @@
 using System;
 using System.Text;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// Static class for caching StringBuilders so we don't have to keep creating/destroying them all the time

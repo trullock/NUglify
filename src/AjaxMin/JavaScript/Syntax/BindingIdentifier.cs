@@ -15,9 +15,9 @@
 // limitations under the License.
 
 
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     /// <summary>
     /// Simple Binding identifier node class. Represents a name that is declared in a binding (parameter, vardecl, catch, etc)

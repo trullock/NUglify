@@ -16,10 +16,10 @@
 
 using System;
 using System.IO;
-using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin
+namespace NUglify
 {
     public interface IScopeReport : IDisposable
     {

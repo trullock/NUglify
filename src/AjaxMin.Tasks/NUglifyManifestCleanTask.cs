@@ -1,4 +1,4 @@
-﻿// AjaxMinManifestCleanTask.cs
+﻿// NUglifyManifestCleanTask.cs
 //
 // Copyright 2013 Microsoft Corporation
 //
@@ -20,16 +20,16 @@ using System.IO;
 using System.Text;
 using Microsoft.Build.Framework;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// Use this task to clean the outputs for a given set of Manifest files
     /// </summary>
-    public class AjaxMinManifestCleanTask : AjaxMinManifestBaseTask
+    public class NUglifyManifestCleanTask : NUglifyManifestBaseTask
     {
         #region constructor
 
-        public AjaxMinManifestCleanTask()
+        public NUglifyManifestCleanTask()
         {
             // we don't want to throw errors if an input file doesn't exist -- we just want to delete 
             // all the output files.

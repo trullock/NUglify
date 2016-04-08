@@ -14,10 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using AjaxMin.Tests.JavaScript.Common;
+using NUglify.Tests.JavaScript.Common;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.JavaScript
+namespace NUglify.Tests.JavaScript
 {
     /// <summary>
     /// unit tests dealing with the MAP input used to generate node mapping between source and output scripts

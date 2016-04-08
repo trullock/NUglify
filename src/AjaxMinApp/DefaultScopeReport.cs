@@ -18,10 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin
+namespace NUglify
 {
     public sealed class DefaultScopeReport : IScopeReport
     {
@@ -118,7 +118,7 @@ namespace AjaxMin
             // output the function header
             if (scope is GlobalScope)
             {
-                WriteProgress(AjaxMin.GlobalObjectsHeader);
+                WriteProgress(NUglify.GlobalObjectsHeader);
             }
             else
             {
@@ -137,20 +137,20 @@ namespace AjaxMin
                     switch (scope.ScopeType)
                     {
                         case ScopeType.Catch:
-                            blockType = AjaxMin.BlockTypeCatch;
+                            blockType = NUglify.BlockTypeCatch;
                             break;
 
                         case ScopeType.With:
-                            blockType = AjaxMin.BlockTypeWith;
+                            blockType = NUglify.BlockTypeWith;
                             break;
 
                         case ScopeType.Class:
-                            blockType = AjaxMin.BlockTypeClass.FormatInvariant(scope.ScopeName.IfNullOrWhiteSpace(AjaxMin.AnonymousName));
+                            blockType = NUglify.BlockTypeClass.FormatInvariant(scope.ScopeName.IfNullOrWhiteSpace(NUglify.AnonymousName));
                             break;
 
                         case ScopeType.Block:
                         case ScopeType.Lexical:
-                            blockType = AjaxMin.BlockTypeLexical;
+                            blockType = NUglify.BlockTypeLexical;
                             break;
 
                         case ScopeType.Module:
@@ -187,7 +187,7 @@ namespace AjaxMin
 
         private void WriteModuleHeader(ModuleScope moduleScope)
         {
-            var blockType = AjaxMin.BlockTypeModule.FormatInvariant(moduleScope.ScopeName.IfNullOrWhiteSpace(AjaxMin.ModuleNameImplicit));
+            var blockType = NUglify.BlockTypeModule.FormatInvariant(moduleScope.ScopeName.IfNullOrWhiteSpace(NUglify.ModuleNameImplicit));
             string scopeFlags = null;
             var sb = StringBuilderPool.Acquire();
             try
@@ -195,18 +195,18 @@ namespace AjaxMin
                 if (!moduleScope.IsKnownAtCompileTime)
                 {
                     sb.Append('[');
-                    sb.Append(AjaxMin.NotKnown);
+                    sb.Append(NUglify.NotKnown);
                     sb.Append(']');
                 }
 
                 if (moduleScope.UseStrict)
                 {
-                    sb.Append(AjaxMin.ScopeIsStrictFlag);
+                    sb.Append(NUglify.ScopeIsStrictFlag);
                 }
 
                 if (moduleScope.IsNotComplete)
                 {
-                    sb.Append(AjaxMin.ModuleIncompleteFlag);
+                    sb.Append(NUglify.ModuleIncompleteFlag);
                 }
 
                 scopeFlags = sb.ToString();
@@ -217,7 +217,7 @@ namespace AjaxMin
             }
 
             WriteProgress();
-            WriteProgress(AjaxMin.BlockScopeHeader.FormatInvariant(
+            WriteProgress(NUglify.BlockScopeHeader.FormatInvariant(
               blockType,
               moduleScope.Owner.Context.StartLineNumber,
               moduleScope.Owner.Context.StartColumn + 1,
@@ -227,7 +227,7 @@ namespace AjaxMin
             {
                 // when there's a default export, we want to flag a line under the module
                 // header that indicates that it's okay to bind to the default export.
-                WriteProgress(AjaxMin.ModuleHasDefaultExport);
+                WriteProgress(NUglify.ModuleHasDefaultExport);
             }
         }
 
@@ -240,13 +240,13 @@ namespace AjaxMin
                 if (!blockScope.IsKnownAtCompileTime)
                 {
                     sb.Append('[');
-                    sb.Append(AjaxMin.NotKnown);
+                    sb.Append(NUglify.NotKnown);
                     sb.Append(']');
                 }
 
                 if (blockScope.UseStrict)
                 {
-                    sb.Append(AjaxMin.ScopeIsStrictFlag);
+                    sb.Append(NUglify.ScopeIsStrictFlag);
                 }
 
                 scopeFlags = sb.ToString();
@@ -257,7 +257,7 @@ namespace AjaxMin
             }
 
             WriteProgress();
-            WriteProgress(AjaxMin.BlockScopeHeader.FormatInvariant(
+            WriteProgress(NUglify.BlockScopeHeader.FormatInvariant(
               blockType,
               blockScope.Owner.Context.StartLineNumber,
               blockScope.Owner.Context.StartColumn + 1,
@@ -275,7 +275,7 @@ namespace AjaxMin
             var functionField = funcObj.Binding.IfNotNull(b => b.VariableField);
             if (functionField != null && functionField.CrunchedName != null)
             {
-                crunched = AjaxMin.CrunchedTo.FormatInvariant(functionField.CrunchedName, functionField.RefCount);
+                crunched = NUglify.CrunchedTo.FormatInvariant(functionField.CrunchedName, functionField.RefCount);
             }
 
             // get the status if the function
@@ -286,7 +286,7 @@ namespace AjaxMin
                 if (!isKnown)
                 {
                     statusBuilder.Append('[');
-                    statusBuilder.Append(AjaxMin.NotKnown);
+                    statusBuilder.Append(NUglify.NotKnown);
                 }
                 if (funcObj.EnclosingScope.Parent is GlobalScope)
                 {
@@ -307,7 +307,7 @@ namespace AjaxMin
                         {
                             statusBuilder.Append('[');
                         }
-                        statusBuilder.Append(AjaxMin.FunctionInfoReferences.FormatInvariant(
+                        statusBuilder.Append(NUglify.FunctionInfoReferences.FormatInvariant(
                             funcObj.Binding.VariableField.IfNotNull(v => v.RefCount)
                             ));
                     }
@@ -326,7 +326,7 @@ namespace AjaxMin
                         statusBuilder.Append('[');
                     }
 
-                    statusBuilder.Append(AjaxMin.Unreachable);
+                    statusBuilder.Append(NUglify.Unreachable);
                 }
 
                 if (statusBuilder.Length > 0)
@@ -336,7 +336,7 @@ namespace AjaxMin
 
                 if (useStrict)
                 {
-                    statusBuilder.Append(AjaxMin.ScopeIsStrictFlag);
+                    statusBuilder.Append(NUglify.ScopeIsStrictFlag);
                 }
 
                 status = statusBuilder.ToString();
@@ -350,27 +350,27 @@ namespace AjaxMin
             switch (funcObj.FunctionType)
             {
                 case FunctionType.Getter:
-                    functionType = AjaxMin.FunctionTypePropGet;
+                    functionType = NUglify.FunctionTypePropGet;
                     break;
 
                 case FunctionType.Setter:
-                    functionType = AjaxMin.FunctionTypePropSet;
+                    functionType = NUglify.FunctionTypePropSet;
                     break;
 
                 case FunctionType.Expression:
-                    functionType = AjaxMin.FunctionTypeExpression;
+                    functionType = NUglify.FunctionTypeExpression;
                     break;
 
                 case FunctionType.ArrowFunction:
-                    functionType = AjaxMin.FunctionTypeArrow;
+                    functionType = NUglify.FunctionTypeArrow;
                     break;
 
                 case FunctionType.Method:
-                    functionType = AjaxMin.FunctionTypeMethod;
+                    functionType = NUglify.FunctionTypeMethod;
                     break;
 
                 default:
-                    functionType = AjaxMin.FunctionTypeFunction;
+                    functionType = NUglify.FunctionTypeFunction;
                     break;
             }
 
@@ -379,19 +379,19 @@ namespace AjaxMin
             {
                 functionName = !funcObj.NameGuess.IsNullOrWhiteSpace()
                     ? '"' + funcObj.NameGuess + '"'
-                    : AjaxMin.AnonymousName;
+                    : NUglify.AnonymousName;
             }
 
             // output
             WriteProgress();
-            WriteProgress(AjaxMin.FunctionHeader.FormatInvariant(
+            WriteProgress(NUglify.FunctionHeader.FormatInvariant(
                 functionType,
                 functionName,
                 funcObj.Context.StartLineNumber,
                 funcObj.Context.StartColumn + 1,
                 status,
                 crunched,
-                funcObj.IsGenerator ? AjaxMin.FunctionTypeGenerator : string.Empty));
+                funcObj.IsGenerator ? NUglify.FunctionTypeGenerator : string.Empty));
         }
 
         // NAME [SCOPE TYPE] [crunched to CRUNCH]
@@ -416,11 +416,11 @@ namespace AjaxMin
                 // calculate the crunched label
                 if (variableField.CrunchedName != null)
                 {
-                    crunched = AjaxMin.CrunchedTo.FormatInvariant(variableField.CrunchedName, variableField.RefCount);
+                    crunched = NUglify.CrunchedTo.FormatInvariant(variableField.CrunchedName, variableField.RefCount);
                 }
                 else
                 {
-                    crunched = AjaxMin.MemberInfoReferences.FormatInvariant(variableField.RefCount);
+                    crunched = NUglify.MemberInfoReferences.FormatInvariant(variableField.RefCount);
                 }
 
                 // get the field's default scope and type
@@ -444,7 +444,7 @@ namespace AjaxMin
                         GetFieldScopeType(outerField, out outerScope, out outerType);
                         if (!outerScope.IsNullOrWhiteSpace() || !outerType.IsNullOrWhiteSpace())
                         {
-                            crunched = AjaxMin.MemberInfoWithPossibly.FormatInvariant(outerScope, outerType);
+                            crunched = NUglify.MemberInfoWithPossibly.FormatInvariant(outerScope, outerType);
                         }
                     }
                     else
@@ -453,7 +453,7 @@ namespace AjaxMin
                         // block. These are tricky! At run-time if you try to declare a function, const, or let
                         // inside the with-scope, and the with-object already has a property with that name, the
                         // declaration will throw a run-time error.
-                        crunched = variableField.IsFunction ? AjaxMin.MemberInfoWithLexFunc : AjaxMin.MemberInfoWithLexDecl;
+                        crunched = variableField.IsFunction ? NUglify.MemberInfoWithLexFunc : NUglify.MemberInfoWithLexDecl;
                     }
                 }
 
@@ -461,11 +461,11 @@ namespace AjaxMin
                 var definedContext = GetFirstDeclaration(variableField);
                 if (definedContext != null)
                 {
-                    definedLocation = AjaxMin.MemberInfoDefinedLocation.FormatInvariant(definedContext.StartLineNumber, definedContext.StartColumn + 1);
+                    definedLocation = NUglify.MemberInfoDefinedLocation.FormatInvariant(definedContext.StartLineNumber, definedContext.StartColumn + 1);
                 }
 
                 // format the entire string
-                WriteProgress(AjaxMin.MemberInfoFormat.FormatInvariant(
+                WriteProgress(NUglify.MemberInfoFormat.FormatInvariant(
                     name,
                     scope,
                     type,
@@ -507,34 +507,34 @@ namespace AjaxMin
             switch (variableField.FieldType)
             {
                 case FieldType.Argument:
-                    type = AjaxMin.MemberInfoTypeArgument;
+                    type = NUglify.MemberInfoTypeArgument;
                     if (variableField.IsOuterReference)
                     {
-                        scope = AjaxMin.MemberInfoScopeOuter;
+                        scope = NUglify.MemberInfoScopeOuter;
                     }
                     break;
 
                 case FieldType.Arguments:
-                    type = AjaxMin.MemberInfoTypeArguments;
+                    type = NUglify.MemberInfoTypeArguments;
                     if (variableField.IsOuterReference)
                     {
-                        scope = AjaxMin.MemberInfoScopeOuter;
+                        scope = NUglify.MemberInfoScopeOuter;
                     }
                     break;
 
                 case FieldType.CatchError:
-                    type = AjaxMin.MemberInfoTypeCatchEror;
+                    type = NUglify.MemberInfoTypeCatchEror;
                     if (variableField.IsOuterReference)
                     {
-                        scope = AjaxMin.MemberInfoScopeOuter;
+                        scope = NUglify.MemberInfoScopeOuter;
                     }
                     break;
 
                 case FieldType.Super:
-                    type = AjaxMin.MemberInfoTypeSuper;
+                    type = NUglify.MemberInfoTypeSuper;
                     if (variableField.IsOuterReference)
                     {
-                        scope = AjaxMin.MemberInfoScopeOuter;
+                        scope = NUglify.MemberInfoScopeOuter;
                     }
                     break;
 
@@ -551,11 +551,11 @@ namespace AjaxMin
                     {
                         // this is a special "global." It might not be a global, but something referenced
                         // in a with scope somewhere down the line.
-                        type = AjaxMin.MemberInfoPossiblyUndefined;
+                        type = NUglify.MemberInfoPossiblyUndefined;
                     }
                     else if (variableField.FieldValue is FunctionObject && variableField.GhostedField != null)
                     {
-                        type = AjaxMin.MemberInfoFunctionExpression;
+                        type = NUglify.MemberInfoFunctionExpression;
                     }
                     else
                     {
@@ -569,64 +569,64 @@ namespace AjaxMin
                     {
                         if (variableField.GhostedField == null)
                         {
-                            type = AjaxMin.MemberInfoFunction;
+                            type = NUglify.MemberInfoFunction;
                         }
                         else
                         {
-                            type = AjaxMin.MemberInfoFunctionExpression;
+                            type = NUglify.MemberInfoFunctionExpression;
                         }
                     }
                     else if (variableField.FieldValue is ClassNode)
                     {
-                        type = AjaxMin.MemberInfoClass;
+                        type = NUglify.MemberInfoClass;
                     }
                     else if (variableField.IsLiteral)
                     {
-                        type = AjaxMin.MemberInfoLiteral;
+                        type = NUglify.MemberInfoLiteral;
                     }
                     else if (variableField.InitializationOnly)
                     {
-                        type = AjaxMin.MemberInfoConst;
+                        type = NUglify.MemberInfoConst;
                     }
                     else
                     {
-                        type = AjaxMin.MemberInfoVar;
+                        type = NUglify.MemberInfoVar;
                     }
 
                     // scope string
                     if (variableField.IsOuterReference)
                     {
-                        scope = AjaxMin.MemberInfoScopeOuter;
+                        scope = NUglify.MemberInfoScopeOuter;
                     }
                     else if (variableField.FieldType == FieldType.Global || variableField.FieldType == FieldType.UndefinedGlobal)
                     {
-                        scope = AjaxMin.MemberInfoScopeGlobal;
+                        scope = NUglify.MemberInfoScopeGlobal;
                     }
                     else
                     {
-                        scope = AjaxMin.MemberInfoScopeLocal;
+                        scope = NUglify.MemberInfoScopeLocal;
                     }
                     break;
 
                 case FieldType.Predefined:
-                    scope = AjaxMin.MemberInfoScopeGlobalObject;
+                    scope = NUglify.MemberInfoScopeGlobalObject;
                     type = variableField.IsFunction
-                        ? AjaxMin.MemberInfoBuiltInMethod
-                        : AjaxMin.MemberInfoBuiltInProperty;
+                        ? NUglify.MemberInfoBuiltInMethod
+                        : NUglify.MemberInfoBuiltInProperty;
                     break;
 
                 case FieldType.WithField:
-                    type = AjaxMin.MemberInfoWithField;
+                    type = NUglify.MemberInfoWithField;
                     if (variableField.IsOuterReference)
                     {
-                        scope = AjaxMin.MemberInfoScopeOuter;
+                        scope = NUglify.MemberInfoScopeOuter;
                     }
                     break;
             }
 
             if (variableField.IsExported)
             {
-                scope = AjaxMin.MemberInfoScopeExported + scope;
+                scope = NUglify.MemberInfoScopeExported + scope;
             }
         }
 
@@ -673,10 +673,10 @@ namespace AjaxMin
 
                 // write the report
                 WriteProgress();
-                WriteProgress(AjaxMin.UndefinedGlobalHeader);
+                WriteProgress(NUglify.UndefinedGlobalHeader);
                 foreach (UndefinedReference ex in undefinedList)
                 {
-                    WriteProgress(AjaxMin.UndefinedInfo.FormatInvariant(
+                    WriteProgress(NUglify.UndefinedInfo.FormatInvariant(
                       ex.Name,
                       ex.Line,
                       ex.Column,

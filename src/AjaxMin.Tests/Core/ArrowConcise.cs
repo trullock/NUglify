@@ -1,9 +1,9 @@
-﻿using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Syntax;
-using AjaxMin.JavaScript.Visitors;
+﻿using NUglify.JavaScript;
+using NUglify.JavaScript.Syntax;
+using NUglify.JavaScript.Visitors;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Core
+namespace NUglify.Tests.Core
 {
     /// <summary>
     /// Summary description for ArrowConcise

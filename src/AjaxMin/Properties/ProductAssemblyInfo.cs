@@ -21,7 +21,7 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyProduct("AjaxMin")]
+[assembly: AssemblyProduct("NUglify")]
 
 [assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyCopyright("Copyright 2013 Microsoft Corporation")]
@@ -43,5 +43,5 @@ using System.Reflection;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("5.16.0.0")]
-[assembly: AssemblyFileVersion("5.16.0.0")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0.0")]

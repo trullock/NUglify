@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using AjaxMin.Css;
-using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.Css;
+using NUglify.JavaScript;
+using NUglify.JavaScript.Visitors;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Core
+namespace NUglify.Tests.Core
 {
     /// <summary>
     /// Summary description for ReplacementTokens

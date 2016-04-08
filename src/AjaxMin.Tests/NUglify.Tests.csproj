@@ -7,8 +7,8 @@
     <ProjectGuid>{5F19295A-C991-4A72-A943-846384F90EAB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AjaxMin.Tests</RootNamespace>
-    <AssemblyName>AjaxMin.Tests</AssemblyName>
+    <RootNamespace>NUglify.Tests</RootNamespace>
+    <AssemblyName>NUglify.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -136,28 +136,28 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="project.json" />
-    <Content Include="TestData\Core\Expected\AjaxMinTask\Combined.min.css">
+    <Content Include="TestData\Core\Expected\NUglifyTask\Combined.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Expected\AjaxMinTask\Combined.min.js">
+    <Content Include="TestData\Core\Expected\NUglifyTask\Combined.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Expected\AjaxMinTask\CombinedKill.min.css">
+    <Content Include="TestData\Core\Expected\NUglifyTask\CombinedKill.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Expected\AjaxMinTask\CombinedKill.min.js">
+    <Content Include="TestData\Core\Expected\NUglifyTask\CombinedKill.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Expected\AjaxMinTask\file1.min.js">
+    <Content Include="TestData\Core\Expected\NUglifyTask\file1.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Expected\AjaxMinTask\file2.min.js">
+    <Content Include="TestData\Core\Expected\NUglifyTask\file2.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Expected\AjaxMinTask\test1.min.css">
+    <Content Include="TestData\Core\Expected\NUglifyTask\test1.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Expected\AjaxMinTask\test2.min.css">
+    <Content Include="TestData\Core\Expected\NUglifyTask\test2.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Core\Expected\ManifestTask\test1.css">
@@ -193,22 +193,22 @@
     <Content Include="TestData\Core\Expected\SourceChange.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Input\AjaxMinTask\Fail.css">
+    <Content Include="TestData\Core\Input\NUglifyTask\Fail.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Input\AjaxMinTask\Fail.js">
+    <Content Include="TestData\Core\Input\NUglifyTask\Fail.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Input\AjaxMinTask\file1.js">
+    <Content Include="TestData\Core\Input\NUglifyTask\file1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Input\AjaxMinTask\file2.js">
+    <Content Include="TestData\Core\Input\NUglifyTask\file2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Input\AjaxMinTask\test1.css">
+    <Content Include="TestData\Core\Input\NUglifyTask\test1.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Core\Input\AjaxMinTask\test2.css">
+    <Content Include="TestData\Core\Input\NUglifyTask\test2.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Core\Input\CssEncoding\empty.css">
@@ -3118,12 +3118,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AjaxMinApp\AjaxMinApp.csproj">
+    <ProjectReference Include="..\NUglifyApp\NUglifyApp.csproj">
       <Project>{6ed835a6-8a8a-44ec-8679-7ebbe2a0dbe4}</Project>
-      <Name>AjaxMinApp</Name>
+      <Name>NUglifyApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildThisFileDirectory)..\AjaxMin.shared.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)..\NUglify.shared.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

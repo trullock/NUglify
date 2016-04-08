@@ -17,7 +17,7 @@
 using System;
 using System.Text;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// JSEncoderFallback encodes invalid encoder characters as Unicode escapes:

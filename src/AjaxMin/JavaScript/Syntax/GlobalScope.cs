@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     public sealed class GlobalScope : ActivationObject
     {

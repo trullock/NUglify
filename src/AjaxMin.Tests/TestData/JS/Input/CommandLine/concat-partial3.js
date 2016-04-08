@@ -1,4 +1,4 @@
-﻿// partial script. End with special comment to keep AjaxMin from adding a semicolon
+﻿// partial script. End with special comment to keep NUglify from adding a semicolon
 second: "two",       
 
 

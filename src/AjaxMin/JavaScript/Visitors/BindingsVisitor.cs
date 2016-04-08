@@ -15,9 +15,9 @@
 // limitations under the License.
 
 using System.Collections.Generic;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript.Visitors
+namespace NUglify.JavaScript.Visitors
 {
     public class BindingsVisitor : IVisitor
     {

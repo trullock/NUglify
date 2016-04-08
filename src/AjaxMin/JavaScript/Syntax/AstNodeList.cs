@@ -16,9 +16,9 @@
 
 using System;
 using System.Collections.Generic;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public sealed class AstNodeList : AstNode, IEnumerable<AstNode>

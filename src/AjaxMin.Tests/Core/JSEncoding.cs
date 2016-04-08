@@ -17,7 +17,7 @@
 using System.Diagnostics;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Core
+namespace NUglify.Tests.Core
 {
     /// <summary>
     /// Summary description for CssErrorStrings

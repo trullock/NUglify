@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     /// <summary>
     /// Standard JSON source map format, version 3

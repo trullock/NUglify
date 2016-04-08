@@ -2,21 +2,21 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Use Choose instead of a plain condition on ItemGroup to make it working with VS -->
   <Choose>
-    <When Condition="'$(SolutionName)' == 'AjaxMin-xplat'">
+    <When Condition="'$(SolutionName)' == 'NUglify.xplat'">
       <ItemGroup>
-        <Reference Include="AjaxMin">
+        <Reference Include="NUglify">
           <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\..\artifacts\bin\AjaxMin\$(Configuration)\net40\AjaxMin.dll</HintPath>
+          <HintPath>..\..\artifacts\bin\NUglify\$(Configuration)\net40\NUglify.dll</HintPath>
         </Reference>
       </ItemGroup>
     </When>
   </Choose>
   <Choose>
-    <When Condition="'$(SolutionName)' == 'AjaxMin-net40'">
+    <When Condition="'$(SolutionName)' == 'NUglify.net40'">
       <ItemGroup>
-        <ProjectReference Include="..\AjaxMin\AjaxMin.csproj">
+        <ProjectReference Include="..\NUglify\NUglify.csproj">
           <Project>{CA85C41A-928F-4626-9025-0FE5991C7BE8}</Project>
-          <Name>AjaxMin</Name>
+          <Name>NUglify</Name>
         </ProjectReference>
       </ItemGroup>
     </When>

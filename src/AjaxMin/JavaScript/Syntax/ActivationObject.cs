@@ -17,9 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     public abstract class ActivationObject
     {

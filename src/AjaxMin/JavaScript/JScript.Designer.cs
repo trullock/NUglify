@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AjaxMin.JavaScript {
+namespace NUglify.JavaScript {
     using System;
     using System.Reflection;
     
@@ -38,7 +38,7 @@ namespace AjaxMin.JavaScript {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AjaxMin.JavaScript.JScript", typeof(JScript).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NUglify.JavaScript.JScript", typeof(JScript).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

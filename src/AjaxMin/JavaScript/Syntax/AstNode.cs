@@ -16,9 +16,9 @@
 
 using System;
 using System.Collections.Generic;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     internal enum EncloseBlockType
     {

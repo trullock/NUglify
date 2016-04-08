@@ -1,4 +1,4 @@
-﻿// AjaxMinMAnifestTask.cs
+﻿// NUglifyMAnifestTask.cs
 //
 // Copyright 2013 Microsoft Corporation
 //
@@ -19,16 +19,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using AjaxMin.Css;
-using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.Css;
+using NUglify.JavaScript;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
-    /// MSBuild task for AjaxMin manifest files
+    /// MSBuild task for NUglify manifest files
     /// </summary>
-    public class AjaxMinManifestTask : AjaxMinManifestBaseTask
+    public class NUglifyManifestTask : NUglifyManifestBaseTask
     {
         #region public properties
 

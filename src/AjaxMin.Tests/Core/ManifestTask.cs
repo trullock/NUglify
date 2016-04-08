@@ -158,7 +158,7 @@
         public void ManifestBundle()
         {
             // create the task, set it up, and execute it
-            var task = new AjaxMinBundleTask();
+            var task = new NUglifyBundleTask();
             task.BuildEngine = new TestBuildEngine()
             {
                 MockProjectPath = Path.Combine(testContextInstance.DeploymentDirectory, "mock.csproj")
@@ -279,9 +279,9 @@
             Assert.IsTrue(File.Exists(Path.Combine(s_outputFolder, "test_nowarn.js")), "test_nowarn.js does not exist");
         }
 
-        private AjaxMinManifestTask CreateAndSetupTask()
+        private NUglifyManifestTask CreateAndSetupTask()
         {
-            var task = new AjaxMinManifestTask();
+            var task = new NUglifyManifestTask();
             task.InputFolder = s_inputFolder;
             //task.InputFolder = "TestData/Dll/Input/ManifestTask/";
             task.OutputFolder = s_outputFolder;
@@ -296,7 +296,7 @@
             return task;
         }
 
-        private bool ExecuteAndLog(AjaxMinManifestBaseTask task)
+        private bool ExecuteAndLog(NUglifyManifestBaseTask task)
         {
             var success = task.Execute();
             Trace.Write("TASK RESULT: ");

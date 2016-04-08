@@ -18,11 +18,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
-using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Syntax;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript;
+using NUglify.JavaScript.Syntax;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin
+namespace NUglify
 {
     public sealed class XmlScopeReport : IScopeReport
     {

@@ -23,7 +23,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Css.Common
+namespace NUglify.Tests.Css.Common
 {
     sealed class TestHelper
     {

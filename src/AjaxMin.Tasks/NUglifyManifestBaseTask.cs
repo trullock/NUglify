@@ -1,4 +1,4 @@
-﻿// AjaxMinManifestBaseTask.cs
+﻿// NUglifyManifestBaseTask.cs
 //
 // Copyright 2013 Microsoft Corporation
 //
@@ -23,9 +23,9 @@ using System.Xml;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace AjaxMin
+namespace NUglify
 {
-    public abstract class AjaxMinManifestBaseTask : Task
+    public abstract class NUglifyManifestBaseTask : Task
     {
         #region protected properties
 
@@ -44,7 +44,7 @@ namespace AjaxMin
         #region public properties
 
         /// <summary>
-        /// Default AjaxMin switches to use for the project
+        /// Default NUglify switches to use for the project
         /// </summary>
         public string ProjectDefaultSwitches { get; set; }
 
@@ -72,7 +72,7 @@ namespace AjaxMin
 
         #region constructor
 
-        protected AjaxMinManifestBaseTask()
+        protected NUglifyManifestBaseTask()
         {
             // defaults
             ThrowInputMissingErrors = true;
@@ -102,8 +102,8 @@ namespace AjaxMin
                 // each task item represents an ajaxmin manifest file: an XML file that
                 // has settings and one or more output files, each comprised of one or more
                 // input files. To execute this process, we will read the XML manifest and
-                // execute AjaxMin for each output group.
-                // won't bother executing AjaxMin is the file time for the output file
+                // execute NUglify for each output group.
+                // won't bother executing NUglify is the file time for the output file
                 // is greater than all its inputs.
                 foreach (var taskItem in Manifests)
                 {

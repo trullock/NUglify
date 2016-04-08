@@ -15,7 +15,7 @@
   <HelpConfiguration name="HelpFile">
     <OutputPath>.\Help</OutputPath>
     <CleanupOutputPath>true</CleanupOutputPath>
-    <HelpFileName>AjaxMin</HelpFileName>
+    <HelpFileName>NUglify</HelpFileName>
     <ImageFolderPath />
     <Theme />
     <HtmlFormats>

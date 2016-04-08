@@ -16,7 +16,7 @@
 
 using System.Reflection;
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
 
     public sealed class CatchScope : BlockScope

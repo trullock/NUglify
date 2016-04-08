@@ -21,11 +21,11 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
-using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Syntax;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript;
+using NUglify.JavaScript.Syntax;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin
+namespace NUglify
 {
     public partial class MainClass
     {
@@ -134,7 +134,7 @@ namespace AjaxMin
                         else
                         {
                             // no code?
-                            WriteProgress(AjaxMin.NoParsedCode);
+                            WriteProgress(NUglify.NoParsedCode);
                         }
                     }
                 }
@@ -167,9 +167,9 @@ namespace AjaxMin
             var frequency = Stopwatch.Frequency / 1000.0;
 
             // step names
-            var stepNames = new[] { AjaxMin.StepParse, AjaxMin.StepResolve, AjaxMin.StepReorder, 
-                                                AjaxMin.StepAnalyzeNode, AjaxMin.StepAnalyzeScope, AjaxMin.StepAutoRename, 
-                                                AjaxMin.StepEvaluateLiterals, AjaxMin.StepFinalPass, AjaxMin.StepValidateNames };
+            var stepNames = new[] { NUglify.StepParse, NUglify.StepResolve, NUglify.StepReorder, 
+                                                NUglify.StepAnalyzeNode, NUglify.StepAnalyzeScope, NUglify.StepAutoRename, 
+                                                NUglify.StepEvaluateLiterals, NUglify.StepFinalPass, NUglify.StepValidateNames };
 
             // and output other steps to debug
             var stepCount = parser.TimingPoints.Count;
@@ -189,7 +189,7 @@ namespace AjaxMin
                         var deltaMS = (latestTimingPoint - previousTimingPoint) / frequency;
                         previousTimingPoint = latestTimingPoint;
 
-                        sb.AppendFormat(AjaxMin.Culture, AjaxMin.TimerStepFormat, stepIndex, deltaMS, stepNames[stepIndex - 1]);
+                        sb.AppendFormat(NUglify.Culture, NUglify.TimerStepFormat, stepIndex, deltaMS, stepNames[stepIndex - 1]);
                         sb.AppendLine();
                     }
                 }
@@ -201,7 +201,7 @@ namespace AjaxMin
                 sb.Release();
             }
 
-            var timerFormat = groupCount > 1 ? AjaxMin.TimerMultiFormat : AjaxMin.TimerFormat;
+            var timerFormat = groupCount > 1 ? NUglify.TimerMultiFormat : NUglify.TimerFormat;
             var timerMessage = string.Format(CultureInfo.CurrentUICulture, timerFormat, groupIndex + 1, latestTimingPoint / frequency);
             Debug.WriteLine(timerMessage);
             Debug.Write(message);
@@ -319,7 +319,7 @@ namespace AjaxMin
                 {
                     // throw an error indicating the XML error
                     System.Diagnostics.Debug.WriteLine(e.ToString());
-                    throw new NotSupportedException(AjaxMin.InputXmlError.FormatInvariant(e.Message));
+                    throw new NotSupportedException(NUglify.InputXmlError.FormatInvariant(e.Message));
                 }
             }
         }

@@ -48,7 +48,7 @@ Microsoft Ajax Minifier by default will try to reduce the code as much as possib
 Command-Line Usage
 ==================
 
-Simply running AjaxMin without any parameters, or with the -? or /? switches, will display the command line usage. The bare minimum needed to minify a source file is the input file name:
+Simply running NUglify without any parameters, or with the -? or /? switches, will display the command line usage. The bare minimum needed to minify a source file is the input file name:
 
 ```
 ajaxmin inputfile.js
@@ -104,7 +104,7 @@ The other options are less used. The -SILENT option is useful only when saving t
 
 The –TERM option adds a semicolon to the end of the minified stream. This can be useful if you need to later append multiple minified files together into a single file using a separate process.
 
-The –DEBUG option is for specifying how to handle debug-related statements. By default, AjaxMin will remove debug-related statements: debugger, for instance. Statements constituting calls to the debug namespaces of a couple well-known libraries will also be culled. These namespaces are Web.Debug, Msn.Debug, Debug and $Debug. Calls to the WAssert function will also be stripped. If the calls are part of a constructor, the constructor will be replaced with an Object constructor. For example, this code:
+The –DEBUG option is for specifying how to handle debug-related statements. By default, NUglify will remove debug-related statements: debugger, for instance. Statements constituting calls to the debug namespaces of a couple well-known libraries will also be culled. These namespaces are Web.Debug, Msn.Debug, Debug and $Debug. Calls to the WAssert function will also be stripped. If the calls are part of a constructor, the constructor will be replaced with an Object constructor. For example, this code:
 
 ```
 debugger;
@@ -311,7 +311,7 @@ if(!foo.bar())alert("not foo.bar()");
 if(a)alert("a");
 ```
 
-Although it may seem like a silly bit of code to write, sometimes the author of the source script will actually have statements in the true-block that get removed by AjaxMin; for instance, if the statements are debug-only statements.
+Although it may seem like a silly bit of code to write, sometimes the author of the source script will actually have statements in the true-block that get removed by NUglify; for instance, if the statements are debug-only statements.
 
 If there are var statements immediately preceding a for statement, there are several situations where the statements will be combined, depending on the structure of the for statement’s initializer component. If the initializer is empty, the var statement will simply be moved into the for statement’s initializer:
 
@@ -425,7 +425,7 @@ Local Variable and Function Renaming
 
 Local function and variable names are renamed to shorter names, while global functions are left alone. Function scope chains are respected, so global and outer variable references are carried through without interruption or interference. Within a local scope, variables and functions are renamed starting with lower-case letters, then upper-case letters, then combinations thereof. Those with the most references are named first, thereby attempting to make the biggest gains for those fields that are referenced most frequently.
 
-Another aspect of AjaxMin is reference counting and tracking. This is used to remove some unused code. For example, if a function defines arguments that are never referenced, they are removed from the tail of the argument list:
+Another aspect of NUglify is reference counting and tracking. This is used to remove some unused code. For example, if a function defines arguments that are never referenced, they are removed from the tail of the argument list:
 
 ```js
 function DivideTwoNumbers(numerator, denominator, unsedparameter )
@@ -525,7 +525,7 @@ One aspect of minification can be seen as either good or bad, depending on wheth
 Conditional Compilation Comments
 ================================
 
-AjaxMin supports only a subset of conditional compilation comments. The @cc_on, @if, and @set statements are supported – it’s *where* they are in your code that determines whether or not they will be passed through to the output.
+NUglify supports only a subset of conditional compilation comments. The @cc_on, @if, and @set statements are supported – it’s *where* they are in your code that determines whether or not they will be passed through to the output.
 
 In general, statement-level conditional comments are supported. For instance, if you had the following code:
 
@@ -560,7 +560,7 @@ var ie/\*@cc_on=1@\*/;alert(ie?"Internet Explorer":"NOT Internet Explorer")
 
 The rule here is that both the equals-sign and the initializer – but nothing else – must be included in the conditional-compilation comment. Anything else will be ignored.
 
-Conditional-compilation comments in general are *not* supported by AjaxMin within JavaScript expressions. However, if a conditional-compilation comment is encountered inside an expression, and the comment contains only a single conditional-compilation variable reference, the comment will be retained. Anything else and it will be ignored. So for instance:
+Conditional-compilation comments in general are *not* supported by NUglify within JavaScript expressions. However, if a conditional-compilation comment is encountered inside an expression, and the comment contains only a single conditional-compilation variable reference, the comment will be retained. Anything else and it will be ignored. So for instance:
 
 ```js
 //@set @fourteen = 14
@@ -587,7 +587,7 @@ Will have the comment ignored and simply become:
 var isMSIE=0
 ```
 
-because the comment contains an operator and not a variable reference. Remember the general rule: use conditional-compilation comments at a statement level and AjaxMin should always retain them.
+because the comment contains an operator and not a variable reference. Remember the general rule: use conditional-compilation comments at a statement level and NUglify should always retain them.
 
 Variable Renaming With and Eval Statements – Not! 
 ==================================================
@@ -612,7 +612,7 @@ The eval statement marks its containing scope as “unknown.” Scopes that are 
 
 In the with statement example above, if we were to change the variable “foo” to “a” and the window object doesn’t contain a “foo” property, we’ve broken the link to the local variable. And if we also change the parameter to the alert function, we could be breaking the link to a foo property on the window object. Every variable and function referenced within a with-scope must remain the same name because we just don’t know.
 
-If you must use eval and with statements, try to isolate them into small scopes under the global level that are tightly coded without long variable or function names. In general, these statements are frowned upon by most JavaScript developers anyway, and the use of them will throw a level 4 warning in AjaxMin.
+If you must use eval and with statements, try to isolate them into small scopes under the global level that are tightly coded without long variable or function names. In general, these statements are frowned upon by most JavaScript developers anyway, and the use of them will throw a level 4 warning in NUglify.
 
 Analyzing Your Script
 =====================
@@ -774,7 +774,7 @@ var MyScope = new function()
 
 In this code, MyScope is a global field and will therefore not be renamed, but every other variable and function will be renamed since they are all local to the MyScope object. Properties are not local fields and are therefore also not renamed; so the MyScope object will continue have the property “Status” and the methods “Start” and “Stop.” The variables “my” and “requestObject,” the argument “url,” and the helper functions “startRequest” and “cancelRequest” are all local and will be renamed. They can be as long and semantic as readability requires without having any impact on the client download performance. JavaScript code outside this module (or even within) can call the public methods and properties as MyScope.Status, MyScope.Start or MyScope.Stop. The internal local variables and functions are essentially private and not exposed to any other code outside the MyScope object.
 
-The “my” local field is not necessary, but it’s a very valuable shortcut for these types of namespace objects. The “my” variable will be renamed, most-likely to a single character. If the developer instead used the this literal everywhere, it would not get renamed and would remain at four characters everywhere it is used. AjaxMin will take create a local variable, set it to the this pointer, and use that variable wherever the this pointer is used. It will only do this, however, within the scope directly applicable to the this pointer; it won’t propagate the generated local variable into child scopes because the context of the this pointer in child functions may not be the same.
+The “my” local field is not necessary, but it’s a very valuable shortcut for these types of namespace objects. The “my” variable will be renamed, most-likely to a single character. If the developer instead used the this literal everywhere, it would not get renamed and would remain at four characters everywhere it is used. NUglify will take create a local variable, set it to the this pointer, and use that variable wherever the this pointer is used. It will only do this, however, within the scope directly applicable to the this pointer; it won’t propagate the generated local variable into child scopes because the context of the this pointer in child functions may not be the same.
 
 Namespaces can be nested. At the Msn Portals team, we typically define our namespaces within a first-tier namespace of “Msn.” Our code files typically start off like this:
 
@@ -915,7 +915,7 @@ Ideally a CSS minification tool would be able to analyze the rule set and elimin
 Default CSS Minification
 ========================
 
-As mentioned in the introduction, the CSS minification portion of AjaxMin does not perform as sophisticated algorithms as the JavaScript portion. By default it will:
+As mentioned in the introduction, the CSS minification portion of NUglify does not perform as sophisticated algorithms as the JavaScript portion. By default it will:
 
 -   Remove all insignificant whitespace.
 -   Remove all comments.

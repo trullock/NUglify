@@ -14,9 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript.Visitors
+namespace NUglify.JavaScript.Visitors
 {
     /// <summary>
     /// This visitor has a Match method that takes a node and an string representing an identifier list separated by periods: IDENT(.IDENT)*

@@ -15,9 +15,9 @@
 // limitations under the License.
 
 using System;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     public class ObjectLiteralField : ConstantWrapper, INameDeclaration
     {

@@ -39,9 +39,9 @@ namespace System.Runtime.CompilerServices
 
 #endif
 
-namespace AjaxMin
+namespace NUglify
 {
-    public static class AjaxMinExtensions
+    public static class NUglifyExtensions
     {
         public static string FormatInvariant(this string format, params object[] args)
         {

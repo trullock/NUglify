@@ -18,11 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using AjaxMin.Css;
-using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.Css;
+using NUglify.JavaScript;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// Minifier class for quick minification of JavaScript or Stylesheet code without needing to

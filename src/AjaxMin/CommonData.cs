@@ -16,7 +16,7 @@
 
 using System.Text.RegularExpressions;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// Helper class to hold common data elements

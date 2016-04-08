@@ -18,7 +18,7 @@
 //Used by the Parser to parse expressions
 //***************************************************************************************
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     public enum OperatorPrecedence
     {

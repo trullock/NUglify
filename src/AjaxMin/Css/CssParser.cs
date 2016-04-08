@@ -20,10 +20,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin.Css
+namespace NUglify.Css
 {
     /// <summary>
     /// Parser takes Tokens and parses them into rules and statements
@@ -592,7 +592,7 @@ namespace AjaxMin.Css
         {
             Parsed parsed = Parsed.False;
 
-            // ignore any semicolons that may be the result of concatenation on the part of AjaxMin
+            // ignore any semicolons that may be the result of concatenation on the part of NUglify
             SkipSemicolons();
 
             // the @charset token can ONLY be at the top of the file

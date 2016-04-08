@@ -17,7 +17,7 @@
 using System;
 using System.IO;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     public static class SourceMapFactory
     {

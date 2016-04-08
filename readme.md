@@ -1,6 +1,6 @@
-# AjaxMin [![Windows CI](https://ci.appveyor.com/api/projects/status/github/xoofx/ajaxmin?svg=true)](https://ci.appveyor.com/project/xoofx/ajaxmin/branch/master)
+# NUglify [![Build status](https://ci.appveyor.com/api/projects/status/vep1cdnie9cls48p?svg=true)](https://ci.appveyor.com/project/xoofx/ajaxmin)
 
-AjaxMin enables you to improve the performance of your web applications by reducing the size of your Cascading Style Sheet and JavaScript files.
+NUglify enables you to improve the performance of your web applications by reducing the size of your Cascading Style Sheet and JavaScript files.
 
 This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/)
 
@@ -15,7 +15,7 @@ The original documentation of the project is available [here](doc/readme.md)
 You may wonder why this fork? Here are a few reasons:
 
 - Ron Logan announced that he is no longer able to maintain this project [here](http://ajaxmin.codeplex.com/discussions/587925)
-- While ASP.NET 5.0+ is now relying on the **node.js** ecosystem for its client side tooling (e.g: minify), AjaxMin is **still useful** in scenarios where we need to access this tooling from a .NET application (not necessarily an ASP one) without having to install another developer platform. I can't believe that Ajaxmin could be left behind while it is still valuable!
+- While ASP.NET 5.0+ is now relying on the **node.js** ecosystem for its client side tooling (e.g: minify), NUglify is **still useful** in scenarios where we need to access this tooling from a .NET application (not necessarily an ASP one) without having to install another developer platform. I can't believe that Ajaxmin could be left behind while it is still valuable!
 - The original code was also hosted on codeplex making it a much less appealing code source platform to collaborate compare to github.
 - It was not possible to keep the history of the commits, as the Ajaxmin SVN codeplex seems to be completely down
 - I wanted the library to be compatible with CoreCLR/dotnet-cli scenarios
@@ -39,6 +39,6 @@ The original Microsoft Ajax Minifier was released under the [Apache 2.0 license]
 
 ## Author
 
-AjaxMin was created and is maintained by Ron Logan, with contributions from Eugene Chigirinskiy, Rafael Correa, Kristoffer Henriksson, and Marcin Dobosz.
+Microsoft Ajax Minifier was created and maintained by Ron Logan, with contributions from Eugene Chigirinskiy, Rafael Correa, Kristoffer Henriksson, and Marcin Dobosz.
 
-This project has been ported and refactored to github by Alexandre Mutel aka [xoofx](http://xoofx.com)
+Nuglify was ported and refactored to github by Alexandre Mutel aka [xoofx](http://xoofx.com)

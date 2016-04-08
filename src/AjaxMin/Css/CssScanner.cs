@@ -19,7 +19,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace AjaxMin.Css
+namespace NUglify.Css
 {
     /// <summary>
     /// Scanner takes input stream and breaks it into Tokens

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjaxMin", "AjaxMin\AjaxMin.csproj", "{CA85C41A-928F-4626-9025-0FE5991C7BE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglify", "NUglify\NUglify.csproj", "{CA85C41A-928F-4626-9025-0FE5991C7BE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjaxMin.Tests", "AjaxMin.Tests\AjaxMin.Tests.csproj", "{5F19295A-C991-4A72-A943-846384F90EAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglify.Tests", "NUglify.Tests\NUglify.Tests.csproj", "{5F19295A-C991-4A72-A943-846384F90EAB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CA85C41A-928F-4626-9025-0FE5991C7BE8} = {CA85C41A-928F-4626-9025-0FE5991C7BE8}
 	EndProjectSection
@@ -18,15 +18,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{061866E2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23C6E14F-4E3F-4878-B80A-CE3616E35F4C}"
 	ProjectSection(SolutionItems) = preProject
-		AjaxMin\global.json = AjaxMin\global.json
+		NUglify\global.json = NUglify\global.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjaxMinApp", "AjaxMinApp\AjaxMinApp.csproj", "{6ED835A6-8A8A-44EC-8679-7EBBE2A0DBE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglifyApp", "NUglifyApp\NUglifyApp.csproj", "{6ED835A6-8A8A-44EC-8679-7EBBE2A0DBE4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CA85C41A-928F-4626-9025-0FE5991C7BE8} = {CA85C41A-928F-4626-9025-0FE5991C7BE8}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjaxMin.Tasks", "AjaxMin.Tasks\AjaxMin.Tasks.csproj", "{0C7BC471-4112-43CA-89AA-B7EBDB5689C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglify.Tasks", "NUglify.Tasks\NUglify.Tasks.csproj", "{0C7BC471-4112-43CA-89AA-B7EBDB5689C1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CA85C41A-928F-4626-9025-0FE5991C7BE8} = {CA85C41A-928F-4626-9025-0FE5991C7BE8}
 	EndProjectSection

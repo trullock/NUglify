@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AjaxMin {
+namespace NUglify {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace AjaxMin {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AjaxMin.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NUglify.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -142,7 +142,7 @@ namespace AjaxMin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid property value to AjaxMin build task: &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Invalid property value to NUglify build task: &apos;{0}&apos;.
         /// </summary>
         internal static string InvalidInputParameter {
             get {
@@ -214,7 +214,7 @@ namespace AjaxMin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Required AjaxMin build task property &apos;{0}&apos; is missing or empty..
+        ///   Looks up a localized string similar to Required NUglify build task property &apos;{0}&apos; is missing or empty..
         /// </summary>
         internal static string RequiredParameterIsEmpty {
             get {

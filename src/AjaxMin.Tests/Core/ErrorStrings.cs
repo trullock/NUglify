@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using AjaxMin.Css;
-using AjaxMin.JavaScript;
+using NUglify.Css;
+using NUglify.JavaScript;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Core
+namespace NUglify.Tests.Core
 {
     /// <summary>
     /// Summary description for CssErrorStrings

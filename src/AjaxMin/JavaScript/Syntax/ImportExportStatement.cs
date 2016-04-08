@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public abstract class ImportExportStatement : Statement, IEnumerable<AstNode>, IModuleReference

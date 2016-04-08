@@ -22,11 +22,11 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using AjaxMin.JavaScript;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript;
+using NUglify.JavaScript.Visitors;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.JavaScript.Common
+namespace NUglify.Tests.JavaScript.Common
 {
     /// <summary>
     /// This class implements a Singleton Pattern.
@@ -419,7 +419,7 @@ namespace AjaxMin.Tests.JavaScript.Common
             }
             Trace.WriteLine(string.Empty);
 
-            // call the AjaxMin main function
+            // call the NUglify main function
             Trace.WriteLine(string.Empty);
             Trace.WriteLine("AJAXMIN Debug Spew:");
 

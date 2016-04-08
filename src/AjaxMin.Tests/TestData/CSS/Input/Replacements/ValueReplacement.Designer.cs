@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AjaxMin.Tests.TestData.CSS.Input.Replacements {
+namespace NUglify.Tests.TestData.CSS.Input.Replacements {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace AjaxMin.Tests.TestData.CSS.Input.Replacements {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AjaxMin.Tests.TestData.CSS.Input.Replacements.ValueReplacement", typeof(ValueReplacement).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NUglify.Tests.TestData.CSS.Input.Replacements.ValueReplacement", typeof(ValueReplacement).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

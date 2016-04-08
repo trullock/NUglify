@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript.Visitors
+namespace NUglify.JavaScript.Visitors
 {
     public class ReferencesVisitor : TreeVisitor
     {

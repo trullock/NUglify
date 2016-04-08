@@ -1,4 +1,4 @@
-﻿// AjaxMinBuildTask.cs
+﻿// NUglifyBuildTask.cs
 //
 // Copyright 2010 Microsoft Corporation
 //
@@ -23,18 +23,18 @@ using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using AjaxMin.Css;
-using AjaxMin.JavaScript;
+using NUglify.Css;
+using NUglify.JavaScript;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// Provides the MS Build task for Microsoft Ajax Minifier. Please see the list of supported properties below.
     /// </summary>
     [SecurityCritical]
-    public class AjaxMin : Task
+    public class NUglify : Task
     {
         #region private fields
 
@@ -44,12 +44,12 @@ namespace AjaxMin
         private static Regex s_endsInSemicolon = new Regex(@";\s*$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         /// <summary>
-        /// AjaxMin Minifier
+        /// NUglify Minifier
         /// </summary>
-        private readonly global::AjaxMin.Minifier m_minifier = new global::AjaxMin.Minifier();
+        private readonly global::NUglify.Minifier m_minifier = new global::NUglify.Minifier();
 
         /// <summary>
-        /// AjaxMin command-line switch parser
+        /// NUglify command-line switch parser
         /// </summary>
         private SwitchParser m_switchParser;
 
@@ -246,7 +246,7 @@ namespace AjaxMin
         }
 
         /// <summary>
-        /// Whether to treat AjaxMin warnings as build errors (true) or not (false). Default value is false.
+        /// Whether to treat NUglify warnings as build errors (true) or not (false). Default value is false.
         /// </summary>
         public bool TreatWarningsAsErrors { get; set; }
 
@@ -640,10 +640,10 @@ namespace AjaxMin
         #endregion
 
         /// <summary>
-        /// Constructor for <see cref="AjaxMin"/> class. Initializes the default
+        /// Constructor for <see cref="NUglify"/> class. Initializes the default
         /// values for all parameters.
         /// </summary>
-        public AjaxMin()
+        public NUglify()
         {
             this.m_switchParser = new SwitchParser();
             this.m_switchParser.UnknownParameter += OnUnknownParameter;

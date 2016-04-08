@@ -16,9 +16,9 @@
 
 using System;
 using System.IO;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     public interface ISourceMap : IDisposable
     {

@@ -4,7 +4,7 @@
 
 using System;
 
-namespace AjaxMin.Tests
+namespace NUglify.Tests
 {
     public class Program
     {

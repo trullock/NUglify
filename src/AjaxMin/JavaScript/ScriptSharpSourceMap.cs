@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Xml;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     public sealed class ScriptSharpSourceMap : ISourceMap
     {

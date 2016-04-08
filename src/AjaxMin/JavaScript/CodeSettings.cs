@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     /// <summary>
     /// Settings for how local variables and functions can be renamed

@@ -1,18 +1,18 @@
 ﻿{
-  "title": "AjaxMin",
-  "version": "1.0.1",
+  "title": "NUglify",
+  "version": "1.0.0",
   "authors": [ "Ron Logan", "Alexandre Mutel" ],
   "owners": [ "Alexandre Mutel" ],
-  "licenseUrl": "https://github.com/xoofx/AjaxMin/blob/master/license.txt",
-  "projectUrl": "https://github.com/xoofx/AjaxMin",
+  "licenseUrl": "https://github.com/xoofx/NUglify/blob/master/license.txt",
+  "projectUrl": "https://github.com/xoofx/NUglify",
   "requireLicenseAcceptance": false,
-  "description": "AjaxMin is a JavaScript and CSS minification Library for .NET ",
+  "description": "NUglify is a JavaScript and CSS minification Library for .NET ",
   "copyright": "Alexandre Mutel",
-  "tags": [ "libsass", "SCSS", "SASS", "CSS" ],
+  "tags": [ "CSS", "JavaScript", "minify", "crunch", "uglify" ],
   "language": "en-US",
   "repository": {
     "type": "git",
-    "url": "git://github.com/xoofx/AjaxMin"
+    "url": "git://github.com/xoofx/NUglify"
   },
   "configurations": {
     "Debug": {
@@ -41,9 +41,9 @@
     "JavaScript/*.resx"
   ],
   "namedResource": {
-    "AjaxMin.Css.CssStrings": "Css/CssStrings.resx",
-    "AjaxMin.CommonStrings": "CommonStrings.resx",
-    "AjaxMin.JavaScript.JScript": "JavaScript/JScript.resx"
+    "NUglify.Css.CssStrings": "Css/CssStrings.resx",
+    "NUglify.CommonStrings": "CommonStrings.resx",
+    "NUglify.JavaScript.JScript": "JavaScript/JScript.resx"
   },
   "frameworks": {
     "net35": {

@@ -16,7 +16,7 @@
 
 using System.Text;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     /// <summary>
     /// super-simple JSON parser/validator. Exposes a Validate method

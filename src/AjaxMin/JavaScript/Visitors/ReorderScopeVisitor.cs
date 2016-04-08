@@ -16,9 +16,9 @@
 
 using System;
 using System.Collections.Generic;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript.Visitors
+namespace NUglify.JavaScript.Visitors
 {
     internal class ReorderScopeVisitor : TreeVisitor
     {

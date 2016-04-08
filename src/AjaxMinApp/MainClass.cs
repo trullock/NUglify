@@ -26,9 +26,9 @@ using System.Resources;
 using System.Security;
 using System.Text;
 using System.Xml;
-using AjaxMin.JavaScript;
+using NUglify.JavaScript;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// Application entry point
@@ -166,7 +166,7 @@ namespace AjaxMin
                 // so no sense waiting for input from STDIN. Output a simple
                 // header that displays a message telling how to get more info.
                 Console.Out.WriteLine(GetHeaderString());
-                Console.Out.WriteLine(AjaxMin.MiniUsageMessage);
+                Console.Out.WriteLine(NUglify.MiniUsageMessage);
                 retVal = 0;
             }
             else
@@ -219,12 +219,12 @@ namespace AjaxMin
                 if (ea.ParameterPart == null)
                 {
                     // if there's no parameter, then the switch required an arg
-                    throw new NotSupportedException(AjaxMin.SwitchRequiresArg.FormatInvariant(ea.SwitchPart));
+                    throw new NotSupportedException(NUglify.SwitchRequiresArg.FormatInvariant(ea.SwitchPart));
                 }
                 else
                 {
                     // otherwise the arg was invalid
-                    throw new NotSupportedException(AjaxMin.InvalidSwitchArg.FormatInvariant(ea.ParameterPart, ea.SwitchPart));
+                    throw new NotSupportedException(NUglify.InvalidSwitchArg.FormatInvariant(ea.ParameterPart, ea.SwitchPart));
                 }
             };
 
@@ -264,7 +264,7 @@ namespace AjaxMin
                                 // we know we are JS -- if we find a CSS file, throw an error
                                 if (extension == ".CSS")
                                 {
-                                    throw new NotSupportedException(AjaxMin.ConflictingInputType);
+                                    throw new NotSupportedException(NUglify.ConflictingInputType);
                                 }
                                 break;
 
@@ -272,7 +272,7 @@ namespace AjaxMin
                                 // we know we are CSS -- if we find a JS file, throw an error
                                 if (extension == ".JS")
                                 {
-                                    throw new NotSupportedException(AjaxMin.ConflictingInputType);
+                                    throw new NotSupportedException(NUglify.ConflictingInputType);
                                 }
                                 break;
                         }
@@ -281,7 +281,7 @@ namespace AjaxMin
                         // (directories aren't valid for command-line input files)
                         if (!File.Exists(inputFile.Path))
                         {
-                            throw new NotSupportedException(AjaxMin.SourceFileNotExist.FormatInvariant(inputFile.Path));
+                            throw new NotSupportedException(NUglify.SourceFileNotExist.FormatInvariant(inputFile.Path));
                         }
                     }
 
@@ -298,7 +298,7 @@ namespace AjaxMin
                         else
                         {
                             // no switch hint or it's a mix, and we can't tell from the files. Error.
-                            throw new NotSupportedException(AjaxMin.UnknownInputType);
+                            throw new NotSupportedException(NUglify.UnknownInputType);
                         }
                     }
                 }
@@ -308,7 +308,7 @@ namespace AjaxMin
                     if (m_inputTypeHint == CodeType.Unknown || m_inputTypeHint == CodeType.Mix)
                     {
                         // can't tell; throw an exception
-                        throw new NotSupportedException(AjaxMin.UnknownInputType);
+                        throw new NotSupportedException(NUglify.UnknownInputType);
                     }
 
                     // use the hint
@@ -328,7 +328,7 @@ namespace AjaxMin
                     case "CONFIG":
                         if (ea.ParameterPart == null)
                         {
-                            throw new NotSupportedException(AjaxMin.InvalidSwitchArg.FormatInvariant(ea.SwitchPart, ea.ParameterPart));
+                            throw new NotSupportedException(NUglify.InvalidSwitchArg.FormatInvariant(ea.SwitchPart, ea.ParameterPart));
                         }
 
                         m_configuration = ea.ParameterPart;
@@ -342,7 +342,7 @@ namespace AjaxMin
                         // -pretty and -echo are not compatible
                         if (m_switchParser.AnalyzeMode)
                         {
-                            throw new NotSupportedException(AjaxMin.PrettyAndEchoArgs);
+                            throw new NotSupportedException(NUglify.PrettyAndEchoArgs);
                         }
                         break;
 
@@ -354,19 +354,19 @@ namespace AjaxMin
                     case "MAP":
                         if (!string.IsNullOrEmpty(m_xmlInputFile))
                         {
-                            throw new NotSupportedException(AjaxMin.MapAndXmlArgs);
+                            throw new NotSupportedException(NUglify.MapAndXmlArgs);
                         }
 
                         // next argument is the output path
                         // cannot have two map arguments
                         if (m_symbolMap != null && !string.IsNullOrEmpty(m_symbolMap.Path))
                         {
-                            throw new NotSupportedException(AjaxMin.MultipleMapArg);
+                            throw new NotSupportedException(NUglify.MultipleMapArg);
                         }
 
                         if (ea.Index >= ea.Arguments.Count - 1)
                         {
-                            throw new NotSupportedException(AjaxMin.MapArgNeedsPath);
+                            throw new NotSupportedException(NUglify.MapArgNeedsPath);
                         }
 
                         if (m_symbolMap == null)
@@ -386,7 +386,7 @@ namespace AjaxMin
                     case "MAPROOT":
                         if (ea.Index >= ea.Arguments.Count - 1)
                         {
-                            throw new NotSupportedException(AjaxMin.MapArgNeedsPath);
+                            throw new NotSupportedException(NUglify.MapArgNeedsPath);
                         }
 
                         if (m_symbolMap == null)
@@ -419,7 +419,7 @@ namespace AjaxMin
                             else
                             {
                                 // invalid argument switch
-                                throw new NotSupportedException(AjaxMin.InvalidArgument.FormatInvariant(ea.Arguments[ea.Index]));
+                                throw new NotSupportedException(NUglify.InvalidArgument.FormatInvariant(ea.Arguments[ea.Index]));
                             }
                         }
                         break;
@@ -446,7 +446,7 @@ namespace AjaxMin
                         // either we will have an output file or the no-output flag will be set
                         if (!string.IsNullOrEmpty(m_outputFile) || m_noOutput)
                         {
-                            throw new NotSupportedException(AjaxMin.MultipleOutputArg);
+                            throw new NotSupportedException(NUglify.MultipleOutputArg);
                         }
                         else
                         {
@@ -465,7 +465,7 @@ namespace AjaxMin
                                 else
                                 {
                                     // invalid argument switch
-                                    throw new NotSupportedException(AjaxMin.InvalidArgument.FormatInvariant(ea.Arguments[ea.Index]));
+                                    throw new NotSupportedException(NUglify.InvalidArgument.FormatInvariant(ea.Arguments[ea.Index]));
                                 }
                             }
 
@@ -474,7 +474,7 @@ namespace AjaxMin
                             {
                                 if (ea.Index >= ea.Arguments.Count - 1)
                                 {
-                                    throw new NotSupportedException(AjaxMin.OutputArgNeedsPath);
+                                    throw new NotSupportedException(NUglify.OutputArgNeedsPath);
                                 }
 
                                 m_outputFile = ea.Arguments[++ea.Index];
@@ -491,7 +491,7 @@ namespace AjaxMin
                             if (ea.Index >= ea.Arguments.Count - 1)
                             {
                                 // must be followed by an encoding
-                                throw new NotSupportedException(AjaxMin.RenameArgMissingParameterOrFilePath.FormatInvariant(ea.SwitchPart));
+                                throw new NotSupportedException(NUglify.RenameArgMissingParameterOrFilePath.FormatInvariant(ea.SwitchPart));
                             }
 
                             // the renaming file is specified as the NEXT argument
@@ -511,7 +511,7 @@ namespace AjaxMin
                         // must have resource file on next parameter
                         if (ea.Index >= ea.Arguments.Count - 1)
                         {
-                            throw new NotSupportedException(AjaxMin.ResourceArgNeedsPath);
+                            throw new NotSupportedException(NUglify.ResourceArgNeedsPath);
                         }
 
                         // the resource file name is the NEXT argument
@@ -532,7 +532,7 @@ namespace AjaxMin
                             {
                                 if (!JSScanner.IsValidIdentifier(part))
                                 {
-                                    throw new NotSupportedException(AjaxMin.ResourceArgInvalidName.FormatInvariant(part));
+                                    throw new NotSupportedException(NUglify.ResourceArgInvalidName.FormatInvariant(part));
                                 }
                             }
 
@@ -574,7 +574,7 @@ namespace AjaxMin
                         }
                         else
                         {
-                            throw new NotSupportedException(AjaxMin.InvalidSwitchArg.FormatInvariant(ea.SwitchPart, ea.ParameterPart));
+                            throw new NotSupportedException(NUglify.InvalidSwitchArg.FormatInvariant(ea.SwitchPart, ea.ParameterPart));
                         }
                         break;
 
@@ -596,23 +596,23 @@ namespace AjaxMin
                     case "X": // <-- old style
                         if (m_symbolMap != null)
                         {
-                            throw new NotSupportedException(AjaxMin.MapAndXmlArgs);
+                            throw new NotSupportedException(NUglify.MapAndXmlArgs);
                         }
 
                         if (!string.IsNullOrEmpty(m_xmlInputFile))
                         {
-                            throw new NotSupportedException(AjaxMin.MultipleXmlArgs);
+                            throw new NotSupportedException(NUglify.MultipleXmlArgs);
                         }
 
                         // cannot have input files from the command line
                         if (m_manifest != null)
                         {
-                            throw new NotSupportedException(AjaxMin.XmlArgHasInputFiles);
+                            throw new NotSupportedException(NUglify.XmlArgHasInputFiles);
                         }
 
                         if (ea.Index >= ea.Arguments.Count - 1)
                         {
-                            throw new NotSupportedException(AjaxMin.XmlArgNeedsPath);
+                            throw new NotSupportedException(NUglify.XmlArgNeedsPath);
                         }
 
                         // the xml file name is the NEXT argument
@@ -631,7 +631,7 @@ namespace AjaxMin
 
                     default:
                         // truly an unknown parameter -- throw a usage error
-                        throw new NotSupportedException(AjaxMin.InvalidArgument.FormatInvariant(ea.Arguments[ea.Index]));
+                        throw new NotSupportedException(NUglify.InvalidArgument.FormatInvariant(ea.Arguments[ea.Index]));
                 }
             }
             else
@@ -640,7 +640,7 @@ namespace AjaxMin
                 // cannot coexist with XML file
                 if (!string.IsNullOrEmpty(m_xmlInputFile))
                 {
-                    throw new NotSupportedException(AjaxMin.XmlArgHasInputFiles);
+                    throw new NotSupportedException(NUglify.XmlArgHasInputFiles);
                 }
 
                 ImplicitManifestOutputGroup.Inputs.Add(new InputFile { Path = ea.Arguments[ea.Index] });
@@ -681,12 +681,12 @@ namespace AjaxMin
                 if (Directory.Exists(fileName))
                 {
                     // cannot be a folder
-                    throw new NotSupportedException(AjaxMin.SourceFileIsFolder.FormatInvariant(fileName));
+                    throw new NotSupportedException(NUglify.SourceFileIsFolder.FormatInvariant(fileName));
                 }
                 else
                 {
                     // just plain doesn't exist
-                    throw new NotSupportedException(AjaxMin.SourceFileNotExist.FormatInvariant(fileName));
+                    throw new NotSupportedException(NUglify.SourceFileNotExist.FormatInvariant(fileName));
                 }
             }
         }
@@ -714,7 +714,7 @@ namespace AjaxMin
             {
                 if (!s_silentMode)
                 {
-                    Console.Error.WriteLine(AjaxMin.MiniUsageMessage);
+                    Console.Error.WriteLine(NUglify.MiniUsageMessage);
                     Console.Error.WriteLine();
                 }
 
@@ -733,7 +733,7 @@ namespace AjaxMin
             }
             else if (!s_silentMode)
             {
-                Console.Error.WriteLine(AjaxMin.Usage.FormatInvariant(fileName));
+                Console.Error.WriteLine(NUglify.Usage.FormatInvariant(fileName));
             }
         }
 
@@ -773,7 +773,7 @@ namespace AjaxMin
                 {
                     // throw an error indicating the XML error
                     System.Diagnostics.Debug.WriteLine(ex.ToString());
-                    throw new NotSupportedException(AjaxMin.InputXmlError.FormatInvariant(ex.Message));
+                    throw new NotSupportedException(NUglify.InputXmlError.FormatInvariant(ex.Message));
                 }
             }
             else
@@ -814,7 +814,7 @@ namespace AjaxMin
             else
             {
                 // no crunch groups
-                throw new NotSupportedException(AjaxMin.NoInput);
+                throw new NotSupportedException(NUglify.NoInput);
             }
 
             return retVal;
@@ -911,9 +911,9 @@ namespace AjaxMin
                         {
                             this.WriteError(
                                 outputGroup.Path,
-                                AjaxMin.OutputFileErrorSubCat,
+                                NUglify.OutputFileErrorSubCat,
                                 errorCode,
-                                AjaxMin.OutputFileError.FormatInvariant(minifiedCode));
+                                NUglify.OutputFileError.FormatInvariant(minifiedCode));
                         }
                         else if (!string.IsNullOrEmpty(this.m_xmlInputFile))
                         {
@@ -921,9 +921,9 @@ namespace AjaxMin
                             // inside the message
                             this.WriteError(
                                 this.m_xmlInputFile,
-                                AjaxMin.OutputGroupErrorSubCat,
+                                NUglify.OutputGroupErrorSubCat,
                                 errorCode,
-                                AjaxMin.OutputGroupError.FormatInvariant(ndxGroup, minifiedCode));
+                                NUglify.OutputGroupError.FormatInvariant(ndxGroup, minifiedCode));
                         }
                         else
                         {
@@ -933,9 +933,9 @@ namespace AjaxMin
                             // in the list (which should probably just be zero)
                             this.WriteError(
                                 "stdout",
-                                AjaxMin.OutputGroupErrorSubCat,
+                                NUglify.OutputGroupErrorSubCat,
                                 errorCode,
-                                AjaxMin.OutputGroupError.FormatInvariant(ndxGroup, minifiedCode));
+                                NUglify.OutputGroupError.FormatInvariant(ndxGroup, minifiedCode));
                         }
                     }
 
@@ -961,17 +961,17 @@ namespace AjaxMin
             if (outputGroup.Inputs.Count == 0)
             {
                 // output status message so user knows input coming from stdin
-                WriteProgress(AjaxMin.MinifyFromStdIn);
+                WriteProgress(NUglify.MinifyFromStdIn);
             }
             else if (outputGroup.Inputs.Count == 1)
             {
                 // minifying a single input group. Simple message to let user know what's going on
-                WriteProgress(AjaxMin.MinifySingleInput.FormatInvariant(outputGroup.Inputs[0].Path));
+                WriteProgress(NUglify.MinifySingleInput.FormatInvariant(outputGroup.Inputs[0].Path));
             }
             else
             {
                 // combining and minifying. More complex messaging.
-                WriteProgress(AjaxMin.MinifyingMultipleInputs);
+                WriteProgress(NUglify.MinifyingMultipleInputs);
                 foreach (var input in outputGroup.Inputs)
                 {
                     WriteProgress("\t{0}", input.Path);
@@ -1040,7 +1040,7 @@ namespace AjaxMin
                     break;
 
                 default:
-                    throw new NotSupportedException(AjaxMin.UnknownInputType);
+                    throw new NotSupportedException(NUglify.UnknownInputType);
             }
 
             // if we are pretty-printing, add a newline
@@ -1074,7 +1074,7 @@ namespace AjaxMin
                     {
                         // calculate the percentage saved
                         var percentage = Math.Round((1 - ((double)encodedBytes.Length) / sourceLength) * 100, 1);
-                        WriteProgress(AjaxMin.SavingsMessage.FormatInvariant(
+                        WriteProgress(NUglify.SavingsMessage.FormatInvariant(
                                             sourceLength,
                                             encodedBytes.Length,
                                             percentage
@@ -1083,12 +1083,12 @@ namespace AjaxMin
                         // calculate how much gzip on the unminified, combined original source might be
                         long gzipLength = CalculateGzipSize(encodingOutput.GetBytes(rawBuilder.ToString()));
                         percentage = Math.Round((1 - ((double)gzipLength) / sourceLength) * 100, 1);
-                        WriteProgress(AjaxMin.SavingsGzipSourceMessage.FormatInvariant(gzipLength, percentage));
+                        WriteProgress(NUglify.SavingsGzipSourceMessage.FormatInvariant(gzipLength, percentage));
 
                         // calculate how much gzip on the minified output might be
                         gzipLength = CalculateGzipSize(encodedBytes);
                         percentage = Math.Round((1 - ((double)gzipLength) / sourceLength) * 100, 1);
-                        WriteProgress(AjaxMin.SavingsGzipMessage.FormatInvariant(gzipLength, percentage));
+                        WriteProgress(NUglify.SavingsGzipMessage.FormatInvariant(gzipLength, percentage));
 
                         // blank line after
                         WriteProgress();
@@ -1167,7 +1167,7 @@ namespace AjaxMin
                             {
                                 // calculate the percentage saved by minification
                                 var percentage = Math.Round((1 - ((double)crunchedLength) / sourceLength) * 100, 1);
-                                WriteProgress(AjaxMin.SavingsMessage.FormatInvariant(
+                                WriteProgress(NUglify.SavingsMessage.FormatInvariant(
                                     sourceLength,
                                     crunchedLength,
                                     percentage));
@@ -1175,12 +1175,12 @@ namespace AjaxMin
                                 // calculate how much gzip on the unminified, combined original source might be
                                 long gzipLength = CalculateGzipSize(encodingOutput.GetBytes(rawBuilder.ToString()));
                                 percentage = Math.Round((1 - ((double)gzipLength) / sourceLength) * 100, 1);
-                                WriteProgress(AjaxMin.SavingsGzipSourceMessage.FormatInvariant(gzipLength, percentage));
+                                WriteProgress(NUglify.SavingsGzipSourceMessage.FormatInvariant(gzipLength, percentage));
 
                                 // calculate how much gzip on the minified output might be
                                 gzipLength = CalculateGzipSize(File.ReadAllBytes(path));
                                 percentage = Math.Round((1 - ((double)gzipLength) / sourceLength) * 100, 1);
-                                WriteProgress(AjaxMin.SavingsGzipMessage.FormatInvariant(gzipLength, percentage));
+                                WriteProgress(NUglify.SavingsGzipMessage.FormatInvariant(gzipLength, percentage));
 
                                 // blank line after
                                 WriteProgress();
@@ -1248,7 +1248,7 @@ namespace AjaxMin
                 else
                 {
                     retVal = 1;
-                    WriteError("AM-IO", AjaxMin.NoClobberError.FormatInvariant(filePath));
+                    WriteError("AM-IO", NUglify.NoClobberError.FormatInvariant(filePath));
                 }
             }
             catch (ArgumentException e)
@@ -1301,13 +1301,13 @@ namespace AjaxMin
             {
                 // throw an error indicating the XML error
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                throw new NotSupportedException(AjaxMin.InputXmlError.FormatInvariant(ex.Message + ex.FileName.IfNotNull(s => " " + s).IfNullOrWhiteSpace(string.Empty)));
+                throw new NotSupportedException(NUglify.InputXmlError.FormatInvariant(ex.Message + ex.FileName.IfNotNull(s => " " + s).IfNullOrWhiteSpace(string.Empty)));
             }
             catch (XmlException ex)
             {
                 // throw an error indicating the XML error
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                throw new NotSupportedException(AjaxMin.InputXmlError.FormatInvariant(ex.Message));
+                throw new NotSupportedException(NUglify.InputXmlError.FormatInvariant(ex.Message));
             }
 
             return manifest;
@@ -1320,7 +1320,7 @@ namespace AjaxMin
         private ResourceStrings ProcessResourceFile(string resourceFileName)
         {
             WriteProgress(
-                AjaxMin.ReadingResourceFile.FormatInvariant(Path.GetFileName(resourceFileName))
+                NUglify.ReadingResourceFile.FormatInvariant(Path.GetFileName(resourceFileName))
                 );
 
             // which method we call to process the resources depends on the file extension
@@ -1337,7 +1337,7 @@ namespace AjaxMin
 
                 default:
                     // no other types are supported
-                    throw new NotSupportedException(AjaxMin.ResourceArgInvalidType);
+                    throw new NotSupportedException(NUglify.ResourceArgInvalidType);
             }
         }
 

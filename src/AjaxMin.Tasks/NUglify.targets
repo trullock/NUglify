@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    
+    <UsingTask AssemblyFile="NUglifyTask.dll" TaskName="NUglify" /> 
+    <UsingTask AssemblyFile="NUglifyTask.dll" TaskName="NUglifyBundleTask" />
+    <UsingTask AssemblyFile="NUglifyTask.dll" TaskName="NUglifyManifestTask" />
+    <UsingTask AssemblyFile="NUglifyTask.dll" TaskName="NUglifyManifestCleanTask" />
+
+    <PropertyGroup>
+        <!-- if the project has a Content folder, we want that to be the root output; otherwise just dump everything relative to the project root -->
+        <NUglifyOutputFolder Condition="$(NUglifyOutputFolder)=='' and Exists('$(ProjectDir)Content\')">$(ProjectDir)Content\</NUglifyOutputFolder>
+        <NUglifyOutputFolder Condition="$(NUglifyOutputFolder)==''">$(ProjectDir)</NUglifyOutputFolder>
+        
+        <!-- default is to NOT treat warnings as errors -->
+        <NUglifyTreatWarningsAsErrors Condition="$(NUglifyTreatWarningsAsErrors)==''">false</NUglifyTreatWarningsAsErrors>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <NUglifyManifests Include="**/*.ajaxmin"/>
+    </ItemGroup>
+
+    <!-- target to clean output for all ajaxmin manifest files in the project -->
+    <Target Name="CleanNUglifyManifests" AfterTargets="Clean" Inputs="@NUglifyManifests" Outputs="@(NUglifyManifests->'%(FullPath).cleantrigger')">
+        <Message Text="Cleaning NUglify Manifests" Importance="high" />
+        <NUglifyManifestCleanTask OutputFolder="$(NUglifyOutputFolder)" Manifests="@(NUglifyManifests)" />
+    </Target>
+
+    <!-- target to build all ajaxmin manifest files in the project -->
+    <Target Name="BuildNUglifyManifests" AfterTargets="Build" Inputs="@NUglifyManifests" Outputs="@(NUglifyManifests->'%(FullPath).buildtrigger')">
+        <Message Text="Processing NUglify Manifests" Importance="high" />
+        <NUglifyManifestTask ProjectDefaultSwitches="-define:$(DefineConstants) $(NUglifyProjectDefaultSwitches)"
+                             Configuration="$(Configuration)"
+                             TreatWarningsAsErrors="$(NUglifyTreatWarningsAsErrors)"
+                             InputFolder="$(ProjectDir)"
+                             OutputFolder="$(NUglifyOutputFolder)"
+                             Manifests="@(NUglifyManifests)" />
+    </Target>
+</Project>

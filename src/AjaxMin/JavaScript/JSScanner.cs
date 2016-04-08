@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using AjaxMin.JavaScript.Syntax;
+using NUglify.JavaScript.Syntax;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     public enum UpdateHint
     {
@@ -81,7 +81,7 @@ namespace AjaxMin.JavaScript
         #region public settings properties
 
         /// <summary>
-        /// Gets or sets whether to use AjaxMin preprocessor defines or ignore them
+        /// Gets or sets whether to use NUglify preprocessor defines or ignore them
         /// </summary>
         public bool UsePreprocessorDefines { get; set; }
 
@@ -1669,10 +1669,14 @@ namespace AjaxMin.JavaScript
                     if (GetChar(m_currentPosition) == '\n')
                     {
                         ++m_currentPosition;
+                        m_currentLine++;
                     }
                 }
+                else
+                {
+                    m_currentLine++;
+                }
 
-                m_currentLine++;
                 m_startLinePosition = m_currentPosition;
 
                 // keep multiple line terminators together in a single token.
@@ -1685,6 +1689,8 @@ namespace AjaxMin.JavaScript
                         // skip over the \r and if the next one is an \n skip over it, too
                         if (GetChar(++m_currentPosition) == '\n')
                         {
+                            // increment the line number and reset the start position
+                            m_currentLine++;
                             ++m_currentPosition;
                         }
                     }
@@ -1692,10 +1698,11 @@ namespace AjaxMin.JavaScript
                     {
                         // skip over any other non-\r character
                         ++m_currentPosition;
+
+                        // increment the line number and reset the start position
+                        m_currentLine++;
                     }
 
-                    // increment the line number and reset the start position
-                    m_currentLine++;
                     m_startLinePosition = m_currentPosition;
                 }
             }
@@ -2434,10 +2441,12 @@ namespace AjaxMin.JavaScript
                             case '\r':
                                 if ('\n' == GetChar(m_currentPosition))
                                 {
+                                    m_currentLine++;
                                     m_currentPosition++;
                                 }
 
-                                goto case '\n';
+                                m_startLinePosition = m_currentPosition;
+                                break;
 
                             case '\n':
                             case '\u2028':
@@ -2828,9 +2837,11 @@ namespace AjaxMin.JavaScript
                                 // treat together as a single line terminator.
                                 if (GetChar(m_currentPosition + 1) == '\n')
                                 {
+                                    m_currentLine++;
                                     m_currentPosition++;
                                 }
-                                goto case '\n';
+                                m_startLinePosition = m_currentPosition;
+                                break;
                             case '\n':
                             case '\u2028':
                             case '\u2029':
@@ -3456,10 +3467,9 @@ namespace AjaxMin.JavaScript
                     case '\r':
                         if (GetChar(m_currentPosition) == '\n')
                         {
+                            m_currentLine++;
                             m_currentPosition++;
                         }
-
-                        m_currentLine++;
                         m_startLinePosition = m_currentPosition;
                         break;
                     case '\n':
@@ -3529,7 +3539,7 @@ namespace AjaxMin.JavaScript
         // or false if we are already processed the whole thing.
         private bool ScanPreprocessingDirective()
         {
-            // check for some AjaxMin preprocessor comments
+            // check for some NUglify preprocessor comments
             if (CheckCaseInsensitiveSubstring("#GLOBALS"))
             {
                 return ScanGlobalsDirective();

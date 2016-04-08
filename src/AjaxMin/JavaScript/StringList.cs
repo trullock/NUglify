@@ -13,7 +13,7 @@
 // limitations under the License.
 using System;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     /// <summary>
     /// Array of strings which can be converted to string using a single allocation and single copy

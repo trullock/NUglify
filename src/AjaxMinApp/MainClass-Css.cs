@@ -19,9 +19,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using AjaxMin.Css;
+using NUglify.Css;
 
-namespace AjaxMin
+namespace NUglify
 {
     public partial class MainClass
     {
@@ -97,7 +97,7 @@ namespace AjaxMin
                         // double-precision value indicating the ticks per millisecond. Divide this into the
                         // number of ticks we measure, and we'll get the milliseconds in double-precision.
                         var frequency = Stopwatch.Frequency / 1000.0;
-                        var timerMessage = string.Format(CultureInfo.CurrentCulture, AjaxMin.TimerFormat, 0, ticks / frequency);
+                        var timerMessage = string.Format(CultureInfo.CurrentCulture, NUglify.TimerFormat, 0, ticks / frequency);
 
                         Debug.WriteLine(timerMessage);
                         Debug.WriteLine(string.Empty);

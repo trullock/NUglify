@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 
-namespace AjaxMin
+namespace NUglify
 {
     public class ResourceStrings
     {

@@ -15,9 +15,9 @@
 // limitations under the License.
 
 using System.Collections.Generic;
-using AjaxMin.JavaScript.Visitors;
+using NUglify.JavaScript.Visitors;
 
-namespace AjaxMin.JavaScript.Syntax
+namespace NUglify.JavaScript.Syntax
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "AST statement")]
     public abstract class Declaration : Statement, IEnumerable<VariableDeclaration>

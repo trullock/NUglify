@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AjaxMin.JavaScript
+namespace NUglify.JavaScript
 {
     public class CrunchEnumerator
     {

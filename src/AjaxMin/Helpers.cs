@@ -14,11 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using AjaxMin.Css;
-using AjaxMin.JavaScript;
+using NUglify.Css;
+using NUglify.JavaScript;
 using System.Reflection;
 
-namespace AjaxMin
+namespace NUglify
 {
 #if NET_20
     using System.Collections;

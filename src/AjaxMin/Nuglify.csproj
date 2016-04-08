@@ -7,8 +7,8 @@
     <ProjectGuid>{CA85C41A-928F-4626-9025-0FE5991C7BE8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AjaxMin</RootNamespace>
-    <AssemblyName>AjaxMin</AssemblyName>
+    <RootNamespace>NUglify</RootNamespace>
+    <AssemblyName>NUglify</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

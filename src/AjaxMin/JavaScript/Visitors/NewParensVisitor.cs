@@ -13,10 +13,10 @@
 // limitations under the License.
 
 using System.Diagnostics;
-using AjaxMin.JavaScript.Syntax;
-using SwitchStatement = AjaxMin.JavaScript.Syntax.SwitchStatement;
+using NUglify.JavaScript.Syntax;
+using SwitchStatement = NUglify.JavaScript.Syntax.SwitchStatement;
 
-namespace AjaxMin.JavaScript.Visitors
+namespace NUglify.JavaScript.Visitors
 {
     /// <summary>
     /// Determines whether or not a node needs parentheses around it within a new operator

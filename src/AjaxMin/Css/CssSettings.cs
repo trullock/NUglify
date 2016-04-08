@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 
-namespace AjaxMin.Css
+namespace NUglify.Css
 {
 
     #region public enums

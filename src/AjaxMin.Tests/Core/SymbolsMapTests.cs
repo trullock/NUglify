@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Text;
-using AjaxMin.JavaScript;
+using NUglify.JavaScript;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Core
+namespace NUglify.Tests.Core
 {
     [TestFixture]
     public class SymbolsMapTests

@@ -145,7 +145,7 @@
     <value>Invalid encoding name: {0}</value>
   </data>
   <data name="InvalidInputParameter" xml:space="preserve">
-    <value>Invalid property value to AjaxMin build task: '{0}'</value>
+    <value>Invalid property value to NUglify build task: '{0}'</value>
   </data>
   <data name="InvalidJSONOutput" xml:space="preserve">
     <value>Invalid JSON Output</value>
@@ -169,7 +169,7 @@
     <value>Required input file doesn't exist: {0}</value>
   </data>
   <data name="RequiredParameterIsEmpty" xml:space="preserve">
-    <value>Required AjaxMin build task property '{0}' is missing or empty.</value>
+    <value>Required NUglify build task property '{0}' is missing or empty.</value>
   </data>
   <data name="SkippedOutputFile" xml:space="preserve">
     <value>Output file {0} skipped</value>

@@ -1,4 +1,4 @@
-﻿// AjaxMinBuild.cs
+﻿// NUglifyBuild.cs
 //
 // Copyright 2012 Microsoft Corporation
 //
@@ -17,9 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using AjaxMin.JavaScript;
+using NUglify.JavaScript;
 
-namespace AjaxMin
+namespace NUglify
 {
     public static class ManifestFactory
     {

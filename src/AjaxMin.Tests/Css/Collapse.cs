@@ -14,10 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using AjaxMin.Tests.Css.Common;
+using NUglify.Tests.Css.Common;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Css
+namespace NUglify.Tests.Css
 {
   /// <summary>
   /// Summary description for Collapse

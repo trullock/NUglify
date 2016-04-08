@@ -20,10 +20,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using AjaxMin.JavaScript.Syntax;
-using SwitchStatement = AjaxMin.JavaScript.Syntax.SwitchStatement;
+using NUglify.JavaScript.Syntax;
+using SwitchStatement = NUglify.JavaScript.Syntax.SwitchStatement;
 
-namespace AjaxMin.JavaScript.Visitors
+namespace NUglify.JavaScript.Visitors
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
     internal class AnalyzeNodeVisitor : TreeVisitor

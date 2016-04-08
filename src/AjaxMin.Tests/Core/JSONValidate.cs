@@ -1,7 +1,7 @@
-﻿using AjaxMin.JavaScript;
+﻿using NUglify.JavaScript;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Core
+namespace NUglify.Tests.Core
 {
     /// <summary>
     /// Summary description for JSONValidate

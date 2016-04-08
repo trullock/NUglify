@@ -16,9 +16,9 @@
 
 using System;
 using System.Text;
-using AjaxMin.Css;
+using NUglify.Css;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// CssFallback encodes invalid encoder characters as Unicode escapes:

@@ -1,4 +1,4 @@
-﻿// AjaxMinBundleTask.cs
+﻿// NUglifyBundleTask.cs
 //
 // Copyright 2013 Microsoft Corporation
 //
@@ -18,16 +18,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace AjaxMin
+namespace NUglify
 {
     /// <summary>
     /// Use this task to bundle input files to output files based on a Manifest file without processing the contents
     /// </summary>
-    public class AjaxMinBundleTask : AjaxMinManifestBaseTask
+    public class NUglifyBundleTask : NUglifyManifestBaseTask
     {
         #region constructor
 
-        public AjaxMinBundleTask()
+        public NUglifyBundleTask()
         {
             // we don't care about the symbols file because we won't be creating one.
             // we're just going to bundle the files and not process them; we won't have

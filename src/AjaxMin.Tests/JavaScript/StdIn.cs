@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.JavaScript
+namespace NUglify.Tests.JavaScript
 {
     /// <summary>
     /// Summary description for StdIn
@@ -74,7 +74,7 @@ namespace AjaxMin.Tests.JavaScript
                 inputCode = inputStream.ReadToEnd();
             }
 
-            // get the path to the AjaxMin assembly.
+            // get the path to the NUglify assembly.
             // we are linking to the EXE in this project, so this gives us the path
             // we need to spawn a new process for which we can redirect the stdin stream.
             var ajaxMin = Assembly.GetAssembly(typeof(IScopeReport));

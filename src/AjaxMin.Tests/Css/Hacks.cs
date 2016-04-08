@@ -1,7 +1,7 @@
-﻿using AjaxMin.Tests.Css.Common;
+﻿using NUglify.Tests.Css.Common;
 using NUnit.Framework;
 
-namespace AjaxMin.Tests.Css
+namespace NUglify.Tests.Css
 {
     /// <summary>
     /// Summary description for Hacks

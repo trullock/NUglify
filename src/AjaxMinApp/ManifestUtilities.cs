@@ -43,7 +43,7 @@ namespace System.Runtime.CompilerServices
 
 #endif
 
-namespace AjaxMin
+namespace NUglify
 {
     public static class ManifestUtilities
     {
@@ -602,7 +602,7 @@ namespace AjaxMin
                 fileReadBuilder.Annotate(';');
             }
 
-            // output a special comment that AjaxMin will pick up so any errors will 
+            // output a special comment that NUglify will pick up so any errors will 
             // have the proper file context. The CSS parser has been tweaked to look for
             // this comment as well.
             if (codeType == CodeType.StyleSheet)

@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AjaxMin.Css
+namespace NUglify.Css
 {
     /// <summary>
     /// ColorSlice class
