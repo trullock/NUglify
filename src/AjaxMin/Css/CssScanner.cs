@@ -67,6 +67,8 @@ namespace AjaxMin.Css
 
         public bool GotEndOfLine { get; set; }
 
+        private bool addNewLine;
+
         private bool m_isAtEOF;// = false;
         public bool EndOfFile
         {
@@ -2038,18 +2040,27 @@ namespace AjaxMin.Css
                 }
                 else
                 {
+                    // We increment the line only on the next character so
+                    // that the new line doesn't start on a `\n` which will
+                    // not be accurate when parsing a directive followed by `\r\n`
+                    if (addNewLine)
+                    {
+                        m_context.End.NextLine();
+                        addNewLine = false;
+                    }
+
                     m_currentChar = (char)ch;
                     switch (m_currentChar)
                     {
                         case '\n':
                         case '\f':
-                            m_context.End.NextLine();
+                            addNewLine = true;
                             break;
 
                         case '\r':
                             if (PeekChar() != '\n')
                             {
-                                m_context.End.NextLine();
+                                addNewLine = true;
                             }
                             break;
 
