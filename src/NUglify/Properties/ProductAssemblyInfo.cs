@@ -23,8 +23,8 @@ using System.Reflection;
 //
 [assembly: AssemblyProduct("NUglify")]
 
-[assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyCopyright("Copyright 2013 Microsoft Corporation")]
+[assembly: AssemblyCompany("Alexandre Mutel")]
+[assembly: AssemblyCopyright("Copyright 2016 Alexandre Mutel")]
 //[assembly: AssemblyTrademark("")]
 
 #if DEBUG
@@ -43,5 +43,5 @@ using System.Reflection;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.0.0.0")]
-[assembly: AssemblyFileVersion("6.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
