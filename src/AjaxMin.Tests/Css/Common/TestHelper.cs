@@ -371,8 +371,8 @@ namespace AjaxMin.Tests.Css.Common
             {
                 using (StreamReader rightReader = new StreamReader(expectedPath))
                 {
-                    string output = s_testRunRegex.Replace(leftReader.ReadToEnd(), "$1TESTRUNPATH$2");
-                    string expected = s_testRunRegex.Replace(rightReader.ReadToEnd(), "$1TESTRUNPATH$2");
+                    string output = s_testRunRegex.Replace(leftReader.ReadToEnd(), "$1TESTRUNPATH$2").Replace("\r\n", "\n");
+                    string expected = s_testRunRegex.Replace(rightReader.ReadToEnd(), "$1TESTRUNPATH$2").Replace("\r\n", "\n");
 
                     Assert.AreEqual(expected, output, "The expected output ({1}) and actual output ({0}) do not match!", expectedPath, outputPath);
                 }

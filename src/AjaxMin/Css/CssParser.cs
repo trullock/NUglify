@@ -4613,9 +4613,9 @@ namespace AjaxMin.Css
             if (!m_outputNewLine)
             {
                 var parsed = m_builders.Peek();
+                parsed.Append(Settings.LineTerminator);
                 if (Settings.OutputMode == OutputMode.MultipleLines)
                 {
-                    parsed.AppendLine();
 
                     var indentSpaces = Settings.TabSpaces;
                     m_lineLength = indentSpaces.Length;
@@ -4626,7 +4626,6 @@ namespace AjaxMin.Css
                 }
                 else
                 {
-                    parsed.Append('\n');
                     m_lineLength = 0;
                 }
 

@@ -95,6 +95,7 @@ namespace AjaxMin
             ResourceStrings = new List<ResourceStrings>();
             ReplacementTokens = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             ReplacementFallbacks = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            LineTerminator = "\n";
         }
 
         #region properties
@@ -183,13 +184,7 @@ namespace AjaxMin
         /// <summary>
         /// Gets an appropriate line-terminator string given the output mode
         /// </summary>
-        public string LineTerminator
-        {
-            get
-            {
-                return OutputMode == OutputMode.MultipleLines ? "\r\n" : "\n";
-            }
-        }
+        public string LineTerminator { get; set; }
 
         #endregion
 

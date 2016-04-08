@@ -936,12 +936,12 @@ namespace AjaxMin.Tests.JavaScript.Common
             using (StreamReader leftReader = new StreamReader(outputPath))
             {
                 // read the left file in its entirety
-                string left = s_testRunRegex.Replace(leftReader.ReadToEnd(), "$1TESTRUNPATH$2");
+                string left = s_testRunRegex.Replace(leftReader.ReadToEnd(), "$1TESTRUNPATH$2").Replace("\r\n", "\n");
                 if (File.Exists(expectedPath))
                 {
                     using (StreamReader rightReader = new StreamReader(expectedPath))
                     {
-                        string right = s_testRunRegex.Replace(rightReader.ReadToEnd(), "$1TESTRUNPATH$2");
+                        string right = s_testRunRegex.Replace(rightReader.ReadToEnd(), "$1TESTRUNPATH$2").Replace("\r\n", "\n");
                         Assert.AreEqual(right, left, compareError);
                     }
                 }
