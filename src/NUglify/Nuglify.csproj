@@ -60,6 +60,7 @@
       <DependentUpon>CommonStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Configuration.cs" />
+    <Compile Include="UgliflyResult.cs" />
     <Compile Include="UglifyError.cs" />
     <Compile Include="CssEncoderFallback.cs" />
     <Compile Include="Css\CssColorName.cs" />

@@ -26,39 +26,6 @@ using NUglify.JavaScript.Visitors;
 namespace NUglify
 {
     /// <summary>
-    /// Results of a <see cref="Uglify.Css(string,NUglify.Css.CssSettings,NUglify.JavaScript.CodeSettings)"/> or 
-    /// <see cref="Uglify.Js(string,NUglify.JavaScript.CodeSettings)"/> operation.
-    /// </summary>
-    public struct UgliflyResult
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UgliflyResult"/> struct.
-        /// </summary>
-        /// <param name="code">The uglified code.</param>
-        /// <param name="errors">The errors.</param>
-        public UgliflyResult(string code, List<UglifyError> errors)
-        {
-            Code = code;
-            Errors = errors;
-        }
-
-        /// <summary>
-        /// Gets the the uglified code. May ne null if <see cref="HasErrors"/> is <c>true</c>.
-        /// </summary>
-        public string Code { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance has errors.
-        /// </summary>
-        public bool HasErrors => Errors != null && Errors.Count > 0;
-
-        /// <summary>
-        /// Gets the errors. Empty if no errors.
-        /// </summary>
-        public List<UglifyError> Errors { get; }
-    }
-
-    /// <summary>
     /// Uglify class for quick minification of JavaScript or Stylesheet code without needing to
     /// access or modify any abstract syntax tree nodes. Just put in source code and get our minified
     /// code as strings.
