@@ -10,7 +10,17 @@ namespace NUglify.Tests
     {
         public static void Main()
         {
-            var result = Uglify.Css("div { color: #FFF; }");
+            // JavaScript sample
+            {
+                var result = Uglify.Js("var x = 5; var y = 6;");
+                Console.WriteLine(result.Code);
+            }
+
+            // Css sample
+            {
+                var result = Uglify.Css("div { color: #FFF; }");
+                Console.WriteLine(result.Code); // 
+            }
         }
     }
 }

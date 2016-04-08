@@ -6,6 +6,24 @@ This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codepl
 
 > NOTE: The repository is under migration/refactoring. See the [Background](#background) section below for more information.
 
+## Usage
+
+The main entry point for the API is the `Uglify` class:
+
+For JavacScript:
+
+```csharp
+var result = Uglify.Js("var x = 5; var y = 6;");
+Console.WriteLine(result.Code);   // prints: var x=5,y=6
+```
+
+For Css:
+
+```csharp
+var result = Uglify.Css("div { color: #FFF; }");
+Console.WriteLine(result.Code);   // prints: div{color:#fff}
+```
+
 ## Documentation
 
 The original documentation of the project is available [here](doc/readme.md)
