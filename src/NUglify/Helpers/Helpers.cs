@@ -21,6 +21,7 @@ using NUglify.JavaScript;
 
 namespace NUglify.Helpers
 {
+#if !CORE
     public static class ErrorStringHelper
     {
         public static System.Collections.Generic.IEnumerable<string> AvailableCssStrings
@@ -47,4 +48,5 @@ namespace NUglify.Helpers
             }
         }
     }
+#endif
 }
