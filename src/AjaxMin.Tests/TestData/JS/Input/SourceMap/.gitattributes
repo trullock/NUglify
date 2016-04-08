@@ -1,0 +1,2 @@
+# Because the test case expect to have CRLF, we force it here
+* eol=crlf
