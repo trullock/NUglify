@@ -15,6 +15,7 @@
 // limitations under the License.
 
 using System;
+using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript
@@ -371,12 +372,12 @@ namespace NUglify.JavaScript
                     errorMessage += CommonStrings.ContextSeparator + context;
                 }
 
-                var error = new ContextError()
+                var error = new UglifyError()
                     {
                         IsError = forceToError || severity < 2,
                         File = Document.FileContext,
                         Severity = severity,
-                        Subcategory = ContextError.GetSubcategory(severity),
+                        Subcategory = UglifyError.GetSubcategory(severity),
                         ErrorNumber = (int)errorId,
                         ErrorCode = "JS{0}".FormatInvariant((int)errorId),
                         StartLine = this.StartLineNumber,

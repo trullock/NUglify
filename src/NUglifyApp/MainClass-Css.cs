@@ -27,7 +27,7 @@ namespace NUglify
     {
         #region ProcessCssFile method
 
-        private int ProcessCssFile(IList<InputGroup> inputGroups, SwitchParser switchParser, StringBuilder outputBuilder)
+        private int ProcessCssFile(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, StringBuilder outputBuilder)
         {
             var retVal = 0;
 
@@ -36,8 +36,8 @@ namespace NUglify
 
             // we can share the same parser object
             var parser = new CssParser();
-            parser.Settings = switchParser.CssSettings;
-            parser.JSSettings = switchParser.JSSettings;
+            parser.Settings = uglifyCommandParser.CssSettings;
+            parser.JSSettings = uglifyCommandParser.JSSettings;
 
             using (var writer = new StringWriter(outputBuilder, CultureInfo.InvariantCulture))
             {
@@ -62,7 +62,7 @@ namespace NUglify
                         if (inputGroup.Origin == SourceOrigin.Project || error.Severity == 0)
                         {
                             // ignore severity values greater than our severity level
-                            if (error.Severity <= switchParser.WarningLevel)
+                            if (error.Severity <= uglifyCommandParser.WarningLevel)
                             {
                                 // we found an error
                                 m_errorsFound = true;
@@ -74,7 +74,7 @@ namespace NUglify
 
                     if (m_echoInput && ndx > 0)
                     {
-                        writer.Write(switchParser.CssSettings.LineTerminator);
+                        writer.Write(uglifyCommandParser.CssSettings.LineTerminator);
                     }
 
                     // if we want to time this, start a stopwatch now
@@ -113,7 +113,7 @@ namespace NUglify
                             if (ndx++ > 0)
                             {
                                 // separate input group outputs with an appropriate newline
-                                writer.Write(switchParser.CssSettings.LineTerminator);
+                                writer.Write(uglifyCommandParser.CssSettings.LineTerminator);
                             }
 
                             writer.Write(crunchedStyles);

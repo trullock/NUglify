@@ -15,6 +15,7 @@
 // limitations under the License.
 
 using System.Collections.Generic;
+using NUglify.Helpers;
 using NUglify.JavaScript.Visitors;
 
 namespace NUglify.JavaScript.Syntax

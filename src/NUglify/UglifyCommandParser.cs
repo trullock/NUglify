@@ -1,4 +1,4 @@
-﻿// SwitchParser.cs
+﻿// UglifyCommandParser.cs
 //
 // Copyright 2010 Microsoft Corporation
 //
@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using NUglify.Css;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 
 namespace NUglify
@@ -65,7 +66,7 @@ namespace NUglify
         Preserve
     }
 
-    public class SwitchParser
+    public class UglifyCommandParser
     {
         #region private fields
 
@@ -138,7 +139,7 @@ namespace NUglify
 
         #endregion
 
-        public SwitchParser()
+        public UglifyCommandParser()
         {
             // initialize with default values
             JSSettings = new CodeSettings();
@@ -148,17 +149,17 @@ namespace NUglify
             m_isMono = Type.GetType("Mono.Runtime") != null;
         }
 
-        public SwitchParser(CodeSettings scriptSettings, CssSettings cssSettings)
+        public UglifyCommandParser(CodeSettings scriptSettings, CssSettings cssSettings)
         {
             // apply the switches to these two settings objects
             JSSettings = scriptSettings ?? new CodeSettings();
             CssSettings = cssSettings ?? new CssSettings();
         }
 
-        public SwitchParser Clone()
+        public UglifyCommandParser Clone()
         {
             // clone the settings
-            var newParser = new SwitchParser(this.JSSettings.Clone(), this.CssSettings.Clone());
+            var newParser = new UglifyCommandParser(this.JSSettings.Clone(), this.CssSettings.Clone());
 
             // don't forget to copy the other properties
             newParser.AnalyzeMode = this.AnalyzeMode;

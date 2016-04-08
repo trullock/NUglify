@@ -15,10 +15,11 @@
 // limitations under the License.
 
 using System;
+using NUglify.Helpers;
 
 namespace NUglify
 {
-    public class ContextError
+    public class UglifyError
     {
         public int ErrorNumber { get; set; }
 
@@ -159,7 +160,7 @@ namespace NUglify
 
     public class ContextErrorEventArgs : EventArgs
     {
-        public ContextError Error { get; set; }
+        public UglifyError Error { get; set; }
 
         public ContextErrorEventArgs()
         {

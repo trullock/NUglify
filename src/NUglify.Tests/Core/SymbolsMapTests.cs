@@ -28,15 +28,14 @@ namespace NUglify.Tests.Core
                     settings.SymbolsMap = sourceMap;
                     sourceMap.StartPackage(sourcePath, mapPath);
 
-                    var minifier = new Minifier();
-                    minifiedCode = minifier.MinifyJavaScript(sourceCode, settings);
+                    minifiedCode = Uglify.Js(sourceCode, settings).Code;
                 }
             }
 
             // just verify that we got some source map content
             var mapContent = mapBuilder.ToString();
             Assert.IsNotNull(mapContent, "map content should not be null");
-            Assert.IsFalse(mapContent.IsNullOrWhiteSpace(), "map content should not be empty");
+            Assert.IsFalse(string.IsNullOrWhiteSpace(mapContent), "map content should not be empty");
 
             // better have some minified code results
             Assert.IsNotNull(minifiedCode, "minified code should not be null");

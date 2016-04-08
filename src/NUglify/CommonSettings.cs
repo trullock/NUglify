@@ -17,64 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 
 namespace NUglify
 {
-    /// <summary>
-    /// Output mode setting
-    /// </summary>
-    public enum OutputMode
-    {
-        /// <summary>
-        /// Output the minified code on a single line for maximum minification.
-        /// LineBreakThreshold may still break the single line into multiple lines
-        /// at a syntactically correct point after the given line length is reached.
-        /// Not easily human-readable.
-        /// </summary>
-        SingleLine,
-
-        /// <summary>
-        /// Output the minified code on multiple lines to increase readability
-        /// </summary>
-        MultipleLines,
-
-        /// <summary>
-        /// Supress code output; typically used for linting or analysis of source code
-        /// </summary>
-        None
-    }
-
-    /// <summary>
-    /// Describes how to output the opening curly-brace for blocks when the OutputMode
-    /// is set to MultipleLines. 
-    /// </summary>
-    public enum BlockStart
-    {
-        /// <summary>
-        /// Output the opening curly-brace block-start character on its own new line. Ex:
-        /// if (condition)
-        /// {
-        ///     ...
-        /// }
-        /// </summary>
-        NewLine = 0,
-
-        /// <summary>
-        /// Output the opening curly-brace block-start character at the end of the previous line. Ex:
-        /// if (condition) {
-        ///     ...
-        /// }
-        /// </summary>
-        SameLine,
-
-        /// <summary>
-        /// Output the opening curly-brace block-start character on the same line or a new line
-        /// depending on how it was specified in the sources. 
-        /// </summary>
-        UseSource
-    }
-
     /// <summary>
     /// Common settings shared between CSS and JS settings objects
     /// </summary>
@@ -99,6 +46,9 @@ namespace NUglify
         }
 
         #region properties
+
+
+        public int WarningLevel { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean value indicating whether embedded asp.net blocks (&lt;% %>) should be recognized and output as is. Default is false.

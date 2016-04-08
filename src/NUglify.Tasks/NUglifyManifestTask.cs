@@ -20,6 +20,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using NUglify.Css;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 using NUglify.JavaScript.Visitors;
 
@@ -41,16 +42,16 @@ namespace NUglify
 
         #region base task overrides
 
-        protected override void GenerateJavaScript(OutputGroup outputGroup, IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, Encoding outputEncoding)
+        protected override void GenerateJavaScript(OutputGroup outputGroup, IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding outputEncoding)
         {
-            if (switchParser == null)
+            if (uglifyCommandParser == null)
             {
-                throw new ArgumentNullException("switchParser");
+                throw new ArgumentNullException("uglifyCommandParser");
             }
 
             try
             {
-                var settings = switchParser.JSSettings;
+                var settings = uglifyCommandParser.JSSettings;
 
                 // process the resources for this output group into the settings list
                 // if there are any to be processed
@@ -63,7 +64,7 @@ namespace NUglify
                 // then process the javascript output group
                 ProcessJavaScript(
                     inputGroups,
-                    switchParser,
+                    uglifyCommandParser,
                     outputPath,
                     outputGroup.IfNotNull(og => og.SymbolMap),
                     outputEncoding);
@@ -75,16 +76,16 @@ namespace NUglify
             }
         }
 
-        protected override void GenerateStyleSheet(OutputGroup outputGroup, IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, Encoding outputEncoding)
+        protected override void GenerateStyleSheet(OutputGroup outputGroup, IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding outputEncoding)
         {
-            if (switchParser == null)
+            if (uglifyCommandParser == null)
             {
-                throw new ArgumentNullException("switchParser");
+                throw new ArgumentNullException("uglifyCommandParser");
             }
 
             ProcessStylesheet(
                 inputGroups,
-                switchParser,
+                uglifyCommandParser,
                 outputPath,
                 outputEncoding);
         }
@@ -93,9 +94,9 @@ namespace NUglify
 
         #region code processing methods
 
-        private void ProcessJavaScript(IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, SymbolMap symbolMap, Encoding outputEncoding)
+        private void ProcessJavaScript(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, SymbolMap symbolMap, Encoding outputEncoding)
         {
-            var settings = switchParser.JSSettings;
+            var settings = uglifyCommandParser.JSSettings;
             TextWriter mapWriter = null;
             ISourceMap sourceMap = null;
             try
@@ -112,7 +113,7 @@ namespace NUglify
                     // create the map writer and the source map implementation.
                     // look at the Name attribute and implement the proper one.
                     // the encoding needs to be UTF-8 WITHOUT a BOM or it won't work.
-                    if (!FileWriteOperation(symbolMapPath, switchParser.Clobber, () =>
+                    if (!FileWriteOperation(symbolMapPath, uglifyCommandParser.Clobber, () =>
                         {
                             mapWriter = new StreamWriter(symbolMapPath, false, new UTF8Encoding(false));
                             sourceMap = SourceMapFactory.Create(mapWriter, symbolMap.Name);
@@ -151,7 +152,7 @@ namespace NUglify
                     // regardless, don't show any errors that have a severity lower (greater numeric value)
                     // than the warning level specified.
                     if ((currentSourceOrigin == SourceOrigin.Project || ea.Error.Severity == 0)
-                        && ea.Error.Severity <= switchParser.WarningLevel)
+                        && ea.Error.Severity <= uglifyCommandParser.WarningLevel)
                     {
                         LogContextError(ea.Error);
                     }
@@ -216,7 +217,7 @@ namespace NUglify
                 // write output
                 if (!Log.HasLoggedErrors)
                 {
-                    if (!FileWriteOperation(outputPath, switchParser.Clobber, () =>
+                    if (!FileWriteOperation(outputPath, uglifyCommandParser.Clobber, () =>
                         {
                             using (var writer = new StreamWriter(outputPath, false, outputEncoding))
                             {
@@ -265,22 +266,22 @@ namespace NUglify
             }
         }
 
-        private void ProcessStylesheet(IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, Encoding encoding)
+        private void ProcessStylesheet(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding encoding)
         {
             var outputBuilder = new StringBuilder(8192);
             foreach (var inputGroup in inputGroups)
             {
                 // create and setup parser
                 var parser = new CssParser();
-                parser.Settings = switchParser.CssSettings;
-                parser.JSSettings = switchParser.JSSettings;
+                parser.Settings = uglifyCommandParser.CssSettings;
+                parser.JSSettings = uglifyCommandParser.JSSettings;
                 parser.CssError += (sender, ea) =>
                 {
                     // if the input group is not project, then only report sev-0 errors
                     // regardless, don't show any errors that have a severity lower (greater numeric value)
                     // than the warning level specified.
                     if ((inputGroup.Origin == SourceOrigin.Project || ea.Error.Severity == 0)
-                        && ea.Error.Severity <= switchParser.WarningLevel)
+                        && ea.Error.Severity <= uglifyCommandParser.WarningLevel)
                     {
                         LogContextError(ea.Error);
                     }
@@ -293,7 +294,7 @@ namespace NUglify
             // write output
             if (!Log.HasLoggedErrors)
             {
-                if (!FileWriteOperation(outputPath, switchParser.Clobber, () =>
+                if (!FileWriteOperation(outputPath, uglifyCommandParser.Clobber, () =>
                     {
                         using (var writer = new StreamWriter(outputPath, false, encoding))
                         {
@@ -321,7 +322,7 @@ namespace NUglify
         /// Call this method to log an error using a ContextError object
         /// </summary>
         /// <param name="error">Error to log</param>
-        private void LogContextError(ContextError error)
+        private void LogContextError(UglifyError error)
         {
             // log it either as an error or a warning
             if (TreatWarningsAsErrors || error.Severity < 2)

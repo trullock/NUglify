@@ -19,6 +19,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NUglify.Helpers;
 using NUglify.JavaScript.Visitors;
 
 namespace NUglify.JavaScript.Syntax

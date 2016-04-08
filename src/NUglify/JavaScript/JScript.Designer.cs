@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using NUglify.Helpers;
+
 namespace NUglify.JavaScript {
     using System;
     using System.Reflection;

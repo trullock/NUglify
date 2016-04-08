@@ -17,6 +17,7 @@
 using System;
 using System.Text;
 using NUglify.Css;
+using NUglify.Helpers;
 
 namespace NUglify
 {

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Microsoft.Build.Framework;
+using NUglify.Helpers;
 
 namespace NUglify
 {
@@ -48,7 +49,7 @@ namespace NUglify
         /// <param name="symbolsFileInfo">FileInfo for the optional desired symbol file</param>
         /// <param name="defaultSettings">default settings for this output group</param>
         /// <param name="manifestModifiedTime">modified time for the manifest</param>
-        protected override void ProcessOutputGroup(OutputGroup outputGroup, FileInfo outputFileInfo, FileInfo symbolsFileInfo, SwitchParser defaultSettings, DateTime manifestModifiedTime)
+        protected override void ProcessOutputGroup(OutputGroup outputGroup, FileInfo outputFileInfo, FileInfo symbolsFileInfo, UglifyCommandParser defaultSettings, DateTime manifestModifiedTime)
         {
             // get the settings to use -- take the configuration for this output group
             // and apply them over the default settings
@@ -103,13 +104,13 @@ namespace NUglify
             }
         }
 
-        protected override void GenerateJavaScript(OutputGroup outputGroup, IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, Encoding outputEncoding)
+        protected override void GenerateJavaScript(OutputGroup outputGroup, IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding outputEncoding)
         {
             // shouldn't get called because we override the ProcessOutputGroup method
             throw new NotImplementedException();
         }
 
-        protected override void GenerateStyleSheet(OutputGroup outputGroup, IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, Encoding outputEncoding)
+        protected override void GenerateStyleSheet(OutputGroup outputGroup, IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding outputEncoding)
         {
             // shouldn't get called because we override the ProcessOutputGroup method
             throw new NotImplementedException();

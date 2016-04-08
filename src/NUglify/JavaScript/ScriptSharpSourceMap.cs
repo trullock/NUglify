@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Xml;
+using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript

@@ -91,7 +91,7 @@ namespace NUglify.Css
     #endregion
 
     /// <summary>
-    /// Settings Object for CSS Minifier
+    /// Settings Object for CSS Uglify
     /// </summary>
     public class CssSettings : CommonSettings
     {

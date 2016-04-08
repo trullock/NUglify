@@ -89,7 +89,7 @@ namespace NUglify.Tests.Core
         [Test]
         public void ParseNull()
         {
-            var errors = new List<ContextError>();
+            var errors = new List<UglifyError>();
             var cssParser = new CssParser();
             cssParser.CssError += (sender, ea) =>
             {
@@ -113,7 +113,7 @@ namespace NUglify.Tests.Core
                 var source = ReadFileAsAscii(Path.Combine(s_inputFolder, fileName), encoding);
 
                 // set up the parser and the error condition
-                var errors = new List<ContextError>();
+                var errors = new List<UglifyError>();
                 var cssParser = new CssParser();
                 cssParser.CssError += (sender, ea) =>
                 {

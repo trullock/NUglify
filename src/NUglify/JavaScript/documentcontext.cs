@@ -58,7 +58,7 @@ namespace NUglify.JavaScript
         //      parsing has to continue (the host returns true when parsing has to continue)
         //---------------------------------------------------------------------------------------
 
-        internal void HandleError(ContextError error)
+        internal void HandleError(UglifyError error)
         {
             if (Parser != null)
             {

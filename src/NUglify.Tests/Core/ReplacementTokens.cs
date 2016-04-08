@@ -164,11 +164,10 @@ namespace NUglify.Tests.Core
             settings.ReplacementFallbacks.Add("1x", "1x");
             settings.ReplacementFallbacks.Add("color", "#ff0000");
 
-            var minifier = new Minifier();
-            var actual = minifier.MinifyStyleSheet(source, settings);
+            var actual = Uglify.Css(source, settings);
 
             var expected = ReadFile(s_expectedFolder, "replacements.css");
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual.Code);
         }
 
         private string ReadFile(string folder, string fileName)

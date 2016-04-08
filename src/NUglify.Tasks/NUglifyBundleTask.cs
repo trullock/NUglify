@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NUglify.Helpers;
 
 namespace NUglify
 {
@@ -37,10 +38,10 @@ namespace NUglify
 
         #endregion
 
-        protected override void GenerateJavaScript(OutputGroup outputGroup, IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, Encoding outputEncoding)
+        protected override void GenerateJavaScript(OutputGroup outputGroup, IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding outputEncoding)
         {
             // create the output file, clobbering any existing content
-            if (!FileWriteOperation(outputPath, switchParser.IfNotNull(p => p.Clobber), () =>
+            if (!FileWriteOperation(outputPath, uglifyCommandParser.IfNotNull(p => p.Clobber), () =>
                 {
                     using (var writer = new StreamWriter(outputPath, false, outputEncoding))
                     {
@@ -73,9 +74,9 @@ namespace NUglify
             }
         }
 
-        protected override void GenerateStyleSheet(OutputGroup outputGroup, IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, Encoding outputEncoding)
+        protected override void GenerateStyleSheet(OutputGroup outputGroup, IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding outputEncoding)
         {
-            if (!FileWriteOperation(outputPath, switchParser.IfNotNull(p => p.Clobber), () =>
+            if (!FileWriteOperation(outputPath, uglifyCommandParser.IfNotNull(p => p.Clobber), () =>
                 {
                     // create the output file, clobbering any existing content
                     using (var writer = new StreamWriter(outputPath, false, outputEncoding))

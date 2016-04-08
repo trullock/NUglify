@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockStart.cs" />
     <Compile Include="CommonData.cs" />
     <Compile Include="CommonSettings.cs" />
     <Compile Include="CommonStrings.Designer.cs">
@@ -59,7 +60,7 @@
       <DependentUpon>CommonStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Configuration.cs" />
-    <Compile Include="ContextError.cs" />
+    <Compile Include="UglifyError.cs" />
     <Compile Include="CssEncoderFallback.cs" />
     <Compile Include="Css\CssColorName.cs" />
     <Compile Include="Css\CssErrorCode.cs" />
@@ -72,8 +73,8 @@
       <DependentUpon>CssStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Css\CssToken.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Helpers.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\Helpers.cs" />
     <Compile Include="JavaScript\Syntax\ActivationObject.cs" />
     <Compile Include="JavaScript\Syntax\Statement.cs" />
     <Compile Include="JavaScript\Visitors\AnalyzeNodeVisitor.cs" />
@@ -199,14 +200,15 @@
     <Compile Include="JavaScript\Syntax\WhileStatement.cs" />
     <Compile Include="JavaScript\Syntax\WithStatement.cs" />
     <Compile Include="JavaScript\Syntax\WithScope.cs" />
-    <Compile Include="JSEncoderFallback.cs" />
-    <Compile Include="Minifier.cs" />
+    <Compile Include="JsEncoderFallback2.cs" />
+    <Compile Include="Uglify.cs" />
+    <Compile Include="OutputMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\ProductAssemblyInfo.cs" />
-    <Compile Include="ReflectionHelper.cs" />
+    <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="ResourceStrings.cs" />
-    <Compile Include="StringBuilderPool.cs" />
-    <Compile Include="SwitchParser.cs" />
+    <Compile Include="Helpers\StringBuilderPool.cs" />
+    <Compile Include="UglifyCommandParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CommonStrings.resx">

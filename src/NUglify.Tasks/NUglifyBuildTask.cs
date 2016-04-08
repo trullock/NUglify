@@ -31,7 +31,7 @@ using Microsoft.Build.Utilities;
 namespace NUglify
 {
     /// <summary>
-    /// Provides the MS Build task for Microsoft Ajax Minifier. Please see the list of supported properties below.
+    /// Provides the MS Build task for Microsoft Ajax Uglify. Please see the list of supported properties below.
     /// </summary>
     [SecurityCritical]
     public class NUglify : Task
@@ -44,14 +44,9 @@ namespace NUglify
         private static Regex s_endsInSemicolon = new Regex(@";\s*$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         /// <summary>
-        /// NUglify Minifier
-        /// </summary>
-        private readonly global::NUglify.Minifier m_minifier = new global::NUglify.Minifier();
-
-        /// <summary>
         /// NUglify command-line switch parser
         /// </summary>
-        private SwitchParser m_switchParser;
+        private UglifyCommandParser uglifyCommandParser;
 
         /// <summary>
         /// An optional file mapping implementation name
@@ -83,7 +78,7 @@ namespace NUglify
                 m_otherInputFiles.Clear();
 
                 // parse the switches
-                m_switchParser.Parse(value);
+                uglifyCommandParser.Parse(value);
 
                 // just so we can grab them later, let's keep track of all the switches we are passed
                 if (m_switches == null)
@@ -133,11 +128,11 @@ namespace NUglify
                                         // add any rename pairs
                                         foreach (var pair in config.RenameIdentifiers)
                                         {
-                                            m_switchParser.JSSettings.AddRenamePair(pair.Key, pair.Value);
+                                            uglifyCommandParser.JSSettings.AddRenamePair(pair.Key, pair.Value);
                                         }
 
                                         // add any no-rename identifiers
-                                        m_switchParser.JSSettings.SetNoAutoRenames(config.NoRenameIdentifiers);
+                                        uglifyCommandParser.JSSettings.SetNoAutoRenames(config.NoRenameIdentifiers);
                                     }
                                 }
                             }
@@ -217,8 +212,8 @@ namespace NUglify
                                 resourceStrings.Name = objectName;
 
                                 // and add it to the parsers
-                                m_switchParser.JSSettings.AddResourceStrings(resourceStrings);
-                                m_switchParser.CssSettings.AddResourceStrings(resourceStrings);
+                                uglifyCommandParser.JSSettings.AddResourceStrings(resourceStrings);
+                                uglifyCommandParser.CssSettings.AddResourceStrings(resourceStrings);
                             }
                         }
                     }
@@ -237,11 +232,11 @@ namespace NUglify
         { 
             get
             {
-                return m_switchParser.WarningLevel;
+                return uglifyCommandParser.WarningLevel;
             }
             set
             {
-                m_switchParser.WarningLevel = value;
+                uglifyCommandParser.WarningLevel = value;
             }
         }
 
@@ -258,12 +253,12 @@ namespace NUglify
             get
             {
                 // we return true for this property only if we are, indeed, clobbering all files.
-                return m_switchParser.Clobber == ExistingFileTreatment.Overwrite;
+                return uglifyCommandParser.Clobber == ExistingFileTreatment.Overwrite;
             }
             set
             {
                 // since this is a boolean property, we don't care about the Preserve treatment
-                m_switchParser.Clobber = value ? ExistingFileTreatment.Overwrite : ExistingFileTreatment.Auto;
+                uglifyCommandParser.Clobber = value ? ExistingFileTreatment.Overwrite : ExistingFileTreatment.Auto;
             }
         }
 
@@ -276,14 +271,14 @@ namespace NUglify
             { 
                 // there are technically separate lists for JS and CSS, but we'll set them
                 // to the same value, so just use the JS list as the reference here.
-                return this.m_switchParser.JSSettings.IgnoreErrorList; 
+                return this.uglifyCommandParser.JSSettings.IgnoreErrorList; 
             }
             set 
             { 
                 // there are technically separate lists for JS and CSS, but we'll just set them
                 // to the same values.
-                this.m_switchParser.JSSettings.IgnoreErrorList = value;
-                this.m_switchParser.CssSettings.IgnoreErrorList = value;
+                this.uglifyCommandParser.JSSettings.IgnoreErrorList = value;
+                this.uglifyCommandParser.CssSettings.IgnoreErrorList = value;
             }
         }
 
@@ -353,8 +348,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsEnsureFinalSemicolon 
         {
-            get { return this.m_switchParser.JSSettings.TermSemicolons; }
-            set { this.m_switchParser.JSSettings.TermSemicolons = value; }
+            get { return this.uglifyCommandParser.JSSettings.TermSemicolons; }
+            set { this.uglifyCommandParser.JSSettings.TermSemicolons = value; }
         }
 
         /// <summary>
@@ -363,8 +358,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsCollapseToLiteral
         {
-            get { return this.m_switchParser.JSSettings.CollapseToLiteral;  }
-            set { this.m_switchParser.JSSettings.CollapseToLiteral = value; }
+            get { return this.uglifyCommandParser.JSSettings.CollapseToLiteral;  }
+            set { this.uglifyCommandParser.JSSettings.CollapseToLiteral = value; }
         }
         
         /// <summary>
@@ -373,8 +368,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public string JsEvalTreatment
         {
-            get { return this.m_switchParser.JSSettings.EvalTreatment.ToString(); }
-            set { this.m_switchParser.JSSettings.EvalTreatment = ParseEnumValue<EvalTreatment>(value); }
+            get { return this.uglifyCommandParser.JSSettings.EvalTreatment.ToString(); }
+            set { this.uglifyCommandParser.JSSettings.EvalTreatment = ParseEnumValue<EvalTreatment>(value); }
         }
         
         /// <summary>
@@ -383,8 +378,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public int JsIndentSize
         {
-            get { return this.m_switchParser.JSSettings.IndentSize; }
-            set { this.m_switchParser.JSSettings.IndentSize = value; }
+            get { return this.uglifyCommandParser.JSSettings.IndentSize; }
+            set { this.uglifyCommandParser.JSSettings.IndentSize = value; }
         }
         
         /// <summary>
@@ -393,8 +388,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsInlineSafeStrings
         {
-            get { return this.m_switchParser.JSSettings.InlineSafeStrings; }
-            set { this.m_switchParser.JSSettings.InlineSafeStrings = value; }
+            get { return this.uglifyCommandParser.JSSettings.InlineSafeStrings; }
+            set { this.uglifyCommandParser.JSSettings.InlineSafeStrings = value; }
         }
         
         /// <summary>
@@ -403,8 +398,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public string JsLocalRenaming
         {
-            get { return this.m_switchParser.JSSettings.LocalRenaming.ToString(); }
-            set { this.m_switchParser.JSSettings.LocalRenaming = ParseEnumValue<LocalRenaming>(value); }
+            get { return this.uglifyCommandParser.JSSettings.LocalRenaming.ToString(); }
+            set { this.uglifyCommandParser.JSSettings.LocalRenaming = ParseEnumValue<LocalRenaming>(value); }
         }
 
         /// <summary>
@@ -413,8 +408,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public string JsManualRenamePairs
         {
-            get { return this.m_switchParser.JSSettings.RenamePairs; }
-            set { this.m_switchParser.JSSettings.RenamePairs = value; }
+            get { return this.uglifyCommandParser.JSSettings.RenamePairs; }
+            set { this.uglifyCommandParser.JSSettings.RenamePairs = value; }
         }
 
         /// <summary>
@@ -423,8 +418,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public string JsNoAutoRename
         {
-            get { return this.m_switchParser.JSSettings.NoAutoRenameList; }
-            set { this.m_switchParser.JSSettings.NoAutoRenameList = value; }
+            get { return this.uglifyCommandParser.JSSettings.NoAutoRenameList; }
+            set { this.uglifyCommandParser.JSSettings.NoAutoRenameList = value; }
         }
 
         /// <summary>
@@ -433,8 +428,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public string JsKnownGlobalNames
         {
-            get { return this.m_switchParser.JSSettings.KnownGlobalNamesList; }
-            set { this.m_switchParser.JSSettings.KnownGlobalNamesList = value; }
+            get { return this.uglifyCommandParser.JSSettings.KnownGlobalNamesList; }
+            set { this.uglifyCommandParser.JSSettings.KnownGlobalNamesList = value; }
         }
 
         /// <summary>
@@ -443,8 +438,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public string JsDebugLookups
         {
-            get { return this.m_switchParser.JSSettings.DebugLookupList; }
-            set { this.m_switchParser.JSSettings.DebugLookupList = value; }
+            get { return this.uglifyCommandParser.JSSettings.DebugLookupList; }
+            set { this.uglifyCommandParser.JSSettings.DebugLookupList = value; }
         }
         
         /// <summary>
@@ -453,8 +448,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsMacSafariQuirks
         {
-            get { return this.m_switchParser.JSSettings.MacSafariQuirks; }
-            set { this.m_switchParser.JSSettings.MacSafariQuirks = value; }
+            get { return this.uglifyCommandParser.JSSettings.MacSafariQuirks; }
+            set { this.uglifyCommandParser.JSSettings.MacSafariQuirks = value; }
         }
 
         /// <summary>
@@ -463,8 +458,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsIgnoreConditionalCompilation
         {
-            get { return this.m_switchParser.JSSettings.IgnoreConditionalCompilation; }
-            set { this.m_switchParser.JSSettings.IgnoreConditionalCompilation = value; }
+            get { return this.uglifyCommandParser.JSSettings.IgnoreConditionalCompilation; }
+            set { this.uglifyCommandParser.JSSettings.IgnoreConditionalCompilation = value; }
         }
 
         /// <summary>
@@ -473,8 +468,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsMinifyCode
         {
-            get { return this.m_switchParser.JSSettings.MinifyCode; }
-            set { this.m_switchParser.JSSettings.MinifyCode = value; }
+            get { return this.uglifyCommandParser.JSSettings.MinifyCode; }
+            set { this.uglifyCommandParser.JSSettings.MinifyCode = value; }
         }
 
         /// <summary>
@@ -483,8 +478,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public string JsOutputMode
         {
-            get { return this.m_switchParser.JSSettings.OutputMode.ToString(); }
-            set { this.m_switchParser.JSSettings.OutputMode = ParseEnumValue<OutputMode>(value); }
+            get { return this.uglifyCommandParser.JSSettings.OutputMode.ToString(); }
+            set { this.uglifyCommandParser.JSSettings.OutputMode = ParseEnumValue<OutputMode>(value); }
         }
 
         /// <summary>
@@ -493,8 +488,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsPreserveFunctionNames
         {
-            get { return this.m_switchParser.JSSettings.PreserveFunctionNames; }
-            set { this.m_switchParser.JSSettings.PreserveFunctionNames = value; }
+            get { return this.uglifyCommandParser.JSSettings.PreserveFunctionNames; }
+            set { this.uglifyCommandParser.JSSettings.PreserveFunctionNames = value; }
         }
 
         /// <summary>
@@ -503,8 +498,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsRemoveFunctionExpressionNames
         {
-            get { return this.m_switchParser.JSSettings.RemoveFunctionExpressionNames; }
-            set { this.m_switchParser.JSSettings.RemoveFunctionExpressionNames = value; }
+            get { return this.uglifyCommandParser.JSSettings.RemoveFunctionExpressionNames; }
+            set { this.uglifyCommandParser.JSSettings.RemoveFunctionExpressionNames = value; }
         }
         
         /// <summary>
@@ -513,8 +508,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsRemoveUnneededCode
         {
-            get { return this.m_switchParser.JSSettings.RemoveUnneededCode; }
-            set { this.m_switchParser.JSSettings.RemoveUnneededCode = value; }
+            get { return this.uglifyCommandParser.JSSettings.RemoveUnneededCode; }
+            set { this.uglifyCommandParser.JSSettings.RemoveUnneededCode = value; }
         }
         
         /// <summary>
@@ -523,8 +518,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsStripDebugStatements
         {
-            get { return this.m_switchParser.JSSettings.StripDebugStatements; }
-            set { this.m_switchParser.JSSettings.StripDebugStatements = value; }
+            get { return this.uglifyCommandParser.JSSettings.StripDebugStatements; }
+            set { this.uglifyCommandParser.JSSettings.StripDebugStatements = value; }
         }
 
         /// <summary>
@@ -533,8 +528,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public bool JsAllowEmbeddedAspNetBlocks
         {
-            get { return this.m_switchParser.JSSettings.AllowEmbeddedAspNetBlocks; }
-            set { this.m_switchParser.JSSettings.AllowEmbeddedAspNetBlocks = value; }
+            get { return this.uglifyCommandParser.JSSettings.AllowEmbeddedAspNetBlocks; }
+            set { this.uglifyCommandParser.JSSettings.AllowEmbeddedAspNetBlocks = value; }
         }
 
         /// <summary>
@@ -543,8 +538,8 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public string JsPreprocessorDefines
         {
-            get { return this.m_switchParser.JSSettings.PreprocessorDefineList; }
-            set { this.m_switchParser.JSSettings.PreprocessorDefineList = value; }
+            get { return this.uglifyCommandParser.JSSettings.PreprocessorDefineList; }
+            set { this.uglifyCommandParser.JSSettings.PreprocessorDefineList = value; }
         }
 
         #endregion
@@ -579,8 +574,8 @@ namespace NUglify
         /// </summary>
         public string CssColorNames
         {
-            get { return this.m_switchParser.CssSettings.ColorNames.ToString(); }
-            set { this.m_switchParser.CssSettings.ColorNames = ParseEnumValue<CssColor>(value); }
+            get { return this.uglifyCommandParser.CssSettings.ColorNames.ToString(); }
+            set { this.uglifyCommandParser.CssSettings.ColorNames = ParseEnumValue<CssColor>(value); }
         }
         
         /// <summary>
@@ -588,8 +583,8 @@ namespace NUglify
         /// </summary>
         public string CssCommentMode
         {
-            get { return this.m_switchParser.CssSettings.CommentMode.ToString(); }
-            set { this.m_switchParser.CssSettings.CommentMode = ParseEnumValue<CssComment>(value); }
+            get { return this.uglifyCommandParser.CssSettings.CommentMode.ToString(); }
+            set { this.uglifyCommandParser.CssSettings.CommentMode = ParseEnumValue<CssComment>(value); }
         }
         
         /// <summary>
@@ -597,8 +592,8 @@ namespace NUglify
         /// </summary>
         public bool CssExpandOutput
         {
-            get { return this.m_switchParser.CssSettings.OutputMode == OutputMode.MultipleLines; }
-            set { this.m_switchParser.CssSettings.OutputMode = value ? OutputMode.MultipleLines : OutputMode.SingleLine; }
+            get { return this.uglifyCommandParser.CssSettings.OutputMode == OutputMode.MultipleLines; }
+            set { this.uglifyCommandParser.CssSettings.OutputMode = value ? OutputMode.MultipleLines : OutputMode.SingleLine; }
         }
 
         /// <summary>
@@ -606,8 +601,8 @@ namespace NUglify
         /// </summary>
         public int CssIndentSpaces
         {
-            get { return this.m_switchParser.CssSettings.IndentSize; }
-            set { this.m_switchParser.CssSettings.IndentSize = value; }
+            get { return this.uglifyCommandParser.CssSettings.IndentSize; }
+            set { this.uglifyCommandParser.CssSettings.IndentSize = value; }
         }
         
         /// <summary>
@@ -615,8 +610,8 @@ namespace NUglify
         /// </summary>
         public bool CssTermSemicolons
         {
-            get { return this.m_switchParser.CssSettings.TermSemicolons; }
-            set { this.m_switchParser.CssSettings.TermSemicolons = value; }
+            get { return this.uglifyCommandParser.CssSettings.TermSemicolons; }
+            set { this.uglifyCommandParser.CssSettings.TermSemicolons = value; }
         }
 
         /// <summary>
@@ -624,8 +619,8 @@ namespace NUglify
         /// </summary>
         public bool CssMinifyExpressions
         {
-            get { return this.m_switchParser.CssSettings.MinifyExpressions; }
-            set { this.m_switchParser.CssSettings.MinifyExpressions = value; }
+            get { return this.uglifyCommandParser.CssSettings.MinifyExpressions; }
+            set { this.uglifyCommandParser.CssSettings.MinifyExpressions = value; }
         }
 
         /// <summary>
@@ -633,8 +628,8 @@ namespace NUglify
         /// </summary>
         public bool CssAllowEmbeddedAspNetBlocks
         {
-            get { return this.m_switchParser.CssSettings.AllowEmbeddedAspNetBlocks; }
-            set { this.m_switchParser.CssSettings.AllowEmbeddedAspNetBlocks = value; }
+            get { return this.uglifyCommandParser.CssSettings.AllowEmbeddedAspNetBlocks; }
+            set { this.uglifyCommandParser.CssSettings.AllowEmbeddedAspNetBlocks = value; }
         }
 
         #endregion
@@ -645,8 +640,8 @@ namespace NUglify
         /// </summary>
         public NUglify()
         {
-            this.m_switchParser = new SwitchParser();
-            this.m_switchParser.UnknownParameter += OnUnknownParameter;
+            this.uglifyCommandParser = new UglifyCommandParser();
+            this.uglifyCommandParser.UnknownParameter += OnUnknownParameter;
             this.m_otherInputFiles = new HashSet<string>();
             this.JsEnsureFinalSemicolon = true;
         }
@@ -654,27 +649,25 @@ namespace NUglify
         #region Execute method
 
         /// <summary>
-        /// Executes the Ajax Minifier build task
+        /// Executes the Ajax Uglify build task
         /// </summary>
         /// <returns>True if the build task successfully succeded; otherwise, false.</returns>
         //[SecurityCritical]
         public override bool Execute()
         {
-            m_minifier.WarningLevel = this.WarningLevel;
-
             // Deal with JS minification
             if (this.JsSourceFiles != null && this.JsSourceFiles.Length > 0)
             {
-                if (this.JsCombinedFileName.IsNullOrWhiteSpace())
+                if (string.IsNullOrWhiteSpace(this.JsCombinedFileName))
                 {
                     // no combined name; the source extension and target extension properties must be set.
-                    if (this.JsSourceExtensionPattern.IsNullOrWhiteSpace())
+                    if (string.IsNullOrWhiteSpace(this.JsSourceExtensionPattern))
                     {
                         Log.LogError(Strings.RequiredParameterIsEmpty, "JsSourceExtensionPattern");
                         return false;
                     }
 
-                    if (this.JsTargetExtension.IsNullOrWhiteSpace())
+                    if (string.IsNullOrWhiteSpace(this.JsTargetExtension))
                     {
                         Log.LogError(Strings.RequiredParameterIsEmpty, "JsTargetExtension");
                         return false;
@@ -683,13 +676,13 @@ namespace NUglify
                 else
                 {
                     // a combined name was specified - must NOT use source/target extension properties
-                    if (!this.JsSourceExtensionPattern.IsNullOrWhiteSpace())
+                    if (!string.IsNullOrWhiteSpace(this.JsSourceExtensionPattern))
                     {
                         Log.LogError(Strings.CannotUseCombinedAndIndividual, "JsSourceExtensionPattern");
                         return false;
                     }
 
-                    if (!this.JsTargetExtension.IsNullOrWhiteSpace())
+                    if (!string.IsNullOrWhiteSpace(JsTargetExtension))
                     {
                         Log.LogError(Strings.CannotUseCombinedAndIndividual, "JsTargetExtension");
                         return false;
@@ -706,15 +699,15 @@ namespace NUglify
             // Deal with CSS minification
             if (this.CssSourceFiles != null && this.CssSourceFiles.Length > 0)
             {
-                if (this.CssCombinedFileName.IsNullOrWhiteSpace())
+                if (string.IsNullOrWhiteSpace(this.CssCombinedFileName))
                 {
-                    if (this.CssSourceExtensionPattern.IsNullOrWhiteSpace())
+                    if (string.IsNullOrWhiteSpace(CssSourceExtensionPattern))
                     {
                         Log.LogError(Strings.RequiredParameterIsEmpty, "CssSourceExtensionPattern");
                         return false;
                     }
 
-                    if (this.CssTargetExtension.IsNullOrWhiteSpace())
+                    if (string.IsNullOrWhiteSpace(CssTargetExtension))
                     {
                         Log.LogError(Strings.RequiredParameterIsEmpty, "CssTargetExtension");
                         return false;
@@ -722,13 +715,13 @@ namespace NUglify
                 }
                 else
                 {
-                    if (!this.CssSourceExtensionPattern.IsNullOrWhiteSpace())
+                    if (!string.IsNullOrWhiteSpace(CssSourceExtensionPattern))
                     {
                         Log.LogError(Strings.CannotUseCombinedAndIndividual, "CssSourceExtensionPattern");
                         return false;
                     }
 
-                    if (!this.CssTargetExtension.IsNullOrWhiteSpace())
+                    if (!string.IsNullOrWhiteSpace(CssTargetExtension))
                     {
                         Log.LogError(Strings.CannotUseCombinedAndIndividual, "CssTargetExtension");
                         return false;
@@ -765,7 +758,7 @@ namespace NUglify
                 }
             }
 
-            if (this.JsCombinedFileName.IsNullOrWhiteSpace())
+            if (string.IsNullOrWhiteSpace(JsCombinedFileName))
             {
                 // individually-minified files
                 foreach (ITaskItem item in this.JsSourceFiles)
@@ -777,7 +770,7 @@ namespace NUglify
                     // if we want a symbol map, validate the name and return the map output path 
                     // based on this output file path
                     var symbolMapPath = GetMapFilePath(outputPath);
-                    var wantSymbolMap = !symbolMapPath.IsNullOrWhiteSpace();
+                    var wantSymbolMap = !string.IsNullOrWhiteSpace(symbolMapPath);
                     if (FileIsWritable(outputPath))
                     {
                         // if the output file doesn't exist, we need to minify the sources.
@@ -810,7 +803,7 @@ namespace NUglify
 
                         if (needToMinify)
                         {
-                            string source = File.ReadAllText(item.ItemSpec, GetEncoding(m_switchParser.EncodingInputName, new JSEncoderFallback()));
+                            string source = File.ReadAllText(item.ItemSpec, GetEncoding(uglifyCommandParser.EncodingInputName, new JsEncoderFallback()));
                             MinifyJavaScript(source, item.ItemSpec, outputPath, symbolMapPath);
                         }
                         else
@@ -830,7 +823,7 @@ namespace NUglify
                 // if we want a symbol map, validate the name and return the map output path 
                 // based on the combined output file
                 var symbolMapPath = GetMapFilePath(this.JsCombinedFileName);
-                var wantSymbolMap = !symbolMapPath.IsNullOrWhiteSpace();
+                var wantSymbolMap = !string.IsNullOrWhiteSpace(symbolMapPath);
 
                 // combine the sources into a single file and minify the results
                 if (FileIsWritable(this.JsCombinedFileName))
@@ -900,10 +893,10 @@ namespace NUglify
             ISourceMap sourceMap = null;
             try
             {
-                if (mapFilePath.IsNullOrWhiteSpace())
+                if (string.IsNullOrWhiteSpace(mapFilePath))
                 {
                     // just in case, make darn-sure the settings is null-out
-                    m_switchParser.JSSettings.SymbolsMap = null;
+                    uglifyCommandParser.JSSettings.SymbolsMap = null;
                 }
                 else
                 {
@@ -919,7 +912,7 @@ namespace NUglify
                             mapWriter = null;
 
                             // start the package off
-                            m_switchParser.JSSettings.SymbolsMap = sourceMap;
+                            uglifyCommandParser.JSSettings.SymbolsMap = sourceMap;
 
                             // set some properties used by the V3 implementation
                             sourceMap.SourceRoot = this.SourceMapRoot;
@@ -934,11 +927,12 @@ namespace NUglify
                     }
                 }
 
-                this.m_minifier.FileName = sourceName;
-                string minifiedJs = this.m_minifier.MinifyJavaScript(sourceCode, this.m_switchParser.JSSettings);
-                if (this.m_minifier.ErrorList.Count > 0)
+
+                uglifyCommandParser.JSSettings.WarningLevel = WarningLevel;
+                var minifiedJs = Uglify.Js(sourceCode, sourceName, this.uglifyCommandParser.JSSettings);
+                if (minifiedJs.HasErrors)
                 {
-                    foreach (var error in this.m_minifier.ErrorList)
+                    foreach (var error in minifiedJs.Errors)
                     {
                         LogContextError(error);
                     }
@@ -948,16 +942,17 @@ namespace NUglify
                 {
                     try
                     {
-                        var encoding = GetEncoding(m_switchParser.EncodingOutputName, new JSEncoderFallback());
+                        var encoding = GetEncoding(uglifyCommandParser.EncodingOutputName, new JsEncoderFallback());
                         using (var outputWriter = new StreamWriter(outputPath, false, encoding))
                         {
                             // output the minified code
-                            outputWriter.Write(minifiedJs);
+                            outputWriter.Write(minifiedJs.Code);
 
                             // give the symbol map a chance to add a little something, if we have one
-                            sourceMap.IfNotNull(m => m.EndFile(
-                                outputWriter,
-                                m_switchParser.JSSettings.LineTerminator));
+                            if (sourceMap != null)
+                            {
+                                sourceMap.EndFile(outputWriter, uglifyCommandParser.JSSettings.LineTerminator);
+                            }
                         }
                     }
                     catch (UnauthorizedAccessException)
@@ -981,7 +976,7 @@ namespace NUglify
                 {
                     // close shut it down and close it out
                     mapWriter = null;
-                    m_switchParser.JSSettings.SymbolsMap = null;
+                    uglifyCommandParser.JSSettings.SymbolsMap = null;
                     sourceMap.EndPackage();
                     sourceMap.Dispose();
                 }
@@ -1013,7 +1008,7 @@ namespace NUglify
 
                 inputBuilder.AppendFormat("///#SOURCE 1 1 {0}\n", itemSpec.ItemSpec);
 
-                string fileContent = File.ReadAllText(itemSpec.ItemSpec, GetEncoding(m_switchParser.EncodingInputName, new JSEncoderFallback()));
+                string fileContent = File.ReadAllText(itemSpec.ItemSpec, GetEncoding(uglifyCommandParser.EncodingInputName, new JsEncoderFallback()));
                 inputBuilder.Append(fileContent);
 
                 // set the flag for whether or not this file ends in a semicolon
@@ -1043,7 +1038,7 @@ namespace NUglify
                 }
             }
 
-            if (this.CssCombinedFileName.IsNullOrWhiteSpace())
+            if (string.IsNullOrWhiteSpace(CssCombinedFileName))
             {
                 // individually-minified files
                 foreach (ITaskItem item in this.CssSourceFiles)
@@ -1066,7 +1061,7 @@ namespace NUglify
                         {
                             try
                             {
-                                string source = File.ReadAllText(item.ItemSpec, GetEncoding(m_switchParser.EncodingInputName, new CssEncoderFallback()));
+                                string source = File.ReadAllText(item.ItemSpec, GetEncoding(uglifyCommandParser.EncodingInputName, new CssEncoderFallback()));
                                 MinifyStyleSheet(source, item.ItemSpec, outputPath);
                             }
                             catch (Exception e)
@@ -1143,11 +1138,10 @@ namespace NUglify
         {
             try
             {
-                this.m_minifier.FileName = sourceName;
-                string results = this.m_minifier.MinifyStyleSheet(sourceCode, this.m_switchParser.CssSettings);
-                if (this.m_minifier.ErrorList.Count > 0)
+                var result = Uglify.Css(sourceCode, sourceName, this.uglifyCommandParser.CssSettings);
+                if (result.HasErrors)
                 {
-                    foreach (var error in this.m_minifier.ErrorList)
+                    foreach (var error in result.Errors)
                     {
                         LogContextError(error);
                     }
@@ -1157,8 +1151,8 @@ namespace NUglify
                 {
                     try
                     {
-                        var encoding = GetEncoding(m_switchParser.EncodingOutputName, new CssEncoderFallback());
-                        File.WriteAllText(outputPath, results, encoding);
+                        var encoding = GetEncoding(uglifyCommandParser.EncodingOutputName, new CssEncoderFallback());
+                        File.WriteAllText(outputPath, result.Code, encoding);
                     }
                     catch (UnauthorizedAccessException)
                     {
@@ -1185,7 +1179,7 @@ namespace NUglify
             foreach (var itemSpec in this.CssSourceFiles)
             {
                 inputBuilder.AppendFormat("///#SOURCE 1 1 {0}\n", itemSpec.ItemSpec);
-                inputBuilder.Append(File.ReadAllText(itemSpec.ItemSpec, GetEncoding(m_switchParser.EncodingInputName, new CssEncoderFallback())));
+                inputBuilder.Append(File.ReadAllText(itemSpec.ItemSpec, GetEncoding(uglifyCommandParser.EncodingInputName, new CssEncoderFallback())));
             }
 
             MinifyStyleSheet(inputBuilder.ToString(), string.Empty, this.CssCombinedFileName);
@@ -1220,7 +1214,7 @@ namespace NUglify
         /// Call this method to log an error using a ContextError object
         /// </summary>
         /// <param name="error">Error to log</param>
-        private void LogContextError(ContextError error)
+        private void LogContextError(UglifyError error)
         {
             // log it either as an error or a warning
             if(TreatWarningsAsErrors || error.Severity < 2)
@@ -1266,7 +1260,7 @@ namespace NUglify
         private string GetMapFilePath(string outputPath)
         {
             var symbolMapPath = string.Empty;
-            if (!m_symbolsMapName.IsNullOrWhiteSpace())
+            if (!string.IsNullOrWhiteSpace(m_symbolsMapName))
             {
                 // we want to provide a symbol map
                 if (string.Compare(m_symbolsMapName, ScriptSharpSourceMap.ImplementationName, StringComparison.OrdinalIgnoreCase) == 0
@@ -1322,7 +1316,7 @@ namespace NUglify
         /// <returns>Parsed enum value</returns>
         private T ParseEnumValue<T>(string strValue) where T: struct
         {
-            if (!strValue.IsNullOrWhiteSpace())
+            if (!string.IsNullOrWhiteSpace(strValue))
             {
                 try
                 {
@@ -1342,7 +1336,7 @@ namespace NUglify
         {
             try
             {
-                if (!encodingName.IsNullOrWhiteSpace())
+                if (!string.IsNullOrWhiteSpace(encodingName))
                 {
                     // we have specified a different encoding. Create it from the name with
                     // the appropriate fallback encoder (in case it's an encoding that can't 

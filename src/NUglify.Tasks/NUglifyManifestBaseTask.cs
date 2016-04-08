@@ -22,6 +22,7 @@ using System.Text;
 using System.Xml;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using NUglify.Helpers;
 
 namespace NUglify
 {
@@ -90,7 +91,7 @@ namespace NUglify
                 // create the project default settings
                 // with a default warning level of maxvalue so everything is reported unless otherwise changed
                 // with a -warn switch
-                var projectDefaultSettings = new SwitchParser
+                var projectDefaultSettings = new UglifyCommandParser
                     {
                         WarningLevel = int.MaxValue
                     };
@@ -119,7 +120,7 @@ namespace NUglify
 
         #region manifest processing
 
-        private void ProcessManifest(ITaskItem taskItem, SwitchParser projectDefaultSettings)
+        private void ProcessManifest(ITaskItem taskItem, UglifyCommandParser projectDefaultSettings)
         {
             // save the manifest folder - paths within the manifest will be relative to it
             // if there are no InputFolder or OutputFolder values
@@ -182,7 +183,7 @@ namespace NUglify
         /// <param name="symbolsFileInfo">FileInfo for the optional desired symbol file</param>
         /// <param name="defaultSettings">default settings for this output group</param>
         /// <param name="manifestModifiedTime">modified time for the manifest</param>
-        protected virtual void ProcessOutputGroup(OutputGroup outputGroup, FileInfo outputFileInfo, FileInfo symbolsFileInfo, SwitchParser defaultSettings, DateTime manifestModifiedTime)
+        protected virtual void ProcessOutputGroup(OutputGroup outputGroup, FileInfo outputFileInfo, FileInfo symbolsFileInfo, UglifyCommandParser defaultSettings, DateTime manifestModifiedTime)
         {
             // check the file times -- if any of the inputs are newer than any output (or if any outputs don't exist),
             // then generate the output files
@@ -201,26 +202,26 @@ namespace NUglify
             }
         }
 
-        protected abstract void GenerateJavaScript(OutputGroup outputGroup, IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, Encoding outputEncoding);
+        protected abstract void GenerateJavaScript(OutputGroup outputGroup, IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding outputEncoding);
 
-        protected abstract void GenerateStyleSheet(OutputGroup outputGroup, IList<InputGroup> inputGroups, SwitchParser switchParser, string outputPath, Encoding outputEncoding);
+        protected abstract void GenerateStyleSheet(OutputGroup outputGroup, IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding outputEncoding);
 
-        private void GenerateOutputFiles(OutputGroup outputGroup, FileInfo outputFileInfo, SwitchParser switchParser)
+        private void GenerateOutputFiles(OutputGroup outputGroup, FileInfo outputFileInfo, UglifyCommandParser uglifyCommandParser)
         {
             // create combined input source
-            var inputGroups = outputGroup.ReadInputGroups(switchParser.EncodingInputName);
+            var inputGroups = outputGroup.ReadInputGroups(uglifyCommandParser.EncodingInputName);
             if (inputGroups.Count > 0)
             {
                 switch (outputGroup.CodeType)
                 {
                     case CodeType.JavaScript:
                         // call the virtual function to generate the JavaScript output file from the inputs
-                        GenerateJavaScript(outputGroup, inputGroups, switchParser, outputFileInfo.FullName, outputGroup.GetEncoding(switchParser.EncodingOutputName));
+                        GenerateJavaScript(outputGroup, inputGroups, uglifyCommandParser, outputFileInfo.FullName, outputGroup.GetEncoding(uglifyCommandParser.EncodingOutputName));
                         break;
 
                     case CodeType.StyleSheet:
                         // call the virtual function to generate the stylesheet output file from the inputs
-                        GenerateStyleSheet(outputGroup, inputGroups, switchParser, outputFileInfo.FullName, outputGroup.GetEncoding(switchParser.EncodingOutputName));
+                        GenerateStyleSheet(outputGroup, inputGroups, uglifyCommandParser, outputFileInfo.FullName, outputGroup.GetEncoding(uglifyCommandParser.EncodingOutputName));
                         break;
 
                     case CodeType.Unknown:
@@ -231,7 +232,7 @@ namespace NUglify
             else
             {
                 // no input! write an empty output file
-                if (!FileWriteOperation(outputFileInfo.FullName, switchParser.Clobber, () =>
+                if (!FileWriteOperation(outputFileInfo.FullName, uglifyCommandParser.Clobber, () =>
                     {
                         using (var stream = outputFileInfo.Create())
                         {
@@ -447,11 +448,11 @@ namespace NUglify
             return result;
         }
 
-        protected static SwitchParser ParseConfigSettings(string arguments, SwitchParser defaults)
+        protected static UglifyCommandParser ParseConfigSettings(string arguments, UglifyCommandParser defaults)
         {
             // clone the default switch settings, parse the arguments on top of the clone,
             // and then return the clone.
-            var switchParser = defaults.IfNotNull(d => d.Clone(), new SwitchParser());
+            var switchParser = defaults.IfNotNull(d => d.Clone(), new UglifyCommandParser());
             switchParser.Parse(arguments);
             return switchParser;
         }

@@ -16,9 +16,8 @@
 
 using NUglify.Css;
 using NUglify.JavaScript;
-using System.Reflection;
 
-namespace NUglify
+namespace NUglify.Helpers
 {
 #if NET_20
     using System.Collections;

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using NUglify.Helpers;
 
 namespace NUglify.JavaScript
 {

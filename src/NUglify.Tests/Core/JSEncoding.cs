@@ -33,15 +33,14 @@ namespace NUglify.Tests.Core
             // REALLY a valid valid real-world test scenario, but I still want it to work properly.
             // the high-surrogate is escaped, and the low isn't -- which mean we have a low without a matching high.
             var source = "var str = '\\ud83d\ude80';";
-            var minifier = new Minifier();
-            var minified = minifier.MinifyJavaScript(source);
-            foreach (var error in minifier.ErrorList)
+            var minified = Uglify.Js(source);
+            foreach (var error in minified.Errors)
             {
                 Trace.WriteLine(error.ToString());
             }
 
-            Assert.AreEqual("var str=\"🚀\"", minified);
-            Assert.AreEqual(0, minifier.ErrorList.Count);
+            Assert.AreEqual("var str=\"🚀\"", minified.Code);
+            Assert.False(minified.HasErrors);
         }
 
         [Test]
@@ -52,15 +51,14 @@ namespace NUglify.Tests.Core
             // REALLY a valid valid real-world test scenario, but I still want it to work properly.
             // the low-surrogate is escaped -- which mean we have a high without a matching low.
             var source = "var str = '\ud83d\\ude80';";
-            var minifier = new Minifier();
-            var minified = minifier.MinifyJavaScript(source);
-            foreach (var error in minifier.ErrorList)
+            var minified = Uglify.Js(source);
+            foreach (var error in minified.Errors)
             {
                 Trace.WriteLine(error.ToString());
             }
 
-            Assert.AreEqual("var str=\"🚀\"", minified);
-            Assert.AreEqual(0, minifier.ErrorList.Count);
+            Assert.AreEqual("var str=\"🚀\"", minified.Code);
+            Assert.False(minified.HasErrors);
         }
 
         [Test]
@@ -68,15 +66,14 @@ namespace NUglify.Tests.Core
         {
             // escaped surrogate pair as an identifier
             var source = "var \\ud840\\udc2f = 'foo';";
-            var minifier = new Minifier();
-            var minified = minifier.MinifyJavaScript(source);
-            foreach (var error in minifier.ErrorList)
+            var minified = Uglify.Js(source);
+            foreach (var error in minified.Errors)
             {
                 Trace.WriteLine(error.ToString());
             }
 
-            Assert.AreEqual("var 𠀯=\"foo\"", minified);
-            Assert.AreEqual(0, minifier.ErrorList.Count);
+            Assert.AreEqual("var 𠀯=\"foo\"", minified.Code);
+            Assert.False(minified.HasErrors);
         }
 
         [Test]
@@ -84,15 +81,14 @@ namespace NUglify.Tests.Core
         {
             // raw surrogate pair as an identifier
             var source = "var \ud840\udc2d = 'foo';";
-            var minifier = new Minifier();
-            var minified = minifier.MinifyJavaScript(source);
-            foreach (var error in minifier.ErrorList)
+            var minified = Uglify.Js(source);
+            foreach (var error in minified.Errors)
             {
                 Trace.WriteLine(error.ToString());
             }
 
-            Assert.AreEqual("var 𠀭=\"foo\"", minified);
-            Assert.AreEqual(0, minifier.ErrorList.Count);
+            Assert.AreEqual("var 𠀭=\"foo\"", minified.Code);
+            Assert.False(minified.HasErrors);
         }
 
         [Test]
@@ -101,11 +97,9 @@ namespace NUglify.Tests.Core
             // make sure that a \u that isn't a hex escape is preserved.
             // although it SHOULD throw an error for not being a valid unicode escape.
             var source = "var \\umberland = 'north';";
-            var minifier = new Minifier();
-            var minified = minifier.MinifyJavaScript(source);
-
+            var minified = Uglify.Js(source);
             string firstErrorCode = null;
-            foreach (var error in minifier.ErrorList)
+            foreach (var error in minified.Errors)
             {
                 Trace.WriteLine(error.ToString());
                 if (firstErrorCode == null)
@@ -114,8 +108,8 @@ namespace NUglify.Tests.Core
                 }
             }
 
-            Assert.AreEqual("var \\umberland=\"north\"", minified);
-            Assert.AreEqual(1, minifier.ErrorList.Count);
+            Assert.AreEqual("var \\umberland=\"north\"", minified.Code);
+            Assert.AreEqual(1, minified.Errors.Count);
             Assert.AreEqual("JS1023", firstErrorCode);
         }
     }

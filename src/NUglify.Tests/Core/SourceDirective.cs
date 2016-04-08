@@ -78,7 +78,7 @@ namespace NUglify.Tests.Core
             Trace.WriteLine("");
 
             // parse the source, keeping track of the errors
-            var errors = new List<ContextError>();
+            var errors = new List<UglifyError>();
             var parser = new JSParser();
             parser.CompilerError += (sender, ea) =>
                 {

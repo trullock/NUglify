@@ -1,4 +1,4 @@
-// Minifier.cs
+// Uglify.cs
 //
 // Copyright 2010 Microsoft Corporation
 //
@@ -19,74 +19,56 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using NUglify.Css;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 using NUglify.JavaScript.Visitors;
 
 namespace NUglify
 {
     /// <summary>
-    /// Minifier class for quick minification of JavaScript or Stylesheet code without needing to
+    /// Results of a <see cref="Uglify.Css(string,NUglify.Css.CssSettings,NUglify.JavaScript.CodeSettings)"/> or 
+    /// <see cref="Uglify.Js(string,NUglify.JavaScript.CodeSettings)"/> operation.
+    /// </summary>
+    public struct UgliflyResult
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UgliflyResult"/> struct.
+        /// </summary>
+        /// <param name="code">The uglified code.</param>
+        /// <param name="errors">The errors.</param>
+        public UgliflyResult(string code, List<UglifyError> errors)
+        {
+            Code = code;
+            Errors = errors;
+        }
+
+        /// <summary>
+        /// Gets the the uglified code. May ne null if <see cref="HasErrors"/> is <c>true</c>.
+        /// </summary>
+        public string Code { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance has errors.
+        /// </summary>
+        public bool HasErrors => Errors != null && Errors.Count > 0;
+
+        /// <summary>
+        /// Gets the errors. Empty if no errors.
+        /// </summary>
+        public List<UglifyError> Errors { get; }
+    }
+
+    /// <summary>
+    /// Uglify class for quick minification of JavaScript or Stylesheet code without needing to
     /// access or modify any abstract syntax tree nodes. Just put in source code and get our minified
     /// code as strings.
     /// </summary>
-    public class Minifier
+    public sealed class Uglify
     {
-        #region Properties
+        // Don't use static class, as we don't expect to using static as the method names are already short (Js, Css)
 
-        /// <summary>
-        /// Warning level threshold for reporting errors.
-        /// Default value is zero: syntax/run-time errors.
-        /// </summary>
-        public int WarningLevel
+        private Uglify()
         {
-            get; set;
-        }
-
-        /// <summary>
-        /// File name to use in error reporting.
-        /// Default value is null: use Minify... method name.
-        /// </summary>
-        public string FileName
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// Collection of ContextError objects found during minification process
-        /// </summary>
-        public ICollection<ContextError> ErrorList { get { return m_errorList; } }
-        private List<ContextError> m_errorList; // = null;
-
-        /// <summary>
-        /// Collection of any error strings found during the crunch process.
-        /// </summary>
-        public ICollection<string> Errors
-        {
-            get 
-            { 
-                var errorList = new List<string>(ErrorList.Count);
-                foreach (var error in ErrorList)
-                {
-                    errorList.Add(error.ToString());
-                }
-                return errorList;
-            }
-        }
-
-        #endregion
-
-        #region JavaScript methods
-
-        /// <summary>
-        /// MinifyJavaScript JS string passed to it using default code minification settings.
-        /// The ErrorList property will be set with any errors found during the minification process.
-        /// </summary>
-        /// <param name="source">source Javascript</param>
-        /// <returns>minified Javascript</returns>
-        public string MinifyJavaScript(string source)
-        {
-            // just pass in default settings
-            return MinifyJavaScript(source, new CodeSettings());
         }
 
         /// <summary>
@@ -96,22 +78,47 @@ namespace NUglify
         /// <param name="source">source Javascript</param>
         /// <param name="codeSettings">code minification settings</param>
         /// <returns>minified Javascript</returns>
-        public string MinifyJavaScript(string source, CodeSettings codeSettings)
+        public static UgliflyResult Js(string source, CodeSettings codeSettings)
         {
+            // just pass in default settings
+            return Js(source, null, codeSettings);
+        }
+
+        /// <summary>
+        /// Crunched JS string passed to it, returning crunched string.
+        /// The ErrorList property will be set with any errors found during the minification process.
+        /// </summary>
+        /// <param name="source">source Javascript</param>
+        /// <param name="fileName">File name to use in error reporting. Default is <c>input</c></param>
+        /// <param name="codeSettings">code minification settings</param>
+        /// <returns>minified Javascript</returns>
+        public static UgliflyResult Js(string source, string fileName = null, CodeSettings codeSettings = null)
+        {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            fileName = fileName ?? "input";
+            codeSettings = codeSettings ?? new CodeSettings();
+
             // default is an empty string
-            var crunched = string.Empty;
+            string crunched;
 
             // reset the errors builder
-            m_errorList = new List<ContextError>();
+            var errorList = new List<UglifyError>();
 
             // create the parser and hook the engine error event
             var parser = new JSParser();
-            parser.CompilerError += OnJavaScriptError;
+            parser.CompilerError += (sender, e) =>
+            {
+                var error = e.Error;
+                if (error.Severity <= codeSettings.WarningLevel)
+                {
+                    errorList.Add(error);
+                }
+            };
 
             var sb = StringBuilderPool.Acquire();
             try
             {
-                var preprocessOnly = codeSettings != null && codeSettings.PreprocessOnly;
+                var preprocessOnly = codeSettings.PreprocessOnly;
                 using (var stringWriter = new StringWriter(sb, CultureInfo.InvariantCulture))
                 {
                     if (preprocessOnly)
@@ -120,20 +127,20 @@ namespace NUglify
                     }
 
                     // parse the input
-                    var scriptBlock = parser.Parse(new DocumentContext(source) { FileContext = this.FileName }, codeSettings);
+                    var scriptBlock = parser.Parse(new DocumentContext(source) { FileContext = fileName }, codeSettings);
                     if (scriptBlock != null && !preprocessOnly)
                     {
                         // we'll return the crunched code
-                        if (codeSettings != null && codeSettings.Format == JavaScriptFormat.JSON)
+                        if (codeSettings.Format == JavaScriptFormat.JSON)
                         {
                             // we're going to use a different output visitor -- one
                             // that specifically returns valid JSON.
                             if (!JsonOutputVisitor.Apply(stringWriter, scriptBlock, codeSettings))
                             {
-                                m_errorList.Add(new ContextError()
+                                errorList.Add(new UglifyError()
                                     {
                                         Severity = 0,
-                                        File = this.FileName,
+                                        File = fileName,
                                         Message = CommonStrings.InvalidJSONOutput,
                                     });
                             }
@@ -145,7 +152,7 @@ namespace NUglify
 
                             // if we are asking for a symbols map, give it a chance to output a little something
                             // to the minified file.
-                            if (codeSettings != null && codeSettings.SymbolsMap != null)
+                            if (codeSettings.SymbolsMap != null)
                             {
                                 codeSettings.SymbolsMap.EndFile(stringWriter, codeSettings.LineTerminator);
                             }
@@ -157,10 +164,10 @@ namespace NUglify
             }
             catch (Exception e)
             {
-                m_errorList.Add(new ContextError()
+                errorList.Add(new UglifyError()
                     {
                         Severity = 0,
-                        File = this.FileName,
+                        File = fileName,
                         Message = e.Message,
                     });
                 throw;
@@ -170,24 +177,13 @@ namespace NUglify
                 sb.Release();
             }
 
-            return crunched;
+            return new UgliflyResult(crunched, errorList);
         }
 
-        #endregion
-
-        #region CSS methods
-
-#if !JSONLY
-        /// <summary>
-        /// MinifyJavaScript CSS string passed to it using default code minification settings.
-        /// The ErrorList property will be set with any errors found during the minification process.
-        /// </summary>
-        /// <param name="source">source Javascript</param>
-        /// <returns>minified Javascript</returns>
-        public string MinifyStyleSheet(string source)
+        public static UgliflyResult Css(string source, CssSettings settings = null,
+            CodeSettings scriptSettings = null)
         {
-            // just pass in default settings
-            return MinifyStyleSheet(source, new CssSettings(), new CodeSettings());
+            return Css(source, null, settings, scriptSettings);
         }
 
         /// <summary>
@@ -195,45 +191,39 @@ namespace NUglify
         /// The ErrorList property will be set with any errors found during the minification process.
         /// </summary>
         /// <param name="source">CSS Source</param>
-        /// <param name="settings">CSS minification settings</param>
-        /// <returns>Minified StyleSheet</returns>
-        public string MinifyStyleSheet(string source, CssSettings settings)
-        {
-            // just pass in default settings
-            return MinifyStyleSheet(source, settings, new CodeSettings());
-        }
-
-        /// <summary>
-        /// Minifies the CSS stylesheet passes to it using the given settings, returning the minified results
-        /// The ErrorList property will be set with any errors found during the minification process.
-        /// </summary>
-        /// <param name="source">CSS Source</param>
+        /// <param name="fileName">File name to use in error reporting. Default is <c>input</c></param>
         /// <param name="settings">CSS minification settings</param>
         /// <param name="scriptSettings">JS minification settings to use for expression-minification</param>
         /// <returns>Minified StyleSheet</returns>
-        public string MinifyStyleSheet(string source, CssSettings settings, CodeSettings scriptSettings)
+        public static UgliflyResult Css(string source, string fileName, CssSettings settings = null, CodeSettings scriptSettings = null)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            fileName = fileName ?? "input";
+            settings = settings ?? new CssSettings();
+            scriptSettings = scriptSettings ?? new CodeSettings();
+
             // initialize some values, including the error list (which shoudl start off empty)
-            string minifiedResults = string.Empty;
-            m_errorList = new List<ContextError>();
+            string minifiedResults;
+            var errorList = new List<UglifyError>();
 
             // create the parser object and if we specified some settings,
             // use it to set the Parser's settings object
-            CssParser parser = new CssParser();
-            parser.FileContext = FileName;
-
-            if (settings != null)
+            var parser = new CssParser
             {
-                parser.Settings = settings;
-            }
-
-            if (scriptSettings != null)
-            {
-                parser.JSSettings = scriptSettings;
-            }
+                FileContext = fileName,
+                Settings = settings,
+                JSSettings = scriptSettings
+            };
 
             // hook the error handler
-            parser.CssError += new EventHandler<ContextErrorEventArgs>(OnCssError);
+            parser.CssError += (sender, e) =>
+            {
+                var error = e.Error;
+                if (error.Severity <= settings.WarningLevel)
+                {
+                    errorList.Add(error);
+                }
+            };
 
             // try parsing the source and return the results
             try
@@ -242,41 +232,15 @@ namespace NUglify
             }
             catch (Exception e)
             {
-                m_errorList.Add(new ContextError()
+                errorList.Add(new UglifyError()
                     {
                         Severity = 0,
-                        File = this.FileName,
+                        File = fileName,
                         Message = e.Message,
                     });
                 throw;
             }
-            return minifiedResults;
+            return new UgliflyResult(minifiedResults, errorList);
         }
-#endif
-        #endregion
-
-        #region Error-handling Members
-
-#if !JSONLY
-        private void OnCssError(object sender, ContextErrorEventArgs e)
-        {
-            var error = e.Error;
-            if (error.Severity <= WarningLevel)
-            {
-                m_errorList.Add(error);
-            }
-        }
-#endif
-
-        private void OnJavaScriptError(object sender, ContextErrorEventArgs e)
-        {
-            var error = e.Error;
-            if (error.Severity <= WarningLevel)
-            {
-                m_errorList.Add(error);
-            }
-        }
-
-        #endregion
     }
 }

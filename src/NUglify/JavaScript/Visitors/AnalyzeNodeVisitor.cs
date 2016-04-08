@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 using SwitchStatement = NUglify.JavaScript.Syntax.SwitchStatement;
 

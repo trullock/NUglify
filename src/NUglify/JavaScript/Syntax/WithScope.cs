@@ -15,6 +15,7 @@
 // limitations under the License.
 
 using System.Reflection;
+using NUglify.Helpers;
 
 namespace NUglify.JavaScript.Syntax
 {

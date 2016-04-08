@@ -21,6 +21,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 using NUglify.JavaScript.Syntax;
 using NUglify.JavaScript.Visitors;
@@ -31,10 +32,10 @@ namespace NUglify
     {
         #region file processing
 
-        private int ProcessJSFile(IList<InputGroup> inputGroups, SwitchParser switchParser, StringBuilder outputBuilder)
+        private int ProcessJSFile(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, StringBuilder outputBuilder)
         {
             var returnCode = 0;
-            var settings = switchParser.JSSettings;
+            var settings = uglifyCommandParser.JSSettings;
             var currentSourceOrigin = SourceOrigin.Project;
 
             // blank line before
@@ -50,7 +51,7 @@ namespace NUglify
                 {
                     // ignore severity values greater than our severity level
                     // also ignore errors that are in our ignore list (if any)
-                    if (error.Severity <= switchParser.WarningLevel)
+                    if (error.Severity <= uglifyCommandParser.WarningLevel)
                     {
                         // we found an error
                         m_errorsFound = true;
@@ -147,13 +148,13 @@ namespace NUglify
                 }
             }
 
-            if (switchParser.AnalyzeMode)
+            if (uglifyCommandParser.AnalyzeMode)
             {
                 // blank line before
                 WriteProgress();
 
                 // output our report
-                CreateReport(parser.GlobalScope, switchParser);
+                CreateReport(parser.GlobalScope, uglifyCommandParser);
             }
 
             return returnCode;
@@ -307,11 +308,11 @@ namespace NUglify
                             // add any rename pairs
                             foreach (var pair in config.RenameIdentifiers)
                             {
-                                m_switchParser.JSSettings.AddRenamePair(pair.Key, pair.Value);
+                                uglifyCommandParser.JSSettings.AddRenamePair(pair.Key, pair.Value);
                             }
 
                             // add any no-rename identifiers
-                            m_switchParser.JSSettings.SetNoAutoRenames(config.NoRenameIdentifiers);
+                            uglifyCommandParser.JSSettings.SetNoAutoRenames(config.NoRenameIdentifiers);
                         }
                     }
                 }
@@ -328,21 +329,21 @@ namespace NUglify
         
         #region reporting methods
 
-        private void CreateReport(GlobalScope globalScope, SwitchParser switchParser)
+        private void CreateReport(GlobalScope globalScope, UglifyCommandParser uglifyCommandParser)
         {
             string reportText;
             using (var writer = new StringWriter(CultureInfo.InvariantCulture))
             {
-                using (IScopeReport scopeReport = CreateScopeReport(switchParser))
+                using (IScopeReport scopeReport = CreateScopeReport(uglifyCommandParser))
                 {
-                    scopeReport.CreateReport(writer, globalScope, switchParser.JSSettings.MinifyCode);
+                    scopeReport.CreateReport(writer, globalScope, uglifyCommandParser.JSSettings.MinifyCode);
                 }
                 reportText = writer.ToString();
             }
 
             if (!string.IsNullOrEmpty(reportText))
             {
-                if (string.IsNullOrEmpty(switchParser.ReportPath))
+                if (string.IsNullOrEmpty(uglifyCommandParser.ReportPath))
                 {
                     // no report path specified; send to console
                     WriteProgress(reportText);
@@ -353,7 +354,7 @@ namespace NUglify
                     // report path specified -- write to the file.
                     // don't append; use UTF-8 as the output format.
                     // let any exceptions bubble up.
-                    using (var writer = new StreamWriter(switchParser.ReportPath, false, new UTF8Encoding(false)))
+                    using (var writer = new StreamWriter(uglifyCommandParser.ReportPath, false, new UTF8Encoding(false)))
                     {
                         writer.Write(reportText);
                     }
@@ -361,13 +362,13 @@ namespace NUglify
             }
         }
 
-        private static IScopeReport CreateScopeReport(SwitchParser switchParser)
+        private static IScopeReport CreateScopeReport(UglifyCommandParser uglifyCommandParser)
         {
             // check the switch parser for a report format.
             // At this time we only have two: XML or DEFAULT. If it's XML, use
             // the XML report; all other values use the default report.
             // No error checking at this time. 
-            if (string.CompareOrdinal(switchParser.ReportFormat, "XML") == 0)
+            if (string.CompareOrdinal(uglifyCommandParser.ReportFormat, "XML") == 0)
             {
                 return new XmlScopeReport();
             }

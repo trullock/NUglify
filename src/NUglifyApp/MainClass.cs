@@ -26,6 +26,7 @@ using System.Resources;
 using System.Security;
 using System.Text;
 using System.Xml;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 
 namespace NUglify
@@ -89,7 +90,7 @@ namespace NUglify
         /// <summary>
         /// object to turn the command-line into settings object
         /// </summary>
-        private SwitchParser m_switchParser;
+        private UglifyCommandParser uglifyCommandParser;
 
         // simply echo the input code, not the crunched code
         private bool m_echoInput;// = false;
@@ -209,12 +210,12 @@ namespace NUglify
             }
 
             // create the switch parser and hook the events we care about
-            m_switchParser = new SwitchParser();
-            m_switchParser.UnknownParameter += OnUnknownParameter;
+            uglifyCommandParser = new UglifyCommandParser();
+            uglifyCommandParser.UnknownParameter += OnUnknownParameter;
 
-            m_switchParser.CssOnlyParameter += (sender, ea) => { InputTypeHint(CodeType.StyleSheet); };
-            m_switchParser.JSOnlyParameter += (sender, ea) => { InputTypeHint(CodeType.JavaScript); };
-            m_switchParser.InvalidSwitch += (sender, ea) =>
+            uglifyCommandParser.CssOnlyParameter += (sender, ea) => { InputTypeHint(CodeType.StyleSheet); };
+            uglifyCommandParser.JSOnlyParameter += (sender, ea) => { InputTypeHint(CodeType.JavaScript); };
+            uglifyCommandParser.InvalidSwitch += (sender, ea) =>
             {
                 if (ea.ParameterPart == null)
                 {
@@ -229,7 +230,7 @@ namespace NUglify
             };
 
             // and go
-            m_switchParser.Parse(args);
+            uglifyCommandParser.Parse(args);
 
             // if we are going to use an xml file for input, we don't care about finding out which
             // code path to take (JS or CSS) at this point. The XML file can contain either or both.
@@ -340,7 +341,7 @@ namespace NUglify
                         m_echoInput = true;
 
                         // -pretty and -echo are not compatible
-                        if (m_switchParser.AnalyzeMode)
+                        if (uglifyCommandParser.AnalyzeMode)
                         {
                             throw new NotSupportedException(NUglify.PrettyAndEchoArgs);
                         }
@@ -412,7 +413,7 @@ namespace NUglify
                         {
                             // there is. parse the boolean flag part
                             bool safeFlag;
-                            if (SwitchParser.BooleanSwitch(ea.ParameterPart.ToUpperInvariant(), true, out safeFlag))
+                            if (UglifyCommandParser.BooleanSwitch(ea.ParameterPart.ToUpperInvariant(), true, out safeFlag))
                             {
                                 m_symbolMap.SafeHeader = safeFlag;
                             }
@@ -427,7 +428,7 @@ namespace NUglify
                     case "MODERN":
                         // some special settings for modern apps
                         // kill a couple optimizations
-                        m_switchParser.JSSettings.KillSwitch |= (long)(
+                        uglifyCommandParser.JSSettings.KillSwitch |= (long)(
                             TreeModifications.CombineAdjacentExpressionStatements | TreeModifications.BooleanLiteralsToNotOperators);
 
                         // and skip the size-comparison output
@@ -457,7 +458,7 @@ namespace NUglify
                                 // there is. See if it's a boolean false. If it is, then we want no output 
                                 // and we don't follow this switch with an output path.
                                 bool outputSwitch;
-                                if (SwitchParser.BooleanSwitch(ea.ParameterPart.ToUpperInvariant(), true, out outputSwitch))
+                                if (UglifyCommandParser.BooleanSwitch(ea.ParameterPart.ToUpperInvariant(), true, out outputSwitch))
                                 {
                                     // the no-output flag is the opposite of the boolean flag
                                     m_noOutput = !outputSwitch;
@@ -547,8 +548,8 @@ namespace NUglify
                         }
 
                         // add it to the settings objects
-                        m_switchParser.JSSettings.AddResourceStrings(resourceStrings);
-                        m_switchParser.CssSettings.AddResourceStrings(resourceStrings);
+                        uglifyCommandParser.JSSettings.AddResourceStrings(resourceStrings);
+                        uglifyCommandParser.CssSettings.AddResourceStrings(resourceStrings);
 
                         break;
 
@@ -568,7 +569,7 @@ namespace NUglify
                         {
                             m_outputTimer = true;
                         }
-                        else if (SwitchParser.BooleanSwitch(ea.ParameterPart.ToUpperInvariant(), true, out flag))
+                        else if (UglifyCommandParser.BooleanSwitch(ea.ParameterPart.ToUpperInvariant(), true, out flag))
                         {
                             m_outputTimer = flag;
                         }
@@ -791,7 +792,7 @@ namespace NUglify
                 if (!defaultArguments.IsNullOrWhiteSpace())
                 {
                     // parse the default arguments right on top of the ones we parsed from the command-line
-                    m_switchParser.Parse(defaultArguments);
+                    uglifyCommandParser.Parse(defaultArguments);
                 }
 
                 // if any one crunch group is writing to stdout, then we need to make sure
@@ -832,7 +833,7 @@ namespace NUglify
 
                 // create clones of the overall settings to which we will then apply
                 // our changes for this current crunch group
-                var switchParser = m_switchParser.Clone();
+                var switchParser = uglifyCommandParser.Clone();
                 switchParser.Parse(outputGroup.GetConfigArguments(m_configuration));
 
                 TextWriter symbolMapWriter = null;
@@ -951,7 +952,7 @@ namespace NUglify
 
         #region ProcessCrunchGroup method
 
-        private int ProcessOutputGroup(OutputGroup outputGroup, SwitchParser switchParser)
+        private int ProcessOutputGroup(OutputGroup outputGroup, UglifyCommandParser uglifyCommandParser)
         {
             int retVal = 0;
 
@@ -980,7 +981,7 @@ namespace NUglify
 
             // combine all the source files into a single string, delimited with ///#SOURCE comments so we can track
             // back to the original files. Also, add all the raw input to the echo builder.
-            var inputGroups = outputGroup.ReadInputGroups(switchParser.EncodingInputName);
+            var inputGroups = outputGroup.ReadInputGroups(uglifyCommandParser.EncodingInputName);
 
             // we are always going to build the combined raw sources so we can run some comparison calcs on them.
             var rawBuilder = new StringBuilder(8192);
@@ -1008,9 +1009,9 @@ namespace NUglify
             // of the file.
             if (m_echoInput
                 && outputGroup.CodeType == CodeType.JavaScript
-                && switchParser.JSSettings.ResourceStrings.Count > 0)
+                && uglifyCommandParser.JSSettings.ResourceStrings.Count > 0)
             {
-                foreach (var resourceStrings in switchParser.JSSettings.ResourceStrings)
+                foreach (var resourceStrings in uglifyCommandParser.JSSettings.ResourceStrings)
                 {
                     string resourceObject = CreateJSFromResourceStrings(resourceStrings);
                     outputBuilder.Append(resourceObject);
@@ -1023,20 +1024,20 @@ namespace NUglify
                     if (hasCrunchSpecificResources)
                     {
                         // add to the CSS list
-                        outputGroup.ProcessResourceStrings(switchParser.CssSettings.ResourceStrings, null);
+                        outputGroup.ProcessResourceStrings(uglifyCommandParser.CssSettings.ResourceStrings, null);
                     }
 
-                    retVal = ProcessCssFile(inputGroups, switchParser, outputBuilder);
+                    retVal = ProcessCssFile(inputGroups, uglifyCommandParser, outputBuilder);
                     break;
 
                 case CodeType.JavaScript:
                     if (hasCrunchSpecificResources)
                     {
                         // add to the JS list
-                        outputGroup.ProcessResourceStrings(switchParser.JSSettings.ResourceStrings, c_defaultResourceObjectName);
+                        outputGroup.ProcessResourceStrings(uglifyCommandParser.JSSettings.ResourceStrings, c_defaultResourceObjectName);
                     }
 
-                    retVal = ProcessJSFile(inputGroups, switchParser, outputBuilder);
+                    retVal = ProcessJSFile(inputGroups, uglifyCommandParser, outputBuilder);
                     break;
 
                 default:
@@ -1044,7 +1045,7 @@ namespace NUglify
             }
 
             // if we are pretty-printing, add a newline
-            if (switchParser.PrettyPrint)
+            if (uglifyCommandParser.PrettyPrint)
             {
                 outputBuilder.AppendLine();
             }
@@ -1052,7 +1053,7 @@ namespace NUglify
             string outputCode = outputBuilder.ToString();
 
             // use the output group encoding. If none specified, use the default output encoding.
-            var encodingOutput = outputGroup.GetEncoding(switchParser.EncodingOutputName);
+            var encodingOutput = outputGroup.GetEncoding(uglifyCommandParser.EncodingOutputName);
 
             // now write the final output file
             if (outputGroup.Path.IsNullOrWhiteSpace())
@@ -1112,7 +1113,7 @@ namespace NUglify
                             EncoderFallback fallback = null;
                             if (outputGroup.CodeType == CodeType.JavaScript)
                             {
-                                fallback = new JSEncoderFallback();
+                                fallback = new JsEncoderFallback();
                             }
                             else if (outputGroup.CodeType == CodeType.StyleSheet)
                             {
@@ -1222,14 +1223,14 @@ namespace NUglify
                 {
                     // file exists. determine read-only status
                     var isReadOnly = (File.GetAttributes(filePath) & FileAttributes.ReadOnly) != 0;
-                    if (!isReadOnly && m_switchParser.Clobber != ExistingFileTreatment.Preserve)
+                    if (!isReadOnly && uglifyCommandParser.Clobber != ExistingFileTreatment.Preserve)
                     {
                         // file exists, it's not read-only, and we don't have noclobber set.
                         // noclobber will never write over an existing file, but auto will
                         // write over an existing file that doesn't have read-only set.
                         doWrite = true;
                     }
-                    else if (isReadOnly && m_switchParser.Clobber == ExistingFileTreatment.Overwrite)
+                    else if (isReadOnly && uglifyCommandParser.Clobber == ExistingFileTreatment.Overwrite)
                     {
                         // file exists, it IS read-only, and we want to clobber.
                         // noclobber will never write over an existing file, and auto

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 using NUglify.JavaScript.Syntax;
 

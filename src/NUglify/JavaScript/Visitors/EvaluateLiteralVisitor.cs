@@ -15,6 +15,7 @@
 // limitations under the License.
 
 using System;
+using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript.Visitors

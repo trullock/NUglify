@@ -1,4 +1,4 @@
-// JSEncoderFallback.cs
+// JsEncoderFallback.cs
 //
 // Copyright 2010 Microsoft Corporation
 //
@@ -16,11 +16,12 @@
 
 using System;
 using System.Text;
+using NUglify.Helpers;
 
 namespace NUglify
 {
     /// <summary>
-    /// JSEncoderFallback encodes invalid encoder characters as Unicode escapes:
+    /// JsEncoderFallback encodes invalid encoder characters as Unicode escapes:
     ///       \uXXXX
     /// up to six characters per escape. If the UNICODE character is in the upper
     /// range, we need to encode it as a surrogate pair:
@@ -31,15 +32,15 @@ namespace NUglify
     /// in order to get write access to the EncoderFallback property.
     /// <example>
     ///     var encoding = (Encoding)Encoding.ASCII.Clone();
-    ///     encoding.EncoderFallback = new JSEncoderFallback();
+    ///     encoding.EncoderFallback = new JsEncoderFallback();
     ///     var bytes = encoding.GetBytes(crunchedCode);
     ///     Console.WriteLine(encoding.GetString(bytes));
     /// </example>
     /// </summary>
-    public class JSEncoderFallback : EncoderFallback
+    public class JsEncoderFallback : EncoderFallback
     {
         // constructor
-        public JSEncoderFallback() { }
+        public JsEncoderFallback() { }
 
         /// <summary>
         /// return a fallback buffer for this encoding fallback

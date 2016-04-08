@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using NUglify.Helpers;
 
 namespace NUglify.Css
 {
@@ -2193,7 +2194,7 @@ namespace NUglify.Css
             //        4 == this is just not right
 
             string message = CssStrings.ResourceManager.GetString(error.ToString(), CssStrings.Culture).FormatInvariant(args);
-            OnScannerError(new ContextError()
+            OnScannerError(new UglifyError()
                 {
                     IsError = severity < 2,
                     Severity = severity,
@@ -2209,7 +2210,7 @@ namespace NUglify.Css
 
         public event EventHandler<ContextErrorEventArgs> ScannerError;
 
-        protected void OnScannerError(ContextError error)
+        protected void OnScannerError(UglifyError error)
         {
             if (ScannerError != null)
             {

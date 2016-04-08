@@ -10,8 +10,7 @@ namespace NUglify.Tests
     {
         public static void Main()
         {
-            var minifier = new Minifier();
-            var result = minifier.MinifyStyleSheet("div { color: #FFF; }");
+            var result = Uglify.Css("div { color: #FFF; }");
         }
     }
 }

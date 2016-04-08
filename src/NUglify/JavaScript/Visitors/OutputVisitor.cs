@@ -20,6 +20,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript.Visitors

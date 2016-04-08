@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript.Visitors

@@ -748,7 +748,7 @@ namespace NUglify.Tests.JavaScript.Common
             Trace.WriteLine(string.Format("Expecting error 0x{0:X}", expectedErrorCode));*/
 
             // if we were passed a string containing command-line settings...
-            var switchParser = new SwitchParser();
+            var switchParser = new UglifyCommandParser();
             if (!string.IsNullOrEmpty(settingsSwitches))
             {
                 // parse the string now
@@ -769,7 +769,7 @@ namespace NUglify.Tests.JavaScript.Common
             var testPassed = true;
             var expectedErrorList = new List<JSError>(expectedErrorArray);
 
-            var errorList = new List<ContextError>();
+            var errorList = new List<UglifyError>();
             var parser = new JSParser();
             parser.CompilerError += (source, e) =>
                 {
@@ -986,7 +986,7 @@ namespace NUglify.Tests.JavaScript.Common
                     // that also uses the UNICODE "replacement character" for things it doesn't understand.
                     encoding = Encoding.GetEncoding(
                         encodingName,
-                        new JSEncoderFallback(),
+                        new JsEncoderFallback(),
                         new DecoderReplacementFallback("\uFFFD"));
                 }
                 catch (ArgumentException)

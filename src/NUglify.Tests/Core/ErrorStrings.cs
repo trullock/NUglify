@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using NUglify.Css;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 using NUnit.Framework;
 

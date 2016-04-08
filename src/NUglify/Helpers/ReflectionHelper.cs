@@ -6,7 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace NUglify
+#if NET_20
+namespace System.Runtime.CompilerServices
+{
+    // Summary:
+    //     Indicates that a method is an extension method, or that a class or assembly
+    //     contains extension methods.
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Method)]
+    internal sealed class ExtensionAttribute : Attribute
+    {
+        // Summary:
+        //     Initializes a new instance of the System.Runtime.CompilerServices.ExtensionAttribute
+        //     class.
+        public ExtensionAttribute() { }
+    }
+}
+#endif
+
+namespace NUglify.Helpers
 {
     internal static class ReflectionHelper
     {
@@ -37,7 +54,7 @@ namespace NUglify
         }
         public static IEnumerable<MethodInfo> GetDeclaredMethods(this Type type)
         {
-            return type.GetMethods(BindingFlags.Public|BindingFlags.Static|BindingFlags.DeclaredOnly);
+            return type.GetMethods(BindingFlags.Public|BindingFlags.Static|BindingFlags.DeclaredOnly|BindingFlags.Instance);
         }
         public static T GetCustomAttribute<T>(this MemberInfo memberInfo) where T : Attribute
         {

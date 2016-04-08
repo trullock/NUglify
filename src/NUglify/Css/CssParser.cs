@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 using NUglify.JavaScript.Visitors;
 
@@ -367,11 +368,11 @@ namespace NUglify.Css
                         if (!m_scanner.EndOfFile)
                         {
                             int errorNumber = (int)CssErrorCode.ExpectedEndOfFile;
-                            OnCssError(new ContextError()
+                            OnCssError(new UglifyError()
                                 {
                                     IsError = true,
                                     Severity = 0,
-                                    Subcategory = ContextError.GetSubcategory(0),
+                                    Subcategory = UglifyError.GetSubcategory(0),
                                     File = FileContext,
                                     ErrorNumber = errorNumber,
                                     ErrorCode = "CSS{0}".FormatInvariant(errorNumber & (0xffff)),
@@ -4734,11 +4735,11 @@ namespace NUglify.Css
 
             string message = ErrorFormat(errorNumber).FormatInvariant(arguments);
             Debug.Assert(!message.IsNullOrWhiteSpace());
-            var error = new ContextError()
+            var error = new UglifyError()
                 {
                     IsError = severity < 2,
                     Severity = severity,
-                    Subcategory = ContextError.GetSubcategory(severity),
+                    Subcategory = UglifyError.GetSubcategory(severity),
                     File = FileContext,
                     ErrorNumber = (int)errorNumber,
                     ErrorCode = "CSS{0}".FormatInvariant(((int)errorNumber) & (0xffff)),
@@ -4763,7 +4764,7 @@ namespace NUglify.Css
 
         public event EventHandler<ContextErrorEventArgs> CssError;
 
-        protected void OnCssError(ContextError cssError)
+        protected void OnCssError(UglifyError cssError)
         {
             if (CssError != null && cssError != null && !Settings.IgnoreAllErrors)
             {

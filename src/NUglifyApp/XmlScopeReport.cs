@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
+using NUglify.Helpers;
 using NUglify.JavaScript;
 using NUglify.JavaScript.Syntax;
 using NUglify.JavaScript.Visitors;

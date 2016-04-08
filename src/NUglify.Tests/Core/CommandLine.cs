@@ -57,7 +57,7 @@ namespace NUglify.Tests.Core
                 Trace.Write(string.Format("Parsing test {0}, command line: ", ++ndxTest));
                 Trace.WriteLine(test.CommandLine ?? "<null pointer>");
 
-                var argsActual = SwitchParser.ToArguments(test.CommandLine);
+                var argsActual = UglifyCommandParser.ToArguments(test.CommandLine);
                 var argsExpected = test.Arguments;
 
                 // assume succesful unless proven otherwise
@@ -129,7 +129,7 @@ namespace NUglify.Tests.Core
                 Trace.WriteLine(test.CommandLine ?? "<null pointer>");
 
                 // parse the command line
-                var switchParser = new SwitchParser();
+                var switchParser = new UglifyCommandParser();
                 switchParser.Parse(test.CommandLine);
 
                 // assume succesful unless proven otherwise

@@ -23,7 +23,7 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Ajax Minifier Library")]
+[assembly: AssemblyTitle("Ajax Uglify Library")]
 [assembly: AssemblyDescription("JavaScript and CSS minification Library")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

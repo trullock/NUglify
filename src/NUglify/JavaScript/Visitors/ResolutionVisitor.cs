@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 using SwitchStatement = NUglify.JavaScript.Syntax.SwitchStatement;
 

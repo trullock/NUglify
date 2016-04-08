@@ -15,6 +15,8 @@
 // limitations under the License.
 
 
+using NUglify.Helpers;
+
 namespace NUglify.JavaScript.Syntax
 {
     public static class BindingTransform

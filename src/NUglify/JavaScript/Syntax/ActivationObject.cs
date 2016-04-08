@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using NUglify.Helpers;
 using NUglify.JavaScript.Visitors;
 
 namespace NUglify.JavaScript.Syntax

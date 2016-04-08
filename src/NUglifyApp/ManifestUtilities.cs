@@ -23,6 +23,7 @@ using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using NUglify.Helpers;
 
 #if NET_20
 
@@ -430,7 +431,7 @@ namespace NUglify
         {
             if (codeType == CodeType.JavaScript)
             {
-                return new JSEncoderFallback();
+                return new JsEncoderFallback();
             }
             else if (codeType == CodeType.StyleSheet)
             {

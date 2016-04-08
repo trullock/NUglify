@@ -1,4 +1,5 @@
-﻿using NUglify.JavaScript;
+﻿using NUglify.Helpers;
+using NUglify.JavaScript;
 using NUglify.JavaScript.Syntax;
 using NUglify.JavaScript.Visitors;
 using NUnit.Framework;

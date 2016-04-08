@@ -54,13 +54,12 @@ namespace NUglify.Tests.Core
         /// <returns>minified results</returns>
         private static string ProcessCode(string source, CodeSettings codeSettings)
         {
-            var minifier = new Minifier();
-            var minified = minifier.MinifyJavaScript(source, codeSettings);
+            var minified = Uglify.Js(source, codeSettings);
 
             // shouldn't be any errors
-            Assert.IsTrue(minifier.ErrorList.Count == 0);
+            Assert.IsFalse(minified.HasErrors);
 
-            return minified;
+            return minified.Code;
         }
     }
 }

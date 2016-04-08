@@ -15,6 +15,7 @@
 // limitations under the License.
 
 using System.Diagnostics;
+using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 using SwitchStatement = NUglify.JavaScript.Syntax.SwitchStatement;
 

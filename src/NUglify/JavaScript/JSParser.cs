@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 using NUglify.JavaScript.Visitors;
 
@@ -556,7 +557,7 @@ namespace NUglify.JavaScript
             }
         }
 
-        internal void OnCompilerError(ContextError se)
+        internal void OnCompilerError(UglifyError se)
         {
             if (CompilerError != null && !m_settings.IgnoreAllErrors)
             {
