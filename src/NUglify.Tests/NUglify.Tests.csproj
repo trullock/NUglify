@@ -96,6 +96,7 @@
     <Compile Include="JavaScript\Encodings.cs" />
     <Compile Include="JavaScript\FunctionCreation.cs" />
     <Compile Include="JavaScript\GlobalMethods.cs" />
+    <Compile Include="JavaScript\JsPopular.cs" />
     <Compile Include="JavaScript\LexicalDeclarations.cs" />
     <Compile Include="JavaScript\Literals.cs" />
     <Compile Include="JavaScript\Modules.cs" />
