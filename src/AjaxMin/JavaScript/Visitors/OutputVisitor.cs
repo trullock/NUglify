@@ -107,6 +107,7 @@ namespace AjaxMin.JavaScript.Visitors
             m_onNewLine = true;
             m_requiresSeparator = new RequiresSeparatorVisitor(m_settings);
             m_hasReplacementTokens = settings.ReplacementTokens.Count > 0;
+            writer.NewLine = settings.LineTerminator;
         }
 
         /// <summary>
