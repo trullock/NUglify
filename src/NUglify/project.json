@@ -46,6 +46,17 @@
     "NUglify.JavaScript.JScript": "JavaScript/JScript.resx"
   },
   "frameworks": {
+    "net20": {
+      "compilationOptions": {
+        "define": [ "NET_20", "NETPRE45" ]
+      },
+      "frameworkAssemblies": {
+        "mscorlib": "",
+        "System": "",
+        "System.Core": "",
+        "System.Xml": ""
+      }
+    },
     "net35": {
       "compilationOptions": {
         "define": [ "NET_35", "NETPRE45" ]
