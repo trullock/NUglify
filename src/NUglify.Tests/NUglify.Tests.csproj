@@ -77,6 +77,7 @@
     <Compile Include="Css\Switches.cs" />
     <Compile Include="Css\Syntax.cs" />
     <Compile Include="Css\Values.cs" />
+    <Compile Include="Html\TestHtmlParser.cs" />
     <Compile Include="JavaScript\ArrayHandling.cs" />
     <Compile Include="JavaScript\AspNet.cs" />
     <Compile Include="JavaScript\Assignments.cs" />
