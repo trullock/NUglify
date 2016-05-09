@@ -9,5 +9,9 @@ namespace NUglify.Html
     /// <seealso cref="NUglify.Html.HtmlRawNode" />
     public class HtmlDOCTYPENode : HtmlRawNode
     {
+        public override string ToString()
+        {
+            return $"html-DOCTYPE: {Text}";
+        }
     }
 }

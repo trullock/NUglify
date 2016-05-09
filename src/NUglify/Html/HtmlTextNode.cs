@@ -11,7 +11,7 @@ namespace NUglify.Html
     {
         public override string ToString()
         {
-            return Text.ToString();
+            return $"html-text: {Text}";
         }
     }
 }

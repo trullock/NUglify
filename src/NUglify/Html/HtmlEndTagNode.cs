@@ -13,7 +13,7 @@ namespace NUglify.Html
 
         public override string ToString()
         {
-            return $"</{Name}>";
+            return $"html-end-tag: </{Name}>";
         }
     }
 }

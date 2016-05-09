@@ -29,7 +29,7 @@ namespace NUglify.Html
 
         public override string ToString()
         {
-            return $"<{(IsProcessingInstruction ? "?" : string.Empty)}{Name}{(Attributes.Count > 0?" ..." : string.Empty)}>";
+            return $"html-tag: <{(IsProcessingInstruction ? "?" : string.Empty)}{Name}{(Attributes.Count > 0?" ..." : string.Empty)}>";
         }
     }
 }

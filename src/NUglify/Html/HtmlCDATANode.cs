@@ -11,7 +11,7 @@ namespace NUglify.Html
     {
         public override string ToString()
         {
-            return $"<![CDATA[${Text}]]>";
+            return $"html-CDATA: <![CDATA[${Text}]]>";
         }
     }
 }
