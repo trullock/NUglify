@@ -21,6 +21,8 @@ namespace NUglify.Html
 
         public bool IsProcessingInstruction { get; set; }
 
+        public bool IsClosed { get; set; }
+
         public List<HtmlAttribute> Attributes { get; }
 
         public string Content { get; set; }

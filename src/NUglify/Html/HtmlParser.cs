@@ -23,15 +23,19 @@ namespace NUglify.Html
         private int line;
         private int column;
         private bool nextLine;
+        private bool isEof;
+        private string sourceFileName;
 
-        public HtmlParser(TextReader reader)
+        public HtmlParser(TextReader reader, string sourceFileName = null)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
+            this.sourceFileName = sourceFileName;
             this.reader = reader;
             builder = new StringBuilder();
             nameBuilder = new StringBuilder();
             valueBuilder = new StringBuilder();
             Errors = new List<UglifyError>();
+            column = -1;
         }
 
         public bool HasError => Errors.Count > 0;
@@ -83,31 +87,34 @@ namespace NUglify.Html
                 }
                 else
                 {
-                    Error($"Invalid character '{c}' found while parsing <! special tag");
+                    // We don't output an error in this case. TODO: Is this correct? Find what is the correct behavior in such a case
+                    // Error($"Invalid character '{c}' found while parsing <! special tag");
                     GetNode<HtmlTextNode>().Text.Append("<!");
                 }
             }
             else if (c == '/')
             {
                 c = NextChar();
-                if (IsTagChar(c))
+                if (IsAlpha(c))
                 {
                     // Parse end-tag
                     TryProcessEndTag();
                 }
                 else
                 {
-                    Error($"Invalid character '{c}' found while parsing </ end tag");
+                    // We don't output an error in this case. TODO: Is this correct? Find what is the correct behavior in such a case
+                    // Error($"Invalid character '{c}' found while parsing </ end tag");
                     GetNode<HtmlTextNode>().Text.Append("</");
                 }
             }
-            else if (IsTagChar(c) || c == '?')
+            else if (IsAlpha(c) || c == '?')
             {
                 TryProcessStartTag();
             }
             else
             {
-                Error($"Invalid character '{c}' found while parsing <");
+                // We don't output an error in this case. TODO: Is this correct? Find what is the correct behavior in such a case
+                // Error($"Invalid character '{c}' found while parsing <");
                 GetNode<HtmlTextNode>().Text.Append('<');
             }
         }
@@ -145,14 +152,18 @@ namespace NUglify.Html
                 }
                 else
                 {
-                    Error($"Invalid character '{c}' found while parsing <!DOCTYPE");
+                    Error(c == 0
+                        ? $"Invalid EOF found while parsing <!DOCTYPE"
+                        : $"Invalid character '{c}' found while parsing <!DOCTYPE");
 
                     GetNode<HtmlTextNode>().Text.Append(tag.Text);
                 }
             }
             else
             {
-                Error($"Invalid character '{c}' found while parsing <!DOCTYPE");
+                Error(c == 0
+                    ? $"Invalid EOF found while parsing <!DOCTYPE"
+                    : $"Invalid character '{c}' found while parsing <!DOCTYPE");
 
                 GetNode<HtmlTextNode>().Text.Append("<!").Append(builder);
             }
@@ -201,7 +212,9 @@ namespace NUglify.Html
             }
             else
             {
-                Error($"Invalid character '{c}' found while parsing <![CDATA[");
+                Error(c == 0
+                    ? $"Invalid EOF found while parsing <![CDATA["
+                    : $"Invalid character '{c}' found while parsing <![CDATA[");
 
                 GetNode<HtmlTextNode>().Text.Append("<!").Append(builder);
                 builder.Clear();
@@ -238,6 +251,7 @@ namespace NUglify.Html
             while(true)
             {
                 c = NextChar();
+                // TODO: not entirely correct for <? as we should only test for Alpha for the first char
                 if (IsTagChar(c) || c == '-') // Allow - character (unlike html)
                 {
                     builder.Append(c);
@@ -247,18 +261,6 @@ namespace NUglify.Html
                 {
                     break;
                 }
-            }
-            // If we don't have a space, or a closing >, this is not a valid start tag
-            // we just early exit
-
-            if (!(IsSpace(c) || c == '>'))
-            {
-                Error($"Invalid character '{c}' found while parsing tag");
-
-                GetNode<HtmlTextNode>().Text.Append('<');
-                GetNode<HtmlTextNode>().Text.Append(builder);
-                nameBuilder.Clear();
-                return;
             }
 
             var tag = new HtmlTagNode()
@@ -307,8 +309,9 @@ namespace NUglify.Html
                         goto exit;
                     case '/':
                         c = NextChar();
-                        if (c == '>')
+                        if (c == '>' && !isProcessingInstruction)
                         {
+                            tag.IsClosed = true;
                             c = NextChar();
                             isValid = true;
                         }
@@ -449,22 +452,32 @@ namespace NUglify.Html
                 nodes.Add(tag);
                 node = tag;
 
-                if (string.Equals(tag.Name, "script", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(tag.Name, "style", StringComparison.OrdinalIgnoreCase))
+                // The content of SCRIPT and STYLE are considered as CDATA
+                // and are expecting to mach either a </script> or </style>
+                if (string.Equals(tag.Name, "SCRIPT", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(tag.Name, "STYLE", StringComparison.OrdinalIgnoreCase))
                 {
-                    ParseUntilEndTag(tag);
+                    ParseCDATATagContent(tag);
                 }
             }
             else
             {
-                Error($"Invalid character '{c}' found while parsing tag");
+                var tagName = tag.Name;
+                if (isProcessingInstruction)
+                {
+                    tagName = "?" + tagName + "?";
+                }
+
+                Error(c == 0
+                    ? $"Invalid EOF found while parsing <{tagName}>"
+                    : $"Invalid character '{c}' found while parsing <{tagName}>");
 
                 GetNode<HtmlTextNode>().Text.Append('<');
                 GetNode<HtmlTextNode>().Text.Append(builder);
             }
         }
 
-        private void ParseUntilEndTag(HtmlTagNode tag)
+        private void ParseCDATATagContent(HtmlTagNode tag)
         {
             var temp = new StringBuilder();
             builder.Clear();
@@ -481,45 +494,39 @@ namespace NUglify.Html
                     c = NextChar();
                     if (c == '/')
                     {
-                        c= NextChar();
-                        if (c == 's' || c == 'S')
+                        temp.Clear();
+
+                        c = NextChar();
+                        bool tagFound = false;
+                        if (TryParse("SCRIPT", false, temp))
                         {
-                            temp.Clear();
-                            bool tagFound = false;
-                            if (TryParse("script", false, temp))
+                            tagFound = true;
+                        }
+                        else if (temp.Length == 1) // if script was partially match, we should have only the 's'
+                        {
+                            if (TryParse("TYLE", false, temp))
                             {
                                 tagFound = true;
                             }
-                            else if (temp.Length == 1)
-                            {
-                                if (TryParse("tyle", false, temp))
-                                {
-                                    tagFound = true;
-                                }
-                            }
-
-                            if (tagFound)
-                            {
-                                while (IsSpace(c))
-                                {
-                                    temp.Append(c);
-                                    c = NextChar();
-                                }
-
-                                if (c == '>')
-                                {
-                                    c = NextChar();
-                                    break;
-                                }
-                            }
-
-                            builder.Append("</");
-                            builder.Append(temp);
                         }
-                        else
+
+                        if (tagFound)
                         {
-                            builder.Append("</");
+                            while (IsSpace(c))
+                            {
+                                temp.Append(c);
+                                c = NextChar();
+                            }
+
+                            if (c == '>')
+                            {
+                                c = NextChar();
+                                break;
+                            }
                         }
+
+                        builder.Append("</");
+                        builder.Append(temp);
                     }
                     else
                     {
@@ -562,16 +569,20 @@ namespace NUglify.Html
                 c = NextChar();
             }
 
+            var tagName = nameBuilder.ToString();
+
             if (c == '>')
             {
-                var tag = new HtmlEndTagNode() {Name = nameBuilder.ToString()};
+                var tag = new HtmlEndTagNode() {Name = tagName };
                 node = tag;
                 nodes.Add(tag);
                 c = NextChar();
             }
             else
             {
-                Error($"Invalid character '{c}' found while parsing end tag");
+                Error(c == 0
+                    ? $"Invalid EOF found while parsing </{tagName}>"
+                    : $"Invalid character '{c}' found while parsing </{tagName}>");
 
                 GetNode<HtmlTextNode>().Text.Append("</");
                 GetNode<HtmlTextNode>().Text.Append(builder);
@@ -606,12 +617,16 @@ namespace NUglify.Html
                             return;
                         }
 
-                        Error($"Invalid character '{c}' found while parsing comment");
+                        Error(c == 0
+                            ? $"Invalid EOF found while parsing comment"
+                            : $"Invalid character '{c}' found while parsing comment");
                         commentNode.Text.Append("--");
                     }
                     else
                     {
-                        Error($"Invalid character '{c}' found while parsing comment");
+                        Error(c == 0
+                            ? $"Invalid EOF found while parsing comment"
+                            : $"Invalid character '{c}' found while parsing comment");
                         commentNode.Text.Append('-');
                     }
                 }
@@ -665,39 +680,41 @@ namespace NUglify.Html
         {
             Errors.Add(new UglifyError()
             {
-                StartColumn = column,
-                EndColumn = column,
-                StartLine = line,
-                EndLine = line,
+                File = sourceFileName,
+                IsError = true,
+                StartColumn = column + 1,
+                EndColumn = column + 1,
+                StartLine = line + 1,
+                EndLine = line + 1,
                 Message = message
             });
         }
 
         private char NextChar()
         {
+            if (isEof)
+            {
+                return (char)0;
+            }
+
             if (nextLine)
             {
-                column = 0;
+                column = -1;
                 line++;
                 nextLine = false;
             }
+            column++;
 
             var nextChar = reader.Read();
             if (nextChar < 0)
             {
+                isEof = true;
                 nextChar = 0;
             }
             var nc = (char)nextChar;
-            if (nc != 0)
+            if (nc == '\n')
             {
-                if (nc == '\n')
-                {
-                    nextLine = true;
-                }
-                else
-                {
-                    column++;
-                }
+                nextLine = true;
             }
             return nc;
         }

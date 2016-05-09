@@ -48,7 +48,8 @@ namespace NUglify.Tests.Html
         public void TestOpenTagInvalidAttributes()
         {
             AssertHtml("<html @x>",
-                "text: <html @x>"
+                "text: <html @x>",
+                "(1,7): error : Invalid character '@' found while parsing <html>"
                 );
         }
 
@@ -56,7 +57,8 @@ namespace NUglify.Tests.Html
         public void TestOpenTagInvalidAttributes2()
         {
             AssertHtml("<html x=>",
-                "text: <html x=>"
+                "text: <html x=>",
+                "(1,9): error : Invalid character '>' found while parsing <html>"
                 );
         }
 
@@ -72,7 +74,16 @@ namespace NUglify.Tests.Html
         public void TestOpenTagWithAttributesInvalid()
         {
             AssertHtml("<html x=1 y='test' z=\"test2 w a b c>",
-                "text: <html x=1 y='test' z=\"test2 w a b c>"
+                "text: <html x=1 y='test' z=\"test2 w a b c>",
+                "(1,37): error : Invalid EOF found while parsing <html>"
+                );
+        }
+
+        [Test]
+        public void TestOpenCloseTag()
+        {
+            AssertHtml("<br/>",
+                "[tag: <br />"
                 );
         }
 
@@ -88,7 +99,8 @@ namespace NUglify.Tests.Html
         public void TestProcessingInstructionInvalid()
         {
             AssertHtml("<?xml version=\"1.0\">",
-                "text: <?xml version=\"1.0\">"
+                "text: <?xml version=\"1.0\">",
+                "(1,20): error : Invalid character '>' found while parsing <?xml?>"
                 );
         }
 
@@ -96,7 +108,8 @@ namespace NUglify.Tests.Html
         public void TestBadTag()
         {
             AssertHtml("<html   t",
-                "text: <html   t"
+                "text: <html   t",
+                "(1,10): error : Invalid EOF found while parsing <html>"
                 );
         }
 
@@ -120,7 +133,8 @@ namespace NUglify.Tests.Html
         public void TestEndTagInvalid2()
         {
             AssertHtml("</html",
-                "text: </html"
+                "text: </html",
+                "(1,7): error : Invalid EOF found while parsing </html>"
                 );
         }
 
@@ -152,7 +166,8 @@ namespace NUglify.Tests.Html
         public void TestCDATAIncomplete()
         {
             AssertHtml("<![CDATA[This is a test",
-                "text: <![CDATA[This is a test"
+                "text: <![CDATA[This is a test",
+                "(1,24): error : Invalid EOF found while parsing CDATA"
                 );
         }
 
@@ -184,7 +199,8 @@ namespace NUglify.Tests.Html
         public void TestCDATANot1()
         {
             AssertHtml("<![C ]]>",
-                "text: <![C ]]>"
+                "text: <![C ]]>",
+                "(1,5): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
 
@@ -192,7 +208,8 @@ namespace NUglify.Tests.Html
         public void TestCDATANot2()
         {
             AssertHtml("<![CD ]]>",
-                "text: <![CD ]]>"
+                "text: <![CD ]]>",
+                "(1,6): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
 
@@ -200,7 +217,8 @@ namespace NUglify.Tests.Html
         public void TestCDATANot3()
         {
             AssertHtml("<![CDA ]]>",
-                "text: <![CDA ]]>"
+                "text: <![CDA ]]>",
+                "(1,7): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
 
@@ -208,7 +226,8 @@ namespace NUglify.Tests.Html
         public void TestCDATANot4()
         {
             AssertHtml("<![CDAT ]]>",
-                "text: <![CDAT ]]>"
+                "text: <![CDAT ]]>",
+                "(1,8): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
 
@@ -216,7 +235,8 @@ namespace NUglify.Tests.Html
         public void TestCDATANot5()
         {
             AssertHtml("<![CDATA ]]>",
-                "text: <![CDATA ]]>"
+                "text: <![CDATA ]]>",
+                "(1,9): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
 
@@ -248,7 +268,8 @@ namespace NUglify.Tests.Html
         public void TestDOCTYPEInvalid1()
         {
             AssertHtml("<!DOCTYPE html",
-                "text: <!DOCTYPE html"
+                "text: <!DOCTYPE html",
+                "(1,15): error : Invalid EOF found while parsing <!DOCTYPE"
                 );
         }
 
@@ -256,7 +277,8 @@ namespace NUglify.Tests.Html
         public void TestDOCTYPEInvalid2()
         {
             AssertHtml("<!DOCTYPEX>",
-                "text: <!DOCTYPEX>"
+                "text: <!DOCTYPEX>",
+                "(1,10): error : Invalid character 'X' found while parsing <!DOCTYPE"
                 );
         }
 
@@ -303,6 +325,13 @@ namespace NUglify.Tests.Html
             var nodes = parser.Parse();
 
             var output = Dump(nodes);
+            if (parser.HasError)
+            {
+                foreach (var error in parser.Errors)
+                {
+                    output.Add(error.ToString());
+                }
+            }
             Assert.AreEqual(expected, output);
         }
 
@@ -339,6 +368,10 @@ namespace NUglify.Tests.Html
                     if (tagNode.IsProcessingInstruction)
                     {
                         builder.Append("?");
+                    }
+                    if (tagNode.IsClosed)
+                    {
+                        builder.Append(" /");
                     }
                     builder.Append(">");
 
