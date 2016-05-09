@@ -24,7 +24,7 @@ namespace NUglify.Html
         private int column;
         private bool nextLine;
         private bool isEof;
-        private string sourceFileName;
+        private readonly string sourceFileName;
 
         public HtmlParser(TextReader reader, string sourceFileName = null)
         {
@@ -265,7 +265,7 @@ namespace NUglify.Html
 
             var tag = new HtmlTagNode()
             {
-                Name = nameBuilder.ToString(),
+                Name = nameBuilder.ToString().ToLowerInvariant(),
                 IsProcessingInstruction = isProcessingInstruction
             };
             HtmlAttribute currentAttribute = null;
@@ -454,8 +454,7 @@ namespace NUglify.Html
 
                 // The content of SCRIPT and STYLE are considered as CDATA
                 // and are expecting to mach either a </script> or </style>
-                if (!tag.IsClosed && (string.Equals(tag.Name, "SCRIPT", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(tag.Name, "STYLE", StringComparison.OrdinalIgnoreCase)))
+                if (!tag.IsClosed && ((tag.Name == "script") || (tag.Name == "style")))
                 {
                     ParseCDATATagContent(tag);
                 }
@@ -569,7 +568,7 @@ namespace NUglify.Html
                 c = NextChar();
             }
 
-            var tagName = nameBuilder.ToString();
+            var tagName = nameBuilder.ToString().ToLowerInvariant();
 
             if (c == '>')
             {
