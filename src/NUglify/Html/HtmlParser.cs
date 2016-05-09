@@ -454,8 +454,8 @@ namespace NUglify.Html
 
                 // The content of SCRIPT and STYLE are considered as CDATA
                 // and are expecting to mach either a </script> or </style>
-                if (string.Equals(tag.Name, "SCRIPT", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(tag.Name, "STYLE", StringComparison.OrdinalIgnoreCase))
+                if (!tag.IsClosed && (string.Equals(tag.Name, "SCRIPT", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(tag.Name, "STYLE", StringComparison.OrdinalIgnoreCase)))
                 {
                     ParseCDATATagContent(tag);
                 }
@@ -600,10 +600,11 @@ namespace NUglify.Html
                 return;
             }
 
-            var commentNode = GetNode<HtmlCommentNode>();
+            var commentNode = new HtmlCommentNode();
             while (true)
             {
                 c = NextChar();
+
                 if (c == '-')
                 {
                     c = NextChar();
@@ -614,27 +615,28 @@ namespace NUglify.Html
                         {
                             // Don't eat last char, as it will be processed by main loop
                             c = NextChar();
+
+                            node = commentNode;
+                            nodes.Add(node);
                             return;
                         }
 
-                        Error(c == 0
-                            ? $"Invalid EOF found while parsing comment"
-                            : $"Invalid character '{c}' found while parsing comment");
                         commentNode.Text.Append("--");
-                    }
-                    else
-                    {
+                        GetNode<HtmlTextNode>().Text.Append("<!--").Append(commentNode.Text);
                         Error(c == 0
-                            ? $"Invalid EOF found while parsing comment"
-                            : $"Invalid character '{c}' found while parsing comment");
-                        commentNode.Text.Append('-');
+                            ? $"Invalid EOF found while parsing <!--"
+                            : $"Invalid character '{c}' found while parsing <!--");
+
+                        return;
                     }
+                    commentNode.Text.Append("-");
                 }
 
                 if (c == '\0')
                 {
-                    Error($"Invalid EOF '{c}' found while parsing comment");
-                    break;
+                    GetNode<HtmlTextNode>().Text.Append("<!--").Append(commentNode.Text);
+                    Error($"Invalid EOF found while parsing comment");
+                    return;
                 }
 
                 commentNode.Text.Append(c);

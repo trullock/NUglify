@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 using NUglify.Html;
 using NUnit.Framework;
@@ -88,6 +89,15 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void TestOpenCloseTagError()
+        {
+            AssertHtml("<br\n/?>",
+                "text: <br\n/?>",
+                "(2,2): error : Invalid character '?' found while parsing <br>"
+                );
+        }
+
+        [Test]
         public void TestProcessingInstructionSimple()
         {
             AssertHtml("<?xml version=\"1.0\"?>",
@@ -143,6 +153,32 @@ namespace NUglify.Tests.Html
         {
             AssertHtml("<!-- test -->",
                 "comm:  test "
+                );
+        }
+
+        [Test]
+        public void TestComment2()
+        {
+            AssertHtml("<!---10-->",
+                "comm: -10"
+                );
+        }
+
+        [Test]
+        public void TestComment3()
+        {
+            AssertHtml("<!----10--->",
+                "text: <!----10--->",
+                "(1,7): error : Invalid character '1' found while parsing <!--"
+                );
+        }
+
+        [Test]
+        public void TestCommentInvalidEOF()
+        {
+            AssertHtml("<!----10---",
+                "text: <!----10---",
+                "(1,12): error : Invalid EOF found while parsing comment"
                 );
         }
 
@@ -319,6 +355,26 @@ namespace NUglify.Tests.Html
             AssertHtml("<style>abc</style def</style     >", "[tag: <style> content: abc</style def");
         }
 
+        //[Test]
+        //public void TestRemote()
+        //{
+        //    var urls = new List<string>()
+        //    {
+        //        "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/big.html",
+        //        "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/horrible.html",
+        //        "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/small.html"
+        //    };
+
+        //    var webClient = new WebClient();
+        //    foreach (var url in urls)
+        //    {
+        //        var html = webClient.DownloadString(url);
+        //        var parser = new HtmlParser(new StringReader(html));
+        //        var nodes = parser.Parse();
+        //        // Assert.False(parser.HasError);
+        //    }
+        //}
+
         private void AssertHtml(string input, params string[] expected)
         {
             var parser = new HtmlParser(new StringReader(input));
@@ -394,7 +450,7 @@ namespace NUglify.Tests.Html
                 }
                 else if (node is HtmlTextNode)
                 {
-                    builder.Append($"text: ").Append(node);
+                    builder.Append($"text: ").Append(((HtmlTextNode)node).Text);
                 }
                 else if (node is HtmlDOCTYPENode)
                 {
