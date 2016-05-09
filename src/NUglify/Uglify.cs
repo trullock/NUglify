@@ -20,6 +20,7 @@ using System.Globalization;
 using System.IO;
 using NUglify.Css;
 using NUglify.Helpers;
+using NUglify.Html;
 using NUglify.JavaScript;
 using NUglify.JavaScript.Visitors;
 
@@ -37,6 +38,13 @@ namespace NUglify
         private Uglify()
         {
         }
+
+        public static UgliflyResult Html(string source, string sourceFileName = null)
+        {
+            var minifier = new HtmlMinifier(source, sourceFileName);
+            return minifier.Minify();
+        }
+
 
         /// <summary>
         /// Crunched JS string passed to it, returning crunched string.
