@@ -178,7 +178,7 @@ namespace NUglify.Tests.Html
         {
             AssertHtml("<!----10---",
                 "text: <!----10---",
-                "(1,12): error : Invalid EOF found while parsing comment"
+                "(1,7): error : Invalid character '1' found while parsing <!--"
                 );
         }
 
