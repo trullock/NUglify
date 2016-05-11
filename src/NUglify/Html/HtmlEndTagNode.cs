@@ -18,10 +18,5 @@ namespace NUglify.Html
         {
             return $"html-end-tag: </{Name}>";
         }
-
-        public override void OutputTo(StringBuilder builder)
-        {
-            builder.Append("</").Append(Name).Append(">");
-        }
     }
 }

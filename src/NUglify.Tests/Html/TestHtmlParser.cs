@@ -29,6 +29,15 @@ namespace NUglify.Tests.Html
                 );
         }
 
+
+        [Test]
+        public void TestParagraphClose()
+        {
+            AssertHtml("<html><body><div><p>test<p>test2</div></body></html>",
+                "text: This is a test"
+                );
+        }
+
         [Test]
         public void TestText()
         {
@@ -355,35 +364,35 @@ namespace NUglify.Tests.Html
             AssertHtml("<style>abc</style def</style     >", "[tag: <style> content: abc</style def");
         }
 
-        //[Test]
-        //public void TestRemote()
-        //{
-        //    var urls = new List<string>()
-        //    {
-        //        "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/big.html",
-        //        "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/horrible.html",
-        //        "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/small.html"
-        //    };
+        [Test]
+        public void TestRemote()
+        {
+            var urls = new List<string>()
+            {
+                "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/big.html",
+                "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/horrible.html",
+                "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/small.html"
+            };
 
-        //    var webClient = new WebClient();
-        //    foreach (var url in urls)
-        //    {
-        //        var html = webClient.DownloadString(url);
-        //        var parser = new HtmlParser(new StringReader(html));
-        //        var nodes = parser.Parse();
-        //        // Assert.False(parser.HasError);
-        //    }
-        //}
+            var webClient = new WebClient();
+            foreach (var url in urls)
+            {
+                var html = webClient.DownloadString(url);
+                var parser = new HtmlParser(html);
+                var nodes = parser.Parse();
+                // Assert.False(parser.HasError);
+            }
+        }
 
         private void AssertHtml(string input, params string[] expected)
         {
-            var parser = new HtmlParser(new StringReader(input));
+            var parser = new HtmlParser(input);
             var nodes = parser.Parse();
 
             var output = Dump(nodes);
-            if (parser.HasError)
+            if (parser.HasErrors)
             {
-                foreach (var error in parser.Errors)
+                foreach (var error in parser.Messages)
                 {
                     output.Add(error.ToString());
                 }
@@ -391,78 +400,78 @@ namespace NUglify.Tests.Html
             Assert.AreEqual(expected, output);
         }
 
-        private List<string> Dump(List<HtmlNode> nodes)
+        private List<string> Dump(HtmlDocument doc)
         {
             var stringNodes = new List<string>();
-            var builder = new StringBuilder();
-            foreach (var node in nodes)
-            {
-                builder.Clear();
-                if (node is HtmlTagNode)
-                {
-                    var tagNode = (HtmlTagNode) node;
-                    builder.Append($"[tag: <");
-                    if (tagNode.IsProcessingInstruction)
-                    {
-                        builder.Append("?");
-                    }
-                    builder.Append(tagNode.Name);
-                    if (tagNode.Attributes.Count > 0)
-                    {
-                        foreach (var attr in tagNode.Attributes)
-                        {
-                            builder.Append(" ");
-                            builder.Append(attr.Name);
-                            if (attr.Value != null)
-                            {
-                                builder.Append("='");
-                                builder.Append(attr.Value);
-                                builder.Append("'");
-                            }
-                        }
-                    }
-                    if (tagNode.IsProcessingInstruction)
-                    {
-                        builder.Append("?");
-                    }
-                    if (tagNode.IsClosed)
-                    {
-                        builder.Append(" /");
-                    }
-                    builder.Append(">");
+            //var builder = new StringBuilder();
+            //foreach (var node in nodes)
+            //{
+            //    builder.Clear();
+            //    if (node is HtmlElement)
+            //    {
+            //        var tagNode = (HtmlTagNode) node;
+            //        builder.Append($"[tag: <");
+            //        if (tagNode.IsProcessingInstruction)
+            //        {
+            //            builder.Append("?");
+            //        }
+            //        builder.Append(tagNode.Name);
+            //        if (tagNode.Attributes.Count > 0)
+            //        {
+            //            foreach (var attr in tagNode.Attributes)
+            //            {
+            //                builder.Append(" ");
+            //                builder.Append(attr.Name);
+            //                if (attr.Value != null)
+            //                {
+            //                    builder.Append("='");
+            //                    builder.Append(attr.Value);
+            //                    builder.Append("'");
+            //                }
+            //            }
+            //        }
+            //        if (tagNode.IsProcessingInstruction)
+            //        {
+            //            builder.Append("?");
+            //        }
+            //        if (tagNode.IsClosed)
+            //        {
+            //            builder.Append(" /");
+            //        }
+            //        builder.Append(">");
 
-                    if (tagNode.Content != null)
-                    {
-                        builder.Append(" content: ").Append(tagNode.Content);
-                    }
-                }
-                else if (node is HtmlEndTagNode)
-                {
-                    builder.Append($"]tag: </").Append(((HtmlEndTagNode) node).Name).Append(">");
-                }
-                else if (node is HtmlCommentNode)
-                {
-                    builder.Append($"comm: ").Append(((HtmlCommentNode)node).Text);
-                }
-                else if (node is HtmlCDATANode)
-                {
-                    builder.Append($"cdat: ").Append(((HtmlCDATANode)node).Text);
-                }
-                else if (node is HtmlTextNode)
-                {
-                    builder.Append($"text: ").Append(((HtmlTextNode)node).Text);
-                }
-                else if (node is HtmlDOCTYPENode)
-                {
-                    builder.Append($"doct: ").Append(((HtmlDOCTYPENode)node).Text);
-                }
-                else
-                {
-                    builder.Append($"invalid: ").Append(node);
-                }
+            //        if (tagNode.Content != null)
+            //        {
+            //            builder.Append(" content: ").Append(tagNode.Content);
+            //        }
+            //    }
+            //    else if (node is HtmlEndTagNode)
+            //    {
+            //        builder.Append($"]tag: </").Append(((HtmlEndTagNode) node).Name).Append(">");
+            //    }
+            //    else if (node is HtmlCommentNode)
+            //    {
+            //        builder.Append($"comm: ").Append(((HtmlCommentNode)node).Text);
+            //    }
+            //    else if (node is HtmlCDATANode)
+            //    {
+            //        builder.Append($"cdat: ").Append(((HtmlCDATANode)node).Text);
+            //    }
+            //    else if (node is HtmlTextNode)
+            //    {
+            //        builder.Append($"text: ").Append(((HtmlTextNode)node).Text);
+            //    }
+            //    else if (node is HtmlDOCTYPENode)
+            //    {
+            //        builder.Append($"doct: ").Append(((HtmlDOCTYPENode)node).Text);
+            //    }
+            //    else
+            //    {
+            //        builder.Append($"invalid: ").Append(node);
+            //    }
 
-                stringNodes.Add(builder.ToString());
-            }
+            //    stringNodes.Add(builder.ToString());
+            //}
 
             return stringNodes;
         }

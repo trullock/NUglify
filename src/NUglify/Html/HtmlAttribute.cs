@@ -6,8 +6,14 @@ namespace NUglify.Html
     /// <summary>
     /// A HTML attribute.
     /// </summary>
-    public class HtmlAttribute
+    public struct HtmlAttribute
     {
+        public HtmlAttribute(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
+
         public string Name { get; set; }
 
         public string Value { get; set; }

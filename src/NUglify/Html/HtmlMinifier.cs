@@ -28,13 +28,13 @@ namespace NUglify.Html
         public UgliflyResult Minify()
         {
 
-            var parser = new HtmlParser(new StringReader(html), sourceFileName);
+            var parser = new HtmlParser(html, sourceFileName);
 
-            nodes = parser.Parse();
-            if (parser.HasError)
+            //nodes = parser.Parse();
+            if (parser.HasErrors)
             {
                 nodes = null;
-                return new UgliflyResult(html, parser.Errors);
+                return new UgliflyResult(html, parser.Messages);
             }
 
             builder = new StringBuilder();
@@ -45,57 +45,56 @@ namespace NUglify.Html
 
         private void ProcessNodes()
         {
-            foreach (var node in nodes)
-            {
-                var textNode = node as HtmlTextNode;
-                if (textNode != null)
-                {
-                    if (noTextStrip > 0)
-                    {
-                        textNode.OutputTo(builder);
-                    }
-                    else
-                    {
-                        var text = textNode.Text.ToString();
-                        if (!IsEmptyOrWhitespace(text))
-                        {
-                            builder.Append(text);
-                        }
-                    }
-                }
-                else
-                {
-                    if (node is HtmlDOCTYPENode || node is HtmlCDATANode)
-                    {
-                        node.OutputTo(builder);
-                    }
-                    else if (node is HtmlCommentNode)
-                    {
-                        // SKIP
-                    }
-                    else if (node is HtmlTagNode)
-                    {
-                        node.OutputTo(builder);
-                        var tag = (HtmlTagNode) node;
-                        if (tag.Name == "pre" || tag.Name == "code")
-                        {
-                            noTextStrip++;
-                        }
-                    }
-                    else if (node is HtmlEndTagNode)
-                    {
-                        node.OutputTo(builder);
-                        var tag = (HtmlEndTagNode)node;
-                        if (tag.Name == "pre" || tag.Name == "code")
-                        {
-                            noTextStrip--;
-                            // Check unbalanced pre/code
-                        }
-                    }
-                }
-            }
+            //foreach (var node in nodes)
+            //{
+            //    var textNode = node as HtmlText;
+            //    if (textNode != null)
+            //    {
+            //        if (noTextStrip > 0)
+            //        {
+            //            textNode.OutputTo(builder);
+            //        }
+            //        else
+            //        {
+            //            var text = textNode.Slice.ToString();
+            //            if (!IsEmptyOrWhitespace(text))
+            //            {
+            //                builder.Append(text);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (node is HtmlDOCTYPE || node is HtmlCDATA)
+            //        {
+            //            node.OutputTo(builder);
+            //        }
+            //        else if (node is HtmlComment)
+            //        {
+            //            // SKIP
+            //        }
+            //        else if (node is HtmlTagNode)
+            //        {
+            //            node.OutputTo(builder);
+            //            var tag = (HtmlTagNode) node;
+            //            if (tag.Name == "pre" || tag.Name == "code")
+            //            {
+            //                noTextStrip++;
+            //            }
+            //        }
+            //        else if (node is HtmlEndTagNode)
+            //        {
+            //            node.OutputTo(builder);
+            //            var tag = (HtmlEndTagNode)node;
+            //            if (tag.Name == "pre" || tag.Name == "code")
+            //            {
+            //                noTextStrip--;
+            //                // Check unbalanced pre/code
+            //            }
+            //        }
+            //    }
+            //}
         }
-
 
         private static bool IsEmptyOrWhitespace(string s)
         {

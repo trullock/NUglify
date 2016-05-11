@@ -7,19 +7,14 @@ using System.Text;
 namespace NUglify.Html
 {
     /// <summary>
-    /// A DOCTYPE HTML tag.
+    /// A HTML comment node.
     /// </summary>
-    /// <seealso cref="NUglify.Html.HtmlRawNode" />
-    public class HtmlDOCTYPENode : HtmlRawNode
+    /// <seealso cref="HtmlTextBase" />
+    public class HtmlComment : HtmlTextBase
     {
         public override string ToString()
         {
-            return $"html-DOCTYPE: {Text}";
-        }
-
-        public override void OutputTo(StringBuilder builder)
-        {
-            builder.Append(Text);
+            return $"html-comment: <!--{Slice}-->";
         }
     }
 }

@@ -4,47 +4,50 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace NUglify.Html
 {
     public class HtmlParser
     {
-        private readonly TextReader reader;
-        private readonly StringBuilder builder;
-        private readonly StringBuilder nameBuilder;
-        private readonly StringBuilder valueBuilder;
+        private readonly string text;
+        private readonly StringBuilder tempBuilder;
 
-        private List<HtmlNode> nodes;
+        private readonly List<HtmlElement> stack;
         private HtmlNode node;
         private char c;
+        private int position;
         private int line;
         private int column;
         private bool nextLine;
         private bool isEof;
         private readonly string sourceFileName;
+        private int startTagPosition;
 
-        public HtmlParser(TextReader reader, string sourceFileName = null)
+
+        public HtmlParser(string text, string sourceFileName = null)
         {
-            if (reader == null) throw new ArgumentNullException(nameof(reader));
+            if (text == null) throw new ArgumentNullException(nameof(text));
             this.sourceFileName = sourceFileName;
-            this.reader = reader;
-            builder = new StringBuilder();
-            nameBuilder = new StringBuilder();
-            valueBuilder = new StringBuilder();
-            Errors = new List<UglifyError>();
+            this.text = text;
+            tempBuilder = new StringBuilder();
+            Messages = new List<UglifyError>();
+            position = -1;
             column = -1;
+            stack = new List<HtmlElement>();
         }
 
-        public bool HasError => Errors.Count > 0;
+        public bool HasErrors { get; private set; }
 
-        public List<UglifyError> Errors { get; }
+        public List<UglifyError> Messages { get; }
 
-        public List<HtmlNode> Parse()
+        private HtmlElement CurrentParent => stack[stack.Count - 1];
+
+        public HtmlDocument Parse()
         {
-            nodes = new List<HtmlNode>();
+            stack.Clear();
+            stack.Add(new HtmlDocument());
+
             c = NextChar();
             while (true)
             {
@@ -59,16 +62,19 @@ namespace NUglify.Html
                 }
                 else
                 {
-                    GetNode<HtmlTextNode>().Text.Append(c);
+                    AppendText(position, c);
                     c = NextChar();
                 }
             }
 
-            return nodes;
+            return HasErrors ? null : (HtmlDocument) stack[0];
         }
 
         private void TryProcessTag()
         {
+            // Save start tag position
+            startTagPosition = position;
+
             c = NextChar();
             if (c == '!')
             {
@@ -87,46 +93,43 @@ namespace NUglify.Html
                 }
                 else
                 {
-                    // We don't output an error in this case. TODO: Is this correct? Find what is the correct behavior in such a case
+                    // We don't output an error in this case. TODO: Is this correct? Check HTML specs to find out the correct behavior
                     // Error($"Invalid character '{c}' found while parsing <! special tag");
-                    GetNode<HtmlTextNode>().Text.Append("<!");
+                    AppendText(startTagPosition, position - 1);
                 }
             }
             else if (c == '/')
             {
                 c = NextChar();
-                if (IsAlpha(c))
+                if (c.IsTagChar())
                 {
                     // Parse end-tag
                     TryProcessEndTag();
                 }
                 else
                 {
-                    // We don't output an error in this case. TODO: Is this correct? Find what is the correct behavior in such a case
+                    // We don't output an error in this case. TODO: Is this correct? Check HTML specs to find out the correct behavior
                     // Error($"Invalid character '{c}' found while parsing </ end tag");
-                    GetNode<HtmlTextNode>().Text.Append("</");
+                    AppendText(startTagPosition, position - 1);
                 }
             }
-            else if (IsAlpha(c) || c == '?')
+            else if (c.IsTagChar() || c == '?')
             {
                 TryProcessStartTag();
             }
             else
             {
-                // We don't output an error in this case. TODO: Is this correct? Find what is the correct behavior in such a case
+                // We don't output an error in this case. TODO: Is this correct? Check HTML specs to find out the correct behavior
                 // Error($"Invalid character '{c}' found while parsing <");
-                GetNode<HtmlTextNode>().Text.Append('<');
+                AppendText(startTagPosition, position - 1);
             }
         }
 
         private void TryProcessDoctype()
         {
-            builder.Clear();
-            if (TryParse("DOCTYPE", false, builder))
+            tempBuilder.Clear();
+            if (TryParse("DOCTYPE", false, tempBuilder))
             {
-                var tag = new HtmlDOCTYPENode();
-                tag.Text.Append("<!DOCTYPE");
-
                 if (char.IsWhiteSpace(c) || c == '>')
                 {
                     while (true)
@@ -134,11 +137,8 @@ namespace NUglify.Html
                         if (c == 0)
                         {
                             Error($"Invalid EOF found while parsing <!DOCTYPE");
-
-                            GetNode<HtmlTextNode>().Text.Append(tag.Text);
                             return;
                         }
-                        tag.Text.Append(c);
                         if (c == '>')
                         {
                             c = NextChar();
@@ -147,16 +147,20 @@ namespace NUglify.Html
 
                         c = NextChar();
                     }
+
+                    var tag = new HtmlDOCTYPE
+                    {
+                        Slice = new StringSlice(text, startTagPosition, position - 1)
+                    };
+
                     node = tag;
-                    nodes.Add(tag);
+                    CurrentParent.AppendChild(node);
                 }
                 else
                 {
                     Error(c == 0
                         ? $"Invalid EOF found while parsing <!DOCTYPE"
                         : $"Invalid character '{c}' found while parsing <!DOCTYPE");
-
-                    GetNode<HtmlTextNode>().Text.Append(tag.Text);
                 }
             }
             else
@@ -164,19 +168,15 @@ namespace NUglify.Html
                 Error(c == 0
                     ? $"Invalid EOF found while parsing <!DOCTYPE"
                     : $"Invalid character '{c}' found while parsing <!DOCTYPE");
-
-                GetNode<HtmlTextNode>().Text.Append("<!").Append(builder);
             }
         }
 
         private void TryProcessCDATA()
         {
             int i = 0;
-            builder.Clear();
-            if (TryParse("[CDATA[", true, builder))
+            tempBuilder.Clear();
+            if (TryParse("[CDATA[", true, tempBuilder))
             {
-                var tag = new HtmlCDATANode();
-                tag.Text.Clear();
                 while (true)
                 {
                     if (c == ']')
@@ -190,34 +190,29 @@ namespace NUglify.Html
                                 c = NextChar();
                                 break;
                             }
-                            tag.Text.Append("]]");
-                        }
-                        else
-                        {
-                            tag.Text.Append(']');
                         }
                     }
                     else if (c == 0)
                     {
                         Error($"Invalid EOF found while parsing CDATA");
-
-                        GetNode<HtmlTextNode>().Text.Append("<![CDATA[").Append(tag.Text);
+                        tempBuilder.Clear();
                         return;
                     }
-                    tag.Text.Append(c);
                     c = NextChar();
                 }
+
+                var tag = new HtmlCDATA()
+                {
+                    Slice = new StringSlice(text, startTagPosition, position - 4)
+                };
                 node = tag;
-                nodes.Add(tag);
+                CurrentParent.AppendChild(node);
             }
             else
             {
                 Error(c == 0
                     ? $"Invalid EOF found while parsing <![CDATA["
                     : $"Invalid character '{c}' found while parsing <![CDATA[");
-
-                GetNode<HtmlTextNode>().Text.Append("<!").Append(builder);
-                builder.Clear();
             }
         }
 
@@ -234,8 +229,7 @@ namespace NUglify.Html
             //    Optionally, one or more space characters.
             //    Optionally, a "/" character, which may be present only if the element is a void element.
             //    A ">" character.
-            builder.Clear();
-            nameBuilder.Clear();
+            tempBuilder.Clear();
 
             var isProcessingInstruction = false;
             if (c == '?')
@@ -244,18 +238,16 @@ namespace NUglify.Html
             }
             else
             {
-                nameBuilder.Append(c);
+                tempBuilder.Append(c);
             }
 
-            builder.Append(c);
             while(true)
             {
                 c = NextChar();
                 // TODO: not entirely correct for <? as we should only test for Alpha for the first char
-                if (IsTagChar(c) || c == '-') // Allow - character (unlike html)
+                if (c.IsTagChar() || c == '-') // Allow - character (unlike html)
                 {
-                    builder.Append(c);
-                    nameBuilder.Append(c);
+                    tempBuilder.Append(c);
                 }
                 else
                 {
@@ -263,12 +255,13 @@ namespace NUglify.Html
                 }
             }
 
-            var tag = new HtmlTagNode()
+            var tag = new HtmlElement()
             {
-                Name = nameBuilder.ToString().ToLowerInvariant(),
+                Name = tempBuilder.ToString().ToLowerInvariant(),
                 IsProcessingInstruction = isProcessingInstruction
             };
-            HtmlAttribute currentAttribute = null;
+
+            bool hasAttribute = false;
 
             bool isValid = false;
             while (true)
@@ -276,10 +269,8 @@ namespace NUglify.Html
                 var hasWhitespaces = false;
 
                 // Skip any whitespaces
-                while (IsSpace(c))
+                while (c.IsSpace())
                 {
-                    builder.Append(c);
-
                     c = NextChar();
                     hasWhitespaces = true;
                 }
@@ -289,7 +280,6 @@ namespace NUglify.Html
                     case '\0':
                         goto exit;
                     case '?':
-                        builder.Append(c);
                         if (isProcessingInstruction)
                         {
                             c = NextChar();
@@ -315,14 +305,9 @@ namespace NUglify.Html
                             c = NextChar();
                             isValid = true;
                         }
-                        else
-                        {
-                            builder.Append('/');
-                        }
                         goto exit;
                     case '=':
-                        builder.Append('=');
-                        if (currentAttribute == null)
+                        if (!hasAttribute)
                         {
                             goto exit;
                         }
@@ -331,22 +316,17 @@ namespace NUglify.Html
                         while (true)
                         {
                             c = NextChar();
-                            if (IsSpace(c))
-                            {
-                                builder.Append(c);
-                            }
-                            else
+                            if (!c.IsSpace())
                             {
                                 break;
                             }
                         }
 
-                        valueBuilder.Clear();
+                        tempBuilder.Clear();
 
                         // Parse a quoted string
                         if (c == '\'' || c == '\"')
                         {
-                            builder.Append(c);
                             var openingStringChar = c;
                             while (true)
                             {
@@ -357,19 +337,13 @@ namespace NUglify.Html
                                 }
                                 if (c != openingStringChar)
                                 {
-                                    valueBuilder.Append(c);
-                                    builder.Append(c);
+                                    tempBuilder.Append(c);
                                 }
                                 else
                                 {
                                     break;
                                 }
                             }
-                            builder.Append(c);
-
-                            currentAttribute.Value = valueBuilder.ToString();
-                            valueBuilder.Clear();
-
                             c = NextChar();
                         }
                         else
@@ -387,8 +361,7 @@ namespace NUglify.Html
                                     break;
                                 }
                                 matchCount++;
-                                builder.Append(c);
-                                valueBuilder.Append(c);
+                                tempBuilder.Append(c);
                                 c = NextChar();
                             }
 
@@ -397,12 +370,15 @@ namespace NUglify.Html
                             {
                                 goto exit;
                             }
-
-                            currentAttribute.Value = valueBuilder.ToString();
-                            valueBuilder.Clear();
                         }
 
-                        currentAttribute = null;
+                        var attrIndex = tag.Attributes.Count - 1;
+                        var attr = tag.Attributes[attrIndex];
+                        attr.Value = tempBuilder.ToString();
+                        tag.Attributes[attrIndex] = attr;
+                        tempBuilder.Clear();
+
+                        hasAttribute = false;
                         continue;
                     default:
                         if (!hasWhitespaces)
@@ -411,22 +387,20 @@ namespace NUglify.Html
                         }
 
                         // Parse the attribute name
-                        if (!(IsAlpha(c) || c == '_' || c == ':'))
+                        if (!(c.IsAlpha() || c == '_' || c == ':'))
                         {
                             goto exit;
                         }
 
-                        nameBuilder.Clear();
-                        nameBuilder.Append(c);
-                        builder.Append(c);
+                        tempBuilder.Clear();
+                        tempBuilder.Append(c);
 
                         while (true)
                         {
                             c = NextChar();
-                            if (IsAlphaNumeric(c) || c == '_' || c == ':' || c == '.' || c == '-')
+                            if (c.IsAlphaNumeric() || c == '_' || c == ':' || c == '.' || c == '-')
                             {
-                                nameBuilder.Append(c);
-                                builder.Append(c);
+                                tempBuilder.Append(c);
                             }
                             else
                             {
@@ -434,13 +408,14 @@ namespace NUglify.Html
                             }
                         }
 
-                        currentAttribute = new HtmlAttribute
+                        hasAttribute = true;
+                        if (tag.Attributes == null)
                         {
-                            Name = nameBuilder.ToString()
-                        };
-                        tag.Attributes.Add(currentAttribute);
+                            tag.Attributes = new List<HtmlAttribute>();
+                        }
+                        tag.Attributes.Add(new HtmlAttribute(tempBuilder.ToString(), null));
 
-                        nameBuilder.Clear();
+                        tempBuilder.Clear();
                         break;
                 }
             }
@@ -449,14 +424,47 @@ namespace NUglify.Html
 
             if (isValid)
             {
-                nodes.Add(tag);
-                node = tag;
+                // TODO: Process stack and check if we need to close them
+                node = null;
+                while (true)
+                {
+                    var parent = CurrentParent;
+                    var parentDescriptor = HtmlTagDescriptor.Find(parent.Name);
+                    var childDescriptor = HtmlTagDescriptor.Find(tag.Name);
+
+                    var nonTransparentParent = parent;
+                    var nonTransparentDescriptor = parentDescriptor;
+                    while (nonTransparentDescriptor != null && nonTransparentDescriptor.AcceptContent == ContentKind.Transparent)
+                    {
+                        nonTransparentParent = parent.Parent;
+                        nonTransparentDescriptor = HtmlTagDescriptor.Find(nonTransparentParent.Name);
+                    }
+
+                    var acceptContentKind = parentDescriptor != null ? parentDescriptor.AcceptContent : ContentKind.Any;
+                    if (nonTransparentDescriptor != null)
+                    {
+                        acceptContentKind = nonTransparentDescriptor.AcceptContent;
+                    }
+
+                    if (parentDescriptor == null || parentDescriptor.TryAcceptContent(parent, parentDescriptor, acceptContentKind, tag, childDescriptor))
+                    {
+                        parent.AppendChild(tag);
+
+                        if (childDescriptor == null || ((childDescriptor.AcceptContent & ContentKind.None) == 0 || childDescriptor.AcceptContentTags != null) && !tag.IsClosed)
+                        {
+                            stack.Add(tag);
+                        }
+                        break;
+                    }
+
+                    stack.RemoveAt(stack.Count - 1);
+                }
 
                 // The content of SCRIPT and STYLE are considered as CDATA
                 // and are expecting to mach either a </script> or </style>
                 if (!tag.IsClosed && ((tag.Name == "script") || (tag.Name == "style")))
                 {
-                    ParseCDATATagContent(tag);
+                    ParseScriptOrStyleContent();
                 }
             }
             else
@@ -470,40 +478,38 @@ namespace NUglify.Html
                 Error(c == 0
                     ? $"Invalid EOF found while parsing <{tagName}>"
                     : $"Invalid character '{c}' found while parsing <{tagName}>");
-
-                GetNode<HtmlTextNode>().Text.Append('<');
-                GetNode<HtmlTextNode>().Text.Append(builder);
             }
         }
 
-        private void ParseCDATATagContent(HtmlTagNode tag)
+        private void ParseScriptOrStyleContent()
         {
-            var temp = new StringBuilder();
-            builder.Clear();
+            int startPositionContent = position;
+            int endPosition;
             while (true)
             {
                 if (c == 0)
                 {
-                    Error($"Invalid EOF found while parsing content of tag [{tag.Name}]");
+                    Error($"Invalid EOF found while parsing content of tag [{CurrentParent}]");
                     return;
                 }
 
+                endPosition = position;
                 if (c == '<')
                 {
                     c = NextChar();
                     if (c == '/')
                     {
-                        temp.Clear();
+                        tempBuilder.Clear();
 
                         c = NextChar();
                         bool tagFound = false;
-                        if (TryParse("SCRIPT", false, temp))
+                        if (TryParse("SCRIPT", false, tempBuilder))
                         {
                             tagFound = true;
                         }
-                        else if (temp.Length == 1) // if script was partially match, we should have only the 's'
+                        else if (tempBuilder.Length == 1) // if script was partially match, we should have only the 's'
                         {
-                            if (TryParse("TYLE", false, temp))
+                            if (TryParse("TYLE", false, tempBuilder))
                             {
                                 tagFound = true;
                             }
@@ -511,9 +517,8 @@ namespace NUglify.Html
 
                         if (tagFound)
                         {
-                            while (IsSpace(c))
+                            while (c.IsSpace())
                             {
-                                temp.Append(c);
                                 c = NextChar();
                             }
 
@@ -523,37 +528,38 @@ namespace NUglify.Html
                                 break;
                             }
                         }
-
-                        builder.Append("</");
-                        builder.Append(temp);
-                    }
-                    else
-                    {
-                        builder.Append('<');
                     }
                 }
-
-                builder.Append(c);
                 c = NextChar();
             }
 
-            tag.Content = builder.ToString();
+            node = null;
+
+            if (endPosition - 1 >= startPositionContent)
+            {
+                CurrentParent.AppendChild(new HtmlRaw()
+                {
+                    Slice = new StringSlice(text, startPositionContent, endPosition - 1)
+                });
+            }
+
+            // Remove the script from the stack
+            stack.RemoveAt(stack.Count - 1);
         }
 
         private void TryProcessEndTag()
         {
-            nameBuilder.Clear();
-            nameBuilder.Append(c);
-            builder.Clear();
-            builder.Append(c);
+            var endTagSpan = GetSourceSpan();
+
+            tempBuilder.Clear();
+            tempBuilder.Append(c);
 
             while (true)
             {
                 c = NextChar();
-                if (IsAlphaNumeric(c) || c == '_' || c == ':' || c == '.' || c == '-')
+                if (c.IsAlphaNumeric() || c == '_' || c == ':' || c == '.' || c == '-')
                 {
-                    nameBuilder.Append(c);
-                    builder.Append(c);
+                    tempBuilder.Append(c);
                 }
                 else
                 {
@@ -562,32 +568,55 @@ namespace NUglify.Html
             }
 
             // Skip any spaces after
-            while (IsSpace(c))
+            while (c.IsSpace())
             {
-                builder.Append(c);
                 c = NextChar();
             }
 
-            var tagName = nameBuilder.ToString().ToLowerInvariant();
+            var tagName = tempBuilder.ToString().ToLowerInvariant();
 
             if (c == '>')
             {
-                var tag = new HtmlEndTagNode() {Name = tagName };
-                node = tag;
-                nodes.Add(tag);
+                node = null;
+                // TODO: Process stack and check if we need to close them
                 c = NextChar();
+
+                int indexOfOpenTag;
+                for (indexOfOpenTag = stack.Count - 1; indexOfOpenTag >= 0; indexOfOpenTag--)
+                {
+                    if (string.Equals(stack[indexOfOpenTag].Name, tagName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        break;
+                    }
+                }
+
+                if (indexOfOpenTag < 0)
+                {
+                    Warning(endTagSpan, $"Unable to find opening tag for closing tag </{tagName}>. Tag will be discarded");
+                }
+                else
+                {
+                    for (int i = stack.Count - 1; i >= indexOfOpenTag; i--)
+                    {
+                        var element = stack[i];
+                        var elementDesc = HtmlTagDescriptor.Find(element.Name);
+                        if (elementDesc != null && elementDesc.AcceptContent != ContentKind.None && i > indexOfOpenTag)
+                        {
+                            Warning(endTagSpan, $"Unbalanced tag [{element.Name}] within tag [{tagName}] requiring a closing tag. Force closing it");
+                        }
+
+                        stack.RemoveAt(i);
+                    }
+                }
             }
             else
             {
                 Error(c == 0
                     ? $"Invalid EOF found while parsing </{tagName}>"
                     : $"Invalid character '{c}' found while parsing </{tagName}>");
-
-                GetNode<HtmlTextNode>().Text.Append("</");
-                GetNode<HtmlTextNode>().Text.Append(builder);
             }
 
-            nameBuilder.Clear();
+            tempBuilder.Clear();
         }
 
         private void TryProcessComment()
@@ -595,11 +624,13 @@ namespace NUglify.Html
             c = NextChar();
             if (c != '-')
             {
-                GetNode<HtmlTextNode>().Text.Append("<!-");
+                AppendText(startTagPosition, position - 1);
                 return;
             }
 
-            var commentNode = new HtmlCommentNode();
+            var commentPosition = position;
+
+            var commentNode = new HtmlComment();
             while (true)
             {
                 c = NextChar();
@@ -615,31 +646,39 @@ namespace NUglify.Html
                             // Don't eat last char, as it will be processed by main loop
                             c = NextChar();
 
-                            node = commentNode;
-                            nodes.Add(node);
+                            var comment = new HtmlComment()
+                            {
+                                Slice = new StringSlice(text, commentPosition, position - 4)
+                            };
+                            node = null;
+                            CurrentParent.AppendChild(comment);
                             return;
                         }
 
-                        commentNode.Text.Append("--");
-                        GetNode<HtmlTextNode>().Text.Append("<!--").Append(commentNode.Text);
                         Error(c == 0
                             ? $"Invalid EOF found while parsing <!--"
                             : $"Invalid character '{c}' found while parsing <!--");
 
                         return;
                     }
-                    commentNode.Text.Append("-");
                 }
 
                 if (c == '\0')
                 {
-                    GetNode<HtmlTextNode>().Text.Append("<!--").Append(commentNode.Text);
                     Error($"Invalid EOF found while parsing comment");
                     return;
                 }
-
-                commentNode.Text.Append(c);
             }
+        }
+
+        private void AppendText(int from, char character)
+        {
+            GetTextNode().Append(text, from, character);
+        }
+
+        private void AppendText(int from, int to)
+        {
+            GetTextNode().Append(text, from, to);
         }
 
         private bool TryParse(string text, bool isCaseSensitive, StringBuilder builderArg)
@@ -666,27 +705,57 @@ namespace NUglify.Html
             return true;
         }
 
-        private T GetNode<T>() where T : HtmlNode, new()
+        private HtmlText GetTextNode()
         {
-            var textNode = node as T;
+            var textNode = node as HtmlText;
             if (textNode == null)
             {
-                node = textNode = new T();
-                nodes.Add(node);
+                node = textNode = new HtmlText();
+                CurrentParent.AppendChild(node);
             }
             return textNode;
         }
 
+        private SourceSpan GetSourceSpan()
+        {
+            return new SourceSpan() {Line = line + 1, Column = column + 1, Position = position};
+        }
+
         private void Error(string message)
         {
-            Errors.Add(new UglifyError()
+            Error(GetSourceSpan(), message);
+        }
+
+        private void Error(SourceSpan span, string message)
+        {
+            Messages.Add(new UglifyError()
             {
                 File = sourceFileName,
                 IsError = true,
-                StartColumn = column + 1,
-                EndColumn = column + 1,
-                StartLine = line + 1,
-                EndLine = line + 1,
+                StartColumn = span.Column,
+                EndColumn = span.Column,
+                StartLine = span.Line,
+                EndLine = span.Line,
+                Message = message
+            });
+            HasErrors = true;
+        }
+
+        private void Warning(string message)
+        {
+            Warning(GetSourceSpan(), message);
+        }
+
+        private void Warning(SourceSpan span, string message)
+        {
+            Messages.Add(new UglifyError()
+            {
+                File = sourceFileName,
+                IsError = false,
+                StartColumn = span.Column,
+                EndColumn = span.Column,
+                StartLine = span.Line,
+                EndLine = span.Line,
                 Message = message
             });
         }
@@ -706,48 +775,30 @@ namespace NUglify.Html
             }
             column++;
 
-            var nextChar = reader.Read();
-            if (nextChar < 0)
+            if (position + 1 == text.Length)
             {
                 isEof = true;
-                nextChar = 0;
+                c = (char)0;
             }
-            var nc = (char)nextChar;
-            if (nc == '\n')
+            else
             {
-                nextLine = true;
+                position++;
+                c = text[position];
+                if (c == '\n')
+                {
+                    nextLine = true;
+                }
             }
-            return nc;
+            return c;
         }
 
-        [MethodImpl((MethodImplOptions)256)]
-        private static bool IsTagChar(char c)
+        private struct SourceSpan
         {
-            return IsAlphaNumeric(c);
-        }
+            public int Position;
 
-        [MethodImpl((MethodImplOptions)256)]
-        private static bool IsAlpha(char c)
-        {
-            return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
-        }
+            public int Line;
 
-        [MethodImpl((MethodImplOptions)256)]
-        private static bool IsAlphaUpper(char c)
-        {
-            return (c >= 'A' && c <= 'Z');
-        }
-
-        [MethodImpl((MethodImplOptions)256)]
-        private static bool IsAlphaNumeric(char c)
-        {
-            return (c >= '0' && c <= '9') || IsAlpha(c);
-        }
-
-        [MethodImpl((MethodImplOptions)256)]
-        private static bool IsSpace(char c)
-        {
-            return c == ' ' || c == '\t' || c == '\r' || c == '\f' || c == '\n';
+            public int Column;
         }
     }
 }

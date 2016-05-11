@@ -7,19 +7,14 @@ using System.Text;
 namespace NUglify.Html
 {
     /// <summary>
-    /// A HTML CDATA block
+    /// A DOCTYPE HTML tag.
     /// </summary>
-    /// <seealso cref="NUglify.Html.HtmlRawNode" />
-    public class HtmlCDATANode : HtmlRawNode
+    /// <seealso cref="HtmlTextBase" />
+    public class HtmlDOCTYPE : HtmlTextBase
     {
         public override string ToString()
         {
-            return $"html-CDATA: <![CDATA[${Text}]]>";
-        }
-
-        public override void OutputTo(StringBuilder builder)
-        {
-            builder.Append("<![CDATA[").Append(Text).Append("]]>");
+            return $"html-DOCTYPE: {Slice}";
         }
     }
 }

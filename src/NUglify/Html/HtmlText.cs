@@ -1,0 +1,81 @@
+// Copyright (c) Alexandre Mutel. All rights reserved.
+// This file is licensed under the BSD-Clause 2 license. 
+// See the license.txt file in the project root for more information.
+
+using System;
+using System.Text;
+using NUglify.JavaScript.Syntax;
+
+namespace NUglify.Html
+{
+    /// <summary>
+    /// An HTML text node
+    /// </summary>
+    /// <seealso cref="HtmlTextBase" />
+    public class HtmlText : HtmlTextBase
+    {
+        public HtmlText()
+        {
+            // Empty TextNode is space by default
+            IsWhitespace = true;
+        }
+
+        public override string ToString()
+        {
+            return $"html-text: {Slice}";
+        }
+
+        public bool IsWhitespace { get; set; }
+
+        public void Append(string text, int position, char c)
+        {
+            if (Slice.Text == null)
+            {
+                Slice = new StringSlice(text) {Start = position, End = position};
+            }
+            else
+            {
+                if (position != Slice.End + 1)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(position), $"Position [{position}] is not consecutive to the previous position [{Slice.End}]");
+                }
+                Slice.End = position;
+            }
+
+            // Update whitespace
+            if (IsWhitespace && !c.IsSpace())
+            {
+                IsWhitespace = false;
+            }
+        }
+
+        public void Append(string text, int from, int to)
+        {
+            if (Slice.Text == null)
+            {
+                Slice = new StringSlice(text) {Start = from, End = to};
+            }
+            else
+            {
+                if (from != Slice.End + 1)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(from),
+                        $"Position [{from}] is not consecutive to the previous position [{Slice.End}]");
+                }
+                Slice.End = to;
+            }
+
+            if (IsWhitespace)
+            {
+                for (int i = from; i <= to; i++)
+                {
+                    if (!text[i].IsSpace())
+                    {
+                        IsWhitespace = false;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}

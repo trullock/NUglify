@@ -7,19 +7,14 @@ using System.Text;
 namespace NUglify.Html
 {
     /// <summary>
-    /// A HTML comment node.
+    /// A HTML CDATA block
     /// </summary>
-    /// <seealso cref="NUglify.Html.HtmlRawNode" />
-    public class HtmlCommentNode : HtmlRawNode
+    /// <seealso cref="HtmlTextBase" />
+    public class HtmlCDATA : HtmlTextBase
     {
         public override string ToString()
         {
-            return $"html-comment: <!--{Text}-->";
-        }
-
-        public override void OutputTo(StringBuilder builder)
-        {
-            builder.Append("<!--").Append(Text).Append("-->");
+            return $"html-CDATA: <![CDATA[${Slice}]]>";
         }
     }
 }
