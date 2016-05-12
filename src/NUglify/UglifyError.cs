@@ -19,30 +19,30 @@ using NUglify.Helpers;
 
 namespace NUglify
 {
-    public class UglifyError
+    public sealed class UglifyError
     {
         public int ErrorNumber { get; set; }
 
         // error information properties
         public string File { get; set; }
 
-        public virtual int Severity { get; set; }
+        public int Severity { get; set; }
 
-        public virtual string Subcategory { get; set; }
+        public string Subcategory { get; set; }
 
-        public virtual string ErrorCode { get; set; }
+        public string ErrorCode { get; set; }
 
-        public virtual int StartLine { get; set; }
+        public int StartLine { get; set; }
 
-        public virtual int StartColumn { get; set; }
+        public int StartColumn { get; set; }
 
-        public virtual int EndLine { get; set; }
+        public int EndLine { get; set; }
 
-        public virtual int EndColumn { get; set; }
+        public int EndColumn { get; set; }
 
-        public virtual string Message { get; set; }
+        public string Message { get; set; }
 
-        public virtual bool IsError { get; set; }
+        public bool IsError { get; set; }
 
         public string HelpKeyword { get; set; }
 

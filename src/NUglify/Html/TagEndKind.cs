@@ -5,9 +5,9 @@ namespace NUglify.Html
 {
     public enum TagEndKind
     {
-        None,
-
         Required,
+
+        AutoSelfClosing,
 
         Omission
     }

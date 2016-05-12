@@ -3,8 +3,6 @@
 // See the license.txt file in the project root for more information.
 
 using System;
-using System.Text;
-using NUglify.JavaScript.Syntax;
 
 namespace NUglify.Html
 {
@@ -16,16 +14,12 @@ namespace NUglify.Html
     {
         public HtmlText()
         {
-            // Empty TextNode is space by default
-            IsWhitespace = true;
         }
 
         public override string ToString()
         {
             return $"html-text: {Slice}";
         }
-
-        public bool IsWhitespace { get; set; }
 
         public void Append(string text, int position, char c)
         {
@@ -41,16 +35,19 @@ namespace NUglify.Html
                 }
                 Slice.End = position;
             }
-
-            // Update whitespace
-            if (IsWhitespace && !c.IsSpace())
-            {
-                IsWhitespace = false;
-            }
         }
 
         public void Append(string text, int from, int to)
         {
+            if (text == null) throw new ArgumentNullException(nameof(text));
+            if (from < 0) throw new ArgumentOutOfRangeException(nameof(from), "From position cannot be null");
+
+            // For to, limit them (this is a safeguard, should not happen, but we don't want to crash if this is the case) 
+            if (to >= text.Length)
+            {
+                to = text.Length - 1;
+            }
+
             if (Slice.Text == null)
             {
                 Slice = new StringSlice(text) {Start = from, End = to};
@@ -63,18 +60,6 @@ namespace NUglify.Html
                         $"Position [{from}] is not consecutive to the previous position [{Slice.End}]");
                 }
                 Slice.End = to;
-            }
-
-            if (IsWhitespace)
-            {
-                for (int i = from; i <= to; i++)
-                {
-                    if (!text[i].IsSpace())
-                    {
-                        IsWhitespace = false;
-                        break;
-                    }
-                }
             }
         }
     }

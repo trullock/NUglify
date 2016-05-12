@@ -6,23 +6,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
-using NUglify.Helpers;
 
 namespace NUglify.Html
 {
     /// <summary>
-    /// Base class for an HTML node.
+    /// Base class for a minimalistic HTML DOM suitable for removing text or extracting text.
     /// </summary>
     public abstract class HtmlNode
     {
+        // This class doesn't implement full DOM methods (e.g: InsertBefore/After methods...etc.)
+        // because we only need to append childs and remove some of them when striping 
+        // the DOM tree.
+
         private HtmlElement parent;
         private HtmlNode previousSibling;
         private HtmlNode nextSibling;
         private HtmlNode firstChild;
         private HtmlNode lastChild;
 
+        public SourceLocation Location;
+
         public HtmlElement Parent => parent;
+
+        public HtmlNode PreviousSibling => previousSibling;
+
+        public HtmlNode NextSibling => nextSibling;
+
+        public HtmlNode FirstChild => firstChild;
+
+        public HtmlNode LastChild => lastChild;
 
         public ChildrenEnumerator Children => new ChildrenEnumerator(this);
 
@@ -44,6 +56,19 @@ namespace NUglify.Html
             }
 
             node.parent = (HtmlElement)this;
+        }
+
+        public IEnumerable<HtmlNode> FindAllDescendants()
+        {
+            foreach (var child in Children)
+            {
+                yield return child;
+
+                foreach (var subChild in child.FindAllDescendants())
+                {
+                    yield return subChild;
+                }
+            }
         }
 
         public void Remove()
@@ -81,7 +106,7 @@ namespace NUglify.Html
 
             internal ChildrenEnumerator(HtmlNode node)
             {
-                origin = node;
+                origin = node.FirstChild;
                 Current = null;
                 next = origin;
             }
@@ -128,14 +153,6 @@ namespace NUglify.Html
             public HtmlNode Current { get; private set; }
 
             object IEnumerator.Current => Current;
-        }
-    }
-
-    public class HtmlDocument : HtmlElement
-    {
-        public HtmlDocument()
-        {
-            Name = "$root";
         }
     }
 }

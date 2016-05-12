@@ -32,5 +32,27 @@ namespace NUglify.Html
         {
             return Text != null ? (Start <= End ? Text.Substring(Start, End - Start + 1) : string.Empty) : string.Empty;
         }
+
+        public bool StartsBySpace()
+        {
+            return Start <= End && Text != null && Text[Start].IsSpace();
+        }
+
+        public bool IsEmptyOrWhiteSpace()
+        {
+            if (Text == null)
+            {
+                return true;
+            }
+
+            for (int i = Start; i <= End; i++)
+            {
+                if (!Text[i].IsSpace())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

@@ -2,6 +2,7 @@
 // This file is licensed under the BSD-Clause 2 license. 
 // See the license.txt file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -18,23 +19,14 @@ namespace NUglify.Tests.Html
         public void TestSimple()
         {
             AssertHtml("<!DOCTYPE html><html><!--comment--><![CDATA[boo]]><body>Test</body></html>",
-                "doct: <!DOCTYPE html>",
-                "[tag: <html>",
-                "comm: comment",
-                "cdat: boo",
-                "[tag: <body>",
-                "text: Test",
-                "]tag: </body>",
-                "]tag: </html>"
-                );
-        }
-
-
-        [Test]
-        public void TestParagraphClose()
-        {
-            AssertHtml("<html><body><div><p>test<p>test2</div></body></html>",
-                "text: This is a test"
+                "[0001] !doc: <!DOCTYPE html>",
+                "[0001] [tag: <html>",
+                "[0002] !com: <!--comment-->",
+                "[0002] !cda: <![CDATA[boo]]>",
+                "[0002] [tag: <body>",
+                "[0003] #txt: Test",
+                "[0002] ]tag: </body>",
+                "[0001] ]tag: </html>"
                 );
         }
 
@@ -42,7 +34,7 @@ namespace NUglify.Tests.Html
         public void TestText()
         {
             AssertHtml("This is a test",
-                "text: This is a test"
+                "[0001] #txt: This is a test"
                 );
         }
 
@@ -50,15 +42,58 @@ namespace NUglify.Tests.Html
         public void TestOpenTagWithSpaces()
         {
             AssertHtml("<html   >",
-                "[tag: <html>"
+                "[0001] [tag: <html>",
+                "[0001] ]tag: </html>"
+                );
+        }
+
+        [Test]
+        public void TestSelfClosingTags()
+        {
+            AssertHtml("<ul><li>test1<li>test2</ul>",
+                "[0001] [tag: <ul>",
+                "[0002] [tag: <li>",
+                "[0003] #txt: test1",
+                "[0002] ]tag: </li>",
+                "[0002] [tag: <li>",
+                "[0003] #txt: test2",
+                "[0002] ]tag: </li>",
+                "[0001] ]tag: </ul>"
+                );
+
+            AssertHtml("<div><p>test1</div>",
+                "[0001] [tag: <div>",
+                "[0002] [tag: <p>",
+                "[0003] #txt: test1",
+                "[0002] ]tag: </p>",
+                "[0001] ]tag: </div>"
+                );
+        }
+
+
+        [Test]
+        public void TestInvalidNestedTag()
+        {
+            // Try to use a <p> tag inside a <ul> tag
+            // the parser will give a warning 
+            AssertHtml("<ul><p>test1</ul>",
+                "[0001] [tag: <ul>",
+                "[0002] [tag: <p>",
+                "[0003] #txt: test1",
+                "[0002] ]tag: </p>",
+                "[0001] ]tag: </ul>",
+                "(1,5): warning : The tag <p> is not a valid tag within the parent tag <ul>"
                 );
         }
 
         [Test]
         public void TestOpenTagInvalidAttributes()
         {
+            // We are still recovering with an invalid character in a tag
+            // but we get an error
             AssertHtml("<html @x>",
-                "text: <html @x>",
+                "[0001] [tag: <html x>",
+                "[0001] ]tag: </html>",
                 "(1,7): error : Invalid character '@' found while parsing <html>"
                 );
         }
@@ -66,9 +101,12 @@ namespace NUglify.Tests.Html
         [Test]
         public void TestOpenTagInvalidAttributes2()
         {
+            // We are still recovering with an invalid character in a tag
+            // but we get an error
             AssertHtml("<html x=>",
-                "text: <html x=>",
-                "(1,9): error : Invalid character '>' found while parsing <html>"
+                "[0001] [tag: <html x>",
+                "[0001] ]tag: </html>",
+                "(1,9): error : Invalid character '>' found while parsing <html> and after attribute [x]. Expecting valid character after '='"
                 );
         }
 
@@ -76,15 +114,17 @@ namespace NUglify.Tests.Html
         public void TestOpenTagWithAttributes()
         {
             AssertHtml("<html x=1 y='test' z=\"test2\" w a b c>",
-                "[tag: <html x='1' y='test' z='test2' w a b c>"
+                "[0001] [tag: <html x=\"1\" y=\"test\" z=\"test2\" w a b c>",
+                "[0001] ]tag: </html>"
                 );
         }
 
         [Test]
         public void TestOpenTagWithAttributesInvalid()
         {
+            // We don't try to recover from an unclosed string
             AssertHtml("<html x=1 y='test' z=\"test2 w a b c>",
-                "text: <html x=1 y='test' z=\"test2 w a b c>",
+                "[0001] #txt: <html x=1 y='test' z=\"test2 w a b c>",
                 "(1,37): error : Invalid EOF found while parsing <html>"
                 );
         }
@@ -93,7 +133,7 @@ namespace NUglify.Tests.Html
         public void TestOpenCloseTag()
         {
             AssertHtml("<br/>",
-                "[tag: <br />"
+                "[0001] [tag: <br>"
                 );
         }
 
@@ -101,7 +141,8 @@ namespace NUglify.Tests.Html
         public void TestOpenCloseTagError()
         {
             AssertHtml("<br\n/?>",
-                "text: <br\n/?>",
+                "[0001] [tag: <br>",
+                "[0001] ]tag: </br>",
                 "(2,2): error : Invalid character '?' found while parsing <br>"
                 );
         }
@@ -110,7 +151,7 @@ namespace NUglify.Tests.Html
         public void TestProcessingInstructionSimple()
         {
             AssertHtml("<?xml version=\"1.0\"?>",
-                "[tag: <?xml version='1.0'?>"
+                "[0001] [tag: <?xml version=\"1.0\"?>"
                 );
         }
 
@@ -118,8 +159,9 @@ namespace NUglify.Tests.Html
         public void TestProcessingInstructionInvalid()
         {
             AssertHtml("<?xml version=\"1.0\">",
-                "text: <?xml version=\"1.0\">",
-                "(1,20): error : Invalid character '>' found while parsing <?xml?>"
+                "[0001] #txt: <?xml version=\"1.0\">",
+                "(1,20): error : Invalid character '>' found while parsing <xml>",
+                "(1,21): error : Invalid EOF found while parsing <?xml?>"
                 );
         }
 
@@ -127,7 +169,7 @@ namespace NUglify.Tests.Html
         public void TestBadTag()
         {
             AssertHtml("<html   t",
-                "text: <html   t",
+                "[0001] #txt: <html   t",
                 "(1,10): error : Invalid EOF found while parsing <html>"
                 );
         }
@@ -136,7 +178,8 @@ namespace NUglify.Tests.Html
         public void TestEndTag()
         {
             AssertHtml("</html>",
-                "]tag: </html>"
+                "[0001] [tag: </html>",
+                "(1,1): warning : Unable to find opening tag for closing tag </html>"
                 );
         }
 
@@ -144,7 +187,8 @@ namespace NUglify.Tests.Html
         public void TestEndTagInvalid()
         {
             AssertHtml("</@html>",
-                "text: </@html>"
+                "[0001] #txt: </@html>",
+                "(1,3): error : Invalid character '@' following end tag </"
                 );
         }
 
@@ -152,7 +196,7 @@ namespace NUglify.Tests.Html
         public void TestEndTagInvalid2()
         {
             AssertHtml("</html",
-                "text: </html",
+                "[0001] #txt: </html",
                 "(1,7): error : Invalid EOF found while parsing </html>"
                 );
         }
@@ -161,7 +205,7 @@ namespace NUglify.Tests.Html
         public void TestComment()
         {
             AssertHtml("<!-- test -->",
-                "comm:  test "
+                "[0001] !com: <!-- test -->"
                 );
         }
 
@@ -169,7 +213,7 @@ namespace NUglify.Tests.Html
         public void TestComment2()
         {
             AssertHtml("<!---10-->",
-                "comm: -10"
+                "[0001] !com: <!---10-->"
                 );
         }
 
@@ -177,7 +221,7 @@ namespace NUglify.Tests.Html
         public void TestComment3()
         {
             AssertHtml("<!----10--->",
-                "text: <!----10--->",
+                "[0001] #txt: <!----10--->",
                 "(1,7): error : Invalid character '1' found while parsing <!--"
                 );
         }
@@ -186,7 +230,7 @@ namespace NUglify.Tests.Html
         public void TestCommentInvalidEOF()
         {
             AssertHtml("<!----10---",
-                "text: <!----10---",
+                "[0001] #txt: <!----10---",
                 "(1,7): error : Invalid character '1' found while parsing <!--"
                 );
         }
@@ -195,7 +239,7 @@ namespace NUglify.Tests.Html
         public void TestCDATASimple()
         {
             AssertHtml("<![CDATA[This is a test]]>",
-                "cdat: This is a test"
+                "[0001] !cda: <![CDATA[This is a test]]>"
                 );
         }
 
@@ -203,7 +247,7 @@ namespace NUglify.Tests.Html
         public void TestCDATAEmpty()
         {
             AssertHtml("<![CDATA[]]>",
-                "cdat: "
+                "[0001] !cda: <![CDATA[]]>"
                 );
         }
 
@@ -211,8 +255,8 @@ namespace NUglify.Tests.Html
         public void TestCDATAIncomplete()
         {
             AssertHtml("<![CDATA[This is a test",
-                "text: <![CDATA[This is a test",
-                "(1,24): error : Invalid EOF found while parsing CDATA"
+                "[0001] #txt: <![CDATA[This is a test",
+                "(1,24): error : Invalid EOF found while parsing <![CDATA["
                 );
         }
 
@@ -220,7 +264,7 @@ namespace NUglify.Tests.Html
         public void TestCDATAMaybe1()
         {
             AssertHtml("<![CDATA[This ]is a test]]>",
-                "cdat: This ]is a test"
+                "[0001] !cda: <![CDATA[This ]is a test]]>"
                 );
         }
 
@@ -228,7 +272,7 @@ namespace NUglify.Tests.Html
         public void TestCDATAMaybe2()
         {
             AssertHtml("<![CDATA[This ]]is a test]]>",
-                "cdat: This ]]is a test"
+                "[0001] !cda: <![CDATA[This ]]is a test]]>"
                 );
         }
 
@@ -236,7 +280,7 @@ namespace NUglify.Tests.Html
         public void TestCDATAMaybe3()
         {
             AssertHtml("<![CDATA[This ]>is a test]]>",
-                "cdat: This ]>is a test"
+                "[0001] !cda: <![CDATA[This ]>is a test]]>"
                 );
         }
 
@@ -244,7 +288,7 @@ namespace NUglify.Tests.Html
         public void TestCDATANot1()
         {
             AssertHtml("<![C ]]>",
-                "text: <![C ]]>",
+                "[0001] #txt: <![C ]]>",
                 "(1,5): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
@@ -253,7 +297,7 @@ namespace NUglify.Tests.Html
         public void TestCDATANot2()
         {
             AssertHtml("<![CD ]]>",
-                "text: <![CD ]]>",
+                "[0001] #txt: <![CD ]]>",
                 "(1,6): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
@@ -262,7 +306,7 @@ namespace NUglify.Tests.Html
         public void TestCDATANot3()
         {
             AssertHtml("<![CDA ]]>",
-                "text: <![CDA ]]>",
+                "[0001] #txt: <![CDA ]]>",
                 "(1,7): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
@@ -271,7 +315,7 @@ namespace NUglify.Tests.Html
         public void TestCDATANot4()
         {
             AssertHtml("<![CDAT ]]>",
-                "text: <![CDAT ]]>",
+                "[0001] #txt: <![CDAT ]]>",
                 "(1,8): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
@@ -280,7 +324,7 @@ namespace NUglify.Tests.Html
         public void TestCDATANot5()
         {
             AssertHtml("<![CDATA ]]>",
-                "text: <![CDATA ]]>",
+                "[0001] #txt: <![CDATA ]]>",
                 "(1,9): error : Invalid character ' ' found while parsing <![CDATA["
                 );
         }
@@ -289,7 +333,7 @@ namespace NUglify.Tests.Html
         public void TestDOCTYPE1()
         {
             AssertHtml("<!DOCTYPE>",
-                "doct: <!DOCTYPE>"
+                "[0001] !doc: <!DOCTYPE>"
                 );
         }
 
@@ -297,7 +341,7 @@ namespace NUglify.Tests.Html
         public void TestDOCTYPE2()
         {
             AssertHtml("<!DOCTYPE html>",
-                "doct: <!DOCTYPE html>"
+                "[0001] !doc: <!DOCTYPE html>"
                 );
         }
 
@@ -305,7 +349,7 @@ namespace NUglify.Tests.Html
         public void TestDOCTYPE3()
         {
             AssertHtml("<!DOCTYPE html \"test with fake url\">",
-                "doct: <!DOCTYPE html \"test with fake url\">"
+                "[0001] !doc: <!DOCTYPE html \"test with fake url\">"
                 );
         }
 
@@ -313,7 +357,7 @@ namespace NUglify.Tests.Html
         public void TestDOCTYPEInvalid1()
         {
             AssertHtml("<!DOCTYPE html",
-                "text: <!DOCTYPE html",
+                "[0001] #txt: <!DOCTYPE html",
                 "(1,15): error : Invalid EOF found while parsing <!DOCTYPE"
                 );
         }
@@ -322,7 +366,7 @@ namespace NUglify.Tests.Html
         public void TestDOCTYPEInvalid2()
         {
             AssertHtml("<!DOCTYPEX>",
-                "text: <!DOCTYPEX>",
+                "[0001] #txt: <!DOCTYPEX>",
                 "(1,10): error : Invalid character 'X' found while parsing <!DOCTYPE"
                 );
         }
@@ -331,8 +375,10 @@ namespace NUglify.Tests.Html
         public void TestScriptSimple()
         {
             AssertHtml("<script>abc</script>def",
-                "[tag: <script> content: abc",
-                "text: def"
+                "[0001] [tag: <script>",
+                "[0002] #raw: abc",
+                "[0001] ]tag: </script>",
+                "[0001] #txt: def"
                 );
         }
 
@@ -340,28 +386,67 @@ namespace NUglify.Tests.Html
         public void TestStyleSimple()
         {
             AssertHtml("<style>abc</style>def",
-                "[tag: <style> content: abc",
-                "text: def"
+                "[0001] [tag: <style>",
+                "[0002] #raw: abc",
+                "[0001] ]tag: </style>",
+                "[0001] #txt: def"
                 );
         }
 
         [Test]
         public void TestScriptMaybe1()
         {
-            AssertHtml("<script>abc</sdef</script>", "[tag: <script> content: abc</sdef");
-            AssertHtml("<script>abc</scriptdef</script>", "[tag: <script> content: abc</scriptdef");
-            AssertHtml("<script>abc</script def</script>", "[tag: <script> content: abc</script def");
-            AssertHtml("<script>abc</script def</script     >", "[tag: <script> content: abc</script def");
+            AssertHtml("<script>abc</sdef</script>",
+                "[0001] [tag: <script>",
+                "[0002] #raw: abc</sdef",
+                "[0001] ]tag: </script>"
+                );
+            AssertHtml("<script>abc</scriptdef</script>",
+                "[0001] [tag: <script>",
+                "[0002] #raw: abc</scriptdef",
+                "[0001] ]tag: </script>",
+                "(1,20): warning : Invalid end of tag <script>. Expecting a '>'"
+                );
+            AssertHtml("<script>abc</script def</script>",
+                "[0001] [tag: <script>",
+                "[0002] #raw: abc</script def",
+                "[0001] ]tag: </script>",
+                "(1,21): warning : Invalid end of tag <script>. Expecting a '>'"
+                );
+            AssertHtml("<script>abc</script def</script     >",
+                "[0001] [tag: <script>",
+                "[0002] #raw: abc</script def",
+                "[0001] ]tag: </script>",
+                "(1,21): warning : Invalid end of tag <script>. Expecting a '>'"
+                );
         }
-
 
         [Test]
         public void TestStyleMaybe1()
         {
-            AssertHtml("<style>abc</sdef</style>", "[tag: <style> content: abc</sdef");
-            AssertHtml("<style>abc</styledef</style>", "[tag: <style> content: abc</styledef");
-            AssertHtml("<style>abc</style def</style>", "[tag: <style> content: abc</style def");
-            AssertHtml("<style>abc</style def</style     >", "[tag: <style> content: abc</style def");
+            AssertHtml("<style>abc</sdef</style>",
+                "[0001] [tag: <style>",
+                "[0002] #raw: abc</sdef",
+                "[0001] ]tag: </style>");
+
+            AssertHtml("<style>abc</styledef</style>",
+                "[0001] [tag: <style>",
+                "[0002] #raw: abc</styledef",
+                "[0001] ]tag: </style>",
+                "(1,18): warning : Invalid end of tag <style>. Expecting a '>'"
+                );
+            AssertHtml("<style>abc</style def</style>",
+                "[0001] [tag: <style>",
+                "[0002] #raw: abc</style def",
+                "[0001] ]tag: </style>",
+                "(1,19): warning : Invalid end of tag <style>. Expecting a '>'");
+
+            AssertHtml("<style>abc</style def</style     >",
+                "[0001] [tag: <style>",
+                "[0002] #raw: abc</style def",
+                "[0001] ]tag: </style>",
+                "(1,19): warning : Invalid end of tag <style>. Expecting a '>'"
+                );
         }
 
         [Test]
@@ -369,9 +454,7 @@ namespace NUglify.Tests.Html
         {
             var urls = new List<string>()
             {
-                "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/big.html",
-                "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/horrible.html",
-                "https://raw.githubusercontent.com/paquettg/php-html-parser/master/tests/files/small.html"
+                "http://google.com",
             };
 
             var webClient = new WebClient();
@@ -389,91 +472,34 @@ namespace NUglify.Tests.Html
             var parser = new HtmlParser(input);
             var nodes = parser.Parse();
 
-            var output = Dump(nodes);
-            if (parser.HasErrors)
+            var domWriter = new HtmlWriterToDOM();
+            domWriter.Write(nodes);
+
+            var output = domWriter.DOMDumpList;
+
+            foreach (var message in parser.Errors)
             {
-                foreach (var error in parser.Messages)
-                {
-                    output.Add(error.ToString());
-                }
+                output.Add(message.ToString());
             }
+
+            Console.Out.WriteLine("======================");
+            Console.Out.WriteLine("OUTPUT");
+            Console.Out.WriteLine("----------------------");
+            foreach (var txt in output)
+            {
+                Console.Out.WriteLine(txt);
+            }
+            Console.Out.WriteLine("======================");
+            Console.Out.WriteLine("EXPECTED");
+            Console.Out.WriteLine("----------------------");
+            foreach (var txt in expected)
+            {
+                Console.Out.WriteLine(txt);
+            }
+
+            Console.Out.WriteLine();
+
             Assert.AreEqual(expected, output);
-        }
-
-        private List<string> Dump(HtmlDocument doc)
-        {
-            var stringNodes = new List<string>();
-            //var builder = new StringBuilder();
-            //foreach (var node in nodes)
-            //{
-            //    builder.Clear();
-            //    if (node is HtmlElement)
-            //    {
-            //        var tagNode = (HtmlTagNode) node;
-            //        builder.Append($"[tag: <");
-            //        if (tagNode.IsProcessingInstruction)
-            //        {
-            //            builder.Append("?");
-            //        }
-            //        builder.Append(tagNode.Name);
-            //        if (tagNode.Attributes.Count > 0)
-            //        {
-            //            foreach (var attr in tagNode.Attributes)
-            //            {
-            //                builder.Append(" ");
-            //                builder.Append(attr.Name);
-            //                if (attr.Value != null)
-            //                {
-            //                    builder.Append("='");
-            //                    builder.Append(attr.Value);
-            //                    builder.Append("'");
-            //                }
-            //            }
-            //        }
-            //        if (tagNode.IsProcessingInstruction)
-            //        {
-            //            builder.Append("?");
-            //        }
-            //        if (tagNode.IsClosed)
-            //        {
-            //            builder.Append(" /");
-            //        }
-            //        builder.Append(">");
-
-            //        if (tagNode.Content != null)
-            //        {
-            //            builder.Append(" content: ").Append(tagNode.Content);
-            //        }
-            //    }
-            //    else if (node is HtmlEndTagNode)
-            //    {
-            //        builder.Append($"]tag: </").Append(((HtmlEndTagNode) node).Name).Append(">");
-            //    }
-            //    else if (node is HtmlCommentNode)
-            //    {
-            //        builder.Append($"comm: ").Append(((HtmlCommentNode)node).Text);
-            //    }
-            //    else if (node is HtmlCDATANode)
-            //    {
-            //        builder.Append($"cdat: ").Append(((HtmlCDATANode)node).Text);
-            //    }
-            //    else if (node is HtmlTextNode)
-            //    {
-            //        builder.Append($"text: ").Append(((HtmlTextNode)node).Text);
-            //    }
-            //    else if (node is HtmlDOCTYPENode)
-            //    {
-            //        builder.Append($"doct: ").Append(((HtmlDOCTYPENode)node).Text);
-            //    }
-            //    else
-            //    {
-            //        builder.Append($"invalid: ").Append(node);
-            //    }
-
-            //    stringNodes.Add(builder.ToString());
-            //}
-
-            return stringNodes;
         }
     }
 }

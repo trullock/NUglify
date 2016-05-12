@@ -34,7 +34,7 @@ namespace NUglify.Html
             if (parser.HasErrors)
             {
                 nodes = null;
-                return new UgliflyResult(html, parser.Messages);
+                return new UgliflyResult(html, parser.Errors);
             }
 
             builder = new StringBuilder();
