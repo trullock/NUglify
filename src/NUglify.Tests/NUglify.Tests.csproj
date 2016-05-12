@@ -358,6 +358,189 @@
     <Content Include="TestData\Core\Input\SourceChange.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\article.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\aside.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\atemplate.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\bdi.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\datalist.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\datalist2.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\datalist3.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\details.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\dialog.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\figure.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\footer.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\formselect.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\formselect2.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\header.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\acronym4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\acronym5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\align5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\applet4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\applet5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\basefont4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\basefont5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\big4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\big5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\blink5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\bodyatts5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\center25.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\center4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\center5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\dir4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\dir5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\font4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\font5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\frameset4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\frameset5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\frame_a.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\frame_b.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\frame_c.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\index2.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\marquee5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\obsolete.txt" />
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\README.html4.txt" />
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\strike4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\strike5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\tt4.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\html4\tt5.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\keygen.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\main.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\mark.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\mav.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\menuitem.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\meter.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\min.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\output.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\progress.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\README.html5.txt" />
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\removed.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\rp.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\section.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\select2.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\summary.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\time.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\video.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\HTML\tidy-html5-tests\html5\wbr.org.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\JS\Expected\SourceMap\SourceMapV3.js.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -367,6 +550,25 @@
     <Content Include="TestData\Core\NotExpressions.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="TestData\HTML\tidy-html5-tests\html5\cleanup.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\cleanup.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\setexe.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testacro.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testbig.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testbody.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testcent.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testcent2.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testdir.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testfont.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testhtml4.cmd" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testi2.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testmarq.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testone.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\teststrike.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\html4\testtt.bat" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\testhtml5.cmd" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\testhtml5.sh" />
+    <None Include="TestData\HTML\tidy-html5-tests\html5\testone.cmd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\CSS\Expected\AtRules\Charset.css">

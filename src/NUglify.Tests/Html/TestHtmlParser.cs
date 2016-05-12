@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using NUglify.Html;
 using NUnit.Framework;
@@ -450,32 +451,68 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
-        public void TestRemote()
+        public void TestTidyHtml5()
         {
-            var urls = new List<string>()
-            {
-                "http://google.com",
-            };
-
-            var webClient = new WebClient();
-            foreach (var url in urls)
-            {
-                var html = webClient.DownloadString(url);
-                var parser = new HtmlParser(html);
-                var nodes = parser.Parse();
-                // Assert.False(parser.HasError);
-            }
+            var directoryInfo = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var inputFolder = new DirectoryInfo(Path.Combine(directoryInfo.FullName, @"TestData\HTML\tidy-html5-tests\html5"));
+            TestHtmlFolder(inputFolder);
         }
 
-        private void AssertHtml(string input, params string[] expected)
+
+        [Test]
+        public void TestTidyHtml4()
+        {
+            var directoryInfo = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var inputFolder = new DirectoryInfo(Path.Combine(directoryInfo.FullName, @"TestData\HTML\tidy-html5-tests\html5\html4"));
+            TestHtmlFolder(inputFolder);
+        }
+
+        private void TestHtmlFolder(DirectoryInfo folder)
+        {
+            int count = 0;
+            foreach (var file in folder.EnumerateFiles("*.html"))
+            {
+                var html = File.ReadAllText(file.FullName);
+
+                Console.WriteLine($"==================================");
+                Console.WriteLine($"Parsing HTML file: {file.Name}");
+                Console.WriteLine($"----------------------------------");
+
+                DumpDom(html);
+
+                Console.WriteLine();
+                count++;
+            }
+            Assert.True(count > 0, $"Unable to find any html files from the folder: {folder.FullName} ");
+        }
+
+
+        private List<string> DumpDom(string input)
         {
             var parser = new HtmlParser(input);
-            var nodes = parser.Parse();
+            var doc = parser.Parse();
 
-            var domWriter = new HtmlWriterToDOM();
-            domWriter.Write(nodes);
+            if (doc == null)
+            {
+                foreach (var message in parser.Errors)
+                {
+                    Console.WriteLine(message.ToString());
+                }
+            }
 
-            var output = domWriter.DOMDumpList;
+            Assert.NotNull(doc, "HtmlParser failed to create a DOM node. See errors above");
+
+            var output = doc.DumpDom();
+
+            // Replace outptu with printable NL character
+            for (int i = 0; i < output.Count; i++)
+            {
+                var text = output[i];
+                text = text.Replace("\r\n", "\u2424");
+                text = text.Replace('\r', '\u2424');
+                text = text.Replace('\n', '\u2424');
+                output[i] = text;
+            }
 
             foreach (var message in parser.Errors)
             {
@@ -489,6 +526,14 @@ namespace NUglify.Tests.Html
             {
                 Console.Out.WriteLine(txt);
             }
+
+            return output;
+        }
+
+        private void AssertHtml(string input, params string[] expected)
+        {
+            var output = DumpDom(input);
+
             Console.Out.WriteLine("======================");
             Console.Out.WriteLine("EXPECTED");
             Console.Out.WriteLine("----------------------");
