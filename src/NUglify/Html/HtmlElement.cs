@@ -20,7 +20,7 @@ namespace NUglify.Html
             Attributes = null;
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
         public HtmlTagDescriptor Descriptor { get; set; }
 

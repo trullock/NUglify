@@ -41,10 +41,23 @@ namespace NUglify
 
         public static UgliflyResult Html(string source, string sourceFileName = null)
         {
-            var minifier = new HtmlMinifier(source, sourceFileName);
-            return minifier.Minify();
-        }
+            var parser = new HtmlParser(source, sourceFileName);
+            var document = parser.Parse();
+            if (parser.HasErrors)
+            {
+                return new UgliflyResult(null, parser.Errors);
+            }
 
+            
+            var minifier = new HtmlMinifier(document);
+            minifier.Minify();
+
+            var writer = new StringWriter();
+            var htmlWriter = new HtmlWriterToText(writer);
+            htmlWriter.Write(document);
+
+            return new UgliflyResult(writer.ToString(), null);
+        }
 
         /// <summary>
         /// Crunched JS string passed to it, returning crunched string.

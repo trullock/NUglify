@@ -4,108 +4,173 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
+using NUglify.Helpers;
 
 namespace NUglify.Html
 {
-    // TODO: This is not yet a real minifier but just an integration test with HtmlParser
     public class HtmlMinifier
     {
-        private readonly string html;
-        private readonly string sourceFileName;
-        private StringBuilder builder;
-        private List<HtmlNode> nodes;
-        private int noTextStrip;
+        private readonly HtmlDocument html;
+        private HtmlText previousTextNode;
+        private int pendingTagNonCollapsibleWithSpaces;
 
-        public HtmlMinifier(string html, string sourceFileName = null)
+        private static readonly Dictionary<string, bool> InlineTagsPreserveSpacesAround = new []
+        {
+            "a",
+            "abbr",
+            "acronym",
+            "b",
+            "bdi",
+            "bdo",
+            "big",
+            "button",
+            "cite",
+            "code",
+            "del",
+            "dfn",
+            "em",
+            "font",
+            "i",
+            "ins",
+            "kbd",
+            "label",
+            "mark",
+            "math",
+            "nobr",
+            "q",
+            "rp",
+            "rt",
+            "s",
+            "samp",
+            "small",
+            "span",
+            "strike",
+            "strong",
+            "sub",
+            "sup",
+            "svg",
+            "time",
+            "tt",
+            "u",
+            "var",
+        }.ToDictionaryBool(false);
+
+        private static readonly Dictionary<string, bool> TagsWithNonCollapsableWhitespaces = new[]
+        {
+            "pre",
+            "textarea",
+            "code",
+        }.ToDictionaryBool(false);
+
+
+        public HtmlMinifier(HtmlDocument html)
         {
             if (html == null) throw new ArgumentNullException(nameof(html));
             this.html = html;
-            this.sourceFileName = sourceFileName;
         }
 
-        public UgliflyResult Minify()
+        public void Minify()
         {
+            ProcessChildren(html);
+        }
 
-            var parser = new HtmlParser(html, sourceFileName);
+        private void ProcessNode(HtmlNode node)
+        {
+            TrimNode(node);
 
-            //nodes = parser.Parse();
-            if (parser.HasErrors)
+            var element = node as HtmlElement;
+            bool isContentNonCollapsible = false;
+            if (element != null && TagsWithNonCollapsableWhitespaces.ContainsKey(element.Name))
             {
-                nodes = null;
-                return new UgliflyResult(html, parser.Errors);
+                pendingTagNonCollapsibleWithSpaces++;
+                isContentNonCollapsible = true;
             }
 
-            builder = new StringBuilder();
-            ProcessNodes();
+            ProcessChildren(node);
 
-            return new UgliflyResult(builder.ToString(), null);
-        }
-
-        private void ProcessNodes()
-        {
-            //foreach (var node in nodes)
-            //{
-            //    var textNode = node as HtmlText;
-            //    if (textNode != null)
-            //    {
-            //        if (noTextStrip > 0)
-            //        {
-            //            textNode.OutputTo(builder);
-            //        }
-            //        else
-            //        {
-            //            var text = textNode.Slice.ToString();
-            //            if (!IsEmptyOrWhitespace(text))
-            //            {
-            //                builder.Append(text);
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (node is HtmlDOCTYPE || node is HtmlCDATA)
-            //        {
-            //            node.OutputTo(builder);
-            //        }
-            //        else if (node is HtmlComment)
-            //        {
-            //            // SKIP
-            //        }
-            //        else if (node is HtmlTagNode)
-            //        {
-            //            node.OutputTo(builder);
-            //            var tag = (HtmlTagNode) node;
-            //            if (tag.Name == "pre" || tag.Name == "code")
-            //            {
-            //                noTextStrip++;
-            //            }
-            //        }
-            //        else if (node is HtmlEndTagNode)
-            //        {
-            //            node.OutputTo(builder);
-            //            var tag = (HtmlEndTagNode)node;
-            //            if (tag.Name == "pre" || tag.Name == "code")
-            //            {
-            //                noTextStrip--;
-            //                // Check unbalanced pre/code
-            //            }
-            //        }
-            //    }
-            //}
-        }
-
-        private static bool IsEmptyOrWhitespace(string s)
-        {
-            for (int i = 0; i < s.Length; i++)
+            if (isContentNonCollapsible)
             {
-                if (!char.IsWhiteSpace(s[i]))
+                pendingTagNonCollapsibleWithSpaces--;
+            }
+        }
+        private void ProcessChildren(HtmlNode node)
+        {
+            foreach (var subNode in node.Children)
+            {
+                ProcessNode(subNode);
+            }
+        }
+
+        private void TrimNode(HtmlNode node)
+        {
+            var textNode = node as HtmlText;
+            if (textNode != null)
+            {
+                TrimNode(textNode);
+            }
+            else if (node is HtmlElement)
+            {
+                TrimNode((HtmlElement) node);
+            }
+        }
+
+        private void TrimNode(HtmlText textNode)
+        {
+            var previousElement = (textNode.PreviousSibling as HtmlElement) ?? textNode.Parent;
+
+            // We can trim the heading whitespaces if:
+            // - we don't have a previous element (either inline or parent container)
+            // - OR the previous element (sibling or parent) is not a tag that require preserving spaces around
+            // - OR the previous text node has already some trailing spaces
+            if (previousElement == null || !InlineTagsPreserveSpacesAround.ContainsKey(previousElement.Name) || (previousTextNode != null && previousTextNode.Slice.HasTrailingSpaces()))
+            {
+                textNode.Slice.TrimStart();
+            }
+
+            // We can trim the traling whitespaces if:
+            // - we don't have a next element (either inline or parent container)
+            // - OR the next element (sibling or parent) is not a tag that require preserving spaces around
+            var nextElement = textNode.NextSibling as HtmlElement ?? textNode.Parent;
+            if (nextElement == null || !InlineTagsPreserveSpacesAround.ContainsKey(nextElement.Name))
+            {
+                textNode.Slice.TrimEnd();
+            }
+
+            // If we are not in the context of a tag that doesn't accept to collapse whitespaces, 
+            // we can collapse them for this text node
+            if (pendingTagNonCollapsibleWithSpaces == 0)
+            {
+                textNode.Slice.CollapseSpaces();
+            }
+
+            // If the text node is empty, remove it from the tree
+            if (textNode.Slice.IsEmptyOrWhiteSpace())
+            {
+                textNode.Remove();
+            }
+
+            // Replace the previous textnode
+            previousTextNode = textNode;
+        }
+
+        private void TrimNode(HtmlElement element)
+        {
+            // If the element is a valid HTML descriptor, we can safely turn-it all lowercase
+            if (element.Descriptor != null)
+            {
+                element.Name = element.Name.ToLowerInvariant();
+            }
+
+            // If the element being visited is not an inline tag, we need to clear the previous text node
+            if (!InlineTagsPreserveSpacesAround.ContainsKey(element.Name))
+            {
+                // Trim any trailing spaces of the last known text node if we are moving to a block level
+                if (previousTextNode != null && pendingTagNonCollapsibleWithSpaces == 0)
                 {
-                    return false;
+                    previousTextNode.Slice.TrimEnd();
                 }
+                previousTextNode = null;
             }
-            return true;
         }
     }
 }

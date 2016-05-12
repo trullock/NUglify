@@ -12,9 +12,9 @@ namespace NUglify.Tests.Html
         [Test]
         public void TestSimple()
         {
-            var result = Uglify.Html("<html>  <BODY>   </body>   </html>");
+            var result = Uglify.Html("<html>  <BODY>  <p> This  <code>Don't collapse      </code>    is a    text <a>   toto </a>   and this is a text </body>   </html>");
             Assert.False(result.HasErrors);
-            Assert.AreEqual("<html><body></body></html>", result.Code);
+            Assert.AreEqual("<html><body><p>This <code>Don't collapse      </code>is a text <a>toto </a>and this is a text</p></body></html>", result.Code);
         }
     }
 }
