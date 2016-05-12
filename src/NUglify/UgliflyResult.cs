@@ -21,12 +21,15 @@ namespace NUglify
             Code = code;
             Errors = messages;
             HasErrors = false;
-            foreach (var error in messages)
+            if (messages != null)
             {
-                if (error.IsError)
+                foreach (var error in messages)
                 {
-                    HasErrors = true;
-                    break;
+                    if (error.IsError)
+                    {
+                        HasErrors = true;
+                        break;
+                    }
                 }
             }
         }
