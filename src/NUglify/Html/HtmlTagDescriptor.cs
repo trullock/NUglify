@@ -85,11 +85,11 @@ namespace NUglify.Html
             ["br"] = new HtmlTagDescriptor(ContentKind.Flow | ContentKind.Phrasing, ContentKind.None, TagEndKind.AutoSelfClosing),
             ["button"] = new HtmlTagDescriptor(ContentKind.Flow | ContentKind.Phrasing | ContentKind.Interactive | ContentKind.Listed | ContentKind.Labelable | ContentKind.Submittable | ContentKind.FormAssociated | ContentKind.Palpable, ContentKind.Phrasing),
             ["canvas"] = new HtmlTagDescriptor(ContentKind.Flow | ContentKind.Phrasing | ContentKind.Embedded | ContentKind.Palpable, ContentKind.Transparent),
-            ["caption"] = new HtmlTagDescriptor(ContentKind.None, ContentKind.Flow, TagEndKind.Omission, CanOmitIfFollowedByCommentOrSpace),
+            ["caption"] = new HtmlTagDescriptor(ContentKind.None, ContentKind.Flow, TagEndKind.Omission, CanOmitEndTagForCaptionAndColgroup),
             ["cite"] = new HtmlTagDescriptor(ContentKind.Flow | ContentKind.Phrasing | ContentKind.Palpable, ContentKind.Phrasing),
             ["code"] = new HtmlTagDescriptor(ContentKind.Flow | ContentKind.Phrasing | ContentKind.Palpable, ContentKind.Phrasing),
             ["col"] = new HtmlTagDescriptor(ContentKind.None, ContentKind.None, TagEndKind.AutoSelfClosing),
-            ["colgroup"] = new HtmlTagDescriptor(ContentKind.None, new[] { "col", "template" }, ContentKind.None, TagEndKind.Omission, CanOmitIfFollowedByCommentOrSpace),
+            ["colgroup"] = new HtmlTagDescriptor(ContentKind.None, new[] { "col", "template" }, ContentKind.None, TagEndKind.Omission, CanOmitEndTagForCaptionAndColgroup),
             ["data"] = new HtmlTagDescriptor(ContentKind.Flow | ContentKind.Phrasing | ContentKind.Palpable, ContentKind.Phrasing),
             ["datalist"] = new HtmlTagDescriptor(ContentKind.Flow | ContentKind.Phrasing, new[] { "option" }, ContentKind.Phrasing | ContentKind.ScriptSupporting),
             ["dd"] = new HtmlTagDescriptor(ContentKind.None, ContentKind.Flow, TagEndKind.Omission, DefinitionDescriptionEndTagOmissionHandler),
@@ -173,7 +173,7 @@ namespace NUglify.Html
             ["td"] = new HtmlTagDescriptor(ContentKind.SectioningRoot, ContentKind.Flow, TagEndKind.Omission, TDTHTagOmissionHandler),
             ["template"] = new HtmlTagDescriptor(ContentKind.Metadata | ContentKind.Flow | ContentKind.Phrasing | ContentKind.ScriptSupporting, ContentKind.Any),
             ["textarea"] = new HtmlTagDescriptor(ContentKind.Flow | ContentKind.Phrasing | ContentKind.Interactive | ContentKind.Listed | ContentKind.Labelable | ContentKind.Submittable | ContentKind.Resettable | ContentKind.FormAssociated | ContentKind.Palpable, ContentKind.Text),
-            ["tfoot"] = new HtmlTagDescriptor(ContentKind.None, new[] {"tr"}, ContentKind.ScriptSupporting, TagEndKind.Omission, CanOmitIfFollowedByCommentOrSpace),
+            ["tfoot"] = new HtmlTagDescriptor(ContentKind.None, new[] {"tr"}, ContentKind.ScriptSupporting, TagEndKind.Omission, CanOmitEndTagForTFoot),
             ["th"] = new HtmlTagDescriptor(ContentKind.Interactive, ContentKind.Flow, TagEndKind.Omission, TDTHTagOmissionHandler),
             ["thead"] = new HtmlTagDescriptor(ContentKind.None, new[] {"tr"}, ContentKind.ScriptSupporting, TagEndKind.Omission, THeadTBodyTagOmissionHandler),
             ["time"] = new HtmlTagDescriptor(ContentKind.Flow | ContentKind.Phrasing | ContentKind.Palpable, ContentKind.Phrasing),
@@ -257,9 +257,27 @@ namespace NUglify.Html
                 || nextSibling.Name.Equals("rp", StringComparison.OrdinalIgnoreCase));
         }
 
+
+        private static bool CanOmitEndTagForCaptionAndColgroup(HtmlElement tag, HtmlElement nextsibling)
+        {
+            return nextsibling == null ||
+                   (nextsibling.Name.Equals("colgroup", StringComparison.OrdinalIgnoreCase)
+                   || nextsibling.Name.Equals("thead", StringComparison.OrdinalIgnoreCase)
+                   || nextsibling.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase)
+                    || nextsibling.Name.Equals("tr", StringComparison.OrdinalIgnoreCase)) &&
+                   CanOmitIfFollowedByCommentOrSpace(tag, nextsibling);
+
+        }
+
+        private static bool CanOmitEndTagForTFoot(HtmlElement tag, HtmlElement nextsibling)
+        {
+            return nextsibling == null ||
+                   nextsibling.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase);
+        }
+
         private static bool CanOmitIfFollowedByCommentOrSpace(HtmlElement parent, HtmlElement nextSibling)
         {
-            return nextSibling == null || (!(parent.FirstChild is HtmlComment || (parent.FirstChild is HtmlText && ((HtmlText)parent.FirstChild).Slice.StartsBySpace())));
+            return !(parent.FirstChild is HtmlComment || (parent.FirstChild is HtmlText && ((HtmlText)parent.FirstChild).Slice.StartsBySpace()));
         }
 
         private static bool THeadTBodyTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)

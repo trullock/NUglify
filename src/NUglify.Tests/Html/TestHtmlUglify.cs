@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace NUglify.Tests.Html
 {
     [TestFixture]
-    public class TestHtmlUglify
+    public partial class TestHtmlUglify
     {
         [Test]
         public void TestSpaceCollapsing()
@@ -45,5 +45,56 @@ namespace NUglify.Tests.Html
             Assert.False(result.HasErrors);
             Assert.AreEqual("This <b>is a text <em>with an emphasis</em> and</b> trailing", result.Code);
         }
+
+        [Test]
+        public void TestTagOmissionInTables()
+        {
+            // Test parsing/collapsing of colgroup/col/tr/th/thead/tbody
+            var result = Uglify.Html(@"<table>
+ <caption>37547 TEE Electric Powered Rail Car Train Functions (Abbreviated)</caption>
+ <colgroup><col><col><col></colgroup>
+ <thead>
+  <tr>
+   <th>Function</th>
+   <th>Control Unit</th>
+   <th>Central Station</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Headlights</td>
+   <td>✔</td>
+   <td>✔</td>
+  </tr>
+  <tr>
+   <td>Interior Lights</td>
+   <td>✔</td>
+   <td>✔</td>
+  </tr>
+  <tr>
+   <td>Electric locomotive operating sounds</td>
+   <td>✔</td>
+   <td>✔</td>
+  </tr>
+  <tr>
+   <td>Engineer's cab lighting</td>
+   <td></td>
+   <td>✔</td>
+  </tr>
+  <tr>
+   <td>Station Announcements - Swiss</td>
+   <td></td>
+   <td>✔</td>
+  </tr>
+ </tbody>
+</table>"
+);
+            Assert.False(result.HasErrors);
+            Assert.AreEqual("<table><caption>37547 TEE Electric Powered Rail Car Train Functions (Abbreviated)<colgroup><col><col><col><thead><tr><th>Function<th>Control Unit<th>Central Station<tbody><tr><td>Headlights<td>✔<td>✔<tr><td>Interior Lights<td>✔<td>✔<tr><td>Electric locomotive operating sounds<td>✔<td>✔<tr><td>Engineer's cab lighting<td><td>✔<tr><td>Station Announcements - Swiss<td><td>✔</table>", result.Code);
+        }
+
+
+
+
     }
 }
