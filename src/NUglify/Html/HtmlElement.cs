@@ -29,6 +29,40 @@ namespace NUglify.Html
 
         public List<HtmlAttribute> Attributes { get; set; }
 
+        public HtmlAttribute FindAttribute(string name)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (Attributes == null)
+            {
+                return null;
+            }
+            foreach (var attr in Attributes)
+            {
+                if (name.Equals(attr.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return attr;
+                }
+            }
+            return null;
+        }
+
+        public void RemoveAttribute(string name)
+        {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (Attributes == null)
+            {
+                return;
+            }
+            for (int i = Attributes.Count - 1; i >= 0; i--)
+            {
+                if (name.Equals(Attributes[i].Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    Attributes.RemoveAt(i);
+                }
+            }
+        }
+
+
         public void AddAttribute(string name, string value)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));

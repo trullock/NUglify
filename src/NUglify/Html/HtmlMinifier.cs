@@ -84,17 +84,15 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimScriptOrStyle(HtmlElement element)
+        private void TrimScriptOrStyle(HtmlElement element, bool isJs)
         {
-            var raw = element.FirstChild as HtmlRaw;
-            if (raw == null)
+            if ((isJs && !settings.MinifyJs) || (!isJs && !settings.MinifyCss))
             {
                 return;
             }
 
-            var hasJs = element.Name.Equals("script", StringComparison.OrdinalIgnoreCase) && settings.MinifyJs;
-            var hasCss = element.Name.Equals("style", StringComparison.OrdinalIgnoreCase) && settings.MinifyCss;
-            if (!hasJs && !hasCss)
+            var raw = element.FirstChild as HtmlRaw;
+            if (raw == null)
             {
                 return;
             }
@@ -112,7 +110,7 @@ namespace NUglify.Html
 
             var text = slice.ToString();
 
-            var result = hasJs ? 
+            var result = isJs ? 
                 Uglify.Js(text, "inner_js", settings.JsSettings) 
                 : Uglify.Css(text, "inner_css", settings.CssSettings);
 
@@ -126,6 +124,9 @@ namespace NUglify.Html
                 HasErrors = true;
                 return;
             }
+
+            // We remove the type attribute, as it default to text/css and text/javascript
+            element.RemoveAttribute("type");
 
             raw.Slice = new StringSlice(result.Code);
         }
@@ -189,10 +190,11 @@ namespace NUglify.Html
                 }
             }
 
-            if ((element.Name.Equals("script", StringComparison.OrdinalIgnoreCase)
-                                    || element.Name.Equals("style", StringComparison.OrdinalIgnoreCase)))
+            var isJavaScript = IsJavaScript(element);
+            var isCssScript = !isJavaScript && IsCssStyle(element);
+            if (isJavaScript || isCssScript)
             {
-                TrimScriptOrStyle(element);
+                TrimScriptOrStyle(element, isJavaScript);
             }
         }
 
@@ -264,6 +266,50 @@ namespace NUglify.Html
             }
 
             pendingTexts.Clear();
+        }
+
+        private static bool IsJavaScript(HtmlElement element)
+        {
+            if (!element.Name.Equals("script", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+            return IsAttributeValueJs(element.FindAttribute("type")?.Value);
+        }
+
+        private static bool IsCssStyle(HtmlElement element)
+        {
+            if (!element.Name.Equals("style", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+            return IsAttributeValueCss(element.FindAttribute("type")?.Value);
+        }
+
+        private static bool IsAttributeValueCss(string value)
+        {
+            return string.IsNullOrEmpty(value) || value.Equals("text/css", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsAttributeValueJs(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return true;
+            }
+
+            var text = value.Split(';')[0].ToLowerInvariant();
+            switch (text)
+            {
+                case "text/javascript":
+                case "text/ecmascript":
+                case "text/jscript":
+                case "application/javascript":
+                case "application/x-javascript":
+                case "application/ecmascript":
+                    return true;
+            }
+            return false;
         }
     }
 }
