@@ -2,6 +2,7 @@
 // This file is licensed under the BSD-Clause 2 license. 
 // See the license.txt file in the project root for more information.
 
+using System;
 using NUglify.Html;
 
 namespace NUglify.Helpers
@@ -27,6 +28,52 @@ namespace NUglify.Helpers
         public int End { get; set; }
 
         public int Length => End - Start + 1;
+
+
+        public bool StartsWith(string text)
+        {
+            if (text == null) throw new ArgumentNullException(nameof(text));
+            for (int i = 0; i < text.Length; i++)
+            {
+                var start = Start + i;
+                if (start > End || Text[start] != text[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool StartsWithIgnoreCase(string text)
+        {
+            if (text == null) throw new ArgumentNullException(nameof(text));
+            for (int i = 0; i < text.Length; i++)
+            {
+                var start = Start + i;
+                if (start > End || char.ToLowerInvariant(Text[start]) != char.ToLowerInvariant(text[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        public bool EndsWith(string text)
+        {
+            if (text == null) throw new ArgumentNullException(nameof(text));
+            for (int i = 0; i < text.Length; i++)
+            {
+                var start = End - i;
+                if (start < Start || Text[start] != text[text.Length - i - 1])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
 
         public void ChangeText(string text)
         {

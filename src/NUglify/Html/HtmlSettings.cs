@@ -3,7 +3,9 @@
 // See the license.txt file in the project root for more information.
 
 using System.Collections.Generic;
+using NUglify.Css;
 using NUglify.Helpers;
+using NUglify.JavaScript;
 
 namespace NUglify.Html
 {
@@ -17,9 +19,16 @@ namespace NUglify.Html
         /// </summary>
         public HtmlSettings()
         {
+            AttributesCaseSensitive = false;
             CollapseWhitespaces = true;
             RemoveComments = true;
             RemoveOptionalTags = true;
+            RemoveInvalidClosingTags = true;
+            RemoveEmptyAttributes = true;
+            MinifyJs = true;
+            JsSettings = new CodeSettings();
+            MinifyCss = true;
+            CssSettings = new CssSettings();
 
             InlineTagsPreservingSpacesAround = new[]
             {
@@ -71,6 +80,11 @@ namespace NUglify.Html
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to treat attributes as case sensitive. Default is <c>false</c>
+        /// </summary>
+        public bool AttributesCaseSensitive { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to collapse whitespaces. Default is <c>true</c>
         /// </summary>
         public bool CollapseWhitespaces { get; set; }
@@ -86,6 +100,36 @@ namespace NUglify.Html
         /// Gets or sets a value indicating whether to remove optional tags (e.g: &lt;/p&gt; or &lt;/li&gt;). Default is <c>true</c>
         /// </summary>
         public bool RemoveOptionalTags { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to remove invalid closing tags (tags with only a end tag and a missing start tag)
+        /// </summary>
+        public bool RemoveInvalidClosingTags { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to remove empty attributes with whitespace only characters.
+        /// </summary>
+        public bool RemoveEmptyAttributes { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether minify js inside &lt;script&gt; tags. Default is <c>true</c> using <see cref="Uglify.Js(string,NUglify.JavaScript.CodeSettings)"/>
+        /// </summary>
+        public bool MinifyJs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minify js settings.
+        /// </summary>
+        public JavaScript.CodeSettings JsSettings { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether minify css inside &lt;style&gt; tags. Default is <c>true</c> using <see cref="Uglify.Css(string,NUglify.Css.CssSettings,NUglify.JavaScript.CodeSettings)"/>
+        /// </summary>
+        public bool MinifyCss { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minify css settings.
+        /// </summary>
+        public Css.CssSettings CssSettings{ get; set; }
 
         /// <summary>
         /// Gets the inline tags preserving spaces around (default: a, abbr, acronym, b, bdi, 

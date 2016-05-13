@@ -143,7 +143,6 @@ namespace NUglify.Tests.Html
         {
             AssertHtml("<br\n/?>",
                 "[0001] [tag: <br>",
-                "[0001] ]tag: </br>",
                 "(2,2): error : Invalid character '?' found while parsing <br>"
                 );
         }
@@ -397,56 +396,56 @@ namespace NUglify.Tests.Html
         [Test]
         public void TestScriptMaybe1()
         {
-            AssertHtml("<script>abc</sdef</script>",
+            AssertHtml("<script>alert('abc</sdef')</script>",
                 "[0001] [tag: <script>",
-                "[0002] #raw: abc</sdef",
+                "[0002] #raw: alert('abc</sdef')",
                 "[0001] ]tag: </script>"
                 );
-            AssertHtml("<script>abc</scriptdef</script>",
+            AssertHtml("<script>alert('</scriptdef')</script>",
                 "[0001] [tag: <script>",
-                "[0002] #raw: abc</scriptdef",
+                "[0002] #raw: alert('</scriptdef')",
                 "[0001] ]tag: </script>",
-                "(1,20): warning : Invalid end of tag <script>. Expecting a '>'"
+                "(1,24): warning : Invalid end of tag </script>. Expecting a '>'"
                 );
-            AssertHtml("<script>abc</script def</script>",
+            AssertHtml("<script>alert('abc</script def')</script>",
                 "[0001] [tag: <script>",
-                "[0002] #raw: abc</script def",
+                "[0002] #raw: alert('abc</script def')",
                 "[0001] ]tag: </script>",
-                "(1,21): warning : Invalid end of tag <script>. Expecting a '>'"
+                "(1,28): warning : Invalid end of tag </script>. Expecting a '>'"
                 );
-            AssertHtml("<script>abc</script def</script     >",
+            AssertHtml("<script>alert('abc</script def')</script     >",
                 "[0001] [tag: <script>",
-                "[0002] #raw: abc</script def",
+                "[0002] #raw: alert('abc</script def')",
                 "[0001] ]tag: </script>",
-                "(1,21): warning : Invalid end of tag <script>. Expecting a '>'"
+                "(1,28): warning : Invalid end of tag </script>. Expecting a '>'"
                 );
         }
 
         [Test]
         public void TestStyleMaybe1()
         {
-            AssertHtml("<style>abc</sdef</style>",
+            AssertHtml("<style>div{}//</s</style>",
                 "[0001] [tag: <style>",
-                "[0002] #raw: abc</sdef",
-                "[0001] ]tag: </style>");
-
-            AssertHtml("<style>abc</styledef</style>",
-                "[0001] [tag: <style>",
-                "[0002] #raw: abc</styledef",
-                "[0001] ]tag: </style>",
-                "(1,18): warning : Invalid end of tag <style>. Expecting a '>'"
+                "[0002] #raw: div{}//</s",
+                "[0001] ]tag: </style>"
                 );
-            AssertHtml("<style>abc</style def</style>",
+            AssertHtml("<style>div{}//</styledef</style>",
                 "[0001] [tag: <style>",
-                "[0002] #raw: abc</style def",
+                "[0002] #raw: div{}//</styledef",
                 "[0001] ]tag: </style>",
-                "(1,19): warning : Invalid end of tag <style>. Expecting a '>'");
-
-            AssertHtml("<style>abc</style def</style     >",
+                "(1,22): warning : Invalid end of tag </style>. Expecting a '>'"
+                );
+            AssertHtml("<style>div{}//</style def</style>",
                 "[0001] [tag: <style>",
-                "[0002] #raw: abc</style def",
+                "[0002] #raw: div{}//</style def",
                 "[0001] ]tag: </style>",
-                "(1,19): warning : Invalid end of tag <style>. Expecting a '>'"
+                "(1,23): warning : Invalid end of tag </style>. Expecting a '>'"
+                );
+            AssertHtml("<style>div{}//</style def</style     >",
+                "[0001] [tag: <style>",
+                "[0002] #raw: div{}//</style def",
+                "[0001] ]tag: </style>",
+                "(1,23): warning : Invalid end of tag </style>. Expecting a '>'"
                 );
         }
 

@@ -77,8 +77,13 @@
     <Compile Include="Css\Switches.cs" />
     <Compile Include="Css\Syntax.cs" />
     <Compile Include="Css\Values.cs" />
+    <Compile Include="Html\TestCaseAndSpaceNormalization.cs" />
+    <Compile Include="Html\TestComments.cs" />
     <Compile Include="Html\TestHtmlParser.cs" />
+    <Compile Include="Html\TestHtmlParserBase.cs" />
+    <Compile Include="Html\TestParsingNonTrivialMarkup.cs" />
     <Compile Include="Html\TestHtmlUglify.cs" />
+    <Compile Include="Html\TestScripts.cs" />
     <Compile Include="JavaScript\ArrayHandling.cs" />
     <Compile Include="JavaScript\AspNet.cs" />
     <Compile Include="JavaScript\Assignments.cs" />

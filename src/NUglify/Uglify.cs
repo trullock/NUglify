@@ -39,24 +39,25 @@ namespace NUglify
         {
         }
 
-        public static UgliflyResult Html(string source, string sourceFileName = null)
+        public static UgliflyResult Html(string source, HtmlSettings settings = null, string sourceFileName = null)
         {
             var parser = new HtmlParser(source, sourceFileName);
             var document = parser.Parse();
-            if (parser.HasErrors)
+            string text = null;
+
+            if (document != null)
             {
-                return new UgliflyResult(null, parser.Errors);
+                var minifier = new HtmlMinifier(document, settings);
+                minifier.Minify();
+
+                var writer = new StringWriter();
+                var htmlWriter = new HtmlWriterToText(writer);
+                htmlWriter.Write(document);
+
+                text = writer.ToString();
             }
 
-            
-            var minifier = new HtmlMinifier(document);
-            minifier.Minify();
-
-            var writer = new StringWriter();
-            var htmlWriter = new HtmlWriterToText(writer);
-            htmlWriter.Write(document);
-
-            return new UgliflyResult(writer.ToString(), null);
+            return new UgliflyResult(text, parser.Errors);
         }
 
         /// <summary>

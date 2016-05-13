@@ -257,7 +257,7 @@ namespace NUglify.Html
             {
                 c = NextChar();
                 // TODO: not entirely correct for <? as we should only test for Alpha for the first char
-                if (c.IsTagChar() || c == '-') // Allow - character (unlike html)
+                if (c.IsTagChar() || c == '_' || c == ':' || c == '.' || c == '-') // Plus some special characters not supported by default HTML but used and supported by browsers
                 {
                     tempBuilder.Append(c);
                 }
@@ -267,11 +267,36 @@ namespace NUglify.Html
                 }
             }
 
-            var tag = new HtmlElement(tempBuilder.ToString())
+            var tagName = tempBuilder.ToString();
+            var descriptor = HtmlTagDescriptor.Find(tagName);
+            var tag = new HtmlElement(tagName)
             {
                 Location = startTagLocation,
-                Kind = isProcessingInstruction ? ElementKind.ProcessingInstruction : ElementKind.StartWithEnd,
+                Descriptor = descriptor,
+                Kind = ElementKind.StartWithEnd
             };
+
+            // Check processing is valid
+            if (isProcessingInstruction)
+            {
+                if (descriptor == null)
+                {
+                    tag.Kind = ElementKind.ProcessingInstruction;
+                }
+                else
+                {
+                    Error(startTagLocation,
+                        $"The HTML tag [{tagName}] cannot start with a processing instruction <?{tagName}...>");
+                    isProcessingInstruction = false;
+                }
+            }
+
+            // If an element is selfclosing, setup it by default
+            if (descriptor != null && descriptor.EndKind == TagEndKind.AutoSelfClosing)
+            {
+                tag.Kind = ElementKind.SelfClosing;
+            }
+
             tag.Descriptor = HtmlTagDescriptor.Find(tag.Name);
 
             tempBuilder.Clear();
@@ -405,14 +430,31 @@ namespace NUglify.Html
                         }
 
                         attr.Value = tempBuilder.ToString();
-                        tag.Attributes[attrIndex] = attr;
                         tempBuilder.Clear();
 
                         hasAttribute = false;
                         break;
                     default:
                         // Parse the attribute name
-                        if (!hasWhitespaces || !(c.IsAlpha() || c == '_' || c == ':'))
+                        if (!hasWhitespaces)
+                        {
+                            Error($"Invalid character '{c}' found while parsing <{tag.Name}>. Expecting a whitespace before an attribute");
+                            // still try to recover from this error
+                        }
+
+                        // Attribute names must consist of one or more characters other than 
+                        // the space characters, 
+                        // U +0000 NULL, 
+                        // U +0022 QUOTATION MARK ("), 
+                        // U +0027 APOSTROPHE ('), 
+                        // U +003E GREATER-THAN SIGN (>), 
+                        // U +002F SOLIDUS (/), 
+                        // and U+003D EQUALS SIGN (=) characters, 
+                        // the control characters, 
+                        // and any characters that are not defined by Unicode. 
+                        
+
+                        if (!c.IsAttributeNameChar())
                         {
                             goto case '@';
                         }
@@ -423,7 +465,7 @@ namespace NUglify.Html
                         while (true)
                         {
                             c = NextChar();
-                            if (c.IsAlphaNumeric() || c == '_' || c == ':' || c == '.' || c == '-')
+                            if (c.IsAttributeNameChar())
                             {
                                 tempBuilder.Append(c);
                             }
@@ -467,9 +509,9 @@ namespace NUglify.Html
 
                     var acceptContentKind = parentDescriptor?.AcceptContent ?? ContentKind.Any;
                     var parentIsTransparent = parentDescriptor != null && parentDescriptor.AcceptContent == ContentKind.Transparent;
-                    if (parentIsTransparent && nonTransparentDescriptor != null)
+                    if (parentIsTransparent)
                     {
-                        acceptContentKind = nonTransparentDescriptor.AcceptContent;
+                        acceptContentKind = nonTransparentDescriptor?.AcceptContent ?? ContentKind.Any;
                     }
 
                     // - If the parent has no descriptor, we assume that it is a non-HTML tag but it accepts children
@@ -520,7 +562,6 @@ namespace NUglify.Html
             }
             else
             {
-                var tagName = tag.Name;
                 if (isProcessingInstruction)
                 {
                     tagName = "?" + tagName + "?";
@@ -554,7 +595,7 @@ namespace NUglify.Html
             {
                 if (c == 0)
                 {
-                    Error($"Invalid EOF found while parsing content of tag [{CurrentParent}]");
+                    Error(contentPosition, $"Invalid EOF found while parsing content of tag [{tag.Name}]");
                     AppendText(contentPosition, position - 1);
                     return;
                 }
@@ -581,7 +622,11 @@ namespace NUglify.Html
                                 break;
                             }
 
-                            Warning($"Invalid end of tag <{tag.Name}>. Expecting a '>'");
+                            Warning($"Invalid end of tag </{tag.Name}>. Expecting a '>'");
+                        }
+                        else
+                        {
+                            continue;
                         }
                     }
                 }
@@ -600,9 +645,9 @@ namespace NUglify.Html
 
         private void TryProcessEndTag()
         {
-            var endTagSpan = GetSourceLocation();
-
             tempBuilder.Clear();
+
+            // Remove any invalid space at the beginning
             tempBuilder.Append(c);
 
             while (true)
@@ -646,18 +691,28 @@ namespace NUglify.Html
                 }
                 else
                 {
+                    var descriptor = HtmlTagDescriptor.Find(tagName);
+
                     // If we have a closing tag without an opening tag
                     // Log a warning but keep the tag (that should be an error, but we assume we can recover from it)
                     var invalidTag = new HtmlElement(tagName)
                     {
                         Location = startTagLocation,
+                        Descriptor = descriptor,
                         Kind = ElementKind.EndWithoutStart
                     };
-                    invalidTag.Descriptor = HtmlTagDescriptor.Find(invalidTag.Name);
 
                     CurrentParent.AppendChild(invalidTag);
 
-                    Warning(startTagLocation, $"Unable to find opening tag for closing tag </{tagName}>");
+                    if (descriptor != null && descriptor.EndKind == TagEndKind.AutoSelfClosing)
+                    {
+                        invalidTag.Kind = ElementKind.SelfClosing;
+                        Warning(startTagLocation, $"Invalid end tag </{tagName}> used instead of self closing tag <{tagName}/> or <{tagName}>");
+                    }
+                    else
+                    {
+                        Warning(startTagLocation, $"Unable to find opening tag for closing tag </{tagName}>");
+                    }
                 }
             }
             else

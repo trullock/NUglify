@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace NUglify.Html
 {
@@ -40,7 +41,7 @@ namespace NUglify.Html
 
         public override string ToString()
         {
-            return $"html-tag: <{(Kind == ElementKind.ProcessingInstruction ? "?" : string.Empty)}{Name}{(Attributes.Count > 0?" ..." : string.Empty)}>";
+            return $"html-tag: <{(Kind == ElementKind.ProcessingInstruction ? "?" : string.Empty)}{Name}{(Attributes != null && Attributes.Count > 0?" ..." : string.Empty)}>";
         }
     }
 }

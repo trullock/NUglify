@@ -1,0 +1,67 @@
+// Copyright (c) Alexandre Mutel. All rights reserved.
+// This file is licensed under the BSD-Clause 2 license. 
+// See the license.txt file in the project root for more information.
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using NUglify.Html;
+using NUnit.Framework;
+
+namespace NUglify.Tests.Html
+{
+    public abstract class TestHtmlParserBase
+    {
+        private string currentHtml;
+        protected string input;
+        protected string output;
+        private List<UglifyError> messages;
+
+        protected void equal(string result, string expected, params string[] expectedMessages)
+        {
+            // Print diagnostic only if there will be an error
+            var resultMessages = messages?.Select(t => t.ToString()).ToArray() ?? new string[] { };
+
+            if (expected != result || !((IStructuralEquatable)expectedMessages).Equals(resultMessages, EqualityComparer<string>.Default))
+            {
+                Console.Out.WriteLine();
+                Console.Out.WriteLine("*******************");
+                Console.Out.WriteLine($">>> Testing <<<");
+                Console.Out.WriteLine();
+                Console.Out.WriteLine(currentHtml);
+
+                if (messages != null)
+                {
+                    foreach (var message in messages)
+                    {
+                        Console.Out.WriteLine(message);
+                    }
+                }
+
+                Console.Out.WriteLine("======");
+                Console.Out.WriteLine("OUTPUT");
+                Console.Out.WriteLine("------");
+                Console.Out.WriteLine(result);
+
+                Console.Out.WriteLine("========");
+                Console.Out.WriteLine("EXPECTED");
+                Console.Out.WriteLine("--------");
+                Console.Out.WriteLine(expected);
+            }
+
+            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expectedMessages, resultMessages);
+        }
+
+        protected string minify(string html, HtmlSettings settings = null)
+        {
+            currentHtml = html;
+            var result = Uglify.Html(html, settings);
+
+            var text = result.Code;
+            messages = result.Errors;
+            return text;
+        }
+    }
+}

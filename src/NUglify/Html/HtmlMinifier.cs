@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using NUglify.Helpers;
 
 namespace NUglify.Html
 {
@@ -22,7 +23,12 @@ namespace NUglify.Html
             this.settings = settings ?? DefaultSettings;
             this.html = html;
             pendingTexts = new List<HtmlText>();
+            Errors = new List<UglifyError>();
         }
+
+        public bool HasErrors { get; private set; }
+
+        public List<UglifyError> Errors { get; private set; }
 
         public void Minify()
         {
@@ -69,8 +75,59 @@ namespace NUglify.Html
 
             if (node is HtmlComment && settings.RemoveComments)
             {
-                node.Remove();
+                var comment = (HtmlComment) node;
+                // Don't remove special ignoring comments
+                if (!comment.Slice.StartsWith("!"))
+                {
+                    node.Remove();
+                }
             }
+        }
+
+        private void TrimScriptOrStyle(HtmlElement element)
+        {
+            var raw = element.FirstChild as HtmlRaw;
+            if (raw == null)
+            {
+                return;
+            }
+
+            var hasJs = element.Name.Equals("script", StringComparison.OrdinalIgnoreCase) && settings.MinifyJs;
+            var hasCss = element.Name.Equals("style", StringComparison.OrdinalIgnoreCase) && settings.MinifyCss;
+            if (!hasJs && !hasCss)
+            {
+                return;
+            }
+
+            var slice = raw.Slice;
+
+            slice.TrimStart();
+            slice.TrimEnd();
+
+            // If the text has a comment or CDATA, we won't try to minify it
+            if (slice.StartsWith("<!--") || slice.StartsWithIgnoreCase("<![CDATA["))
+            {
+                return;
+            }
+
+            var text = slice.ToString();
+
+            var result = hasJs ? 
+                Uglify.Js(text, "inner_js", settings.JsSettings) 
+                : Uglify.Css(text, "inner_css", settings.CssSettings);
+
+            if (result.Errors != null)
+            {
+                Errors.AddRange(result.Errors);
+            }
+
+            if (result.HasErrors)
+            {
+                HasErrors = true;
+                return;
+            }
+
+            raw.Slice = new StringSlice(result.Code);
         }
 
         private void TrimNodeOnEnd(HtmlNode node)
@@ -95,10 +152,7 @@ namespace NUglify.Html
         private void TrimNodeOnEnd(HtmlElement element)
         {
             // If the element is a valid HTML descriptor, we can safely turn-it all lowercase
-            if (element.Descriptor != null)
-            {
-                element.Name = element.Name.ToLowerInvariant();
-            }
+            element.Name = element.Name.ToLowerInvariant();
 
             // If the element being visited is not an inline tag, we need to clear the previous text node
             if (settings.CollapseWhitespaces && !settings.InlineTagsPreservingSpacesAround.ContainsKey(element.Name))
@@ -111,11 +165,53 @@ namespace NUglify.Html
             {
                 var nextElement = element.FindNextSibling<HtmlElement>();
                 var canOmitEndTag = element.Descriptor?.CanOmitEndTag;
-                if (canOmitEndTag != null && canOmitEndTag(element, nextElement))
+                if (element.Kind == ElementKind.StartWithEnd && canOmitEndTag != null && canOmitEndTag(element, nextElement))
                 {
                     element.Kind = ElementKind.StartWithoutEnd;
                 }
             }
+
+            // Remove invalid closing tags
+            if (settings.RemoveInvalidClosingTags && element.Kind == ElementKind.EndWithoutStart)
+            {
+                element.Remove();
+            }
+
+            if (element.Attributes != null)
+            {
+                for (int i = element.Attributes.Count - 1; i >= 0; i--)
+                {
+                    var attribute = element.Attributes[i];
+                    if (TrimAttribute(element, attribute))
+                    {
+                        element.Attributes.RemoveAt(i);
+                    }
+                }
+            }
+
+            if ((element.Name.Equals("script", StringComparison.OrdinalIgnoreCase)
+                                    || element.Name.Equals("style", StringComparison.OrdinalIgnoreCase)))
+            {
+                TrimScriptOrStyle(element);
+            }
+        }
+
+        private bool TrimAttribute(HtmlElement element, HtmlAttribute attribute)
+        {
+            if (settings.RemoveEmptyAttributes)
+            {
+                if (attribute.Value != null && attribute.Value.IsNullOrWhiteSpace())
+                {
+                    attribute.Value = string.Empty;
+                }
+            }
+
+            if (!settings.AttributesCaseSensitive)
+            {
+                attribute.Name = attribute.Name.ToLowerInvariant();
+            }
+
+            return false;
         }
 
         private void TrimPendingTextNodes()

@@ -8,6 +8,24 @@ namespace NUglify.Html
 {
     public static class CharHelper
     {
+
+        public static bool IsAttributeNameChar(this char c)
+        {
+            // Attribute names must consist of one or more characters other than 
+            // the space characters, 
+            // U +0000 NULL, 
+            // U +0022 QUOTATION MARK ("), 
+            // U +0027 APOSTROPHE ('), 
+            // U +003E GREATER-THAN SIGN (>), 
+            // U +002F SOLIDUS (/), 
+            // and U+003D EQUALS SIGN (=) characters, 
+            // the control characters, 
+            // and any characters that are not defined by Unicode. 
+
+            return !c.IsSpace() && c != 0 && c != '"' && c != '\'' && c != '>' && c != '/' && c != '=' &&
+                   !char.IsControl(c);
+        }
+
         [MethodImpl((MethodImplOptions)256)]
         public static bool IsTagChar(this char c)
         {
