@@ -84,6 +84,7 @@
     <Compile Include="Html\TestParsingNonTrivialMarkup.cs" />
     <Compile Include="Html\TestHtmlUglify.cs" />
     <Compile Include="Html\TestScripts.cs" />
+    <Compile Include="Html\TestStyles.cs" />
     <Compile Include="JavaScript\ArrayHandling.cs" />
     <Compile Include="JavaScript\AspNet.cs" />
     <Compile Include="JavaScript\Assignments.cs" />

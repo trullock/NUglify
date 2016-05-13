@@ -46,16 +46,5 @@ namespace NUglify.Tests.Html
             input = "<script type=\"text/html\">\n<div>\n</div>\n<!-- aa -->\n</script>";
             equal(minify(input), input);
         }
-
-        [Test]
-        public void TestSpaceNormalizationBetweenAttributes()
-        {
-            equal(minify("<p title=\"bar\">foo</p>"), "<p title=\"bar\">foo");
-            equal(minify("<img src=\"test\"/>"), "<img src=\"test\">");
-            equal(minify("<p title = \"bar\">foo</p>"), "<p title=\"bar\">foo");
-            equal(minify("<p title\n\n\t  =\n     \"bar\">foo</p>"), "<p title=\"bar\">foo");
-            equal(minify("<img src=\"test\" \n\t />"), "<img src=\"test\">");
-            equal(minify("<input title=\"bar\"       id=\"boo\"    value=\"hello world\">"), "<input title=\"bar\" id=\"boo\" value=\"hello world\">");
-        }
     }
 }
