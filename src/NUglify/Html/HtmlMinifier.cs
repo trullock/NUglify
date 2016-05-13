@@ -84,53 +84,6 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimScriptOrStyle(HtmlElement element, bool isJs)
-        {
-            if ((isJs && !settings.MinifyJs) || (!isJs && !settings.MinifyCss))
-            {
-                return;
-            }
-
-            var raw = element.FirstChild as HtmlRaw;
-            if (raw == null)
-            {
-                return;
-            }
-
-            var slice = raw.Slice;
-
-            slice.TrimStart();
-            slice.TrimEnd();
-
-            // If the text has a comment or CDATA, we won't try to minify it
-            if (slice.StartsWith("<!--") || slice.StartsWithIgnoreCase("<![CDATA["))
-            {
-                return;
-            }
-
-            var text = slice.ToString();
-
-            var result = isJs ? 
-                Uglify.Js(text, "inner_js", settings.JsSettings) 
-                : Uglify.Css(text, "inner_css", settings.CssSettings);
-
-            if (result.Errors != null)
-            {
-                Errors.AddRange(result.Errors);
-            }
-
-            if (result.HasErrors)
-            {
-                HasErrors = true;
-                return;
-            }
-
-            // We remove the type attribute, as it default to text/css and text/javascript
-            element.RemoveAttribute("type");
-
-            raw.Slice = new StringSlice(result.Code);
-        }
-
         private void TrimNodeOnEnd(HtmlNode node)
         {
             if (node is HtmlElement)
@@ -198,24 +151,6 @@ namespace NUglify.Html
             }
         }
 
-        private bool TrimAttribute(HtmlElement element, HtmlAttribute attribute)
-        {
-            if (settings.RemoveEmptyAttributes)
-            {
-                if (attribute.Value != null && attribute.Value.IsNullOrWhiteSpace())
-                {
-                    attribute.Value = string.Empty;
-                }
-            }
-
-            if (!settings.AttributesCaseSensitive)
-            {
-                attribute.Name = attribute.Name.ToLowerInvariant();
-            }
-
-            return false;
-        }
-
         private void TrimPendingTextNodes()
         {
             HtmlText previousTextNode = null;
@@ -266,6 +201,70 @@ namespace NUglify.Html
             }
 
             pendingTexts.Clear();
+        }
+        private void TrimScriptOrStyle(HtmlElement element, bool isJs)
+        {
+            if ((isJs && !settings.MinifyJs) || (!isJs && !settings.MinifyCss))
+            {
+                return;
+            }
+
+            var raw = element.FirstChild as HtmlRaw;
+            if (raw == null)
+            {
+                return;
+            }
+
+            var slice = raw.Slice;
+
+            slice.TrimStart();
+            slice.TrimEnd();
+
+            // If the text has a comment or CDATA, we won't try to minify it
+            if (slice.StartsWith("<!--") || slice.StartsWithIgnoreCase("<![CDATA["))
+            {
+                return;
+            }
+
+            var text = slice.ToString();
+
+            var result = isJs ?
+                Uglify.Js(text, "inner_js", settings.JsSettings)
+                : Uglify.Css(text, "inner_css", settings.CssSettings);
+
+            if (result.Errors != null)
+            {
+                Errors.AddRange(result.Errors);
+            }
+
+            if (result.HasErrors)
+            {
+                HasErrors = true;
+                return;
+            }
+
+            // We remove the type attribute, as it default to text/css and text/javascript
+            element.RemoveAttribute("type");
+
+            raw.Slice = new StringSlice(result.Code);
+        }
+
+        private bool TrimAttribute(HtmlElement element, HtmlAttribute attribute)
+        {
+            if (settings.RemoveEmptyAttributes)
+            {
+                if (attribute.Value != null && attribute.Value.IsNullOrWhiteSpace())
+                {
+                    attribute.Value = string.Empty;
+                }
+            }
+
+            if (!settings.AttributesCaseSensitive)
+            {
+                attribute.Name = attribute.Name.ToLowerInvariant();
+            }
+
+            return false;
         }
 
         private static bool IsJavaScript(HtmlElement element)
