@@ -54,10 +54,13 @@ namespace NUglify.Html
         protected virtual void Write(HtmlElement node)
         {
             WriteStartTag(node);
-            if (node.Kind == ElementKind.StartEnd)
+            if (node.Kind == ElementKind.StartWithoutEnd || node.Kind == ElementKind.StartWithEnd)
             {
                 WriteChildren(node);
-                WriteEndTag(node);
+                if (node.Kind == ElementKind.StartWithEnd)
+                {
+                    WriteEndTag(node);
+                }
             }
         }
 
@@ -66,7 +69,7 @@ namespace NUglify.Html
             Write("<");
             switch (node.Kind)
             {
-                case ElementKind.InvalidEnd:
+                case ElementKind.EndWithoutStart:
                     Write('/');
                     break;
                 case ElementKind.ProcessingInstruction:

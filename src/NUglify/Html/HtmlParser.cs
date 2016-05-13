@@ -270,7 +270,7 @@ namespace NUglify.Html
             var tag = new HtmlElement(tempBuilder.ToString())
             {
                 Location = startTagLocation,
-                Kind = isProcessingInstruction ? ElementKind.ProcessingInstruction : ElementKind.StartEnd,
+                Kind = isProcessingInstruction ? ElementKind.ProcessingInstruction : ElementKind.StartWithEnd,
             };
             tag.Descriptor = HtmlTagDescriptor.Find(tag.Name);
 
@@ -651,7 +651,7 @@ namespace NUglify.Html
                     var invalidTag = new HtmlElement(tagName)
                     {
                         Location = startTagLocation,
-                        Kind = ElementKind.InvalidEnd
+                        Kind = ElementKind.EndWithoutStart
                     };
                     invalidTag.Descriptor = HtmlTagDescriptor.Find(invalidTag.Name);
 

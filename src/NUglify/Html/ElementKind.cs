@@ -8,12 +8,17 @@ namespace NUglify.Html
         /// <summary>
         /// An element with a start and end tag &lt;tag&gt;...&lt;/tag&gt;
         /// </summary>
-        StartEnd,
+        StartWithEnd,
+
+        /// <summary>
+        /// An element with a start and end tag &lt;tag&gt;...&lt;/tag&gt;
+        /// </summary>
+        StartWithoutEnd,
 
         /// <summary>
         /// An element with a single end tag (invalid element) &lt;/tag&gt;
         /// </summary>
-        InvalidEnd,
+        EndWithoutStart,
 
         /// <summary>
         /// The self closing element &lt;tag/&gt;
