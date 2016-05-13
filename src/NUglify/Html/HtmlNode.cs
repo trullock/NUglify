@@ -58,6 +58,22 @@ namespace NUglify.Html
             node.parent = (HtmlElement)this;
         }
 
+        public T FindNextSibling<T>() where T : HtmlNode
+        {
+            var next = NextSibling;
+            while (next != null)
+            {
+                var nextElement = next as T;
+                if (nextElement != null)
+                {
+                    return nextElement;
+                }
+
+                next = next.NextSibling;
+            }
+            return null;
+        }
+
         public IEnumerable<HtmlNode> FindAllDescendants()
         {
             foreach (var child in Children)
