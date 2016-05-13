@@ -840,6 +840,7 @@ namespace NUglify.Html
                 return (char)0;
             }
 
+            // TODO: Column is not taking into account tabs when reporting errors
             if (nextLine)
             {
                 column = -1;
@@ -857,7 +858,15 @@ namespace NUglify.Html
             else
             {
                 c = text[position];
-                if (c == '\n')
+                // A new line is either a single '\r', or "\r\n", or '\n'
+                if (c == '\r')
+                {
+                    if (position + 1 >= text.Length || text[position + 1] != '\n')
+                    {
+                        nextLine = true;
+                    }
+                }
+                else if (c == '\n')
                 {
                     nextLine = true;
                 }
