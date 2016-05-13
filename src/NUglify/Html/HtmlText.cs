@@ -3,6 +3,7 @@
 // See the license.txt file in the project root for more information.
 
 using System;
+using NUglify.Helpers;
 
 namespace NUglify.Html
 {

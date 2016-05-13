@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using NUglify.Helpers;
 
 namespace NUglify.Html
 {
