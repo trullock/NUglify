@@ -33,6 +33,8 @@ namespace NUglify
     /// </summary>
     public sealed class Uglify
     {
+        private static readonly HtmlSettings DefaultSettings = new HtmlSettings();
+
         // Don't use static class, as we don't expect to using static as the method names are already short (Js, Css)
 
         private Uglify()
@@ -41,6 +43,8 @@ namespace NUglify
 
         public static UgliflyResult Html(string source, HtmlSettings settings = null, string sourceFileName = null)
         {
+            settings = settings ?? DefaultSettings;
+
             var parser = new HtmlParser(source, sourceFileName);
             var document = parser.Parse();
             string text = null;
@@ -51,7 +55,7 @@ namespace NUglify
                 minifier.Minify();
 
                 var writer = new StringWriter();
-                var htmlWriter = new HtmlWriterToText(writer);
+                var htmlWriter = new HtmlWriterToText(writer, settings);
                 htmlWriter.Write(document);
 
                 text = writer.ToString();

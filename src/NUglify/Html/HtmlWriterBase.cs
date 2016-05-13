@@ -80,17 +80,12 @@ namespace NUglify.Html
 
             if (node.Attributes != null)
             {
-                foreach (var attribute in node.Attributes)
+                var count = node.Attributes.Count;
+                for (int i = 0; i < count; i++)
                 {
+                    var attribute = node.Attributes[i];
                     Write(" ");
-                    Write(attribute.Name);
-                    if (attribute.Value != null)
-                    {
-                        Write("=");
-                        Write("\"");
-                        Write(attribute.Value);
-                        Write("\"");
-                    }
+                    WriteAttribute(node, attribute, i + 1 == count);
                 }
             }
 
@@ -106,6 +101,23 @@ namespace NUglify.Html
             Write("</");
             Write(node.Name);
             Write(">");
+        }
+
+        protected virtual void WriteAttribute(HtmlElement element, HtmlAttribute attribute, bool isLast)
+        {
+            Write(attribute.Name);
+            if (attribute.Value != null)
+            {
+                Write("=");
+                WriteAttributeValue(element, attribute, isLast);
+            }
+        }
+
+        protected virtual void WriteAttributeValue(HtmlElement element, HtmlAttribute attribute, bool isLast)
+        {
+            Write("\"");
+            Write(attribute.Value);
+            Write("\"");
         }
 
         protected virtual void Write(HtmlText node)

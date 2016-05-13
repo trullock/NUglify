@@ -25,6 +25,7 @@ namespace NUglify.Html
             RemoveOptionalTags = true;
             RemoveInvalidClosingTags = true;
             RemoveEmptyAttributes = true;
+            RemoveQuotedAttributes = true;
             MinifyJs = true;
             JsSettings = new CodeSettings();
             MinifyCss = true;
@@ -112,6 +113,17 @@ namespace NUglify.Html
         public bool RemoveEmptyAttributes { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to remove quoted attributes when possible. Default is <c>true</c>
+        /// </summary>
+        public bool RemoveQuotedAttributes { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the quote character used for attribute values. Default is null, meaning that it will let the minifier decide which is best. Default is <c>null</c>
+        /// </summary>
+        public char? AttributeQuoteChar { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether minify js inside &lt;script&gt; tags. Default is <c>true</c> using <see cref="Uglify.Js(string,NUglify.JavaScript.CodeSettings)"/>
         /// </summary>
         public bool MinifyJs { get; set; }
@@ -130,6 +142,7 @@ namespace NUglify.Html
         /// Gets or sets the minify css settings.
         /// </summary>
         public Css.CssSettings CssSettings{ get; set; }
+
 
         /// <summary>
         /// Gets the inline tags preserving spaces around (default: a, abbr, acronym, b, bdi, 

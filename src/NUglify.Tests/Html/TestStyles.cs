@@ -30,13 +30,16 @@ namespace NUglify.Tests.Html
             equal(minify(input), input);
 
             input = "<style type=\"text/css\"><!-- p { color: red } --></style>";
-            equal(minify(input), input);
+            output = "<style><!-- p { color: red } --></style>";
+            equal(minify(input), output);
 
             input = "<style type=\"text/css\">p::before { content: \"<!--\" }</style>";
+            output = "<style>p::before { content: \"<!--\" }</style>";
             equal(minify(input), "<style>p::before{content:\"<!--\"}</style>");
 
             input = "<style type=\"text/html\">\n<div>\n</div>\n<!-- aa -->\n</style>";
-            equal(minify(input), input);
+            output = "<style type=text/html>\n<div>\n</div>\n<!-- aa -->\n</style>";
+            equal(minify(input), output);
         }
     }
 }

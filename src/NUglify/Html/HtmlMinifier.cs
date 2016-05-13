@@ -10,8 +10,6 @@ namespace NUglify.Html
 {
     public class HtmlMinifier
     {
-        private static readonly HtmlSettings DefaultSettings = new HtmlSettings();
-
         private readonly HtmlDocument html;
         private int pendingTagNonCollapsibleWithSpaces;
         private readonly List<HtmlText> pendingTexts;
@@ -20,7 +18,7 @@ namespace NUglify.Html
         public HtmlMinifier(HtmlDocument html, HtmlSettings settings = null)
         {
             if (html == null) throw new ArgumentNullException(nameof(html));
-            this.settings = settings ?? DefaultSettings;
+            this.settings = settings ?? new HtmlSettings();
             this.html = html;
             pendingTexts = new List<HtmlText>();
             Errors = new List<UglifyError>();
@@ -204,6 +202,9 @@ namespace NUglify.Html
         }
         private void TrimScriptOrStyle(HtmlElement element, bool isJs)
         {
+            // We remove the type attribute, as it default to text/css and text/javascript
+            element.RemoveAttribute("type");
+
             if ((isJs && !settings.MinifyJs) || (!isJs && !settings.MinifyCss))
             {
                 return;
@@ -243,8 +244,6 @@ namespace NUglify.Html
                 return;
             }
 
-            // We remove the type attribute, as it default to text/css and text/javascript
-            element.RemoveAttribute("type");
 
             raw.Slice = new StringSlice(result.Code);
         }

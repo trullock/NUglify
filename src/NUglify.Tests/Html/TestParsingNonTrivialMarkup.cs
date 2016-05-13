@@ -54,9 +54,9 @@ namespace NUglify.Tests.Html
         [Test]
         public void Test007()
         {
-            equal(minify("<p foo-bar=baz>xxx</p>"), "<p foo-bar=\"baz\">xxx");
-            equal(minify("<p foo:bar=baz>xxx</p>"), "<p foo:bar=\"baz\">xxx");
-            equal(minify("<p foo.bar=baz>xxx</p>"), "<p foo.bar=\"baz\">xxx");
+            equal(minify("<p foo-bar=baz>xxx</p>"), "<p foo-bar=baz>xxx");
+            equal(minify("<p foo:bar=baz>xxx</p>"), "<p foo:bar=baz>xxx");
+            equal(minify("<p foo.bar=baz>xxx</p>"), "<p foo.bar=baz>xxx");
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace NUglify.Tests.Html
         [Test]
         public void Test010()
         {
-            equal(minify("<a title=\"x\"href=\" \">foo</a>"), "<a title=\"x\" href=\"\">foo</a>",
+            equal(minify("<a title=\"x\"href=\" \">foo</a>"), "<a title=x href=\"\">foo</a>",
                 "(1,13): error : Invalid character 'h' found while parsing <a>. Expecting a whitespace before an attribute");
             equal(minify("<p id=\"\"class=\"\"title=\"\">x"), "<p id=\"\" class=\"\" title=\"\">x",
                                                               "(1,9): error : Invalid character 'c' found while parsing <p>. Expecting a whitespace before an attribute",
@@ -94,10 +94,10 @@ namespace NUglify.Tests.Html
         [Test]
         public void Test011()
         {
-            equal(minify("<a href=\"#\"><p>Click me</p></a>"), "<a href=\"#\"><p>Click me</p></a>");
+            equal(minify("<a href=\"#\"><p>Click me</p></a>"), "<a href=#><p>Click me</p></a>");
             equal(minify("<span><button>Hit me</button></span>"), "<span><button>Hit me</button></span>");
             equal(minify("<object type=\"image/svg+xml\" data=\"image.svg\"><div>[fallback image]</div></object>"),
-                "<object type=\"image/svg+xml\" data=\"image.svg\"><div>[fallback image]</div></object>"
+                "<object type=image/svg+xml data=image.svg><div>[fallback image]</div></object>"
                 );
 
         }
@@ -105,8 +105,8 @@ namespace NUglify.Tests.Html
         [Test]
         public void Test012()
         {
-            equal(minify("<ng-include src=\"x\"></ng-include>"), "<ng-include src=\"x\"></ng-include>");
-            equal(minify("<ng:include src=\"x\"></ng:include>"), "<ng:include src=\"x\"></ng:include>");
+            equal(minify("<ng-include src=\"x\"></ng-include>"), "<ng-include src=x></ng-include>");
+            equal(minify("<ng:include src=x></ng:include>"), "<ng:include src=x></ng:include>");
             equal(
                 minify("<ng-include src=\"\'views/partial-notification.html\'\"></ng-include><div ng-view=\"\"></div>"),
                 "<ng-include src=\"\'views/partial-notification.html\'\"></ng-include><div ng-view=\"\"></div>"
@@ -118,7 +118,7 @@ namespace NUglify.Tests.Html
         {
             // will cause test to time-out if fail
             input = "<p>For more information, read <a href=https://stackoverflow.com/questions/17408815/fieldset-resizes-wrong-appears-to-have-unremovable-min-width-min-content/17863685#17863685>this Stack Overflow answer</a>.</p>";
-            output = "<p>For more information, read <a href=\"https://stackoverflow.com/questions/17408815/fieldset-resizes-wrong-appears-to-have-unremovable-min-width-min-content/17863685#17863685\">this Stack Overflow answer</a>.";
+            output = "<p>For more information, read <a href=https://stackoverflow.com/questions/17408815/fieldset-resizes-wrong-appears-to-have-unremovable-min-width-min-content/17863685#17863685>this Stack Overflow answer</a>.";
             equal(minify(input), output);
         }
 
@@ -135,7 +135,9 @@ namespace NUglify.Tests.Html
 
             input =
                 "<begriffs.pagination ng-init=\"perPage=20\" collection=\"logs\" url=\"\'/api/logs?user=-1\'\" per-page=\"perPage\" per-page-presets=\"[10,20,50,100]\" template-url=\"/assets/paginate-anything.html\"></begriffs.pagination>";
-            equal(minify(input), input);
+            output =
+                "<begriffs.pagination ng-init=\"perPage=20\" collection=logs url=\"\'/api/logs?user=-1\'\" per-page=perPage per-page-presets=[10,20,50,100] template-url=/assets/paginate-anything.html></begriffs.pagination>";
+            equal(minify(input), output);
 
             // https://github.com/kangax/html-minifier/issues/41
             equal(minify("<some-tag-1></some-tag-1><some-tag-2></some-tag-2>"),
@@ -150,10 +152,10 @@ namespace NUglify.Tests.Html
             equal(minify("[\'][\"]"), "[\'][\"]");
 
             // https://github.com/kangax/html-minifier/issues/21
-            equal(minify("<a href=\"test.html\"><div>hey</div></a>"), "<a href=\"test.html\"><div>hey</div></a>");
+            equal(minify("<a href=\"test.html\"><div>hey</div></a>"), "<a href=test.html><div>hey</div></a>");
 
             // https://github.com/kangax/html-minifier/issues/17
-            equal(minify(":) <a href=\"http://example.com\">link</a>"), ":) <a href=\"http://example.com\">link</a>");
+            equal(minify(":) <a href=\"http://example.com\">link</a>"), ":) <a href=http://example.com>link</a>");
 
             // https://github.com/kangax/html-minifier/issues/169
             equal(minify("<a href>ok</a>"), "<a href>ok</a>");
@@ -182,7 +184,14 @@ namespace NUglify.Tests.Html
                     " data-ng-model-options=\"{ debounce: 1000 }\"" +
                     " data-ng-pattern=\"vm.options.format\"" +
                     " data-options=\"vm.datepickerOptions\">";
-            equal(minify(input), input);
+            output = "<input class=form-control type=text style=\"\" id={{vm.formInputName}} name={{vm.formInputName}}" +
+                    " placeholder=YYYY-MM-DD" +
+                    " date-range-picker" +
+                    " data-ng-model=vm.value" +
+                    " data-ng-model-options=\"{ debounce: 1000 }\"" +
+                    " data-ng-pattern=vm.options.format" +
+                    " data-options=vm.datepickerOptions>";
+            equal(minify(input), output);
         }
     }
 }

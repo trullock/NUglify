@@ -35,16 +35,19 @@ namespace NUglify.Tests.Html
             equal(minify(input), input);
 
             input = "<script type=\"text/javascript\"> \n <!--\nalert(\"-->\"); -->\n\n   </script>";
-            equal(minify(input), input);
+            output = "<script> \n <!--\nalert(\"-->\"); -->\n\n   </script>";
+            equal(minify(input), output);
 
             input = "<script type=\"text/javascript\"> \n <!--\nalert(\"-->\");\n -->\n\n   </script>";
-            equal(minify(input), input);
+            output = "<script> \n <!--\nalert(\"-->\");\n -->\n\n   </script>";
+            equal(minify(input), output);
 
             input = "<script> //   <!--   \n  alert(1)   //  --> </script>";
             equal(minify(input), "<script>alert(1)</script>");
 
             input = "<script type=\"text/html\">\n<div>\n</div>\n<!-- aa -->\n</script>";
-            equal(minify(input), input);
+            output = "<script type=text/html>\n<div>\n</div>\n<!-- aa -->\n</script>";
+            equal(minify(input), output);
         }
     }
 }

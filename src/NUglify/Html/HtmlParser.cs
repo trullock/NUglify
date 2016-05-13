@@ -412,7 +412,7 @@ namespace NUglify.Html
                                 {
                                     goto exit;
                                 }
-                                if (c == ' ' || c == '\n' || c == '"' || c == '\'' || c == '=' || c == '<' || c == '>' || c == '`')
+                                if (c.IsSpace() || c == '"' || c == '\'' || c == '=' || c == '<' || c == '>' || c == '`')
                                 {
                                     break;
                                 }
