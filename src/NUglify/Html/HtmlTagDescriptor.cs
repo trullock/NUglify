@@ -11,23 +11,30 @@ namespace NUglify.Html
     public class HtmlTagDescriptor
     {
         public delegate bool AcceptContentDelegate(HtmlElement parent, HtmlElement child, ref HtmlTagDescriptor childDescriptor);
-        public delegate bool ShouldCloseParentOnTagDelegate(HtmlElement parent, HtmlElement tag);
 
-        public HtmlTagDescriptor(ContentKind category, string[] acceptTags, ContentKind acceptContent = ContentKind.None, TagEndKind endKind = TagEndKind.Required, ShouldCloseParentOnTagDelegate shouldCloseParentOnTag = null)
+        /// <summary>
+        /// A delegate to check whether a end tag can be omitted.
+        /// </summary>
+        /// <param name="tag">The tag for which we want to test if a end tag can be omitted.</param>
+        /// <param name="nextSibling">The next sibling or null if it is the last tag of its parent.</param>
+        /// <returns><c>true</c> if the end tag can be omitted; <c>false</c> otherwise</returns>
+        public delegate bool CanOmitEndTagDelegate(HtmlElement tag, HtmlElement nextSibling);
+
+        public HtmlTagDescriptor(ContentKind category, string[] acceptTags, ContentKind acceptContent = ContentKind.None, TagEndKind endKind = TagEndKind.Required, CanOmitEndTagDelegate canOmitEndTag = null)
         {
             Category = category;
             AcceptContent = acceptContent;
             AcceptContentTags = acceptTags?.ToDictionaryBool(false);
             EndKind = endKind;
-            ShouldCloseParentOnTag = shouldCloseParentOnTag;
+            CanOmitEndTag = canOmitEndTag;
         }
 
-        public HtmlTagDescriptor(ContentKind category, ContentKind acceptContent, TagEndKind endKind = TagEndKind.Required, ShouldCloseParentOnTagDelegate shouldCloseParentOnTag = null)
+        public HtmlTagDescriptor(ContentKind category, ContentKind acceptContent, TagEndKind endKind = TagEndKind.Required, CanOmitEndTagDelegate canOmitEndTag = null)
         {
             Category = category;
             AcceptContent = acceptContent;
             EndKind = endKind;
-            ShouldCloseParentOnTag = shouldCloseParentOnTag;
+            CanOmitEndTag = canOmitEndTag;
         }
 
         public ContentKind Category { get; }
@@ -38,7 +45,7 @@ namespace NUglify.Html
 
         public TagEndKind EndKind { get; }
 
-        public ShouldCloseParentOnTagDelegate ShouldCloseParentOnTag { get; }
+        public CanOmitEndTagDelegate CanOmitEndTag { get; }
 
         public bool TryAcceptContent(HtmlElement parent, HtmlTagDescriptor parentDescriptor, ContentKind parentAcceptContentType, HtmlElement child, HtmlTagDescriptor childDescriptor)
         {
@@ -214,67 +221,80 @@ namespace NUglify.Html
             "ul",
         }.ToDictionaryBool(false);
 
-        private static bool ParagraphEndTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static readonly Dictionary<string, bool> ParentTagsClosingParagraph = new string[]
         {
-            // it is a closing tag that will close this parent, so we allow it
-            return OpenTagsClosingParagraph.ContainsKey(tag.Name);
+            "a",
+            "audio",
+            "del",
+            "ins",
+            "map",
+            "noscript",
+            "video"
+        }.ToDictionaryBool(false);
+
+        private static bool ParagraphEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        {
+            // it is a closing nextSibling that will close this parent, so we allow it
+            return nextSibling != null
+                ? OpenTagsClosingParagraph.ContainsKey(nextSibling.Name)
+                : !ParentTagsClosingParagraph.ContainsKey(parent.Parent.Name);
         }
 
-        private static bool ListItemEndTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static bool ListItemEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
-            return tag.Name.Equals("li", StringComparison.OrdinalIgnoreCase);
+            return nextSibling == null || nextSibling.Name.Equals("li", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool DefinitionDescriptionEndTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static bool DefinitionDescriptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
-            return tag.Name.Equals("dt", StringComparison.OrdinalIgnoreCase) 
-                || tag.Name.Equals("dd", StringComparison.OrdinalIgnoreCase);
+            return nextSibling == null || (nextSibling.Name.Equals("dt", StringComparison.OrdinalIgnoreCase) 
+                || nextSibling.Name.Equals("dd", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool RubyEndTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static bool RubyEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
-            return tag.Name.Equals("rt", StringComparison.OrdinalIgnoreCase) 
-                || tag.Name.Equals("rp", StringComparison.OrdinalIgnoreCase);
+            return nextSibling == null || (nextSibling.Name.Equals("rt", StringComparison.OrdinalIgnoreCase) 
+                || nextSibling.Name.Equals("rp", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool CanOmitIfFollowedByCommentOrSpace(HtmlElement parent, HtmlElement tag)
+        private static bool CanOmitIfFollowedByCommentOrSpace(HtmlElement parent, HtmlElement nextSibling)
         {
-            return !(parent.FirstChild is HtmlComment || (parent.FirstChild is HtmlText && ((HtmlText)parent.FirstChild).Slice.StartsBySpace()));
+            return nextSibling == null || (!(parent.FirstChild is HtmlComment || (parent.FirstChild is HtmlText && ((HtmlText)parent.FirstChild).Slice.StartsBySpace())));
         }
 
-        private static bool THeadTBodyTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static bool THeadTBodyTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
-            return tag.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase) 
-                || tag.Name.Equals("tfoot", StringComparison.OrdinalIgnoreCase);
+            return nextSibling == null || (nextSibling.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase) 
+                || nextSibling.Name.Equals("tfoot", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool TableRowEndTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static bool TableRowEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
-            return tag.Name.Equals("tr", StringComparison.OrdinalIgnoreCase);
+            return nextSibling == null || nextSibling.Name.Equals("tr", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool TDTHTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static bool TDTHTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
-            return tag.Name.Equals("td", StringComparison.OrdinalIgnoreCase) 
-                || tag.Name.Equals("th", StringComparison.OrdinalIgnoreCase);
+            return nextSibling == null || (nextSibling.Name.Equals("td", StringComparison.OrdinalIgnoreCase) 
+                || nextSibling.Name.Equals("th", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool OptGroupEndTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static bool OptGroupEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
-            return tag.Name.Equals("optgroup", StringComparison.OrdinalIgnoreCase);
+            return nextSibling == null || nextSibling.Name.Equals("optgroup", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool OptionEndTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static bool OptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
-            return tag.Name.Equals("optgroup", StringComparison.OrdinalIgnoreCase)
-                || tag.Name.Equals("option", StringComparison.OrdinalIgnoreCase);
+            return nextSibling == null || (nextSibling.Name.Equals("optgroup", StringComparison.OrdinalIgnoreCase)
+                || nextSibling.Name.Equals("option", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool MenuItemTagOmissionHandler(HtmlElement parent, HtmlElement tag)
+        private static bool MenuItemTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
-            return tag.Name.Equals("menuitem", StringComparison.OrdinalIgnoreCase)
-                || tag.Name.Equals("hr", StringComparison.OrdinalIgnoreCase)
-                || tag.Name.Equals("menu", StringComparison.OrdinalIgnoreCase);
+            return nextSibling == null || (nextSibling.Name.Equals("menuitem", StringComparison.OrdinalIgnoreCase)
+                || nextSibling.Name.Equals("hr", StringComparison.OrdinalIgnoreCase)
+                || nextSibling.Name.Equals("menu", StringComparison.OrdinalIgnoreCase));
         }
     }
 }

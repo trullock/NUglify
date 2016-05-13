@@ -476,7 +476,7 @@ namespace NUglify.Html
                     // - If parent has a descriptor and is not closable by a new tag
                     // - If parent is supporting omission tag but is not closed by current opening tag
                     var isParentClosableByNewTag = parentDescriptor != null && parentDescriptor.EndKind == TagEndKind.Omission;
-                    if (parentDescriptor == null || !isParentClosableByNewTag || !parentDescriptor.ShouldCloseParentOnTag(parent, tag))
+                    if (parentDescriptor == null || !isParentClosableByNewTag || !parentDescriptor.CanOmitEndTag(parent, tag))
                     {
                         if (parentDescriptor != null && !isParentClosableByNewTag)
                         {
@@ -675,19 +675,18 @@ namespace NUglify.Html
         private void CloseTags(int indexOfOpenTag, SourceLocation span, string parentTag)
         {
             // Else we will close all intermediate tag
-            bool isFirstTag = true;
             for (int i = stack.Count - 1; i >= indexOfOpenTag; i--)
             {
                 var element = stack[i];
                 var elementDesc = HtmlTagDescriptor.Find(element.Name);
-                if (i > indexOfOpenTag
-                    && (elementDesc == null || (elementDesc.AcceptContent != ContentKind.None && (elementDesc.EndKind != TagEndKind.Omission || !isFirstTag))))
+                if (i > indexOfOpenTag && 
+                    (elementDesc == null || 
+                    (elementDesc.AcceptContent != ContentKind.None && (elementDesc.EndKind != TagEndKind.Omission || !elementDesc.CanOmitEndTag(element, null)))))
                 {
-                    Warning(span, $"Unbalanced tag [{element.Name}] within tag [{parentTag}] requiring a closing tag. Force closing it");
+                    Warning(element.Location, $"Unbalanced tag [{element.Name}] within tag [{parentTag}] requiring a closing tag. Force closing it");
                 }
 
                 stack.RemoveAt(i);
-                isFirstTag = false;
             }
         }
 
