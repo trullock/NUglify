@@ -4,89 +4,47 @@
 
 using System;
 using System.Collections.Generic;
-using NUglify.Helpers;
 
 namespace NUglify.Html
 {
     public class HtmlMinifier
     {
+        private static readonly HtmlSettings DefaultSettings = new HtmlSettings();
+
         private readonly HtmlDocument html;
-        private HtmlText previousTextNode;
         private int pendingTagNonCollapsibleWithSpaces;
+        private readonly List<HtmlText> pendingTexts;
+        private readonly HtmlSettings settings;
 
-        private static readonly Dictionary<string, bool> InlineTagsPreserveSpacesAround = new []
-        {
-            "a",
-            "abbr",
-            "acronym",
-            "b",
-            "bdi",
-            "bdo",
-            "big",
-            "button",
-            "cite",
-            "code",
-            "del",
-            "dfn",
-            "em",
-            "font",
-            "i",
-            "ins",
-            "kbd",
-            "label",
-            "mark",
-            "math",
-            "nobr",
-            "q",
-            "rp",
-            "rt",
-            "s",
-            "samp",
-            "small",
-            "span",
-            "strike",
-            "strong",
-            "sub",
-            "sup",
-            "svg",
-            "time",
-            "tt",
-            "u",
-            "var",
-        }.ToDictionaryBool(false);
-
-        private static readonly Dictionary<string, bool> TagsWithNonCollapsableWhitespaces = new[]
-        {
-            "pre",
-            "textarea",
-            "code",
-        }.ToDictionaryBool(false);
-
-
-        public HtmlMinifier(HtmlDocument html)
+        public HtmlMinifier(HtmlDocument html, HtmlSettings settings = null)
         {
             if (html == null) throw new ArgumentNullException(nameof(html));
+            this.settings = settings ?? DefaultSettings;
             this.html = html;
+            pendingTexts = new List<HtmlText>();
         }
 
         public void Minify()
         {
             ProcessChildren(html);
+            TrimPendingTextNodes();
         }
 
         private void ProcessNode(HtmlNode node)
         {
-            TrimNode(node);
-
+            TrimNodeOnStart(node);
+            
             var element = node as HtmlElement;
             bool isContentNonCollapsible = false;
-            if (element != null && TagsWithNonCollapsableWhitespaces.ContainsKey(element.Name))
+            if (element != null && settings.TagsWithNonCollapsableWhitespaces.ContainsKey(element.Name))
             {
                 pendingTagNonCollapsibleWithSpaces++;
                 isContentNonCollapsible = true;
             }
 
             ProcessChildren(node);
+            
+            TrimNodeOnEnd(node);
 
             if (isContentNonCollapsible)
             {
@@ -101,59 +59,40 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimNode(HtmlNode node)
+        private void TrimNodeOnStart(HtmlNode node)
         {
             var textNode = node as HtmlText;
             if (textNode != null)
             {
-                TrimNode(textNode);
+                TrimNodeOnStart(textNode);
             }
-            else if (node is HtmlElement)
+
+            if (node is HtmlComment && settings.RemoveComments)
             {
-                TrimNode((HtmlElement) node);
+                node.Remove();
             }
         }
 
-        private void TrimNode(HtmlText textNode)
+        private void TrimNodeOnEnd(HtmlNode node)
         {
-            var previousElement = (textNode.PreviousSibling as HtmlElement) ?? textNode.Parent;
-
-            // We can trim the heading whitespaces if:
-            // - we don't have a previous element (either inline or parent container)
-            // - OR the previous element (sibling or parent) is not a tag that require preserving spaces around
-            // - OR the previous text node has already some trailing spaces
-            if (previousElement == null || !InlineTagsPreserveSpacesAround.ContainsKey(previousElement.Name) || (previousTextNode != null && previousTextNode.Slice.HasTrailingSpaces()))
+            if (node is HtmlElement)
             {
-                textNode.Slice.TrimStart();
+                TrimNodeOnEnd((HtmlElement)node);
             }
-
-            // We can trim the traling whitespaces if:
-            // - we don't have a next element (either inline or parent container)
-            // - OR the next element (sibling or parent) is not a tag that require preserving spaces around
-            var nextElement = textNode.NextSibling as HtmlElement ?? textNode.Parent;
-            if (nextElement == null || !InlineTagsPreserveSpacesAround.ContainsKey(nextElement.Name))
-            {
-                textNode.Slice.TrimEnd();
-            }
-
-            // If we are not in the context of a tag that doesn't accept to collapse whitespaces, 
-            // we can collapse them for this text node
-            if (pendingTagNonCollapsibleWithSpaces == 0)
-            {
-                textNode.Slice.CollapseSpaces();
-            }
-
-            // If the text node is empty, remove it from the tree
-            if (textNode.Slice.IsEmptyOrWhiteSpace())
-            {
-                textNode.Remove();
-            }
-
-            // Replace the previous textnode
-            previousTextNode = textNode;
         }
 
-        private void TrimNode(HtmlElement element)
+        private void TrimNodeOnStart(HtmlText textNode)
+        {
+            // If we don't do anything for TextNode, we can early exit
+            if (!settings.CollapseWhitespaces)
+            {
+                return;
+            }
+
+            pendingTexts.Add(textNode);
+        }
+
+        private void TrimNodeOnEnd(HtmlElement element)
         {
             // If the element is a valid HTML descriptor, we can safely turn-it all lowercase
             if (element.Descriptor != null)
@@ -162,15 +101,73 @@ namespace NUglify.Html
             }
 
             // If the element being visited is not an inline tag, we need to clear the previous text node
-            if (!InlineTagsPreserveSpacesAround.ContainsKey(element.Name))
+            if (settings.CollapseWhitespaces && !settings.InlineTagsPreservingSpacesAround.ContainsKey(element.Name))
             {
-                // Trim any trailing spaces of the last known text node if we are moving to a block level
-                if (previousTextNode != null && pendingTagNonCollapsibleWithSpaces == 0)
-                {
-                    previousTextNode.Slice.TrimEnd();
-                }
-                previousTextNode = null;
+                TrimPendingTextNodes();
             }
+
+            // Remove optional tags
+            if (settings.RemoveOptionalTags)
+            {
+                var nextElement = element.FindNextSibling<HtmlElement>();
+                var canOmitEndTag = element.Descriptor?.CanOmitEndTag;
+                if (canOmitEndTag != null && canOmitEndTag(element, nextElement))
+                {
+                    element.Kind = ElementKind.StartWithoutEnd;
+                }
+            }
+        }
+
+        private void TrimPendingTextNodes()
+        {
+            HtmlText previousTextNode = null;
+            for (int i = 0; i < pendingTexts.Count; i++)
+            {
+                var textNode = pendingTexts[i];
+
+                // We can trim the heading whitespaces if:
+                // - we don't have a previous element (either inline or parent container)
+                // - OR the previous element (sibling or parent) is not a tag that require preserving spaces around
+                // - OR the previous text node has already some trailing spaces
+                if (previousTextNode == null || previousTextNode.Slice.HasTrailingSpaces())
+                {
+                    textNode.Slice.TrimStart();
+                }
+
+                // We can trim the traling whitespaces if:
+                // - we don't have a next element (either inline or parent container)
+                // - OR the next element (sibling or parent) is not a tag that require preserving spaces around
+                if (previousTextNode != null && textNode.NextSibling == null && (i+1 >= pendingTexts.Count || pendingTexts[i+1].Slice.StartsBySpace()))
+                {
+                    textNode.Slice.TrimEnd();
+                }
+
+                // If we are not in the context of a tag that doesn't accept to collapse whitespaces, 
+                // we can collapse them for this text node
+                if (pendingTagNonCollapsibleWithSpaces == 0)
+                {
+                    textNode.Slice.CollapseSpaces();
+                }
+
+                // If the text node is empty, remove it from the tree
+                if (textNode.Slice.IsEmptyOrWhiteSpace())
+                {
+                    textNode.Remove();
+                }
+                else
+                {
+                    // Replace the previous textnode
+                    previousTextNode = textNode;
+                }
+            }
+
+            // Trim any trailing spaces of the last known text node if we are moving to a block level
+            if (previousTextNode != null)
+            {
+                previousTextNode.Slice.TrimEnd();
+            }
+
+            pendingTexts.Clear();
         }
     }
 }
