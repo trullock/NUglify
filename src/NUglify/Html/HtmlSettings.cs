@@ -28,6 +28,7 @@ namespace NUglify.Html
             RemoveQuotedAttributes = true;
             DecodeEntityCharacters = true;
             RemoveScriptStyleTypeAttribute = true;
+            ShortBooleanAttribute = true;
             MinifyJs = true;
             JsSettings = new CodeSettings();
             MinifyCss = true;
@@ -133,6 +134,11 @@ namespace NUglify.Html
         /// Gets or sets a value indicating whether to remove script/style type attribute. Default is <c>true</c>
         /// </summary>
         public bool RemoveScriptStyleTypeAttribute { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the short version of a boolean attribute if value is true. Default is <c>true</c>
+        /// </summary>
+        public bool ShortBooleanAttribute { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether minify js inside &lt;script&gt; tags. Default is <c>true</c> using <see cref="Uglify.Js(string,NUglify.JavaScript.CodeSettings)"/>

@@ -81,6 +81,7 @@
     <Compile Include="Html\TestCaseAndSpaceNormalization.cs" />
     <Compile Include="Html\TestComments.cs" />
     <Compile Include="Html\TestEntities.cs" />
+    <Compile Include="Html\TestHelper.cs" />
     <Compile Include="Html\TestHtmlParser.cs" />
     <Compile Include="Html\TestHtmlParserBase.cs" />
     <Compile Include="Html\TestParsingNonTrivialMarkup.cs" />

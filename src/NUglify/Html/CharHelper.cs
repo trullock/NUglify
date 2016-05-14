@@ -3,11 +3,76 @@
 // See the license.txt file in the project root for more information.
 
 using System.Runtime.CompilerServices;
+using System.Text;
+using NUglify.Helpers;
 
 namespace NUglify.Html
 {
     public static class CharHelper
     {
+        public static string CollapseWhitespaces(string text)
+        {
+            if (text == null)
+            {
+                return null;
+            }
+
+            StringBuilder sb = null;
+
+            bool previousSpace = false;
+            int previousIndex = 0;
+            for (int i = 0; i < text.Length; i++)
+            {
+                var c = text[i];
+                if (c.IsSpace())
+                {
+                    if (previousSpace)
+                    {
+                        if (sb == null)
+                        {
+                            sb = StringBuilderPool.Acquire();
+                        }
+                        if (previousIndex < i)
+                        {
+                            sb.Append(text, previousIndex, i - previousIndex);
+                        }
+                        previousIndex = i + 1;
+                    }
+                    else if (c != ' ')
+                    {
+                        if (sb == null)
+                        {
+                            sb = StringBuilderPool.Acquire();
+                        }
+                        if (previousIndex < i)
+                        {
+                            sb.Append(text, previousIndex, i - previousIndex);
+                        }
+                        sb.Append(' ');
+                        previousIndex = i + 1;
+                    }
+
+                    previousSpace = true;
+                }
+                else
+                {
+                    previousSpace = false;
+                }
+            }
+
+            if (sb == null)
+            {
+                return text;
+            }
+
+            if (previousIndex < text.Length)
+            {
+                sb.Append(text, previousIndex, text.Length - previousIndex);
+            }
+            var result = sb.ToString();
+            sb.Release();
+            return result;
+        }
 
         public static bool IsAttributeNameChar(this char c)
         {

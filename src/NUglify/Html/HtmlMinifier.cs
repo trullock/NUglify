@@ -285,6 +285,36 @@ namespace NUglify.Html
 
         private bool TrimAttribute(HtmlElement element, HtmlAttribute attribute)
         {
+            var tag = element.Name.ToLowerInvariant();
+            var attr = attribute.Name.ToLowerInvariant();
+
+            if (attribute.Value != null)
+            {
+                if (IsUriTypeAttribute(element.Name, attribute.Name))
+                {
+                    attribute.Value = attribute.Value.Trim();
+                    return false;
+                }
+                if (attr == "class")
+                {
+                    attribute.Value = attribute.Value.Trim();
+                    //if (options.sortClassName)
+                    //{
+                    //    attrValue = options.sortClassName(attrValue);
+                    //}
+                    // else
+                    {
+                        attribute.Value = CharHelper.CollapseWhitespaces(attribute.Value);
+                    }
+                    return attribute.Value == string.Empty;
+                }
+            }
+
+            if (settings.ShortBooleanAttribute && attribute.Value == "true")
+            {
+                attribute.Value = null;
+            }
+
             if (settings.RemoveEmptyAttributes)
             {
                 if ((attribute.Value != null || (attribute.Value == null && AttributesRemovedIfEmpty.ContainsKey(attribute.Name))) && attribute.Value.IsNullOrWhiteSpace())
@@ -326,6 +356,22 @@ namespace NUglify.Html
         private static bool IsAttributeValueCss(string value)
         {
             return string.IsNullOrEmpty(value) || value.Equals("text/css", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsUriTypeAttribute(string tag, string attr)
+        {
+            // Code from https://github.com/kangax/html-minifier/blob/gh-pages/src/htmlminifier.js
+            return ((tag == "a" || tag == "area" || tag == "base") && attr == "href") ||
+                   (tag == "img" && (attr == "src" || attr == "longdesc" || attr == "usemap")) ||
+                   (tag == "object" &&
+                    (attr == "classid" || attr == "codebase" || attr == "data" || attr == "usemap")) ||
+                   (tag == "q" && attr == "cite") ||
+                   (tag == "blockquote" && attr == "cite") ||
+                   ((tag == "ins" || tag == "del") && attr == "cite") ||
+                   (tag == "form" && attr == "action") ||
+                   (tag == "input" && (attr == "src" || attr == "usemap")) ||
+                   (tag == "head" && attr == "profile") ||
+                   (tag == "script" && (attr == "src" || attr == "for"));
         }
 
         private static bool IsAttributeValueJs(string value)
