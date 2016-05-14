@@ -8,6 +8,8 @@ namespace NUglify.Html
 {
     public abstract class HtmlWriterBase
     {
+        private int xmlNamespaceLevel;
+
         protected HtmlWriterBase()
         {
         }
@@ -53,13 +55,33 @@ namespace NUglify.Html
 
         protected virtual void Write(HtmlElement node)
         {
+            bool isInXml = node.Descriptor != null && (node.Descriptor.Category & ContentKind.Xml) != 0;
             WriteStartTag(node);
+
+            if (isInXml)
+            {
+                xmlNamespaceLevel++;
+            }
+
             if (node.Kind == ElementKind.StartWithoutEnd || node.Kind == ElementKind.StartWithEnd)
             {
                 WriteChildren(node);
+
+                if (isInXml)
+                {
+                    xmlNamespaceLevel--;
+                }
+
                 if (node.Kind == ElementKind.StartWithEnd)
                 {
                     WriteEndTag(node);
+                }
+            }
+            else
+            {
+                if (isInXml)
+                {
+                    xmlNamespaceLevel--;
                 }
             }
         }
@@ -93,6 +115,12 @@ namespace NUglify.Html
             {
                 Write("?");
             }
+
+            if (node.Kind == ElementKind.SelfClosing && xmlNamespaceLevel > 0)
+            {
+                Write(" /");
+            }
+
             Write(">");
         }
 

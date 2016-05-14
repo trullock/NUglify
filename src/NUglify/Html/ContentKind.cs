@@ -33,6 +33,7 @@ namespace NUglify.Html
 
         Text = 1 << 17,
 
+        Xml = 1 << 18,
 
 
         Any = -1,

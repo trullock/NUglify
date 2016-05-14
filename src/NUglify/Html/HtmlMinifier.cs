@@ -14,6 +14,7 @@ namespace NUglify.Html
         private int pendingTagNonCollapsibleWithSpaces;
         private readonly List<HtmlText> pendingTexts;
         private readonly HtmlSettings settings;
+        private int xmlNamespaceCount;
 
         private static readonly Dictionary<string, bool> AttributesRemovedIfEmpty = new[]
         {
@@ -58,9 +59,15 @@ namespace NUglify.Html
 
         private void ProcessNode(HtmlNode node)
         {
+            var element = node as HtmlElement;
+            bool isInXml = element?.Descriptor != null && (element.Descriptor.Category & ContentKind.Xml) != 0;
+            if (isInXml)
+            {
+                xmlNamespaceCount++;
+            }
+
             TrimNodeOnStart(node);
             
-            var element = node as HtmlElement;
             bool isContentNonCollapsible = false;
             if (element != null && settings.TagsWithNonCollapsableWhitespaces.ContainsKey(element.Name))
             {
@@ -69,8 +76,13 @@ namespace NUglify.Html
             }
 
             ProcessChildren(node);
-            
+
             TrimNodeOnEnd(node);
+
+            if (isInXml)
+            {
+                xmlNamespaceCount--;
+            }
 
             if (isContentNonCollapsible)
             {
@@ -82,7 +94,7 @@ namespace NUglify.Html
             foreach (var subNode in node.Children)
             {
                 ProcessNode(subNode);
-            }
+            }            
         }
 
         private void TrimNodeOnStart(HtmlNode node)
@@ -136,10 +148,13 @@ namespace NUglify.Html
         private void TrimNodeOnEnd(HtmlElement element)
         {
             // If the element is a valid HTML descriptor, we can safely turn-it all lowercase
-            element.Name = element.Name.ToLowerInvariant();
+            if (xmlNamespaceCount == 0)
+            {
+                element.Name = element.Name.ToLowerInvariant();
+            }
 
             // If the element being visited is not an inline tag, we need to clear the previous text node
-            if (settings.CollapseWhitespaces && !settings.InlineTagsPreservingSpacesAround.ContainsKey(element.Name))
+            if (settings.CollapseWhitespaces && !settings.InlineTagsPreservingSpacesAround.ContainsKey(element.Name) && element.Descriptor != null && element.Kind != ElementKind.SelfClosing)
             {
                 TrimPendingTextNodes();
             }
@@ -188,11 +203,14 @@ namespace NUglify.Html
             {
                 var textNode = pendingTexts[i];
 
+                var previousElement = textNode.PreviousSibling as HtmlElement;
+                var nextElement = textNode.NextSibling as HtmlElement;
+                
                 // We can trim the heading whitespaces if:
                 // - we don't have a previous element (either inline or parent container)
                 // - OR the previous element (sibling or parent) is not a tag that require preserving spaces around
                 // - OR the previous text node has already some trailing spaces
-                if (previousTextNode == null || previousTextNode.Slice.HasTrailingSpaces())
+                if ((previousTextNode == null || previousTextNode.Slice.HasTrailingSpaces()) && previousElement == null)
                 {
                     textNode.Slice.TrimStart();
                 }
@@ -200,7 +218,7 @@ namespace NUglify.Html
                 // We can trim the traling whitespaces if:
                 // - we don't have a next element (either inline or parent container)
                 // - OR the next element (sibling or parent) is not a tag that require preserving spaces around
-                if (previousTextNode != null && textNode.NextSibling == null && (i+1 >= pendingTexts.Count || pendingTexts[i+1].Slice.StartsBySpace()))
+                if (nextElement == null && previousTextNode != null && textNode.NextSibling == null && (i+1 >= pendingTexts.Count || pendingTexts[i+1].Slice.StartsBySpace()))
                 {
                     textNode.Slice.TrimEnd();
                 }
@@ -317,19 +335,17 @@ namespace NUglify.Html
 
             if (settings.RemoveEmptyAttributes)
             {
-                if ((attribute.Value != null || (attribute.Value == null && AttributesRemovedIfEmpty.ContainsKey(attribute.Name))) && attribute.Value.IsNullOrWhiteSpace())
+                if ((attribute.Value != null || (attribute.Value == null && AttributesRemovedIfEmpty.ContainsKey(attr))) && attribute.Value.IsNullOrWhiteSpace())
                 {
                     attribute.Value = string.Empty;
 
-                    return (element.Name.Equals("input", StringComparison.OrdinalIgnoreCase)
-                            && attribute.Name.Equals("value", StringComparison.OrdinalIgnoreCase)) ||
-                            AttributesRemovedIfEmpty.ContainsKey(attribute.Name);
+                    return (tag == "input" && attr == "value") || AttributesRemovedIfEmpty.ContainsKey(attr);
                 }
             }
 
-            if (!settings.AttributesCaseSensitive)
+            if (!settings.AttributesCaseSensitive && xmlNamespaceCount == 0)
             {
-                attribute.Name = attribute.Name.ToLowerInvariant();
+                attribute.Name = attr;
             }
 
             return false;
