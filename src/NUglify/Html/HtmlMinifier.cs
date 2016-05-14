@@ -235,7 +235,10 @@ namespace NUglify.Html
         private void TrimScriptOrStyle(HtmlElement element, bool isJs)
         {
             // We remove the type attribute, as it default to text/css and text/javascript
-            element.RemoveAttribute("type");
+            if (settings.RemoveScriptStyleTypeAttribute)
+            {
+                element.RemoveAttribute("type");
+            }
 
             if ((isJs && !settings.MinifyJs) || (!isJs && !settings.MinifyCss))
             {
