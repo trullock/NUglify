@@ -294,7 +294,8 @@ namespace NUglify.Html
         private static bool TDTHTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
         {
             return nextSibling == null || (nextSibling.Name.Equals("td", StringComparison.OrdinalIgnoreCase) 
-                || nextSibling.Name.Equals("th", StringComparison.OrdinalIgnoreCase));
+                || nextSibling.Name.Equals("th", StringComparison.OrdinalIgnoreCase)
+                || nextSibling.Name.Equals("tr", StringComparison.OrdinalIgnoreCase));
         }
 
         private static bool OptGroupEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
