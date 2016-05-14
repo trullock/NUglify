@@ -16,6 +16,9 @@ namespace NUglify.Tests.Html
         [Test]
         public void RemoveComments()
         {
+            // Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev
+            // MIT License - https://github.com/kangax/html-minifier/blob/gh-pages/LICENSE
+
             input = "<script><!--\nalert(1);\n--></script>";
             equal(minify(input), input);
 

@@ -16,6 +16,9 @@ namespace NUglify.Tests.Html
         [Test]
         public void RemovingComments()
         {
+            // Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev
+            // MIT License - https://github.com/kangax/html-minifier/blob/gh-pages/LICENSE
+
             input = "<!-- test -->";
             equal(minify(input), "");
 
@@ -36,6 +39,9 @@ namespace NUglify.Tests.Html
         [Test]
         public void IgnoringComments()
         {
+            // Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev
+            // MIT License - https://github.com/kangax/html-minifier/blob/gh-pages/LICENSE
+
             input = "<!--! test -->";
             equal(minify(input), input);
             equal(minify(input, new HtmlSettings() {RemoveComments = false}), input);

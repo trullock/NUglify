@@ -14,6 +14,9 @@ namespace NUglify.Tests.Html
         [Test]
         public void EmptyAttributes()
         {
+            // Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev
+            // MIT License - https://github.com/kangax/html-minifier/blob/gh-pages/LICENSE
+
             input = "<p id=\"\" class=\"\" STYLE=\" \" title=\"\n\" lang=\"\" dir=\"\">x</p>";
             equal(minify(input), "<p>x");
 
@@ -39,6 +42,9 @@ namespace NUglify.Tests.Html
         [Test]
         public void CleanupClassStyleAttribute()
         {
+            // Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev
+            // MIT License - https://github.com/kangax/html-minifier/blob/gh-pages/LICENSE
+
             input = "<p class=\" foo bar  \">foo bar baz</p>";
             equal(minify(input), "<p class=\"foo bar\">foo bar baz");
 
@@ -66,6 +72,9 @@ namespace NUglify.Tests.Html
         [Test]
         public void CleanupUriAttributes()
         {
+            // Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev
+            // MIT License - https://github.com/kangax/html-minifier/blob/gh-pages/LICENSE
+
             input = "<a href=\"   http://example.com  \">x</a>";
             output = "<a href=http://example.com>x</a>";
             equal(minify(input), output);

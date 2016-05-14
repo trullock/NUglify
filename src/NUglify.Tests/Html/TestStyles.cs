@@ -14,6 +14,9 @@ namespace NUglify.Tests.Html
         [Test]
         public void RemoveComments()
         {
+            // Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev
+            // MIT License - https://github.com/kangax/html-minifier/blob/gh-pages/LICENSE
+
             input = "<style><!--\np.a{background:red}\n--></style>";
             equal(minify(input), input);
 

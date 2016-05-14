@@ -2,12 +2,16 @@
 // This file is licensed under the BSD-Clause 2 license. 
 // See the license.txt file in the project root for more information.
 
+
+
 using NUnit.Framework;
 
 namespace NUglify.Tests.Html
 {
     /// <summary>
     /// Tests ported from html-minifier https://github.com/kangax/html-minifier/blob/gh-pages/tests/minifier.js
+    /// Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev
+    /// MIT License - https://github.com/kangax/html-minifier/blob/gh-pages/LICENSE
     /// </summary>
     [TestFixture]
     public class TestParsingNonTrivialMarkup : TestHtmlParserBase
