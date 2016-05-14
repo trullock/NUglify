@@ -29,6 +29,21 @@ namespace NUglify.Helpers
 
         public int Length => End - Start + 1;
 
+        public int IndexOf(char c)
+        {
+            if (Text == null)
+            {
+                return -1;
+            }
+            for (int i = Start; i <= End; i++)
+            {
+                if (Text[i] == c)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
         public bool StartsWith(string text)
         {

@@ -26,6 +26,7 @@ namespace NUglify.Html
             RemoveInvalidClosingTags = true;
             RemoveEmptyAttributes = true;
             RemoveQuotedAttributes = true;
+            DecodeEntityCharacters = true;
             MinifyJs = true;
             JsSettings = new CodeSettings();
             MinifyCss = true;
@@ -117,6 +118,10 @@ namespace NUglify.Html
         /// </summary>
         public bool RemoveQuotedAttributes { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to decode entity characters to their shorter character equivalents. Default is <c>true</c>
+        /// </summary>
+        public bool DecodeEntityCharacters { get; set; }
 
         /// <summary>
         /// Gets or sets the quote character used for attribute values. Default is null, meaning that it will let the minifier decide which is best. Default is <c>null</c>

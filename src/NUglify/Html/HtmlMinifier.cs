@@ -92,6 +92,16 @@ namespace NUglify.Html
 
         private void TrimNodeOnStart(HtmlText textNode)
         {
+            // If we need to decode entities
+            if (settings.DecodeEntityCharacters)
+            {
+                if (textNode.Slice.IndexOf('&') >= 0)
+                {
+                    var text = textNode.Slice.ToString();
+                    textNode.Slice = new StringSlice(EntityHelper.Unescape(text));
+                }
+            }
+
             // If we don't do anything for TextNode, we can early exit
             if (!settings.CollapseWhitespaces)
             {
