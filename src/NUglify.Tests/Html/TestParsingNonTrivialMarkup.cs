@@ -83,7 +83,7 @@ namespace NUglify.Tests.Html
         {
             equal(minify("<a title=\"x\"href=\" \">foo</a>"), "<a title=x href=\"\">foo</a>",
                 "(1,13): error : Invalid character 'h' found while parsing <a>. Expecting a whitespace before an attribute");
-            equal(minify("<p id=\"\"class=\"\"title=\"\">x"), "<p id=\"\" class=\"\" title=\"\">x",
+            equal(minify("<p id=\"\"class=\"\"title=\"\">x"), "<p>x",
                                                               "(1,9): error : Invalid character 'c' found while parsing <p>. Expecting a whitespace before an attribute",
                                                               "(1,17): error : Invalid character 't' found while parsing <p>. Expecting a whitespace before an attribute");
             equal(minify("<p x=\"x\'\"\">x</p>"), "<p x=\"x'\">x",
@@ -160,7 +160,7 @@ namespace NUglify.Tests.Html
             // https://github.com/kangax/html-minifier/issues/169
             equal(minify("<a href>ok</a>"), "<a href>ok</a>");
 
-            equal(minify("<a onclick></a>"), "<a onclick></a>");
+            equal(minify("<a onclick></a>"), "<a></a>");
 
             // https://github.com/kangax/html-minifier/issues/229
             equal(minify("<CUSTOM-TAG></CUSTOM-TAG><div>Hello :)</div>"), "<custom-tag></custom-tag><div>Hello :)</div>");
@@ -184,7 +184,7 @@ namespace NUglify.Tests.Html
                     " data-ng-model-options=\"{ debounce: 1000 }\"" +
                     " data-ng-pattern=\"vm.options.format\"" +
                     " data-options=\"vm.datepickerOptions\">";
-            output = "<input class=form-control type=text style=\"\" id={{vm.formInputName}} name={{vm.formInputName}}" +
+            output = "<input class=form-control type=text id={{vm.formInputName}} name={{vm.formInputName}}" +
                     " placeholder=YYYY-MM-DD" +
                     " date-range-picker" +
                     " data-ng-model=vm.value" +

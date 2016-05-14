@@ -15,6 +15,28 @@ namespace NUglify.Html
         private readonly List<HtmlText> pendingTexts;
         private readonly HtmlSettings settings;
 
+        private static readonly Dictionary<string, bool> AttributesRemovedIfEmpty = new[]
+        {
+            "class",
+            "id",
+            "style",
+            "title",
+            "lang",
+            "dir",
+            "onfocus",
+            "onblur",
+            "onchange",
+            "onclick",
+            "ondblclick",
+            "onmousedown",
+            "onmouseup",
+            "onmouseover",
+            "onmousemove",
+            "onmouseout",
+            "onkeypress",
+            "onkeydown",
+            "onkeyup",
+        }.ToDictionaryBool(false);
         public HtmlMinifier(HtmlDocument html, HtmlSettings settings = null)
         {
             if (html == null) throw new ArgumentNullException(nameof(html));
@@ -262,9 +284,13 @@ namespace NUglify.Html
         {
             if (settings.RemoveEmptyAttributes)
             {
-                if (attribute.Value != null && attribute.Value.IsNullOrWhiteSpace())
+                if ((attribute.Value != null || (attribute.Value == null && AttributesRemovedIfEmpty.ContainsKey(attribute.Name))) && attribute.Value.IsNullOrWhiteSpace())
                 {
                     attribute.Value = string.Empty;
+
+                    return (element.Name.Equals("input", StringComparison.OrdinalIgnoreCase)
+                            && attribute.Name.Equals("value", StringComparison.OrdinalIgnoreCase)) ||
+                            AttributesRemovedIfEmpty.ContainsKey(attribute.Name);
                 }
             }
 
