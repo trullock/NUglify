@@ -10,13 +10,13 @@ using NUglify.Html;
 
 namespace NUglify.Benchmarks
 {
-    public class TestParser
+    public class BenchParser
     {
         private readonly string html;
 
-        public TestParser()
+        public BenchParser()
         {
-            var htmlFile = Path.Combine(Path.GetDirectoryName(typeof(TestMinifier).Assembly.Location), @"..\HTMLStandard.htm");
+            var htmlFile = Path.Combine(Path.GetDirectoryName(typeof(BenchMinifier).Assembly.Location), @"..\HTMLStandard.htm");
             if (!File.Exists(htmlFile))
             {
                 Console.WriteLine("Downloading https://html.spec.whatwg.org/");

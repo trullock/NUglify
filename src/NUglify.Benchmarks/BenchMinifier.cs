@@ -11,13 +11,13 @@ using ZetaProducerHtmlCompressor;
 
 namespace NUglify.Benchmarks
 {
-    public class TestMinifier
+    public class BenchMinifier
     {
         private readonly string html;
 
-        public TestMinifier()
+        public BenchMinifier()
         {
-            var htmlFile = Path.Combine(Path.GetDirectoryName(typeof(TestMinifier).Assembly.Location), @"..\HTMLStandard.htm");
+            var htmlFile = Path.Combine(Path.GetDirectoryName(typeof(BenchMinifier).Assembly.Location), @"..\HTMLStandard.htm");
             if (!File.Exists(htmlFile))
             {
                 Console.WriteLine("Downloading https://html.spec.whatwg.org/");

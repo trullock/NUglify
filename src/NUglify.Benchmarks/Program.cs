@@ -36,11 +36,11 @@ namespace NUglify.Benchmarks
 
                 //var  config = DefaultConfig.Instance;
                 //BenchmarkRunner.Run<TestMinifier>(config);
-                BenchmarkRunner.Run<TestParser>(config);
+                BenchmarkRunner.Run<BenchParser>(config);
             }
             else
             {
-                var program = new TestMinifier();
+                var program = new BenchMinifier();
 
                 var clock = Stopwatch.StartNew();
 
