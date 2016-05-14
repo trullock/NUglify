@@ -45,5 +45,12 @@ namespace NUglify.Benchmarks
             var parser = new AngleSharp.Parser.Html.HtmlParser();
             parser.Parse(html);
         }
+
+        [Benchmark]
+        public void BenchHtmlAgility()
+        {
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(html);
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace NUglify.Benchmarks
                 config.Add(gcDiagnoser);
 
                 //var  config = DefaultConfig.Instance;
-                BenchmarkRunner.Run<TestMinifier>(config);
+                //BenchmarkRunner.Run<TestMinifier>(config);
                 BenchmarkRunner.Run<TestParser>(config);
             }
             else
