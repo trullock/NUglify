@@ -142,7 +142,7 @@ namespace NUglify.Helpers
                 {
                     if (!previousWasSpace)
                     {
-                        builder.Append(c);
+                        builder.Append(' ');
                     }
                     previousWasSpace = true;
                 }
