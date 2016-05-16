@@ -64,28 +64,30 @@ namespace NUglify.Tests.Html
                 equal(minify($"foo<{el}> baz </{el}>bar"), $"foo<{el}> baz </{el}>bar");
                 equal(minify($"foo <{el}> baz </{el}>bar"), $"foo <{el}>baz </{el}>bar");
                 equal(minify($"foo<{el}> baz </{el}> bar"), $"foo<{el}> baz</{el}> bar");
-                equal(minify($"<div>foo <{el}>baz</{el}> bar</div>"),
-                    $"<div>foo <{el}>baz</{el}> bar</div>");
-                equal(minify($"<div>foo<{el}>baz</{el}>bar</div>"),
-                    $"<div>foo<{el}>baz</{el}>bar</div>");
-                equal(minify($"<div>foo <{el}>baz</{el}>bar</div>"),
-                    $"<div>foo <{el}>baz</{el}>bar</div>");
-                equal(minify($"<div>foo<{el}>baz</{el}> bar</div>"),
-                    $"<div>foo<{el}>baz</{el}> bar</div>");
-                equal(minify($"<div>foo <{el}> baz </{el}> bar</div>"),
-                    $"<div>foo <{el}>baz</{el}> bar</div>");
-                equal(minify($"<div>foo<{el}> baz </{el}>bar</div>"),
-                    $"<div>foo<{el}> baz </{el}>bar</div>");
-                equal(minify($"<div>foo <{el}> baz </{el}>bar</div>"),
-                    $"<div>foo <{el}>baz </{el}>bar</div>");
-                equal(minify($"<div>foo<{el}> baz </{el}> bar</div>"),
-                    $"<div>foo<{el}> baz</{el}> bar</div>");
+
+                equal(minify($"<p>foo <{el}>baz</{el}> bar</p>"),
+                    $"<p>foo <{el}>baz</{el}> bar");
+                equal(minify($"<p>foo<{el}>baz</{el}>bar</p>"),
+                    $"<p>foo<{el}>baz</{el}>bar");
+                equal(minify($"<p>foo <{el}>baz</{el}>bar</p>"),
+                    $"<p>foo <{el}>baz</{el}>bar");
+                equal(minify($"<p>foo<{el}>baz</{el}> bar</p>"),
+                    $"<p>foo<{el}>baz</{el}> bar");
+                equal(minify($"<p>foo <{el}> baz </{el}> bar</p>"),
+                    $"<p>foo <{el}>baz</{el}> bar");
+                equal(minify($"<p>foo<{el}> baz </{el}>bar</p>"),
+                    $"<p>foo<{el}> baz </{el}>bar");
+                equal(minify($"<p>foo <{el}> baz </{el}>bar</p>"),
+                    $"<p>foo <{el}>baz </{el}>bar");
+                equal(minify($"<p>foo<{el}> baz </{el}> bar</p>"),
+                    $"<p>foo<{el}> baz</{el}> bar");
             });
 
 
             var disableRemoveOptTag = new HtmlSettings()
             {
                 RemoveOptionalTags = false,
+                IsFragmentOnly = true
             };
 
             new []
@@ -175,10 +177,10 @@ namespace NUglify.Tests.Html
             output = "<div><a href=#><span><b>foo </b><i>bar</i></span></a></div>";
             equal(minify(input, disableRemoveOptTag), output);
             input = "<head> <!-- a --> <!-- b --><link> </head>";
-            output = "<head><!-- a --><!-- b --><link></head>";
+            output = "<head><!-- a --><!-- b --><link>";
             equal(minify(input, new HtmlSettings() { RemoveComments = false }), output);
             input = "<head> <!-- a --> <!-- b --> <!-- c --><link> </head>";
-            output = "<head><!-- a --><!-- b --><!-- c --><link></head>";
+            output = "<head><!-- a --><!-- b --><!-- c --><link>";
             equal(minify(input, new HtmlSettings() { RemoveComments = false } ), output);
         }
     }

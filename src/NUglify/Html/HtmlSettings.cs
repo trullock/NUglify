@@ -29,6 +29,7 @@ namespace NUglify.Html
             DecodeEntityCharacters = true;
             RemoveScriptStyleTypeAttribute = true;
             ShortBooleanAttribute = true;
+            IsFragmentOnly = false;
             MinifyJs = true;
             JsSettings = new CodeSettings();
             MinifyCss = true;
@@ -146,6 +147,11 @@ namespace NUglify.Html
         public bool MinifyJs { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the parsing is occuring on an HTML fragment to avoid creating missing tags (like html, body, head). Default is <c>false</c>
+        /// </summary>
+        public bool IsFragmentOnly { get; set; }
+
+        /// <summary>
         /// Gets or sets the minify js settings.
         /// </summary>
         public JavaScript.CodeSettings JsSettings { get; set; }
@@ -159,7 +165,6 @@ namespace NUglify.Html
         /// Gets or sets the minify css settings.
         /// </summary>
         public Css.CssSettings CssSettings{ get; set; }
-
 
         /// <summary>
         /// Gets the inline tags preserving spaces around (default: a, abbr, acronym, b, bdi, 

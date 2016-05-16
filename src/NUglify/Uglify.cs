@@ -45,7 +45,7 @@ namespace NUglify
         {
             settings = settings ?? DefaultSettings;
 
-            var parser = new HtmlParser(source, sourceFileName);
+            var parser = new HtmlParser(source, sourceFileName, settings);
             var document = parser.Parse();
             string text = null;
 

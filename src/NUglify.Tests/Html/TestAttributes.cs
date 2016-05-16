@@ -100,7 +100,7 @@ namespace NUglify.Tests.Html
             equal(minify(input), output);
 
             input = "<head profile=\"       http://gmpg.org/xfn/11    \"></head>";
-            output = "<head profile=http://gmpg.org/xfn/11></head>";
+            output = "<head profile=http://gmpg.org/xfn/11>";
             equal(minify(input), output);
 
             input = "<object codebase=\"   http://example.com  \"></object>";

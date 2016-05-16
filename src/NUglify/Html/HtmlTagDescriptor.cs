@@ -18,23 +18,24 @@ namespace NUglify.Html
         /// <param name="tag">The tag for which we want to test if a end tag can be omitted.</param>
         /// <param name="nextSibling">The next sibling or null if it is the last tag of its parent.</param>
         /// <returns><c>true</c> if the end tag can be omitted; <c>false</c> otherwise</returns>
-        public delegate bool CanOmitEndTagDelegate(HtmlElement tag, HtmlElement nextSibling);
+        public delegate bool CanOmitDelegate(HtmlElement tag, HtmlElement nextSibling, bool whileParsing);
 
-        public HtmlTagDescriptor(string name, ContentKind category, string[] parentTags, ContentKind parentKind, string[] acceptTags, ContentKind acceptContent = ContentKind.None, TagEndKind endKind = TagEndKind.Required, CanOmitEndTagDelegate canOmitEndTag = null)
+        public HtmlTagDescriptor(string name, ContentKind category, string[] parentTags, ContentKind parentKind, string[] acceptTags, ContentKind acceptContent = ContentKind.None, TagEndKind endKind = TagEndKind.Required, CanOmitDelegate canOmitEndTag = null, CanOmitDelegate canOmitStartTag = null)
         {
             Name = name;
             Category = category;
-            ParentTags = parentTags?.ToDictionaryBool(false);
+            ParentTags = parentTags;
             ParentKind = parentKind;
             AcceptContent = acceptContent;
-            AcceptContentTags = acceptTags?.ToDictionaryBool(false);
+            AcceptContentTags = acceptTags;
             EndKind = endKind;
+            CanOmitStartTag = canOmitStartTag;
             CanOmitEndTag = canOmitEndTag;
         }
 
         public string Name { get; }
 
-        public Dictionary<string, bool> ParentTags { get; }
+        public string[] ParentTags { get; }
 
         public ContentKind ParentKind { get; }
 
@@ -42,23 +43,43 @@ namespace NUglify.Html
 
         public ContentKind AcceptContent { get; }
 
-        public Dictionary<string, bool> AcceptContentTags { get; }
+        public string[] AcceptContentTags { get; }
 
         public TagEndKind EndKind { get; }
 
-        public CanOmitEndTagDelegate CanOmitEndTag { get; }
+        public CanOmitDelegate CanOmitStartTag { get; }
 
-        public bool TryAcceptContent(HtmlElement parent, HtmlTagDescriptor parentDescriptor, ContentKind parentAcceptContentType, HtmlElement child, HtmlTagDescriptor childDescriptor)
+        public CanOmitDelegate CanOmitEndTag { get; }
+
+        public bool AcceptParent(HtmlTagDescriptor parentDescriptor)
         {
-            if (parentDescriptor == null || childDescriptor == null)
+            if (parentDescriptor == null)
             {
                 return true;
             }
 
-            return (childDescriptor.Category & parentAcceptContentType) != 0
-                   ||
-                   (parentDescriptor.AcceptContentTags != null &&
-                    parentDescriptor.AcceptContentTags.ContainsKey(child.Name));
+            //return ((ParentKind & parentDescriptor.Category) != 0)
+            //       || (ParentTags != null && Array.IndexOf(ParentTags, Name) >= 0);
+
+            return (Category & parentDescriptor.AcceptContent) != 0
+                   || parentDescriptor.AcceptContent == ContentKind.Any
+                   || (parentDescriptor.AcceptContentTags != null &&
+                       Array.IndexOf(parentDescriptor.AcceptContentTags, Name) >= 0);
+        }
+
+        public bool TryAcceptContent(HtmlElement parent, ContentKind parentAcceptContentType, HtmlElement child)
+        {
+            if (parent.Descriptor == null || child.Descriptor == null)
+            {
+                return true;
+            }
+
+            return ((child.Descriptor.ParentKind & parent.Descriptor.Category) != 0)
+                   || (child.Descriptor.ParentTags != null && Array.IndexOf(child.Descriptor.ParentTags, child.Name) >= 0);
+            //return (childDescriptor.Category & parentAcceptContentType) != 0
+            //       ||
+            //       (parentDescriptor.AcceptContentTags != null &&
+            //        parentDescriptor.AcceptContentTags.ContainsKey(child.Name));
         }
 
         public static HtmlTagDescriptor Find(string tag)
@@ -82,7 +103,7 @@ namespace NUglify.Html
             ["bdi"] = new HtmlTagDescriptor("bdi", ContentKind.Flow | ContentKind.Phrasing | ContentKind.Palpable, null, ContentKind.Phrasing, null, ContentKind.Phrasing),
             ["bdo"] = new HtmlTagDescriptor("bdo", ContentKind.Flow | ContentKind.Phrasing | ContentKind.Palpable, null, ContentKind.Phrasing, null, ContentKind.Phrasing),
             ["blockquote"] = new HtmlTagDescriptor("blockquote", ContentKind.Flow | ContentKind.SectioningRoot | ContentKind.Palpable, null, ContentKind.Flow, null, ContentKind.Flow),
-            ["body"] = new HtmlTagDescriptor("body", ContentKind.SectioningRoot, new[] { "html" }, ContentKind.None, null, ContentKind.Flow),
+            ["body"] = new HtmlTagDescriptor("body", ContentKind.SectioningRoot, new[] { "html" }, ContentKind.None, null, ContentKind.Flow, TagEndKind.Omission, BodyEndTagOmission, BodyStartTagOmission),
             ["br"] = new HtmlTagDescriptor("br", ContentKind.Flow | ContentKind.Phrasing, null, ContentKind.Phrasing, null, ContentKind.None, TagEndKind.AutoSelfClosing),
             ["button"] = new HtmlTagDescriptor("button", ContentKind.Flow | ContentKind.Phrasing | ContentKind.Interactive | ContentKind.Listed | ContentKind.Labelable | ContentKind.Submittable | ContentKind.FormAssociated | ContentKind.Palpable, null, ContentKind.Phrasing, null, ContentKind.Phrasing),
             ["canvas"] = new HtmlTagDescriptor("canvas", ContentKind.Flow | ContentKind.Phrasing | ContentKind.Embedded | ContentKind.Palpable, null, ContentKind.Phrasing, null, ContentKind.Transparent),
@@ -114,11 +135,11 @@ namespace NUglify.Html
             ["h4"] = new HtmlTagDescriptor("h4", ContentKind.Flow | ContentKind.Heading | ContentKind.Palpable, new[] { "hgroup" }, ContentKind.Flow, null, ContentKind.Phrasing),
             ["h5"] = new HtmlTagDescriptor("h5", ContentKind.Flow | ContentKind.Heading | ContentKind.Palpable, new[] { "hgroup" }, ContentKind.Flow, null, ContentKind.Phrasing),
             ["h6"] = new HtmlTagDescriptor("h6", ContentKind.Flow | ContentKind.Heading | ContentKind.Palpable, new[] { "hgroup" }, ContentKind.Flow, null, ContentKind.Phrasing),
-            ["head"] = new HtmlTagDescriptor("head", ContentKind.None, new[] { "html" }, ContentKind.None, null, ContentKind.Metadata),
+            ["head"] = new HtmlTagDescriptor("head", ContentKind.None, new[] { "html" }, ContentKind.None, null, ContentKind.Metadata, TagEndKind.Omission, HeadEndTagOmission, HeadStartTagOmission),
             ["header"] = new HtmlTagDescriptor("header", ContentKind.Flow | ContentKind.Palpable, null, ContentKind.Flow, null, ContentKind.Flow),
-            ["hgroup"] = new HtmlTagDescriptor("hgroup", ContentKind.Flow | ContentKind.Heading | ContentKind.Palpable, null, ContentKind.Flow, new[] { "h1", "h2", "h3", "h4", "h5", "h6", "template" }),
+            ["hgroup"] = new HtmlTagDescriptor("hgroup", ContentKind.Flow | ContentKind.Heading | ContentKind.Palpable, null, ContentKind.Flow, new[] { "h1", "h2", "h3", "h4", "h5", "h6", "template" }, ContentKind.None),
             ["hr"] = new HtmlTagDescriptor("hr", ContentKind.Flow, null, ContentKind.Flow, null, ContentKind.None, TagEndKind.AutoSelfClosing),
-            ["html"] = new HtmlTagDescriptor("html", ContentKind.None, null, ContentKind.None, new[] { "head", "body" }),
+            ["html"] = new HtmlTagDescriptor("html", ContentKind.None, null, ContentKind.None, new[] { "head", "body" }, ContentKind.None, TagEndKind.Omission, HtmlStartAndEndTagOmission, HtmlStartAndEndTagOmission),
             ["i"] = new HtmlTagDescriptor("i", ContentKind.Flow | ContentKind.Phrasing | ContentKind.Palpable, null, ContentKind.Phrasing, null, ContentKind.Phrasing),
             ["iframe"] = new HtmlTagDescriptor("iframe", ContentKind.Flow | ContentKind.Phrasing | ContentKind.Embedded | ContentKind.Interactive | ContentKind.Palpable, null, ContentKind.Phrasing, null, ContentKind.Text),
             ["img"] = new HtmlTagDescriptor("img", ContentKind.Flow | ContentKind.Phrasing | ContentKind.Embedded | ContentKind.Interactive | ContentKind.FormAssociated | ContentKind.Palpable, null, ContentKind.Phrasing, null, ContentKind.None, TagEndKind.AutoSelfClosing),
@@ -233,7 +254,7 @@ namespace NUglify.Html
             "video"
         }.ToDictionaryBool(false);
 
-        private static bool ParagraphEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool ParagraphEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             // it is a closing nextSibling that will close this parent, so we allow it
             return nextSibling != null
@@ -241,25 +262,24 @@ namespace NUglify.Html
                 : !ParentTagsClosingParagraph.ContainsKey(parent.Parent.Name);
         }
 
-        private static bool ListItemEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool ListItemEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || nextSibling.Name.Equals("li", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool DefinitionDescriptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool DefinitionDescriptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("dt", StringComparison.OrdinalIgnoreCase) 
                 || nextSibling.Name.Equals("dd", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool RubyEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool RubyEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("rt", StringComparison.OrdinalIgnoreCase) 
                 || nextSibling.Name.Equals("rp", StringComparison.OrdinalIgnoreCase));
         }
 
-
-        private static bool CanOmitEndTagForCaptionAndColgroup(HtmlElement tag, HtmlElement nextsibling)
+        private static bool CanOmitEndTagForCaptionAndColgroup(HtmlElement tag, HtmlElement nextsibling, bool whileParsing)
         {
             return nextsibling == null ||
                    (nextsibling.Name.Equals("colgroup", StringComparison.OrdinalIgnoreCase)
@@ -270,7 +290,7 @@ namespace NUglify.Html
 
         }
 
-        private static bool CanOmitEndTagForTFoot(HtmlElement tag, HtmlElement nextsibling)
+        private static bool CanOmitEndTagForTFoot(HtmlElement tag, HtmlElement nextsibling, bool whileParsing)
         {
             return nextsibling == null ||
                    nextsibling.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase);
@@ -281,40 +301,82 @@ namespace NUglify.Html
             return !(parent.FirstChild is HtmlComment || (parent.FirstChild is HtmlText && ((HtmlText)parent.FirstChild).Slice.StartsBySpace()));
         }
 
-        private static bool THeadTBodyTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool THeadTBodyTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase) 
                 || nextSibling.Name.Equals("tfoot", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool TableRowEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool TableRowEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || nextSibling.Name.Equals("tr", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool TDTHTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool TDTHTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("td", StringComparison.OrdinalIgnoreCase) 
                 || nextSibling.Name.Equals("th", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("tr", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool OptGroupEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool OptGroupEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || nextSibling.Name.Equals("optgroup", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool OptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool OptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("optgroup", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("option", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool MenuItemTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling)
+        private static bool MenuItemTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("menuitem", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("hr", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("menu", StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static bool HtmlStartAndEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        {
+            return (!whileParsing || nextSibling == null) && !(parent.NextSibling is HtmlComment);
+        }
+
+        private static bool HeadStartTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        {
+            // A head element’s start tag may be omitted if the element is empty, or if the first thing inside the head element is an element. 
+            return (!whileParsing || nextSibling == null) && (parent.FirstChild == null || parent.FirstChild is HtmlElement);
+        }
+
+        private static bool HeadEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        {
+            // A head element’s end tag may be omitted if the head element is not immediately followed by a space character or a comment.
+            return (!whileParsing || nextSibling == null) && (parent.NextSibling == null || (parent.NextSibling is HtmlText && !((HtmlText)parent.FirstChild).Slice.IsEmptyOrWhiteSpace()) || !(parent.NextSibling is HtmlComment));
+        }
+
+        private static bool BodyStartTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        {
+            // A body element’s start tag may be omitted if:
+            // - the element is empty, 
+            // - or if the first thing inside the body element is not a space character or a comment, except if the first thing inside the body element is a meta, link, script, style, or template element. 
+            var content = parent.FirstChild;
+            var text = content as HtmlText;
+            var element = content as HtmlElement;
+            return (!whileParsing || nextSibling == null) && (content == null ||
+                   (!(text != null && text.Slice.IsEmptyOrWhiteSpace()) && !(content is HtmlComment) &&
+                    (element == null || (
+                        element.Name != "meta"
+                        && element.Name != "link"
+                        && element.Name != "script"
+                        && element.Name != "style"
+                        && element.Name != "template"))));
+        }
+
+
+        private static bool BodyEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        {
+            // A body element’s end tag may be omitted if the body element is not immediately followed by a comment.
+            return (!whileParsing || nextSibling == null) && !(parent.NextSibling is HtmlComment);
         }
     }
 }

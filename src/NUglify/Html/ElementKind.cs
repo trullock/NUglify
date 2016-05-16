@@ -1,33 +1,36 @@
 // Copyright (c) Alexandre Mutel. All rights reserved.
 // This file is licensed under the BSD-Clause 2 license. 
 // See the license.txt file in the project root for more information.
+
+using System;
+
 namespace NUglify.Html
 {
+    [Flags]
     public enum ElementKind
     {
-        /// <summary>
-        /// An element with a start and end tag &lt;tag&gt;...&lt;/tag&gt;
-        /// </summary>
-        StartWithEnd,
+        None = 0,
 
         /// <summary>
-        /// An element with a start and end tag &lt;tag&gt;...&lt;/tag&gt;
+        /// Emit the opening tag of this element
         /// </summary>
-        StartWithoutEnd,
+        Opening = 1,
 
         /// <summary>
-        /// An element with a single end tag (invalid element) &lt;/tag&gt;
+        /// Emit the closing tag of this element
         /// </summary>
-        EndWithoutStart,
+        Closing = 2,
+
+        OpeningClosing = Opening | Closing,
 
         /// <summary>
-        /// The self closing element &lt;tag/&gt;
+        /// Emit a self closing tag of this element (cannot be used with Start or Closing)
         /// </summary>
-        SelfClosing,
+        SelfClosing = 4,
 
         /// <summary>
         /// The XML ? processing instruction
         /// </summary>
-        ProcessingInstruction,
+        ProcessingInstruction = 8,
     }
 }

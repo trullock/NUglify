@@ -69,7 +69,7 @@ namespace NUglify.Tests.Html
             // Make sure that we are actually parsing correctly tr/td and they are correctly nested
             // so we disable RemoveOptionalTags to make sure the structure is correct
             output = @"<table><tbody><tr><td><span>A</span></td><td><span>B</span></td><td><span>C</span></td></tr><tr><td><span>A</span></td><td><span>B</span></td><td><span>C</span></td></tr></tbody></table>";
-            equal(minify(input, new HtmlSettings() {RemoveOptionalTags = false}), output);
+            equal(minify(input, new HtmlSettings() {RemoveOptionalTags = false, IsFragmentOnly = true}), output);
         }
     }
 }

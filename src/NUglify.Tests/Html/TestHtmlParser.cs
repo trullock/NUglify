@@ -52,22 +52,30 @@ namespace NUglify.Tests.Html
         public void TestSelfClosingTags()
         {
             AssertHtml("<ul><li>test1<li>test2</ul>",
-                "[0001] [tag: <ul>",
-                "[0002] [tag: <li>",
-                "[0003] #txt: test1",
-                "[0002] ]tag: </li>",
-                "[0002] [tag: <li>",
-                "[0003] #txt: test2",
-                "[0002] ]tag: </li>",
-                "[0001] ]tag: </ul>"
+                "[0001] [tag: <html>",
+                "[0002] [tag: <body>",
+                "[0003] [tag: <ul>",
+                "[0004] [tag: <li>",
+                "[0005] #txt: test1",
+                "[0004] ]tag: </li>",
+                "[0004] [tag: <li>",
+                "[0005] #txt: test2",
+                "[0004] ]tag: </li>",
+                "[0003] ]tag: </ul>",
+                "[0002] ]tag: </body>",
+                "[0001] ]tag: </html>"
                 );
 
             AssertHtml("<div><p>test1</div>",
-                "[0001] [tag: <div>",
-                "[0002] [tag: <p>",
-                "[0003] #txt: test1",
-                "[0002] ]tag: </p>",
-                "[0001] ]tag: </div>"
+                "[0001] [tag: <html>",
+                "[0002] [tag: <body>",
+                "[0003] [tag: <div>",
+                "[0004] [tag: <p>",
+                "[0005] #txt: test1",
+                "[0004] ]tag: </p>",
+                "[0003] ]tag: </div>",
+                "[0002] ]tag: </body>",
+                "[0001] ]tag: </html>"
                 );
         }
 
@@ -78,11 +86,15 @@ namespace NUglify.Tests.Html
             // Try to use a <p> tag inside a <ul> tag
             // the parser will give a warning 
             AssertHtml("<ul><p>test1</ul>",
-                "[0001] [tag: <ul>",
-                "[0002] [tag: <p>",
-                "[0003] #txt: test1",
-                "[0002] ]tag: </p>",
-                "[0001] ]tag: </ul>",
+                "[0001] [tag: <html>",
+                "[0002] [tag: <body>",
+                "[0003] [tag: <ul>",
+                "[0004] [tag: <p>",
+                "[0005] #txt: test1",
+                "[0004] ]tag: </p>",
+                "[0003] ]tag: </ul>",
+                "[0002] ]tag: </body>",
+                "[0001] ]tag: </html>",
                 "(1,5): warning : The tag <p> is not a valid tag within the parent tag <ul>"
                 );
         }
@@ -134,7 +146,11 @@ namespace NUglify.Tests.Html
         public void TestOpenCloseTag()
         {
             AssertHtml("<br/>",
-                "[0001] [tag: <br>"
+                "[0001] [tag: <html>",
+                "[0002] [tag: <body>",
+                "[0003] [tag: <br>",
+                "[0002] ]tag: </body>",
+                "[0001] ]tag: </html>"
                 );
         }
 
@@ -142,7 +158,11 @@ namespace NUglify.Tests.Html
         public void TestOpenCloseTagError()
         {
             AssertHtml("<br\n/?>",
-                "[0001] [tag: <br>",
+                "[0001] [tag: <html>",
+                "[0002] [tag: <body>",
+                "[0003] [tag: <br>",
+                "[0002] ]tag: </body>",
+                "[0001] ]tag: </html>",
                 "(2,2): error : Invalid character '?' found while parsing <br>"
                 );
         }
@@ -178,7 +198,7 @@ namespace NUglify.Tests.Html
         public void TestEndTag()
         {
             AssertHtml("</html>",
-                "[0001] [tag: </html>",
+                "[0001] ]tag: </html>",
                 "(1,1): warning : Unable to find opening tag for closing tag </html>"
                 );
         }
@@ -375,10 +395,15 @@ namespace NUglify.Tests.Html
         public void TestScriptSimple()
         {
             AssertHtml("<script>abc</script>def",
-                "[0001] [tag: <script>",
-                "[0002] #raw: abc",
-                "[0001] ]tag: </script>",
-                "[0001] #txt: def"
+                "[0001] [tag: <html>",
+                "[0002] [tag: <head>",
+                "[0003] [tag: <script>",
+                "[0004] #raw: abc",
+                "[0003] ]tag: </script>",
+                "[0003] #txt: def",
+                "[0002] ]tag: </head>",
+                "[0001] ]tag: </html>",
+                "(1,21): warning : Invalid text found in tag [head]"
                 );
         }
 
@@ -386,10 +411,15 @@ namespace NUglify.Tests.Html
         public void TestStyleSimple()
         {
             AssertHtml("<style>abc</style>def",
-                "[0001] [tag: <style>",
-                "[0002] #raw: abc",
-                "[0001] ]tag: </style>",
-                "[0001] #txt: def"
+                "[0001] [tag: <html>",
+"[0002] [tag: <head>",
+"[0003] [tag: <style>",
+"[0004] #raw: abc",
+"[0003] ]tag: </style>",
+"[0003] #txt: def",
+"[0002] ]tag: </head>",
+"[0001] ]tag: </html>",
+"(1,19): warning : Invalid text found in tag [head]"
                 );
         }
 
@@ -397,26 +427,42 @@ namespace NUglify.Tests.Html
         public void TestScriptMaybe1()
         {
             AssertHtml("<script>alert('abc</sdef')</script>",
-                "[0001] [tag: <script>",
-                "[0002] #raw: alert('abc</sdef')",
-                "[0001] ]tag: </script>"
+                "[0001] [tag: <html>",
+                "[0002] [tag: <head>",
+                "[0003] [tag: <script>",
+                "[0004] #raw: alert('abc</sdef')",
+                "[0003] ]tag: </script>",
+                "[0002] ]tag: </head>",
+                "[0001] ]tag: </html>"
                 );
             AssertHtml("<script>alert('</scriptdef')</script>",
-                "[0001] [tag: <script>",
-                "[0002] #raw: alert('</scriptdef')",
-                "[0001] ]tag: </script>",
+                "[0001] [tag: <html>",
+                "[0002] [tag: <head>",
+                "[0003] [tag: <script>",
+                "[0004] #raw: alert('</scriptdef')",
+                "[0003] ]tag: </script>",
+                "[0002] ]tag: </head>",
+                "[0001] ]tag: </html>",
                 "(1,24): warning : Invalid end of tag </script>. Expecting a '>'"
                 );
             AssertHtml("<script>alert('abc</script def')</script>",
-                "[0001] [tag: <script>",
-                "[0002] #raw: alert('abc</script def')",
-                "[0001] ]tag: </script>",
+                "[0001] [tag: <html>",
+                "[0002] [tag: <head>",
+                "[0003] [tag: <script>",
+                "[0004] #raw: alert('abc</script def')",
+                "[0003] ]tag: </script>",
+                "[0002] ]tag: </head>",
+                "[0001] ]tag: </html>",
                 "(1,28): warning : Invalid end of tag </script>. Expecting a '>'"
                 );
             AssertHtml("<script>alert('abc</script def')</script     >",
-                "[0001] [tag: <script>",
-                "[0002] #raw: alert('abc</script def')",
-                "[0001] ]tag: </script>",
+                "[0001] [tag: <html>",
+                "[0002] [tag: <head>",
+                "[0003] [tag: <script>",
+                "[0004] #raw: alert('abc</script def')",
+                "[0003] ]tag: </script>",
+                "[0002] ]tag: </head>",
+                "[0001] ]tag: </html>",
                 "(1,28): warning : Invalid end of tag </script>. Expecting a '>'"
                 );
         }
@@ -425,26 +471,42 @@ namespace NUglify.Tests.Html
         public void TestStyleMaybe1()
         {
             AssertHtml("<style>div{}//</s</style>",
-                "[0001] [tag: <style>",
-                "[0002] #raw: div{}//</s",
-                "[0001] ]tag: </style>"
+                "[0001] [tag: <html>",
+                "[0002] [tag: <head>",
+                "[0003] [tag: <style>",
+                "[0004] #raw: div{}//</s",
+                "[0003] ]tag: </style>",
+                "[0002] ]tag: </head>",
+                "[0001] ]tag: </html>"
                 );
             AssertHtml("<style>div{}//</styledef</style>",
-                "[0001] [tag: <style>",
-                "[0002] #raw: div{}//</styledef",
-                "[0001] ]tag: </style>",
+                "[0001] [tag: <html>",
+                "[0002] [tag: <head>",
+                "[0003] [tag: <style>",
+                "[0004] #raw: div{}//</styledef",
+                "[0003] ]tag: </style>",
+                "[0002] ]tag: </head>",
+                "[0001] ]tag: </html>",
                 "(1,22): warning : Invalid end of tag </style>. Expecting a '>'"
                 );
             AssertHtml("<style>div{}//</style def</style>",
-                "[0001] [tag: <style>",
-                "[0002] #raw: div{}//</style def",
-                "[0001] ]tag: </style>",
+                "[0001] [tag: <html>",
+                "[0002] [tag: <head>",
+                "[0003] [tag: <style>",
+                "[0004] #raw: div{}//</style def",
+                "[0003] ]tag: </style>",
+                "[0002] ]tag: </head>",
+                "[0001] ]tag: </html>",
                 "(1,23): warning : Invalid end of tag </style>. Expecting a '>'"
                 );
             AssertHtml("<style>div{}//</style def</style     >",
-                "[0001] [tag: <style>",
-                "[0002] #raw: div{}//</style def",
-                "[0001] ]tag: </style>",
+                "[0001] [tag: <html>",
+                "[0002] [tag: <head>",
+                "[0003] [tag: <style>",
+                "[0004] #raw: div{}//</style def",
+                "[0003] ]tag: </style>",
+                "[0002] ]tag: </head>",
+                "[0001] ]tag: </html>",
                 "(1,23): warning : Invalid end of tag </style>. Expecting a '>'"
                 );
         }

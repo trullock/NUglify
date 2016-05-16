@@ -12,7 +12,7 @@ namespace NUglify.Html
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlDocument"/> class.
         /// </summary>
-        public HtmlDocument() : base("<root>") // use < as we can't have them with regular parsing
+        public HtmlDocument() : base("$root")
         {
         }
     }

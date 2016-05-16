@@ -26,6 +26,12 @@ namespace NUglify.Html
         private bool isEof;
         private readonly string sourceFileName;
         private SourceLocation startTagLocation;
+        private readonly HtmlSettings settings;
+        private HtmlElement htmlElement;
+        private HtmlElement headElement;
+        private HtmlElement bodyElement;
+        private HtmlDocument rootDocument;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlParser"/> class.
@@ -33,11 +39,12 @@ namespace NUglify.Html
         /// <param name="text">The text.</param>
         /// <param name="sourceFileName">Name of the source file.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public HtmlParser(string text, string sourceFileName = null)
+        public HtmlParser(string text, string sourceFileName = null, HtmlSettings settings = null)
         {
             if (text == null) throw new ArgumentNullException(nameof(text));
             this.sourceFileName = sourceFileName;
             this.text = text;
+            this.settings = settings ?? new HtmlSettings();
             tempBuilder = new StringBuilder();
             Errors = new List<UglifyError>();
             position = -1;
@@ -54,7 +61,12 @@ namespace NUglify.Html
         public HtmlDocument Parse()
         {
             stack.Clear();
-            stack.Add(new HtmlDocument());
+
+            rootDocument = new HtmlDocument
+            {
+                Descriptor = new HtmlTagDescriptor("$root", settings.IsFragmentOnly ? ContentKind.Any : ContentKind.None, null, ContentKind.None, new[] {"html"}, settings.IsFragmentOnly ? ContentKind.Any : ContentKind.None)
+            };
+            PushStack(rootDocument);
 
             c = NextChar();
             while (true)
@@ -78,7 +90,60 @@ namespace NUglify.Html
             // Close all remaining tags
             CloseTags(1, GetSourceLocation(), "root");
 
+            // Check all non empty tests to report warning
+            CheckElements();
+
             return (HtmlDocument) stack[0];
+        }
+
+        private void CheckElements()
+        {
+            // Check that html element contains no more than 1 head and 1 body
+
+            if (htmlElement != null)
+            {
+                CheckNonEmptyText(htmlElement);
+                int headCount = 0;
+                int bodyCount = 0;
+                foreach (var child in htmlElement.Children)
+                {
+                    var elt = child as HtmlElement;
+                    if (elt == null)
+                    {
+                        continue;
+                    }
+
+                    if (elt.Name == "head")
+                    {
+                        headCount++;
+                        CheckNonEmptyText(elt);
+                        if (headCount > 1)
+                        {
+                            Warning(elt.Location, "Invalid number of <head> element. Expecting only one <head> inside a <html> tag");
+                        }
+                    }
+
+                    if (elt.Name == "body")
+                    {
+                        bodyCount++;
+                        if (bodyCount > 1)
+                        {
+                            Warning(elt.Location, "Invalid number of <body> element. Expecting only one <body> inside a <html> tag");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CheckNonEmptyText(HtmlElement element)
+        {
+            foreach (var child in element.Children)
+            {
+                if (child.IsNonEmptyText())
+                {
+                    Warning(child.Location, $"Invalid text found in tag [{element.Name}]");
+                }
+            }
         }
 
         private void TryProcessTag()
@@ -268,13 +333,8 @@ namespace NUglify.Html
             }
 
             var tagName = tempBuilder.ToString();
-            var descriptor = HtmlTagDescriptor.Find(tagName);
-            var tag = new HtmlElement(tagName)
-            {
-                Location = startTagLocation,
-                Descriptor = descriptor,
-                Kind = ElementKind.StartWithEnd
-            };
+            var tag = GetHtmlElement(tagName);
+            var descriptor = tag.Descriptor;
 
             // Check processing is valid
             if (isProcessingInstruction)
@@ -495,38 +555,41 @@ namespace NUglify.Html
                 while (true)
                 {
                     var parent = CurrentParent;
-                    var parentDescriptor = HtmlTagDescriptor.Find(parent.Name);
 
                     // If the parent has an AcceptContent == Transparent
                     // We need to find a higher parent that is not transparent and use its ContentKind
                     var nonTransparentParent = parent;
-                    var nonTransparentDescriptor = parentDescriptor;
+                    var nonTransparentDescriptor = parent.Descriptor;
                     while (nonTransparentDescriptor != null && nonTransparentDescriptor.AcceptContent == ContentKind.Transparent)
                     {
                         nonTransparentParent = nonTransparentParent.Parent;
                         nonTransparentDescriptor = HtmlTagDescriptor.Find(nonTransparentParent.Name);
                     }
 
-                    var acceptContentKind = parentDescriptor?.AcceptContent ?? ContentKind.Any;
-                    var parentIsTransparent = parentDescriptor != null && parentDescriptor.AcceptContent == ContentKind.Transparent;
+                    var finalParentDescriptor = parent.Descriptor;
+                    var parentIsTransparent = parent.Descriptor != null && parent.Descriptor.AcceptContent == ContentKind.Transparent;
                     if (parentIsTransparent)
                     {
-                        acceptContentKind = nonTransparentDescriptor?.AcceptContent ?? ContentKind.Any;
+                        finalParentDescriptor = nonTransparentDescriptor;
                     }
 
                     // - If the parent has no descriptor, we assume that it is a non-HTML tag but it accepts children
                     // - If parent has a descriptor and is not closable by a new tag
                     // - If parent is supporting omission tag but is not closed by current opening tag
-                    var isParentClosableByNewTag = parentDescriptor != null && parentDescriptor.EndKind == TagEndKind.Omission;
-                    if (parentDescriptor == null || !isParentClosableByNewTag || !parentDescriptor.CanOmitEndTag(parent, tag))
+                    var isParentClosableByNewTag = parent.Descriptor != null && parent.Descriptor.EndKind == TagEndKind.Omission;
+                    if (parent.Descriptor == null || !isParentClosableByNewTag || !parent.Descriptor.CanOmitEndTag(parent, tag, true))
                     {
-                        if (parentDescriptor != null && !isParentClosableByNewTag)
+                        if (parent.Descriptor != null && !isParentClosableByNewTag && descriptor != null)
                         {
                             // Check if the parent accepts the tag
                             // we will emit a warning just in case
-                            if (!parentDescriptor.TryAcceptContent(parent, parentDescriptor, acceptContentKind, tag, tag.Descriptor))
+                            if (!descriptor.AcceptParent(finalParentDescriptor))
                             {
-                                Warning(tag.Location, $"The tag <{tag.Name}> is not a valid tag within the parent tag <{parent.Name}>");
+                                // If a new parent was created, we don't need to log a warning
+                                if (!TryCreateOptionalStart(ref parent, tag))
+                                {
+                                    Warning(tag.Location, $"The tag <{tag.Name}> is not a valid tag within the parent tag <{parent.Name}>");
+                                }
                             }
                         }
 
@@ -534,7 +597,7 @@ namespace NUglify.Html
 
                         if ((tag.Descriptor == null || tag.Descriptor.AcceptContent != ContentKind.None || tag.Descriptor.AcceptContentTags != null) && tag.Kind != ElementKind.SelfClosing)
                         {
-                            stack.Add(tag);
+                            PushStack(tag);
                         }
                         break;
                     }
@@ -573,6 +636,134 @@ namespace NUglify.Html
 
                 AppendText(startTagLocation, position - 1);
             }
+        }
+
+        private bool TryCreateOptionalStart(ref HtmlElement parent, HtmlElement tag)
+        {
+            if (settings.IsFragmentOnly)
+            {
+                return false;
+            }
+
+            bool hasNewParent = false;
+
+            if (parent.Parent == null)
+            {
+                if (tag.Name == "html")
+                {
+                    return true;
+                }
+
+                hasNewParent = true;
+                var previousParent = parent;
+
+                parent = GetHtmlElement("html");
+
+                if (tag.Name == "body")
+                {
+                    bodyElement = tag;
+                }
+
+                foreach (var child in previousParent.Children)
+                {
+                    child.Remove();
+                    if (child.IsNonEmptyText())
+                    {
+                        if (bodyElement == null)
+                        {
+                            var newParent = GetHtmlElement("body");
+                            parent = newParent;
+                        }
+                    }
+
+                    parent.AppendChild(child);
+                }
+
+                previousParent.AppendChild(parent);
+                PushStack(parent);
+            }
+
+            var descriptor = tag.Descriptor;
+            if (descriptor == null)
+            {
+                return false;
+            }
+
+            if (!descriptor.AcceptParent(parent.Descriptor))
+            {
+                var newParentTag = descriptor.ParentTags?[0] ?? "body";
+
+                if (bodyElement == null)
+                {
+                    if (newParentTag == "head" && headElement == null)
+                    {
+                        if (parent.Name == "html")
+                        {
+                            hasNewParent = true;
+                            var previousParent = parent;
+                            parent = PushStack(GetHtmlElement("head"));
+                            previousParent.AppendChild(parent);
+                        }
+                    }
+                    else if (newParentTag == "body")
+                    {
+                        // If we are in the head, and are requiring a body, pop the head
+                        if (parent.Name == "head")
+                        {
+                            PopStack();
+                            parent = CurrentParent;
+                        }
+
+                        // If we are in a html tag, push a body
+                        if (parent.Name == "html")
+                        {
+                            hasNewParent = true;
+                            var previousParent = parent;
+                            parent = PushStack(GetHtmlElement("body"));
+                            previousParent.AppendChild(parent);
+                        }
+                    }
+                }
+                else if (newParentTag == "colgroup")
+                {
+                    // TODO: handle colgroup
+                }
+            }
+
+            return hasNewParent;
+        }
+
+        private HtmlElement GetHtmlElement(string tagName)
+        {
+            var descriptor = HtmlTagDescriptor.Find(tagName);
+            var tag = new HtmlElement(descriptor?.Name ?? tagName)
+            {
+                Location = startTagLocation,
+                Descriptor = descriptor,
+                Kind = ElementKind.OpeningClosing
+            };
+            return tag;
+        }
+
+        private HtmlElement PushStack(HtmlElement element)
+        {
+            if (element == null) throw new ArgumentNullException(nameof(element));
+            stack.Add(element);
+
+            if (element.Name == "html")
+            {
+                htmlElement = element;
+            }
+            else if (element.Name == "head")
+            {
+                headElement = element;
+            }
+            else if (element.Name == "body")
+            {
+                bodyElement = element;
+            }
+
+            return element;
         }
 
         private void PopStack()
@@ -699,7 +890,7 @@ namespace NUglify.Html
                     {
                         Location = startTagLocation,
                         Descriptor = descriptor,
-                        Kind = ElementKind.EndWithoutStart
+                        Kind = ElementKind.Closing
                     };
 
                     CurrentParent.AppendChild(invalidTag);
@@ -736,7 +927,7 @@ namespace NUglify.Html
                 var elementDesc = HtmlTagDescriptor.Find(element.Name);
                 if (i > indexOfOpenTag && 
                     (elementDesc == null || 
-                    (elementDesc.AcceptContent != ContentKind.None && (elementDesc.EndKind != TagEndKind.Omission || !elementDesc.CanOmitEndTag(element, null)))))
+                    (elementDesc.AcceptContent != ContentKind.None && (elementDesc.EndKind != TagEndKind.Omission || !elementDesc.CanOmitEndTag(element, null, true)))))
                 {
                     Warning(element.Location, $"Unbalanced tag [{element.Name}] within tag [{parentTag}] requiring a closing tag. Force closing it");
                 }

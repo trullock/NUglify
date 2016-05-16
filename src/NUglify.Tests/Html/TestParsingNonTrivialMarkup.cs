@@ -130,7 +130,7 @@ namespace NUglify.Tests.Html
         public void Test014()
         {
             input = "<html ⚡></html>";
-            equal(minify(input), input);
+            equal(minify(input), "<html ⚡>");
 
             //input = "<$unicorn>";
             //throws(function() {

@@ -56,47 +56,37 @@ namespace NUglify.Html
         protected virtual void Write(HtmlElement node)
         {
             bool isInXml = node.Descriptor != null && (node.Descriptor.Category & ContentKind.Xml) != 0;
-            WriteStartTag(node);
+
+            if ((node.Kind & (ElementKind.Opening | ElementKind.SelfClosing | ElementKind.ProcessingInstruction)) != 0)
+            {
+                WriteStartTag(node);
+            }
 
             if (isInXml)
             {
                 xmlNamespaceLevel++;
             }
 
-            if (node.Kind == ElementKind.StartWithoutEnd || node.Kind == ElementKind.StartWithEnd)
+            WriteChildren(node);
+
+            if (isInXml)
             {
-                WriteChildren(node);
-
-                if (isInXml)
-                {
-                    xmlNamespaceLevel--;
-                }
-
-                if (node.Kind == ElementKind.StartWithEnd)
-                {
-                    WriteEndTag(node);
-                }
+                xmlNamespaceLevel--;
             }
-            else
+
+            if ((node.Kind & ElementKind.Closing) != 0)
             {
-                if (isInXml)
-                {
-                    xmlNamespaceLevel--;
-                }
+                WriteEndTag(node);
             }
         }
 
         protected virtual void WriteStartTag(HtmlElement node)
         {
             Write("<");
-            switch (node.Kind)
+            var isProcessing = (node.Kind & ElementKind.ProcessingInstruction) != 0;
+            if (isProcessing)
             {
-                case ElementKind.EndWithoutStart:
-                    Write('/');
-                    break;
-                case ElementKind.ProcessingInstruction:
-                    Write("?");
-                    break;
+                Write("?");
             }
             Write(node.Name);
 
@@ -111,12 +101,12 @@ namespace NUglify.Html
                 }
             }
 
-            if (node.Kind == ElementKind.ProcessingInstruction)
+            if (isProcessing)
             {
                 Write("?");
             }
 
-            if (node.Kind == ElementKind.SelfClosing && xmlNamespaceLevel > 0)
+            if ((node.Kind & ElementKind.SelfClosing) != 0 && xmlNamespaceLevel > 0)
             {
                 Write(" /");
             }

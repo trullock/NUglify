@@ -159,19 +159,8 @@ namespace NUglify.Html
                 TrimPendingTextNodes();
             }
 
-            // Remove optional tags
-            if (settings.RemoveOptionalTags)
-            {
-                var nextElement = element.FindNextSibling<HtmlElement>();
-                var canOmitEndTag = element.Descriptor?.CanOmitEndTag;
-                if (element.Kind == ElementKind.StartWithEnd && canOmitEndTag != null && canOmitEndTag(element, nextElement))
-                {
-                    element.Kind = ElementKind.StartWithoutEnd;
-                }
-            }
-
             // Remove invalid closing tags
-            if (settings.RemoveInvalidClosingTags && element.Kind == ElementKind.EndWithoutStart)
+            if (settings.RemoveInvalidClosingTags && element.Kind == ElementKind.Closing)
             {
                 element.Remove();
             }
@@ -185,6 +174,26 @@ namespace NUglify.Html
                     {
                         element.Attributes.RemoveAt(i);
                     }
+                }
+            }
+
+            // Remove optional tags
+            if (settings.RemoveOptionalTags)
+            {
+                var nextElement = element.FindNextSibling<HtmlElement>();
+
+                // Handle end tag omit
+                var canOmitEndTag = element.Descriptor?.CanOmitEndTag;
+                if (element.Kind == ElementKind.OpeningClosing && canOmitEndTag != null && canOmitEndTag(element, nextElement, false))
+                {
+                    element.Kind = ElementKind.Opening;
+                }
+
+                // Handle start tag omit
+                var canOmitStartTag = element.Descriptor?.CanOmitStartTag;
+                if ((element.Attributes == null || element.Attributes.Count == 0) && element.Kind == ElementKind.Opening && canOmitStartTag != null && canOmitStartTag(element, nextElement, false))
+                {
+                    element.Kind = ElementKind.None;
                 }
             }
 

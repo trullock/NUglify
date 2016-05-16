@@ -14,5 +14,10 @@ namespace NUglify.Html
             domWriter.Write(node);
             return domWriter.DOMDumpList;
         }
+
+        public static bool IsNonEmptyText(this HtmlNode node)
+        {
+            return node is HtmlText && !((HtmlText) node).Slice.IsEmptyOrWhiteSpace();
+        }
     }
 }
