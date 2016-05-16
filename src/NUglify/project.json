@@ -32,9 +32,6 @@
       }
     }
   },
-  "runtimes": {
-    "win": {}
-  },
   "resource": [
     "*.resx",
     "Css/*.resx",
