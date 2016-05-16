@@ -291,8 +291,19 @@ namespace NUglify.Html
 
             var text = slice.ToString();
 
-            var result = isJs ?
-                Uglify.Js(text, "inner_js", settings.JsSettings)
+            var textMinified = MinifyJsOrCss(text, isJs);
+            if (textMinified == null)
+            {
+                return;
+            }
+            raw.Slice = new StringSlice(textMinified);
+        }
+
+
+        private string MinifyJsOrCss(string text, bool isJs)
+        {
+            var result = isJs
+                ? Uglify.Js(text, "inner_js", settings.JsSettings)
                 : Uglify.Css(text, "inner_css", settings.CssSettings);
 
             if (result.Errors != null)
@@ -303,11 +314,10 @@ namespace NUglify.Html
             if (result.HasErrors)
             {
                 HasErrors = true;
-                return;
+                return null;
             }
 
-
-            raw.Slice = new StringSlice(result.Code);
+            return result.Code;
         }
 
         private bool TrimAttribute(HtmlElement element, HtmlAttribute attribute)
@@ -333,6 +343,11 @@ namespace NUglify.Html
                     {
                         attribute.Value = CharHelper.CollapseWhitespaces(attribute.Value);
                     }
+                    return attribute.Value == string.Empty;
+                }
+                else if (attr == "style" && element.Descriptor != null && settings.MinifyCssAttributes)
+                {
+                    attribute.Value = MinifyJsOrCss(attribute.Value, false);
                     return attribute.Value == string.Empty;
                 }
             }

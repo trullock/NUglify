@@ -31,8 +31,10 @@ namespace NUglify.Html
             ShortBooleanAttribute = true;
             IsFragmentOnly = false;
             MinifyJs = true;
+            // MinifyJsAttributes = true;
             JsSettings = new CodeSettings();
             MinifyCss = true;
+            MinifyCssAttributes = true;
             CssSettings = new CssSettings();
 
             InlineTagsPreservingSpacesAround = new[]
@@ -142,14 +144,19 @@ namespace NUglify.Html
         public bool ShortBooleanAttribute { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the parsing is occuring on an HTML fragment to avoid creating missing tags (like html, body, head). Default is <c>false</c>
+        /// </summary>
+        public bool IsFragmentOnly { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether minify js inside &lt;script&gt; tags. Default is <c>true</c> using <see cref="Uglify.Js(string,NUglify.JavaScript.CodeSettings)"/>
         /// </summary>
         public bool MinifyJs { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the parsing is occuring on an HTML fragment to avoid creating missing tags (like html, body, head). Default is <c>false</c>
-        /// </summary>
-        public bool IsFragmentOnly { get; set; }
+        // <summary>
+        // Gets or sets a value indicating whether minify js inside JS attributes.
+        // </summary>
+        // public bool MinifyJsAttributes { get; set; }
 
         /// <summary>
         /// Gets or sets the minify js settings.
@@ -160,6 +167,11 @@ namespace NUglify.Html
         /// Gets or sets a value indicating whether minify css inside &lt;style&gt; tags. Default is <c>true</c> using <see cref="Uglify.Css(string,NUglify.Css.CssSettings,NUglify.JavaScript.CodeSettings)"/>
         /// </summary>
         public bool MinifyCss { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether minify css inside style attribute.
+        /// </summary>
+        public bool MinifyCssAttributes { get; set; }
 
         /// <summary>
         /// Gets or sets the minify css settings.
