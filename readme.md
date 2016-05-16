@@ -14,7 +14,7 @@ This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codepl
   - No regex involved, full HTML parser
   - Supports HTML5, works best on valid HTML documents (but can still work on invalid documents)
   - Similar to the popular [html-minifier in JS](https://github.com/kangax/html-minifier)
-  - Super fast and GC friendly, 10x times faster than existing html compressor for .NET
+  - Super fast and GC friendly parser and minifier, 10x times faster than existing html compressor for .NET
 
 > NOTE: The repository is under migration/refactoring. See the [Background](#background) section below for more information.
 
