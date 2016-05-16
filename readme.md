@@ -1,8 +1,8 @@
-# NUglify [![Build status](https://ci.appveyor.com/api/projects/status/vep1cdnie9cls48p?svg=true)](https://ci.appveyor.com/project/xoofx/ajaxmin)
+# NUglify [![Build status](https://ci.appveyor.com/api/projects/status/vep1cdnie9cls48p?svg=true)](https://ci.appveyor.com/project/xoofx/ajaxmin)  [![NuGet](https://img.shields.io/nuget/v/NUglify.svg)](https://www.nuget.org/packages/NUglify/)
 
 NUglify enables you to improve the performance of your web applications by reducing the size of your Cascading Style Sheet, JavaScript files and HTML files.
 
-This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/) + additional features (e.g: HTML compressor)
+This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/) + additional features (e.g: HTML compressor) 
 
 ## Features
 
@@ -17,6 +17,10 @@ This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codepl
   - Super fast and GC friendly parser and minifier, 10x times faster than existing html compressor for .NET
 
 > NOTE: The repository is under migration/refactoring. See the [Background](#background) section below for more information.
+
+## Download
+
+NUglify is available as a NuGet package: [![NuGet](https://img.shields.io/nuget/v/NUglify.svg)](https://www.nuget.org/packages/NUglify/)
 
 ## Usage
 
