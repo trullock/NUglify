@@ -19,6 +19,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23C6E14F-4E3F-4878-B80A-CE3616E35F4C}"
 	ProjectSection(SolutionItems) = preProject
 		NUglify\global.json = NUglify\global.json
+		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglifyApp", "NUglifyApp\NUglifyApp.csproj", "{6ED835A6-8A8A-44EC-8679-7EBBE2A0DBE4}"

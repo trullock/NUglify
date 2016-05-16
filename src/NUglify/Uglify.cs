@@ -65,7 +65,6 @@ namespace NUglify
 
                 errors.AddRange(minifier.Errors);
 
-
                 var writer = new StringWriter();
                 var htmlWriter = new HtmlWriterToText(writer, settings);
                 htmlWriter.Write(document);
