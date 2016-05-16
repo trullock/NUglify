@@ -41,6 +41,13 @@ namespace NUglify
         {
         }
 
+        /// <summary>
+        /// Crunched HTML string passed to it, returning crunched string.
+        /// </summary>
+        /// <param name="source">source HTML</param>
+        /// <param name="settings">HTML minification settings</param>
+        /// <param name="sourceFileName">The source file name used when reporting errors. Default is <c>null</c></param>
+        /// <returns>minified HTML</returns>
         public static UgliflyResult Html(string source, HtmlSettings settings = null, string sourceFileName = null)
         {
             settings = settings ?? DefaultSettings;
@@ -49,10 +56,15 @@ namespace NUglify
             var document = parser.Parse();
             string text = null;
 
+            var errors = new List<UglifyError>(parser.Errors);
+
             if (document != null)
             {
                 var minifier = new HtmlMinifier(document, settings);
                 minifier.Minify();
+
+                errors.AddRange(minifier.Errors);
+
 
                 var writer = new StringWriter();
                 var htmlWriter = new HtmlWriterToText(writer, settings);
@@ -61,7 +73,7 @@ namespace NUglify
                 text = writer.ToString();
             }
 
-            return new UgliflyResult(text, parser.Errors);
+            return new UgliflyResult(text, errors);
         }
 
         /// <summary>
