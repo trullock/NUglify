@@ -35,7 +35,7 @@ namespace NUglify.Benchmarks
                 config.Add(gcDiagnoser);
 
                 //var  config = DefaultConfig.Instance;
-                //BenchmarkRunner.Run<TestMinifier>(config);
+                //BenchmarkRunner.Run<BenchMinifier>(config);
                 BenchmarkRunner.Run<BenchParser>(config);
             }
             else
@@ -50,7 +50,7 @@ namespace NUglify.Benchmarks
                 var gc1 = GC.CollectionCount(1);
                 var gc2 = GC.CollectionCount(2);
 
-                program.BenchHtmlCompressor();
+                program.BenchNUglify();
 
                 clock.Stop();
                 Console.WriteLine($" => time: {(double)clock.ElapsedMilliseconds / 1}ms (total {clock.ElapsedMilliseconds}ms)");
