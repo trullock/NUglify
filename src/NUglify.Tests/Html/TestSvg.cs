@@ -28,13 +28,11 @@ namespace NUglify.Tests.Html
               "  </svg>\n" +
               "</body></html>";
 
-            output = "<html><body>" +
-              "<svg version=1.1 id=Layer_1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink x=0px y=0px width=612px height=502.174px viewBox=\"0 65.326 612 502.174\" enable-background=\"new 0 65.326 612 502.174\" xml:space=preserve class=logo>" +
+            output = "<svg version=1.1 id=Layer_1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink x=0px y=0px width=612px height=502.174px viewBox=\"0 65.326 612 502.174\" enable-background=\"new 0 65.326 612 502.174\" xml:space=preserve class=logo>" +
               "<ellipse class=ground cx=283.5 cy=487.5 rx=259 ry=80 />" +
               "<polygon points=\"100,10 40,198 190,78 10,78 160,198\" style=fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd; />" +
               "<filter id=pictureFilter><feGaussianBlur stdDeviation=15 /></filter>" +
-              "</svg>" +
-              "</body></html>";
+              "</svg>";
 
             // Should preserve case-sensitivity and closing slashes within svg tags
             equal(minify(input), output);
