@@ -19,6 +19,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23C6E14F-4E3F-4878-B80A-CE3616E35F4C}"
 	ProjectSection(SolutionItems) = preProject
 		NUglify\global.json = NUglify\global.json
+		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglifyApp", "NUglifyApp\NUglifyApp.csproj", "{6ED835A6-8A8A-44EC-8679-7EBBE2A0DBE4}"
@@ -27,6 +28,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglifyApp", "NUglifyApp\NU
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglify.Tasks", "NUglify.Tasks\NUglify.Tasks.csproj", "{0C7BC471-4112-43CA-89AA-B7EBDB5689C1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CA85C41A-928F-4626-9025-0FE5991C7BE8} = {CA85C41A-928F-4626-9025-0FE5991C7BE8}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglify.Benchmarks", "NUglify.Benchmarks\NUglify.Benchmarks.csproj", "{B78A6BC2-3FC9-4AFA-A314-2B5C62BCD94D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CA85C41A-928F-4626-9025-0FE5991C7BE8} = {CA85C41A-928F-4626-9025-0FE5991C7BE8}
 	EndProjectSection
@@ -53,6 +59,10 @@ Global
 		{0C7BC471-4112-43CA-89AA-B7EBDB5689C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C7BC471-4112-43CA-89AA-B7EBDB5689C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C7BC471-4112-43CA-89AA-B7EBDB5689C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B78A6BC2-3FC9-4AFA-A314-2B5C62BCD94D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B78A6BC2-3FC9-4AFA-A314-2B5C62BCD94D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B78A6BC2-3FC9-4AFA-A314-2B5C62BCD94D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B78A6BC2-3FC9-4AFA-A314-2B5C62BCD94D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

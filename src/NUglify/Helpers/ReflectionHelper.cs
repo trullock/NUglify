@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 
 #if NET_20
 namespace System.Runtime.CompilerServices
@@ -23,7 +24,7 @@ namespace System.Runtime.CompilerServices
 }
 #endif
 
-namespace NUglify.Helpers
+namespace NUglify
 {
     internal static class ReflectionHelper
     {
@@ -67,6 +68,11 @@ namespace NUglify.Helpers
                 }
             }
             return (T)null;
+        }
+
+        public static void Clear(this StringBuilder @this)
+        {
+           @this.Length = 0;
         }
 #else
         public static IEnumerable<FieldInfo> GetDeclaredFields(this TypeInfo type)

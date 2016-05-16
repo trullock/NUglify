@@ -20,6 +20,7 @@ using System.Globalization;
 using System.IO;
 using NUglify.Css;
 using NUglify.Helpers;
+using NUglify.Html;
 using NUglify.JavaScript;
 using NUglify.JavaScript.Visitors;
 
@@ -32,10 +33,46 @@ namespace NUglify
     /// </summary>
     public sealed class Uglify
     {
+        private static readonly HtmlSettings DefaultSettings = new HtmlSettings();
+
         // Don't use static class, as we don't expect to using static as the method names are already short (Js, Css)
 
         private Uglify()
         {
+        }
+
+        /// <summary>
+        /// Crunched HTML string passed to it, returning crunched string.
+        /// </summary>
+        /// <param name="source">source HTML</param>
+        /// <param name="settings">HTML minification settings</param>
+        /// <param name="sourceFileName">The source file name used when reporting errors. Default is <c>null</c></param>
+        /// <returns>minified HTML</returns>
+        public static UgliflyResult Html(string source, HtmlSettings settings = null, string sourceFileName = null)
+        {
+            settings = settings ?? DefaultSettings;
+
+            var parser = new HtmlParser(source, sourceFileName, settings);
+            var document = parser.Parse();
+            string text = null;
+
+            var errors = new List<UglifyError>(parser.Errors);
+
+            if (document != null)
+            {
+                var minifier = new HtmlMinifier(document, settings);
+                minifier.Minify();
+
+                errors.AddRange(minifier.Errors);
+
+                var writer = new StringWriter();
+                var htmlWriter = new HtmlWriterToText(writer, settings);
+                htmlWriter.Write(document);
+
+                text = writer.ToString();
+            }
+
+            return new UgliflyResult(text, errors);
         }
 
         /// <summary>

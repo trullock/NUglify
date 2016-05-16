@@ -866,7 +866,7 @@ namespace NUglify.JavaScript
         /// <summary>
         /// Gets or sets an enumeration that gives the parser a hint as to which version of EcmaScript standards to parse the source as.
         /// See <see cref="JSParser.ParsedVersion"/> after parsing for which version the parser thought it had based on features found in the script.
-        /// Errors/warnings, and optimized output may change based on this settings value.
+        /// Messages/warnings, and optimized output may change based on this settings value.
         /// </summary>
         public ScriptVersion ScriptVersion
         {

@@ -24,6 +24,18 @@ namespace NUglify.Helpers
 {
     public static class NUglifyExtensions
     {
+        public static Dictionary<string, bool> ToDictionaryBool(this string[] args, bool caseSensitive)
+        {
+            var dict = new Dictionary<string, bool>(caseSensitive ? StringComparer.Ordinal :  StringComparer.OrdinalIgnoreCase);
+            foreach (var arg in args)
+            {
+                dict[arg] = true;
+            }
+
+            return dict;
+        }
+
+
         public static string FormatInvariant(this string format, params object[] args)
         {
             try

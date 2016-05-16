@@ -15,11 +15,23 @@ namespace NUglify
         /// Initializes a new instance of the <see cref="UgliflyResult"/> struct.
         /// </summary>
         /// <param name="code">The uglified code.</param>
-        /// <param name="errors">The errors.</param>
-        public UgliflyResult(string code, List<UglifyError> errors)
+        /// <param name="messages">The Messages.</param>
+        public UgliflyResult(string code, List<UglifyError> messages)
         {
             Code = code;
-            Errors = errors;
+            Errors = messages;
+            HasErrors = false;
+            if (messages != null)
+            {
+                foreach (var error in messages)
+                {
+                    if (error.IsError)
+                    {
+                        HasErrors = true;
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -28,12 +40,12 @@ namespace NUglify
         public string Code { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this instance has errors.
+        /// Gets a value indicating whether this instance has Messages.
         /// </summary>
-        public bool HasErrors => Errors != null && Errors.Count > 0;
+        public bool HasErrors { get; }
 
         /// <summary>
-        /// Gets the errors. Empty if no errors.
+        /// Gets the Messages. Empty if no Messages.
         /// </summary>
         public List<UglifyError> Errors { get; }
 
