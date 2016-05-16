@@ -7,121 +7,109 @@ using System.IO;
 
 namespace NUglify.Html
 {
+    /// <summary>
+    /// Class responsible from extracting only text nodes from an HTML document, used by <see cref="Uglify.HtmlToText"/> function.
+    /// </summary>
     public class HtmlWriterToText : HtmlWriterBase
     {
-        private readonly HtmlSettings settings;
+        private bool outputEnabled;
+        private readonly HtmlToTextOptions options;
 
-        private static readonly char[] AttributeCharsForcingQuote = new[]
-        {' ', '\t', '\n', '\f', '\r', '"', '\'', '`', '=', '<', '>'};
-
-        public HtmlWriterToText(TextWriter writer, HtmlSettings settings = null)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HtmlWriterToText"/> class.
+        /// </summary>
+        /// <param name="writer">The writer.</param>
+        /// <param name="options">The options.</param>
+        /// <exception cref="System.ArgumentNullException">if writer is null</exception>
+        public HtmlWriterToText(TextWriter writer, HtmlToTextOptions options)
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
             Writer = writer;
-            this.settings = settings;
+            this.options = options;
         }
-
 
         public TextWriter Writer { get; }
 
+        private bool ShouldKeepStructure => (options & HtmlToTextOptions.KeepStructure) != 0;
+
+        private bool ShouldKeepFormatting => (options & HtmlToTextOptions.KeepFormatting) != 0;
+
+        private bool ShouldKeepHtmlEscape => (options & HtmlToTextOptions.KeepHtmlEscape) != 0;
+
         protected override void Write(string text)
         {
-            Writer.Write(text);
+            if (outputEnabled)
+            {
+                if (!ShouldKeepStructure)
+                {
+                    text = text.Replace("\r\n", " ")
+                        .Replace('\r', ' ')
+                        .Replace('\n', ' ')
+                        .Replace('\t', ' ')
+                        .Replace('\f', ' ');
+                }
+
+                if (ShouldKeepFormatting || !ShouldKeepHtmlEscape)
+                {
+                    text = text.Replace("&lt;", "<");
+                    text = text.Replace("&amp;", "&");
+                }
+
+                Writer.Write(text);
+            }
         }
 
         protected override void Write(char c)
         {
-            Writer.Write(c);
+            if (outputEnabled)
+            {
+                Writer.Write(ShouldKeepStructure ? c : c.IsSpace() ? ' ' : c);
+            }
         }
 
-        protected override void WriteAttributeValue(HtmlElement element, HtmlAttribute attribute, bool isLast)
+        protected override void Write(HtmlCDATA node)
         {
-            var attrValue = attribute.Value;
+        }
 
-            var quoteChar = (char) 0;
+        protected override void Write(HtmlComment node)
+        {
+        }
 
-            if (settings.AttributeQuoteChar == null)
+        protected override void Write(HtmlDOCTYPE node)
+        {
+        }
+
+        protected override void WriteStartTag(HtmlElement node)
+        {
+            if (node.Name == "body")
             {
-                var quoteCount = 0;
-                var doubleQuoteCount = 0;
-
-                for (int i = 0; i < attrValue.Length; i++)
-                {
-                    var c = attrValue[i];
-                    if (c == '\'')
-                    {
-                        quoteCount++;
-                    }
-                    else if (c == '"')
-                    {
-                        doubleQuoteCount++;
-                    }
-
-                    // We also count escapes so that we have an exact count for both
-                    if (c == '&')
-                    {
-                        if (attrValue.IndexOf("&#34;", i, StringComparison.OrdinalIgnoreCase) > 0
-                            || attrValue.IndexOf("&quot;", i, StringComparison.OrdinalIgnoreCase) > 0)
-                        {
-                            doubleQuoteCount++;
-                        }
-                        else if (attrValue.IndexOf("&#39;", i, StringComparison.OrdinalIgnoreCase) > 0
-                                 || attrValue.IndexOf("&apos;", i, StringComparison.OrdinalIgnoreCase) > 0)
-                        {
-                            quoteCount++;
-                        }
-                    }
-                }
-
-                quoteChar = quoteCount < doubleQuoteCount ? '\'' : '"';
+                outputEnabled = true;
             }
-            else
+            else if (ShouldKeepFormatting && node.Descriptor != null && (node.Descriptor.Category & ContentKind.Phrasing) != 0)
             {
-                quoteChar = settings.AttributeQuoteChar.Value == '"' ? '"' : '\'';
+                base.WriteStartTag(node);
+            }
+        }
+
+        protected override void Write(HtmlRaw node)
+        {
+        }
+
+        protected override void WriteEndTag(HtmlElement node)
+        {
+            if ((node.Descriptor == null || (node.Descriptor.Category & ContentKind.Phrasing) == 0 ||
+                node.Name == "li"))
+            {
+                Write('\n');
             }
 
-            if (quoteChar == '"')
+            if (node.Name == "body")
             {
-                attrValue = attrValue.Replace("&#39;", "'");
-                attrValue = attrValue.Replace("&apos;", "'");
-                attrValue = attrValue.Replace("\"", "&#34;");
+                outputEnabled = false;
             }
-            else
+            else if (ShouldKeepFormatting && node.Descriptor != null && (node.Descriptor.Category & ContentKind.Phrasing) != 0)
             {
-                attrValue = attrValue.Replace("&#34;", "\"");
-                attrValue = attrValue.Replace("&quot;", "\"");
-                attrValue = attrValue.Replace("'", "&#39;");
-            }
-
-            var canRemoveQuotes = settings.RemoveQuotedAttributes && attrValue != string.Empty && attrValue.IndexOfAny(AttributeCharsForcingQuote) < 0;
-
-            if (!canRemoveQuotes)
-            {
-                Write(quoteChar);
-            }
-
-            Write(attrValue);
-
-            if (!canRemoveQuotes)
-            {
-                Write(quoteChar);
-            }
-            else
-            {
-                bool emitSpace = false;
-
-                if (isLast)
-                {
-                    if (attrValue.EndsWith("/"))
-                    {
-                        emitSpace = true;
-                    }
-                }
-
-                if (emitSpace)
-                {
-                    Write(" ");
-                }
+                base.WriteEndTag(node);
             }
         }
     }

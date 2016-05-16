@@ -66,7 +66,53 @@ namespace NUglify
                 errors.AddRange(minifier.Errors);
 
                 var writer = new StringWriter();
-                var htmlWriter = new HtmlWriterToText(writer, settings);
+                var htmlWriter = new HtmlWriterToHtml(writer, settings);
+                htmlWriter.Write(document);
+
+                text = writer.ToString();
+            }
+
+            return new UgliflyResult(text, errors);
+        }
+
+
+        /// <summary>
+        /// Extract the text from HTML string.
+        /// </summary>
+        /// <param name="source">source HTML</param>
+        /// <param name="options"></param>
+        /// <param name="sourceFileName">The source file name used when reporting errors. Default is <c>null</c></param>
+        /// <returns>The text extracted from this HTML string</returns>
+        public static UgliflyResult HtmlToText(string source, HtmlToTextOptions options = HtmlToTextOptions.None, string sourceFileName = null)
+        {
+            var settings = new HtmlSettings()
+            {
+                RemoveOptionalTags = false,
+                RemoveEmptyAttributes = false,
+                RemoveQuotedAttributes = false,
+                DecodeEntityCharacters = true,
+                RemoveScriptStyleTypeAttribute = false,
+                ShortBooleanAttribute = false,
+                MinifyJs = false,
+                MinifyCss = false,
+                MinifyCssAttributes = false
+            };
+
+            var parser = new HtmlParser(source, sourceFileName, settings);
+            var document = parser.Parse();
+            string text = null;
+
+            var errors = new List<UglifyError>(parser.Errors);
+
+            if (document != null)
+            {
+                var minifier = new HtmlMinifier(document, settings);
+                minifier.Minify();
+
+                errors.AddRange(minifier.Errors);
+
+                var writer = new StringWriter();
+                var htmlWriter = new HtmlWriterToText(writer, options);
                 htmlWriter.Write(document);
 
                 text = writer.ToString();

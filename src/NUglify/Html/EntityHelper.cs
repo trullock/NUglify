@@ -131,7 +131,6 @@ namespace NUglify.Html
         private static string Escape(string decoded)
         {
             if (decoded == "<") return "&lt;";
-            else if (decoded == ">") return "&gt;";
             else if (decoded == "&") return "&amp;";
             return decoded;
         }
