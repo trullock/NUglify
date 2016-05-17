@@ -77,14 +77,15 @@ namespace NUglify
 
 
         /// <summary>
-        /// Extract the text from HTML string.
+        /// Extract the text from a HTML string.
         /// </summary>
-        /// <param name="source">source HTML</param>
-        /// <param name="options"></param>
+        /// <param name="source">The source HTML</param>
+        /// <param name="options">The options to extract the text.</param>
         /// <param name="sourceFileName">The source file name used when reporting errors. Default is <c>null</c></param>
         /// <returns>The text extracted from this HTML string</returns>
         public static UgliflyResult HtmlToText(string source, HtmlToTextOptions options = HtmlToTextOptions.None, string sourceFileName = null)
         {
+            // Use specific settings to extract text from html
             var settings = new HtmlSettings()
             {
                 RemoveOptionalTags = false,
