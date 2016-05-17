@@ -19,6 +19,13 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void TestSpaceCollapsing2()
+        {
+            equal(minify("<span><strong>Multipage Version</strong> <code>whatwg.org/html</code></span>"),
+                "<span><strong>Multipage Version</strong> <code>whatwg.org/html</code></span>");
+        }
+
+        [Test]
         public void TestPreserveBetweenInlineTags1()
         {
             // Check that spaces are collapsed at begin/end for inline tags instead of stripping surrounding texts

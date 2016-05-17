@@ -183,6 +183,16 @@ namespace NUglify.Helpers
             return Start <= End && Text[End].IsSpace();
         }
 
+        public bool IsEmpty()
+        {
+            if (Text == null)
+            {
+                return true;
+            }
+
+            return Start > End;
+        }
+
         public bool IsEmptyOrWhiteSpace()
         {
             if (Text == null)

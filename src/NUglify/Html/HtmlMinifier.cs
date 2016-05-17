@@ -142,7 +142,22 @@ namespace NUglify.Html
                 return;
             }
 
-            pendingTexts.Add(textNode);
+            // Find the first non-transparent parent
+            var parent = textNode.Parent;
+            while (parent != null &&
+                   (parent.Descriptor == null || parent.Descriptor.Category == ContentKind.Transparent))
+            {
+                parent = parent.Parent;
+            }
+
+            if ((parent?.Descriptor != null && xmlNamespaceCount == 0 && (parent.Descriptor.Category & ContentKind.Phrasing) != 0) || !textNode.Slice.IsEmptyOrWhiteSpace())
+            {
+                pendingTexts.Add(textNode);
+            }
+            else
+            {
+                textNode.Remove();
+            }
         }
 
         private void TrimNodeOnEnd(HtmlElement element)
@@ -219,7 +234,7 @@ namespace NUglify.Html
                 // - we don't have a previous element (either inline or parent container)
                 // - OR the previous element (sibling or parent) is not a tag that require preserving spaces around
                 // - OR the previous text node has already some trailing spaces
-                if ((previousTextNode == null || previousTextNode.Slice.HasTrailingSpaces()) && previousElement == null)
+                if ((previousTextNode == null || previousTextNode.Slice.HasTrailingSpaces()) && (previousElement == null || textNode.Slice.IsEmptyOrWhiteSpace()))
                 {
                     textNode.Slice.TrimStart();
                 }
@@ -240,7 +255,7 @@ namespace NUglify.Html
                 }
 
                 // If the text node is empty, remove it from the tree
-                if (textNode.Slice.IsEmptyOrWhiteSpace())
+                if (textNode.Slice.IsEmpty())
                 {
                     textNode.Remove();
                 }
@@ -255,6 +270,10 @@ namespace NUglify.Html
             if (previousTextNode != null)
             {
                 previousTextNode.Slice.TrimEnd();
+                if (previousTextNode.Slice.IsEmpty())
+                {
+                    previousTextNode.Remove();
+                }
             }
 
             pendingTexts.Clear();
