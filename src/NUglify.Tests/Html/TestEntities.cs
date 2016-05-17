@@ -16,7 +16,7 @@ namespace NUglify.Tests.Html
         public void RemoveEntities()
         {
             input = "<p>This is a &quot; with an &amp; and a &gt;</p>";
-            output = "<p>This is a \" with an &amp; and a &gt;";
+            output = "<p>This is a \" with an &amp; and a >";
             equal(minify(input), output);
 
             output = "<p>This is a &quot; with an &amp; and a &gt;";
