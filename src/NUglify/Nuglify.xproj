@@ -4,27 +4,17 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" Condition="'$(VSToolsPath)' != ''" />
+
+  <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>CA85C41A-928F-4626-9025-0FE5991C7BE8</ProjectGuid>
     <RootNamespace>NUglify</RootNamespace>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">..\..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
+    <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
   </PropertyGroup>
+  
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProduceOutputsOnBuild>True</ProduceOutputsOnBuild>
-    <TypeScriptCompileBlocked>True</TypeScriptCompileBlocked>
-    <!-- NOTE: Add TargetDir/TargetPath so that it will be possible to reference this xproj from a csproj -->
-    <TargetDir>$(MSBuildThisFileDirectory)\$(OutputPath)\$(Configuration)\net40\</TargetDir>
-    <TargetPath>$(TargetDir)NUglify.dll</TargetPath>
   </PropertyGroup>
-  <!-- NOTE: Add GetTargetDir so that it will be possible to reference this xproj from a csproj -->
-  <Target Name="GetTargetDir" Outputs="$(_TargetDir)">
-    <PropertyGroup>
-      <_TargetDir>$(MSBuildThisFileDirectory)$(OutputPath)$(Configuration)\net40\</_TargetDir>
-    </PropertyGroup>
-    <Message Importance="high" Text="Configuration: $(Configuration), TargetDir: $(TargetDir)" />
-  </Target>
-  <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

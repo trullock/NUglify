@@ -5,8 +5,8 @@
     <When Condition="'$(SolutionName)' == 'NUglify.xplat'">
       <ItemGroup>
         <Reference Include="NUglify">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\..\artifacts\bin\NUglify\$(Configuration)\net40\NUglify.dll</HintPath>
+          <SpecificVersion>False</SpecificVersion>		  
+          <HintPath>..\NUglify\bin\$(Configuration)\net40\NUglify.dll</HintPath>
         </Reference>
       </ItemGroup>
     </When>

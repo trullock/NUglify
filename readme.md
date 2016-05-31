@@ -16,7 +16,7 @@ This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codepl
   - Similar to the popular [html-minifier in JS](https://github.com/kangax/html-minifier)
   - Super fast and GC friendly parser and minifier, 10x times faster than existing html compressor for .NET
   - Method `Uglify.HtmlToText` that allows to extract the text from an HTML document
-
+- Compatible with `NET3.5`, `NET4.0+` and `CoreCLR` (`netstandard1.3+`)
 > NOTE: The repository is under migration/refactoring. See the [Background](#background) section below for more information.
 
 ## Download

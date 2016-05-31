@@ -4553,7 +4553,7 @@ namespace NUglify.JavaScript.Visitors
                 {
                     Properties = new AstNodeList(context)
                 };
-            var properties = item.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var properties = item.GetType().GetTypeInfo().GetDeclaredProperties();
             foreach(var property in properties)
             {
                 try

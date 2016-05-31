@@ -88,6 +88,17 @@ namespace NUglify
         {
             return type.DeclaredMethods;
         }
+
+        public static MethodInfo GetMethod(this Type type, string name, Type[] parameterTypes)
+        {
+            return type.GetRuntimeMethod(name, parameterTypes);
+        }
+
+        public static PropertyInfo GetProperty(this Type type, string name)
+        {
+            return type.GetRuntimeProperty(name);
+        }
+
 #endif
     }
 }

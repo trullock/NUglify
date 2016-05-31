@@ -71,46 +71,46 @@ namespace NUglify.Tests.Core
             Assert.IsFalse(hasFailed);
         }
 
-#if DEBUG
-        [Test]
-        public void JSErrorStringsExtra()
-        {
-            var hasFailed = false;
-            var count = 0;
-            foreach (var stringName in ErrorStringHelper.AvailableJSStrings)
-            {
-                ++count;
-                JSError errorCode;
-                if (!Enum.TryParse(stringName, out errorCode))
-                {
-                    Trace.WriteLine(stringName + " has no corresponding JSError enumeration");
-                    hasFailed = true;
-                }
-            }
+//#if DEBUG
+//        [Test]
+//        public void JSErrorStringsExtra()
+//        {
+//            var hasFailed = false;
+//            var count = 0;
+//            foreach (var stringName in ErrorStringHelper.AvailableJSStrings)
+//            {
+//                ++count;
+//                JSError errorCode;
+//                if (!Enum.TryParse(stringName, out errorCode))
+//                {
+//                    Trace.WriteLine(stringName + " has no corresponding JSError enumeration");
+//                    hasFailed = true;
+//                }
+//            }
 
-            Assert.IsFalse(hasFailed);
-            Assert.IsTrue(count > 0, "didn't get ANY properties");
-        }
+//            Assert.IsFalse(hasFailed);
+//            Assert.IsTrue(count > 0, "didn't get ANY properties");
+//        }
 
-        [Test]
-        public void CssErrorStringsExtra()
-        {
-            var hasFailed = false;
-            var count = 0;
-            foreach (var stringName in ErrorStringHelper.AvailableCssStrings)
-            {
-                ++count;
-                CssErrorCode errorCode;
-                if (!Enum.TryParse(stringName, out errorCode))
-                {
-                    Trace.WriteLine(stringName + " has no corresponding CssErrorCode enumeration");
-                    hasFailed = true;
-                }
-            }
+//        [Test]
+//        public void CssErrorStringsExtra()
+//        {
+//            var hasFailed = false;
+//            var count = 0;
+//            foreach (var stringName in ErrorStringHelper.AvailableCssStrings)
+//            {
+//                ++count;
+//                CssErrorCode errorCode;
+//                if (!Enum.TryParse(stringName, out errorCode))
+//                {
+//                    Trace.WriteLine(stringName + " has no corresponding CssErrorCode enumeration");
+//                    hasFailed = true;
+//                }
+//            }
 
-            Assert.IsFalse(hasFailed);
-            Assert.IsTrue(count > 0, "didn't get ANY properties");
-        }
-#endif
+//            Assert.IsFalse(hasFailed);
+//            Assert.IsTrue(count > 0, "didn't get ANY properties");
+//        }
+//#endif
     }
 }
