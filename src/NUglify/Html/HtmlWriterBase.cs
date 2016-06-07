@@ -13,6 +13,7 @@ namespace NUglify.Html
         protected HtmlWriterBase()
         {
         }
+        protected int Depth { get; private set; }
 
         public void Write(HtmlNode node)
         {
@@ -56,10 +57,18 @@ namespace NUglify.Html
         protected virtual void Write(HtmlElement node)
         {
             bool isInXml = node.Descriptor != null && (node.Descriptor.Category & ContentKind.Xml) != 0;
+            var hasClosing = (node.Kind & ElementKind.Closing) != 0;
+
+            var shouldClose = hasClosing ||
+                                   (node.Descriptor != null && node.Descriptor.EndKind != TagEndKind.Required);
 
             if ((node.Kind & (ElementKind.Opening | ElementKind.SelfClosing | ElementKind.ProcessingInstruction)) != 0)
             {
                 WriteStartTag(node);
+                if (shouldClose)
+                {
+                    Depth++;
+                }
             }
 
             if (isInXml)
@@ -74,7 +83,12 @@ namespace NUglify.Html
                 xmlNamespaceLevel--;
             }
 
-            if ((node.Kind & ElementKind.Closing) != 0)
+            if (shouldClose)
+            {
+                Depth--;
+            }
+
+            if (hasClosing)
             {
                 WriteEndTag(node);
             }

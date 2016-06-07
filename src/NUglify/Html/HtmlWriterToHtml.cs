@@ -11,6 +11,10 @@ namespace NUglify.Html
     {
         private readonly HtmlSettings settings;
 
+        private bool lastNewLine = false;
+
+        private bool allowIndent = true;
+
         private static readonly char[] AttributeCharsForcingQuote = new[]
         {' ', '\t', '\n', '\f', '\r', '"', '\'', '`', '=', '<', '>'};
 
@@ -18,6 +22,7 @@ namespace NUglify.Html
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
             Writer = writer;
+            writer.NewLine = "\n";
             this.settings = settings;
         }
 
@@ -26,13 +31,80 @@ namespace NUglify.Html
 
         protected override void Write(string text)
         {
+            if (settings.PrettyPrint && lastNewLine && allowIndent)
+            {
+                for (int i = 0; i < Depth; i++)
+                {
+                    Writer.Write("  ");
+                }
+                lastNewLine = false;
+            }
+
             Writer.Write(text);
         }
 
         protected override void Write(char c)
         {
+            if (settings.PrettyPrint && lastNewLine && allowIndent)
+            {
+                for (int i = 0; i < Depth; i++)
+                {
+                    Writer.Write("  ");
+                }
+                lastNewLine = false;
+            }
+
             Writer.Write(c);
         }
+
+        protected override void WriteStartTag(HtmlElement node)
+        {
+            var shouldPretty = ShouldPretty(node);
+            allowIndent = (settings.PrettyPrint && node.Name != "pre");
+            if (shouldPretty && !lastNewLine)
+            {
+                Writer.WriteLine();
+                lastNewLine = true;
+            }
+
+            base.WriteStartTag(node);
+
+            if (shouldPretty)
+            {
+                Writer.WriteLine();
+                lastNewLine = true;
+            }
+        }
+
+        protected override void WriteEndTag(HtmlElement node)
+        {
+            var shouldPretty = ShouldPretty(node);
+
+            if (shouldPretty && !lastNewLine)
+            {
+                Writer.WriteLine();
+                lastNewLine = true;
+            }
+
+            base.WriteEndTag(node);
+
+            allowIndent = true;
+
+            if (shouldPretty)
+            {
+                Writer.WriteLine();
+                lastNewLine = true;
+            }
+        }
+
+        private bool ShouldPretty(HtmlElement node)
+        {
+            return settings.PrettyPrint && node.Descriptor != null &&
+                   !settings.InlineTagsPreservingSpacesAround.ContainsKey(node.Descriptor.Name) &&
+                   node.Descriptor.Category != ContentKind.Phrasing && 
+                   (node.Parent?.Descriptor == null || (node.Parent.Descriptor.Category & ContentKind.Phrasing) == 0);
+        }
+
 
         protected override void WriteAttributeValue(HtmlElement element, HtmlAttribute attribute, bool isLast)
         {

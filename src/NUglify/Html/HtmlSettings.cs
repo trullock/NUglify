@@ -96,12 +96,10 @@ namespace NUglify.Html
         /// </summary>
         public bool CollapseWhitespaces { get; set; }
 
-
         /// <summary>
         /// Gets or sets a value indicating whether to remove comments. Default is <c>true</c>
         /// </summary>
         public bool RemoveComments { get; set; }
-
 
         /// <summary>
         /// Gets or sets a value indicating whether to remove optional tags (e.g: &lt;/p&gt; or &lt;/li&gt;). Default is <c>true</c>
@@ -179,6 +177,11 @@ namespace NUglify.Html
         public Css.CssSettings CssSettings{ get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to output an indented html (for debug).
+        /// </summary>
+        public bool PrettyPrint { get; set; }
+
+        /// <summary>
         /// Gets the inline tags preserving spaces around (default: a, abbr, acronym, b, bdi, 
         /// bdo, big, button, cite, code, del, dfn, em, font, i, ins, kbd, label, 
         /// mark, math, nobr, q, rp, rt, s, samp, small, span, strike, strong, sub, sup, 
@@ -186,10 +189,26 @@ namespace NUglify.Html
         /// </summary>
         public Dictionary<string, bool> InlineTagsPreservingSpacesAround { get; }
 
-
         /// <summary>
         /// Gets the tags with non collapsable whitespaces (default: pre, textarea)
         /// </summary>
         public Dictionary<string, bool> TagsWithNonCollapsableWhitespaces { get; }
+
+        /// <summary>
+        /// returns settings to output a pretty HTML
+        /// </summary>
+        /// <returns></returns>
+        public static HtmlSettings Pretty()
+        {
+            return new HtmlSettings()
+            {
+                RemoveComments = false,
+                RemoveOptionalTags = false,
+                RemoveQuotedAttributes = false,
+                MinifyJs = false,
+                MinifyCss = false,
+                PrettyPrint = true
+            };
+        }
     }
 }
