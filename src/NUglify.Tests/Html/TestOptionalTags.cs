@@ -9,6 +9,18 @@ namespace NUglify.Tests.Html
 {
     public class TestOptionalTags : TestHtmlParserBase
     {
+        [Test]
+        public void TestListItemAndParagraph()
+        {
+            var input = @"<ul> <li><p>test <li><p>test2 <li><p>test3 </ul>";
+            equal(minify(input),
+                "<ul><li><p>test<li><p>test2<li><p>test3</ul>");
+
+            var settings = new HtmlSettings() {RemoveOptionalTags = false, IsFragmentOnly = true};
+
+            equal(minify(input, settings),
+                "<ul><li><p>test</p></li><li><p>test2</p></li><li><p>test3</p></li></ul>");
+        }
 
         [Test]
         public void TestTagOmissionInTables()

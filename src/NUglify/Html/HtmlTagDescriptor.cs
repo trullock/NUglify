@@ -241,6 +241,7 @@ namespace NUglify.Html
             "section",
             "table",
             "ul",
+            "li"
         }.ToDictionaryBool(false);
 
         private static readonly Dictionary<string, bool> ParentTagsClosingParagraph = new string[]
