@@ -31,7 +31,8 @@
         "allowUnsafe": true,
         "xmlDoc": true,
         "keyFile": "key.snk",
-        "strongName": true
+        "strongName": true,
+        "nowarn": [ "CS1591" ]
       }
     }
   },
