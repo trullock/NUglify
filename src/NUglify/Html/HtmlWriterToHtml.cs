@@ -60,7 +60,7 @@ namespace NUglify.Html
         protected override void WriteStartTag(HtmlElement node)
         {
             var shouldPretty = ShouldPretty(node);
-            allowIndent = (settings.PrettyPrint && node.Name != "pre");
+            allowIndent = (settings.PrettyPrint && !settings.TagsWithNonCollapsableWhitespaces.ContainsKey(node.Name));
             if (shouldPretty && !lastNewLine)
             {
                 Writer.WriteLine();
@@ -99,12 +99,8 @@ namespace NUglify.Html
 
         private bool ShouldPretty(HtmlElement node)
         {
-            return settings.PrettyPrint && node.Descriptor != null &&
-                   !settings.InlineTagsPreservingSpacesAround.ContainsKey(node.Descriptor.Name) &&
-                   node.Descriptor.Category != ContentKind.Phrasing && 
-                   (node.Parent?.Descriptor == null || (node.Parent.Descriptor.Category & ContentKind.Phrasing) == 0);
+            return settings.PrettyPrint && (node.Descriptor == null || !settings.InlineTagsPreservingSpacesAround.ContainsKey(node.Descriptor.Name));
         }
-
 
         protected override void WriteAttributeValue(HtmlElement element, HtmlAttribute attribute, bool isLast)
         {
