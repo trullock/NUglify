@@ -352,7 +352,7 @@ namespace NUglify.Html
         private static bool HeadEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             // A head element’s end tag may be omitted if the head element is not immediately followed by a space character or a comment.
-            return (!whileParsing || nextSibling == null) && (parent.NextSibling == null || (parent.NextSibling is HtmlText && !((HtmlText)parent.FirstChild).Slice.IsEmptyOrWhiteSpace()) || !(parent.NextSibling is HtmlComment));
+            return (!whileParsing || nextSibling == null) && (parent.NextSibling == null || (parent.FirstChild is HtmlText && !((HtmlText)parent.FirstChild).Slice.IsEmptyOrWhiteSpace()) || !(parent.NextSibling is HtmlComment));
         }
 
         private static bool BodyStartTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
