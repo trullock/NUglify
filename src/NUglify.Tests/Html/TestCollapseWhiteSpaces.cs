@@ -19,6 +19,22 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void TestBodyAndSpan()
+        {
+            equal(minify(@"<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta charset='utf-8' /> 
+    <title>test</title>
+</head> 
+<body> 
+ <span>Some</span> 
+ <span>whitespace</span> 
+</body> 
+</html>"), "<!DOCTYPE html><meta charset=utf-8><title>test</title><span>Some</span> <span>whitespace</span>");
+        }
+
+        [Test]
         public void TestSpaceCollapsing2()
         {
             equal(minify("<span><strong>Multipage Version</strong> <code>whatwg.org/html</code></span>"),

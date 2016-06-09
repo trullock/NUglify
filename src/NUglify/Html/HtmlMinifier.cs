@@ -150,7 +150,7 @@ namespace NUglify.Html
                 parent = parent.Parent;
             }
 
-            if ((parent?.Descriptor != null && xmlNamespaceCount == 0 && (parent.Descriptor.Category & ContentKind.Phrasing) != 0) || !textNode.Slice.IsEmptyOrWhiteSpace())
+            if (!textNode.Slice.IsEmptyOrWhiteSpace() || (parent?.Descriptor != null && xmlNamespaceCount == 0))
             {
                 pendingTexts.Add(textNode);
             }
