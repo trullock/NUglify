@@ -2,7 +2,7 @@
 
 <img align="right" width="160px" height="160px" src="images/nuglify.png">
 
-NUglify enables you to improve the performance of your web applications by reducing the size of your Cascading Style Sheet, JavaScript files and HTML files.
+NUglify provides minify and compression methods for CSS, JavaScript and HTML files.
 
 This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/) + additional features (e.g: HTML compressor) 
 

@@ -2,7 +2,7 @@
   "title": "NUglify",
   "version": "1.4.4",
   "authors": [ "Ron Logan", "Alexandre Mutel" ],
-  "description": "NUglify is a HTML, JavaScript and CSS minification Library for .NET (fork of AjaxMin + new features)",
+  "description": "NUglify provides minify and compression methods for CSS, JavaScript and HTML files for .NET (fork of AjaxMin + new features)",
   "copyright": "Alexandre Mutel",
   "language": "en-US",
   "packOptions": {
@@ -12,7 +12,7 @@
     "iconUrl": "https://raw.githubusercontent.com/xoofx/NUglify/master/images/nuglify.png",
     "requireLicenseAcceptance": false,
     "releaseNotes": "Update logo on NuGet",
-    "tags": [ "CSS", "JavaScript", "minify", "crunch", "uglify", "HTML", "htmlminifier", "htmlcompressor" ],
+    "tags": [ "CSS", "JavaScript", "minify", "crunch", "uglify", "Compress", "HTML", "htmlminifier", "htmlcompressor" ],
     "repository": {
       "type": "git",
       "url": "git://github.com/xoofx/NUglify"
