@@ -1,5 +1,7 @@
 # NUglify [![Build status](https://ci.appveyor.com/api/projects/status/vep1cdnie9cls48p?svg=true)](https://ci.appveyor.com/project/xoofx/ajaxmin)  [![NuGet](https://img.shields.io/nuget/v/NUglify.svg)](https://www.nuget.org/packages/NUglify/)
 
+<img align="right" width="160px" height="160px" src="images/nuglify.png">
+
 NUglify enables you to improve the performance of your web applications by reducing the size of your Cascading Style Sheet, JavaScript files and HTML files.
 
 This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/) + additional features (e.g: HTML compressor) 
@@ -93,3 +95,7 @@ The original Microsoft Ajax Minifier was released under the [Apache 2.0 license]
 Microsoft Ajax Minifier was created and maintained by Ron Logan, with contributions from Eugene Chigirinskiy, Rafael Correa, Kristoffer Henriksson, and Marcin Dobosz.
 
 Nuglify was ported and refactored to github by Alexandre Mutel aka [xoofx](http://xoofx.com)
+
+## Credits
+
+The logo Monster is by [Joel McKinney](https://thenounproject.com/joel.mckinney/) from the Noun Project
