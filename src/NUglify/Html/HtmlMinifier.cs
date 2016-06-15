@@ -38,6 +38,34 @@ namespace NUglify.Html
             "onkeydown",
             "onkeyup",
         }.ToDictionaryBool(false);
+
+        private static readonly Dictionary<string, bool> ScriptAttributes = new string[]
+        {
+            "onAbort",
+            "onBlur",
+            "onChange",
+            "onClick",
+            "onDblClick",
+            "onDragDrop",
+            "onError",
+            "onFocus",
+            "onKeyDown",
+            "onKeyPress",
+            "onKeyUp",
+            "onLoad",
+            "onMouseDown",
+            "onMouseMove",
+            "onMouseOut",
+            "onMouseOver",
+            "onMouseUp",
+            "onMove",
+            "onReset",
+            "onResize",
+            "onSelect",
+            "onSubmit",
+            "onUnload",
+        }.ToDictionaryBool(false);
+
         public HtmlMinifier(HtmlDocument html, HtmlSettings settings = null)
         {
             if (html == null) throw new ArgumentNullException(nameof(html));
@@ -113,6 +141,12 @@ namespace NUglify.Html
                 {
                     node.Remove();
                 }
+            }
+
+            // Remove HTML script
+            if (settings.RemoveJavaScript && node is HtmlElement && ((HtmlElement) node).Descriptor.Name == "script")
+            {
+                node.Remove();
             }
         }
 
@@ -346,6 +380,14 @@ namespace NUglify.Html
 
             if (attribute.Value != null)
             {
+                if (settings.RemoveJavaScript)
+                {
+                    if (ScriptAttributes.ContainsKey(attr) || attribute.Value.Trim().StartsWith("javascript:", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+
                 if (IsUriTypeAttribute(element.Name, attribute.Name))
                 {
                     attribute.Value = attribute.Value.Trim();

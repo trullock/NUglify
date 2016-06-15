@@ -182,6 +182,11 @@ namespace NUglify.Html
         public bool PrettyPrint { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to remove any JavaScript code (in script tag or in html attributes)
+        /// </summary>
+        public bool RemoveJavaScript { get; set; }
+
+        /// <summary>
         /// Gets the inline tags preserving spaces around (default: a, abbr, acronym, b, bdi, 
         /// bdo, big, button, cite, code, del, dfn, em, font, i, ins, kbd, label, 
         /// mark, math, nobr, q, rp, rt, s, samp, small, span, strike, strong, sub, sup, 
