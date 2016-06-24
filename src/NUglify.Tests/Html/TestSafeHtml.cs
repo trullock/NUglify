@@ -45,7 +45,7 @@ namespace NUglify.Tests.Html
             var settings = new HtmlSettings() { RemoveJavaScript = true };
 
             input = "<a style='text-align: center;'>test</a>";
-            equal(minify(input, settings), "<a  style='text-align:center'>test</a>");
+            equal(minify(input, settings), "<a style=text-align:center>test</a>");
         }
     }
 }
