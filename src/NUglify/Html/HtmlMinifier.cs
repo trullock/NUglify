@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using NUglify.Css;
 using NUglify.Helpers;
 
 namespace NUglify.Html
@@ -14,6 +15,7 @@ namespace NUglify.Html
         private int pendingTagNonCollapsibleWithSpaces;
         private readonly List<HtmlText> pendingTexts;
         private readonly HtmlSettings settings;
+        private readonly CssSettings attributeCssSettings;
         private int xmlNamespaceCount;
 
         private static readonly Dictionary<string, bool> AttributesRemovedIfEmpty = new[]
@@ -70,6 +72,9 @@ namespace NUglify.Html
         {
             if (html == null) throw new ArgumentNullException(nameof(html));
             this.settings = settings ?? new HtmlSettings();
+            attributeCssSettings = this.settings.CssSettings.Clone();
+            attributeCssSettings.CssType = CssType.DeclarationList;
+
             this.html = html;
             pendingTexts = new List<HtmlText>();
             Errors = new List<UglifyError>();
@@ -367,7 +372,24 @@ namespace NUglify.Html
             if (result.HasErrors)
             {
                 HasErrors = true;
-                return null;
+                return text;
+            }
+
+            return result.Code;
+        }
+
+        private string MinifyCssAttribute(string text)
+        {
+            var result = Uglify.Css(text, "inner_css", attributeCssSettings);
+            if (result.Errors != null)
+            {
+                Errors.AddRange(result.Errors);
+            }
+
+            if (result.HasErrors)
+            {
+                HasErrors = true;
+                return text;
             }
 
             return result.Code;
@@ -408,7 +430,7 @@ namespace NUglify.Html
                 }
                 else if (attr == "style" && element.Descriptor != null && settings.MinifyCssAttributes)
                 {
-                    attribute.Value = MinifyJsOrCss(attribute.Value, false);
+                    attribute.Value = MinifyCssAttribute(attribute.Value);
                     return attribute.Value == string.Empty;
                 }
             }

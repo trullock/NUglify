@@ -37,5 +37,15 @@ namespace NUglify.Tests.Html
             input = "<a src='javascript:wtf()'>test</a>";
             equal(minify(input, settings), "<a>test</a>");
         }
+
+
+        [Test]
+        public void RemoveAttributes3()
+        {
+            var settings = new HtmlSettings() { RemoveJavaScript = true };
+
+            input = "<a style='text-align: center;'>test</a>";
+            equal(minify(input, settings), "<a  style='text-align:center'>test</a>");
+        }
     }
 }
