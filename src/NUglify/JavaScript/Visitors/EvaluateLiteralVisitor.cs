@@ -1879,15 +1879,24 @@ namespace NUglify.JavaScript.Visitors
                                 var list = node.Operand2 as AstNodeList;
                                 if (list == null)
                                 {
-                                    // not a list, just a single item, so we can just
-                                    // replace this entire node with the one element
-                                    ReplaceNodeCheckParens(node, node.Operand2);
+                                    // Check that the right operand is not an eval lookup as in (0, eval)('this');
+                                    // In this case, we cannot simplify the expression and we have to let the eval
+                                    // inside the CommaExpression.
+                                    if (!IsEvalLookup(node.Operand2))
+                                    {
+                                        // not a list, just a single item, so we can just
+                                        // replace this entire node with the one element
+                                        ReplaceNodeCheckParens(node, node.Operand2);
+                                    }
                                 }
                                 else if (list.Count == 1)
                                 {
                                     // If the list has a single element, then we can just
                                     // replace this entire node with the one element
-                                    ReplaceNodeCheckParens(node, list[0]);
+                                    if (!IsEvalLookup(list[0]))
+                                    {
+                                        ReplaceNodeCheckParens(node, list[0]);
+                                    }
                                 }
                                 else if (list.Count == 0)
                                 {
@@ -2000,6 +2009,12 @@ namespace NUglify.JavaScript.Visitors
                     }
                 }
             }
+        }
+
+        private bool IsEvalLookup(AstNode node)
+        {
+            var lookupExpression = node as LookupExpression;
+            return lookupExpression != null && lookupExpression.Name == "eval";
         }
 
         public override void Visit(CallExpression node)

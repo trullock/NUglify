@@ -33,6 +33,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void SpecialEval()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
         public void GlobalObject()
         {
             TestHelper.Instance.RunTest();
