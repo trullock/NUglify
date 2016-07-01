@@ -66,5 +66,12 @@ namespace NUglify.Tests.Html
             input = "<p rel=\"<!-- comment in attribute -->\" title=\"<!--! ignored comment in attribute -->\">foo";
             equal(minify(input), input);
         }
+
+        [Test]
+        public void KeepKnockout()
+        {
+            var input = @"<div><!--ko if: observable--><!--/ko--></div>";
+            equal(minify(input), input);
+        }
     }
 }

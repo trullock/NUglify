@@ -3,6 +3,7 @@
 // See the license.txt file in the project root for more information.
 
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using NUglify.Css;
 using NUglify.Helpers;
 using NUglify.JavaScript;
@@ -84,6 +85,11 @@ namespace NUglify.Html
                 "textarea",
             }.ToDictionaryBool(false);
 
+            KeepCommentsRegex = new List<Regex>()
+            {
+                new Regex(@"^!"), // Keep conditionnal comments
+                new Regex(@"^/?ko(?:[\s\-]|$)") // Keep knockout comments
+            };
         }
 
         /// <summary>
@@ -198,6 +204,11 @@ namespace NUglify.Html
         /// Gets the tags with non collapsable whitespaces (default: pre, textarea)
         /// </summary>
         public Dictionary<string, bool> TagsWithNonCollapsableWhitespaces { get; }
+
+        /// <summary>
+        /// Gets a list of regex that will be matched against a HTML comment content. If a regex matches a HTML comment content, the comment will be kept
+        /// </summary>
+        public List<Regex> KeepCommentsRegex { get; private set; }
 
         /// <summary>
         /// returns settings to output a pretty HTML

@@ -141,8 +141,19 @@ namespace NUglify.Html
             if (node is HtmlComment && settings.RemoveComments)
             {
                 var comment = (HtmlComment) node;
+                bool keepComment = false;
+                foreach (var regex in settings.KeepCommentsRegex)
+                {
+                    var result = regex.Match(comment.Slice.Text, comment.Slice.Start, comment.Slice.Length);
+                    if (result.Success)
+                    {
+                        keepComment = true;
+                        break;
+                    }
+                }
+
                 // Don't remove special ignoring comments
-                if (!comment.Slice.StartsWith("!"))
+                if (!keepComment)
                 {
                     node.Remove();
                 }
