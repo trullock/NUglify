@@ -29,7 +29,7 @@ NUglify is available as a NuGet package: [![NuGet](https://img.shields.io/nuget/
 
 The main entry point for the API is the `Uglify` class:
 
-For JavacScript:
+For JavaScript:
 
 ```csharp
 var result = Uglify.Js("var x = 5; var y = 6;");
@@ -82,7 +82,7 @@ You may wonder why this fork? Here are a few reasons:
 - [x] Rename files and put them in a single class per file as much as possible
 - [x] Publsih a nuget package
 - [x] Add HTML compressor/minify
-- [ ] Try to evaluate a some point if we couldn't collaborate with a project like [Jint](https://github.com/sebastienros/jint) to leverage on a common JavacScript parser infrastructure
+- [ ] Try to evaluate a some point if we couldn't collaborate with a project like [Jint](https://github.com/sebastienros/jint) to leverage on a common JavaScript parser infrastructure
 - [ ] Try to evaluate to leverage on [AngleSharp](https://github.com/AngleSharp/AngleSharp) for the HTML/Css minification
 
 ## License
