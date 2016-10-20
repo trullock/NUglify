@@ -201,6 +201,12 @@ namespace NUglify.Html
         public Dictionary<string, bool> InlineTagsPreservingSpacesAround { get; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to keep one space when collapsing.
+        /// </summary>
+        /// <value><c>true</c> to keep one space when collapsing; otherwise, <c>false</c>.</value>
+        public bool KeepOneSpaceWhenCollapsing { get; set; }
+
+        /// <summary>
         /// Gets the tags with non collapsable whitespaces (default: pre, textarea)
         /// </summary>
         public Dictionary<string, bool> TagsWithNonCollapsableWhitespaces { get; }

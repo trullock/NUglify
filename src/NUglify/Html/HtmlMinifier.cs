@@ -87,7 +87,10 @@ namespace NUglify.Html
         public void Minify()
         {
             ProcessChildren(html);
-            TrimPendingTextNodes();
+            if (settings.CollapseWhitespaces)
+            {
+                TrimPendingTextNodes();
+            }
         }
 
         private void ProcessNode(HtmlNode node)
@@ -279,22 +282,31 @@ namespace NUglify.Html
 
                 var previousElement = textNode.PreviousSibling as HtmlElement;
                 var nextElement = textNode.NextSibling as HtmlElement;
-                
-                // We can trim the heading whitespaces if:
-                // - we don't have a previous element (either inline or parent container)
-                // - OR the previous element (sibling or parent) is not a tag that require preserving spaces around
-                // - OR the previous text node has already some trailing spaces
-                if ((previousTextNode == null || previousTextNode.Slice.HasTrailingSpaces()) && (previousElement == null || textNode.Slice.IsEmptyOrWhiteSpace()))
-                {
-                    textNode.Slice.TrimStart();
-                }
 
-                // We can trim the traling whitespaces if:
-                // - we don't have a next element (either inline or parent container)
-                // - OR the next element (sibling or parent) is not a tag that require preserving spaces around
-                if (nextElement == null && previousTextNode != null && textNode.NextSibling == null && (i+1 >= pendingTexts.Count || pendingTexts[i+1].Slice.StartsBySpace()))
+                // If we expect to keep one space after collapsing
+                var isFirstText = i == 0 && textNode.Parent?.FirstChild == textNode;
+                var isLastText = i + 1 == pendingTexts.Count && pendingTexts[i].Parent?.LastChild == pendingTexts[i];
+                if (!settings.KeepOneSpaceWhenCollapsing || isFirstText || isLastText)
                 {
-                    textNode.Slice.TrimEnd();
+                    var isPreviousTrailing = previousTextNode != null && previousTextNode.Slice.HasTrailingSpaces();
+                    var isNextStartsBySpace = i + 1 >= pendingTexts.Count || pendingTexts[i + 1].Slice.StartsBySpace();
+
+                    // We can trim the heading whitespaces if:
+                    // - we don't have a previous element (either inline or parent container)
+                    // - OR the previous element (sibling or parent) is not a tag that require preserving spaces around
+                    // - OR the previous text node has already some trailing spaces
+                    if ((previousTextNode == null || isPreviousTrailing) && (previousElement == null || textNode.Slice.IsEmptyOrWhiteSpace()))
+                    {
+                        textNode.Slice.TrimStart();
+                    }
+
+                    // We can trim the traling whitespaces if:
+                    // - we don't have a next element (either inline or parent container)
+                    // - OR the next element (sibling or parent) is not a tag that require preserving spaces around
+                    if (nextElement == null && previousTextNode != null && textNode.NextSibling == null && isNextStartsBySpace)
+                    {
+                        textNode.Slice.TrimEnd();
+                    }
                 }
 
                 // If we are not in the context of a tag that doesn't accept to collapse whitespaces, 
@@ -308,6 +320,11 @@ namespace NUglify.Html
                 if (textNode.Slice.IsEmpty())
                 {
                     textNode.Remove();
+                    // If we are on the last element and it is not the last text, we don't want to trim it 
+                    if (i + 1 == pendingTexts.Count && isLastText)
+                    {
+                        previousTextNode = null;
+                    }
                 }
                 else
                 {
@@ -319,7 +336,14 @@ namespace NUglify.Html
             // Trim any trailing spaces of the last known text node if we are moving to a block level
             if (previousTextNode != null)
             {
-                previousTextNode.Slice.TrimEnd();
+                if (settings.KeepOneSpaceWhenCollapsing)
+                {
+                    previousTextNode.Slice.CollapseSpaces();
+                }
+                else
+                {
+                    previousTextNode.Slice.TrimEnd();
+                }
                 if (previousTextNode.Slice.IsEmpty())
                 {
                     previousTextNode.Remove();

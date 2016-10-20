@@ -42,6 +42,14 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void TestSpanSpaceCollapsing()
+        {
+            equal(minify(@"<div>
+    <span class='a'></span>          <span class='b'></span>        <span class='c'></span>
+</div>", new HtmlSettings() {KeepOneSpaceWhenCollapsing = true}  ), "<div><span class=a></span> <span class=b></span> <span class=c></span></div>");
+        }
+
+        [Test]
         public void TestPreserveBetweenInlineTags1()
         {
             // Check that spaces are collapsed at begin/end for inline tags instead of stripping surrounding texts
@@ -147,7 +155,7 @@ namespace NUglify.Tests.Html
             new string[][]
             {
                 new[] {"<span> foo </span>", "<span>foo</span>"},
-                new[] {" <span> foo </span> ", "<span>foo</span>"},
+                new[] {" <span> foo </span> ", "<span>foo </span>"},
                 new[] {"<nobr>a</nobr>", "<nobr>a</nobr>"},
                 new[] {"<nobr>a </nobr>", "<nobr>a</nobr>"},
                 new[] {"<nobr> a</nobr>", "<nobr>a</nobr>"},
