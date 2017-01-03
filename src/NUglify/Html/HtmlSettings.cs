@@ -56,6 +56,7 @@ namespace NUglify.Html
                 "font",
                 "i",
                 "ins",
+                "img",
                 "kbd",
                 "label",
                 "mark",

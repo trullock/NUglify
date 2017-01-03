@@ -50,6 +50,18 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void TestSpanSpaceCollapsingEnd()
+        {
+            var input = @"<span tabindex='2'>
+    <i>
+        hat
+    </i>
+</span>";
+            equal(minify(input), "<span tabindex=2><i>hat</i></span>");
+            equal(minify(input, new HtmlSettings() { KeepOneSpaceWhenCollapsing = true }), "<span tabindex=2><i>hat</i></span>");
+        }
+
+        [Test]
         public void TestPreserveBetweenInlineTags1()
         {
             // Check that spaces are collapsed at begin/end for inline tags instead of stripping surrounding texts
@@ -155,7 +167,7 @@ namespace NUglify.Tests.Html
             new string[][]
             {
                 new[] {"<span> foo </span>", "<span>foo</span>"},
-                new[] {" <span> foo </span> ", "<span>foo </span>"},
+                new[] {" <span> foo </span> ", "<span>foo</span>"},
                 new[] {"<nobr>a</nobr>", "<nobr>a</nobr>"},
                 new[] {"<nobr>a </nobr>", "<nobr>a</nobr>"},
                 new[] {"<nobr> a</nobr>", "<nobr>a</nobr>"},
@@ -189,12 +201,12 @@ namespace NUglify.Tests.Html
             equal(minify("<p>foo <img>bar</p>", disableRemoveOptTag), "<p>foo <img>bar</p>");
             equal(minify("<p>foo<img> bar</p>", disableRemoveOptTag), "<p>foo<img> bar</p>");
             equal(minify("<p>  <a href=\"#\">  <code>foo</code></a> bar</p>", disableRemoveOptTag), "<p><a href=#><code>foo</code></a> bar</p>");
-            equal(minify("<p><a href=\"#\"><code>foo  </code></a> bar</p>", disableRemoveOptTag), "<p><a href=#><code>foo </code></a> bar</p>");
+            equal(minify("<p><a href=\"#\"><code>foo</code></a> bar</p>", disableRemoveOptTag), "<p><a href=#><code>foo</code></a> bar</p>");
             equal(minify("<p>  <a href=\"#\">  <code>   foo</code></a> bar   </p>", disableRemoveOptTag), "<p><a href=#><code>foo</code></a> bar</p>");
-            equal(minify("<div> Empty <!-- or --> not </div>", new HtmlSettings() { RemoveComments =  false}), "<div>Empty <!-- or -->not</div>");
+            equal(minify("<div> Empty <!-- or --> not </div>", new HtmlSettings() { RemoveComments =  false}), "<div>Empty<!-- or --> not</div>");
 
             input = "<li><i></i> <b></b> foo</li>";
-            output = "<li><i></i><b></b> foo</li>";
+            output = "<li><i></i> <b></b> foo</li>";
             equal(minify(input, disableRemoveOptTag), output);
             input = "<li><i> </i> <b></b> foo</li>";
             equal(minify(input, disableRemoveOptTag), output);
@@ -205,7 +217,7 @@ namespace NUglify.Tests.Html
             input = "<li> <i> </i> <b> </b> foo</li>";
             equal(minify(input, disableRemoveOptTag), output);
             input = "<div> <a href=\"#\"> <span> <b> foo </b> <i> bar </i> </span> </a> </div>";
-            output = "<div><a href=#><span><b>foo </b><i>bar</i></span></a></div>";
+            output = "<div><a href=#><span><b>foo</b> <i>bar</i></span></a></div>";
             equal(minify(input, disableRemoveOptTag), output);
             input = "<head> <!-- a --> <!-- b --><link> </head>";
             output = "<head><!-- a --><!-- b --><link>";
