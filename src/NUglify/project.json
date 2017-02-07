@@ -1,6 +1,6 @@
 ﻿{
   "title": "NUglify",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "authors": [ "Ron Logan", "Alexandre Mutel" ],
   "description": "NUglify provides minify and compression methods for CSS, JavaScript and HTML files for .NET (fork of AjaxMin + new features)",
   "copyright": "Alexandre Mutel",
@@ -11,7 +11,7 @@
     "projectUrl": "https://github.com/xoofx/NUglify",
     "iconUrl": "https://raw.githubusercontent.com/xoofx/NUglify/master/images/nuglify.png",
     "requireLicenseAcceptance": false,
-    "releaseNotes": "> 1.5.4\n- Fix regression when collapsing spaces introduced previously\n> 1.5.3\n- Add option HtmlSettings.KeepOneSpaceWhenCollapsing to keep at least one space when collapsing them\n> 1.5.2\n- Add support for keeping knockout comments\n- Don't minify (0,eval)('this') expressions\n> 1.5.1\n- Fix bug while minimizing HTML style CSS attribute\n> 1.5.0\n- Add support to dotnet RTM, switch to netstandard1.6",
+    "releaseNotes": "> 1.5.5\n- Fix possible NullReferenceException when using HtmlSettings.RemoveJavaScript = true\n> 1.5.4\n- Fix regression when collapsing spaces introduced previously\n> 1.5.3\n- Add option HtmlSettings.KeepOneSpaceWhenCollapsing to keep at least one space when collapsing them\n> 1.5.2\n- Add support for keeping knockout comments\n- Don't minify (0,eval)('this') expressions\n> 1.5.1\n- Fix bug while minimizing HTML style CSS attribute\n> 1.5.0\n- Add support to dotnet RTM, switch to netstandard1.6",
     "tags": [ "CSS", "JavaScript", "minify", "crunch", "uglify", "Compress", "HTML", "htmlminifier", "htmlcompressor" ],
     "repository": {
       "type": "git",
