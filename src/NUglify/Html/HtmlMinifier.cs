@@ -163,7 +163,7 @@ namespace NUglify.Html
             }
 
             // Remove HTML script
-            if (settings.RemoveJavaScript && node is HtmlElement && ((HtmlElement) node).Descriptor.Name == "script")
+            if (settings.RemoveJavaScript && node is HtmlElement && ((HtmlElement) node).Descriptor?.Name == "script")
             {
                 node.Remove();
             }
