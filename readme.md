@@ -6,6 +6,13 @@ NUglify provides minify and compression methods for CSS, JavaScript and HTML fil
 
 This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/) + additional features (e.g: HTML compressor) 
 
+# Notice
+
+> This project is an attempt to keep alive the original AjaxMin project developed by Ron Logan & contributors.
+> I (xoofx) highly invite people to help to fix issues they find in this project, as I can't afford myself to be the sole maintainer of this project.
+> In other words, Pull Requests (PR) are much welcome and most likely the only way for you to get your issue fixed and to help to keep this project alive.
+> Thank you!
+
 ## Features
 
 - JS minification (from AjaxMin)
