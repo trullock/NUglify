@@ -46,9 +46,6 @@
     <Compile Include="..\NUglifyApp\ManifestUtilities.cs">
       <Link>ManifestUtilities.cs</Link>
     </Compile>
-    <Compile Include="..\NUglify\Properties\ProductAssemblyInfo.cs">
-      <Link>Properties\ProductAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="NUglifyBundleTask.cs" />
     <Compile Include="NUglifyManifestBaseTask.cs" />
     <Compile Include="NUglifyManifestCleanTask.cs" />

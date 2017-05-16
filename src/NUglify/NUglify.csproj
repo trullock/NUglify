@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>NUglify provides minify and compression methods for CSS, JavaScript and HTML files for .NET (fork of AjaxMin + new features)</Description>
+    <Copyright>Alexandre Mutel</Copyright>
+    <AssemblyTitle>NUglify</AssemblyTitle>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <VersionPrefix>1.5.5</VersionPrefix>
+    <Authors>Ron Logan;Alexandre Mutel</Authors>
+    <TargetFrameworks>net35;net40;netstandard1.3</TargetFrameworks>
+    <AssemblyName>NUglify</AssemblyName>
+    <PackageId>NUglify</PackageId>
+    <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
+    <PackageReleaseNotes>
+&gt; 1.5.5
+- Fix possible NullReferenceException when using HtmlSettings.RemoveJavaScript = true
+&gt; 1.5.4
+- Fix regression when collapsing spaces introduced previously
+&gt; 1.5.3
+- Add option HtmlSettings.KeepOneSpaceWhenCollapsing to keep at least one space when collapsing them
+&gt; 1.5.2
+- Add support for keeping knockout comments
+- Don't minify (0,eval)('this') expressions
+&gt; 1.5.1
+- Fix bug while minimizing HTML style CSS attribute
+&gt; 1.5.0
+- Add support to dotnet RTM, switch to netstandard1.6</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/xoofx/NUglify/master/images/nuglify.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/xoofx/NUglify</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/xoofx/NUglify/blob/master/license.txt</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>git://github.com/xoofx/NUglify</RepositoryUrl>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="*.resx;Css\*.resx;JavaScript\*.resx" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <DefineConstants>$(DefineConstants);NET_35;NETPRE45</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <DefineConstants>$(DefineConstants);NETPRE45</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <DefineConstants>$(DefineConstants);CORE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.2.0" />
+  </ItemGroup>
+
+</Project>
