@@ -9,14 +9,14 @@ namespace NUglify
     /// Results of a <see cref="Uglify.Css(string,NUglify.Css.CssSettings,NUglify.JavaScript.CodeSettings)"/> or 
     /// <see cref="Uglify.Js(string,NUglify.JavaScript.CodeSettings)"/> operation.
     /// </summary>
-    public struct UgliflyResult
+    public struct UglifyResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UgliflyResult"/> struct.
+        /// Initializes a new instance of the <see cref="UglifyResult"/> struct.
         /// </summary>
         /// <param name="code">The uglified code.</param>
         /// <param name="messages">The Messages.</param>
-        public UgliflyResult(string code, List<UglifyError> messages)
+        public UglifyResult(string code, List<UglifyError> messages)
         {
             Code = code;
             Errors = messages;

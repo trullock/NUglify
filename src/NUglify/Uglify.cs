@@ -48,7 +48,7 @@ namespace NUglify
         /// <param name="settings">HTML minification settings</param>
         /// <param name="sourceFileName">The source file name used when reporting errors. Default is <c>null</c></param>
         /// <returns>minified HTML</returns>
-        public static UgliflyResult Html(string source, HtmlSettings settings = null, string sourceFileName = null)
+        public static UglifyResult Html(string source, HtmlSettings settings = null, string sourceFileName = null)
         {
             settings = settings ?? DefaultSettings;
 
@@ -72,7 +72,7 @@ namespace NUglify
                 text = writer.ToString();
             }
 
-            return new UgliflyResult(text, errors);
+            return new UglifyResult(text, errors);
         }
 
 
@@ -83,7 +83,7 @@ namespace NUglify
         /// <param name="options">The options to extract the text.</param>
         /// <param name="sourceFileName">The source file name used when reporting errors. Default is <c>null</c></param>
         /// <returns>The text extracted from this HTML string</returns>
-        public static UgliflyResult HtmlToText(string source, HtmlToTextOptions options = HtmlToTextOptions.None, string sourceFileName = null)
+        public static UglifyResult HtmlToText(string source, HtmlToTextOptions options = HtmlToTextOptions.None, string sourceFileName = null)
         {
             // Use specific settings to extract text from html
             var settings = new HtmlSettings()
@@ -119,7 +119,7 @@ namespace NUglify
                 text = writer.ToString();
             }
 
-            return new UgliflyResult(text, errors);
+            return new UglifyResult(text, errors);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace NUglify
         /// <param name="source">source Javascript</param>
         /// <param name="codeSettings">code minification settings</param>
         /// <returns>minified Javascript</returns>
-        public static UgliflyResult Js(string source, CodeSettings codeSettings)
+        public static UglifyResult Js(string source, CodeSettings codeSettings)
         {
             // just pass in default settings
             return Js(source, null, codeSettings);
@@ -143,7 +143,7 @@ namespace NUglify
         /// <param name="fileName">File name to use in error reporting. Default is <c>input</c></param>
         /// <param name="codeSettings">code minification settings</param>
         /// <returns>minified Javascript</returns>
-        public static UgliflyResult Js(string source, string fileName = null, CodeSettings codeSettings = null)
+        public static UglifyResult Js(string source, string fileName = null, CodeSettings codeSettings = null)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             fileName = fileName ?? "input";
@@ -228,10 +228,10 @@ namespace NUglify
                 sb.Release();
             }
 
-            return new UgliflyResult(crunched, errorList);
+            return new UglifyResult(crunched, errorList);
         }
 
-        public static UgliflyResult Css(string source, CssSettings settings = null,
+        public static UglifyResult Css(string source, CssSettings settings = null,
             CodeSettings scriptSettings = null)
         {
             return Css(source, null, settings, scriptSettings);
@@ -246,7 +246,7 @@ namespace NUglify
         /// <param name="settings">CSS minification settings</param>
         /// <param name="scriptSettings">JS minification settings to use for expression-minification</param>
         /// <returns>Minified StyleSheet</returns>
-        public static UgliflyResult Css(string source, string fileName, CssSettings settings = null, CodeSettings scriptSettings = null)
+        public static UglifyResult Css(string source, string fileName, CssSettings settings = null, CodeSettings scriptSettings = null)
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             fileName = fileName ?? "input";
@@ -291,7 +291,7 @@ namespace NUglify
                     });
                 throw;
             }
-            return new UgliflyResult(minifiedResults, errorList);
+            return new UglifyResult(minifiedResults, errorList);
         }
     }
 }
