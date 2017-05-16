@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- Use Choose instead of a plain condition on ItemGroup to make it working with VS -->
-  <Choose>
-    <When Condition="'$(SolutionName)' == 'NUglify.xplat'">
-      <ItemGroup>
-        <Reference Include="NUglify">
-          <SpecificVersion>False</SpecificVersion>		  
-          <HintPath>..\NUglify\bin\$(Configuration)\net40\NUglify.dll</HintPath>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
-  <Choose>
-    <When Condition="'$(SolutionName)' == 'NUglify.net40'">
-      <ItemGroup>
-        <ProjectReference Include="..\NUglify\NUglify.csproj">
-          <Project>{CA85C41A-928F-4626-9025-0FE5991C7BE8}</Project>
-          <Name>NUglify</Name>
-        </ProjectReference>
-      </ItemGroup>
-    </When>
-  </Choose>
+  <ItemGroup>
+    <Reference Include="NUglify">
+      <SpecificVersion>False</SpecificVersion>		  
+      <HintPath>..\NUglify\bin\$(Configuration)\net40\NUglify.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
