@@ -87,6 +87,7 @@
     <Compile Include="Html\TestInvalidHtml.cs" />
     <Compile Include="Html\TestOptionalTags.cs" />
     <Compile Include="Html\TestSafeHtml.cs" />
+    <Compile Include="Html\TestStandard.cs" />
     <Compile Include="Html\TestSvg.cs" />
     <Compile Include="Html\TestParsingNonTrivialMarkup.cs" />
     <Compile Include="Html\TestCollapseWhiteSpaces.cs" />

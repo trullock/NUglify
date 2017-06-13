@@ -2,6 +2,7 @@
 // This file is licensed under the BSD-Clause 2 license. 
 // See the license.txt file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NUglify.Css;
@@ -79,6 +80,8 @@ namespace NUglify.Html
                 "u",
                 "var",
             }.ToDictionaryBool(false);
+
+            KeepTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             TagsWithNonCollapsableWhitespaces = new[]
             {
@@ -216,6 +219,11 @@ namespace NUglify.Html
         /// Gets a list of regex that will be matched against a HTML comment content. If a regex matches a HTML comment content, the comment will be kept
         /// </summary>
         public List<Regex> KeepCommentsRegex { get; private set; }
+
+        /// <summary>
+        /// Gets the list of tags that will be kept even if they have an optional start/end tag.
+        /// </summary>
+        public HashSet<string> KeepTags { get; }
 
         /// <summary>
         /// returns settings to output a pretty HTML

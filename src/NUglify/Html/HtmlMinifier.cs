@@ -246,7 +246,7 @@ namespace NUglify.Html
             }
 
             // Remove optional tags
-            if (settings.RemoveOptionalTags)
+            if (settings.RemoveOptionalTags && !settings.KeepTags.Contains(element.Name))
             {
                 var nextElement = element.FindNextSibling<HtmlElement>();
 
