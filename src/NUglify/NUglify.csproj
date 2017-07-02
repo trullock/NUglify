@@ -5,13 +5,15 @@
     <Copyright>Alexandre Mutel</Copyright>
     <AssemblyTitle>NUglify</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>1.5.6</VersionPrefix>
+    <VersionPrefix>1.5.7</VersionPrefix>
     <Authors>Ron Logan;Alexandre Mutel</Authors>
     <TargetFrameworks>net35;net40;netstandard1.3</TargetFrameworks>
     <AssemblyName>NUglify</AssemblyName>
     <PackageId>NUglify</PackageId>
     <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
-    <PackageReleaseNotes>
+    <PackageReleaseNotes>    
+&gt; 1.5.7
+- Fix issue in Html compact with pre/textarea tags not keeping whitespaces      
 &gt; 1.5.6
 - Add new HtmlSettings.KeepTags to selectively keep a list of optional start/end tags even when  settings.RemoveOptionalTags is true
 &gt; 1.5.5
