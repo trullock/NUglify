@@ -222,7 +222,7 @@ namespace NUglify.Html
             }
 
             // If the element being visited is not an inline tag, we need to clear the previous text node
-            if (pendingTagNonCollapsibleWithSpaces == 0 && settings.CollapseWhitespaces && !settings.InlineTagsPreservingSpacesAround.ContainsKey(element.Name) && element.Descriptor != null && element.Kind != ElementKind.SelfClosing)
+            if (settings.CollapseWhitespaces && !settings.InlineTagsPreservingSpacesAround.ContainsKey(element.Name) && element.Descriptor != null && element.Kind != ElementKind.SelfClosing)
             {
                 TrimPendingTextNodes();
             }
@@ -275,75 +275,86 @@ namespace NUglify.Html
 
         private void TrimPendingTextNodes()
         {
-            HtmlText previousTextNode = null;
-            HtmlText firstTextNode = null;
-            for (int i = 0; i < pendingTexts.Count; i++)
+            if (pendingTagNonCollapsibleWithSpaces == 0)
             {
-                var textNode = pendingTexts[i];
-                if (firstTextNode == null)
+                HtmlText previousTextNode = null;
+                HtmlText firstTextNode = null;
+                for (int i = 0; i < pendingTexts.Count; i++)
                 {
-                    firstTextNode = textNode;
-                }
-
-                var previousElement = textNode.PreviousSibling as HtmlElement;
-                var nextElement = textNode.NextSibling as HtmlElement;
-
-                var isPreviousElementPreservingSpace = previousElement != null && settings.InlineTagsPreservingSpacesAround.ContainsKey(previousElement.Name);
-                var isNextElementPreservingSpace = nextElement != null && settings.InlineTagsPreservingSpacesAround.ContainsKey(nextElement.Name);
-
-                // If we expect to keep one space after collapsing
-                var isFirstText = textNode == firstTextNode;
-                var isLastText = i + 1 == pendingTexts.Count;
-                if (!settings.KeepOneSpaceWhenCollapsing || isFirstText || isLastText)
-                {
-                    var isPreviousTrailing = previousTextNode != null && previousTextNode.Slice.HasTrailingSpaces();
-                    var isNextStartsBySpace = i + 1 >= pendingTexts.Count || pendingTexts[i + 1].Slice.StartsBySpace();
-
-                    // We can trim the heading whitespaces if:
-                    // - we don't have a previous element (either inline or parent container)
-                    // - OR the previous element (sibling or parent) is not a tag that require preserving spaces around
-                    // - OR the previous text node has already some trailing spaces
-                    if (!isPreviousElementPreservingSpace && (previousTextNode == null || isPreviousTrailing) && (previousElement == null || isFirstText))
+                    var textNode = pendingTexts[i];
+                    if (firstTextNode == null)
                     {
-                        textNode.Slice.TrimStart();
+                        firstTextNode = textNode;
                     }
 
-                    // We can trim the traling whitespaces if:
-                    // - we don't have a next element (either inline or parent container)
-                    // - OR the next element (sibling or parent) is not a tag that require preserving spaces around
-                    if (!isNextElementPreservingSpace && isNextStartsBySpace)
+                    var previousElement = textNode.PreviousSibling as HtmlElement;
+                    var nextElement = textNode.NextSibling as HtmlElement;
+
+                    var isPreviousElementPreservingSpace = previousElement != null &&
+                                                           settings.InlineTagsPreservingSpacesAround.ContainsKey(
+                                                               previousElement.Name);
+                    var isNextElementPreservingSpace = nextElement != null &&
+                                                       settings.InlineTagsPreservingSpacesAround.ContainsKey(nextElement
+                                                           .Name);
+
+                    // If we expect to keep one space after collapsing
+                    var isFirstText = textNode == firstTextNode;
+                    var isLastText = i + 1 == pendingTexts.Count;
+                    if (!settings.KeepOneSpaceWhenCollapsing || isFirstText || isLastText)
                     {
-                        textNode.Slice.TrimEnd();
+                        var isPreviousTrailing = previousTextNode != null && previousTextNode.Slice.HasTrailingSpaces();
+                        var isNextStartsBySpace = i + 1 >= pendingTexts.Count ||
+                                                  pendingTexts[i + 1].Slice.StartsBySpace();
+
+                        // We can trim the heading whitespaces if:
+                        // - we don't have a previous element (either inline or parent container)
+                        // - OR the previous element (sibling or parent) is not a tag that require preserving spaces around
+                        // - OR the previous text node has already some trailing spaces
+                        if (!isPreviousElementPreservingSpace && (previousTextNode == null || isPreviousTrailing) &&
+                            (previousElement == null || isFirstText))
+                        {
+                            textNode.Slice.TrimStart();
+                        }
+
+                        // We can trim the traling whitespaces if:
+                        // - we don't have a next element (either inline or parent container)
+                        // - OR the next element (sibling or parent) is not a tag that require preserving spaces around
+                        if (!isNextElementPreservingSpace && isNextStartsBySpace)
+                        {
+                            textNode.Slice.TrimEnd();
+                        }
+                    }
+
+                    // If we are not in the context of a tag that doesn't accept to collapse whitespaces, 
+                    // we can collapse them for this text node
+                    textNode.Slice.CollapseSpaces();
+
+                    // If the text node is empty, remove it from the tree
+                    if (textNode.Slice.IsEmpty() || (textNode.Slice.IsEmptyOrWhiteSpace() &&
+                                                     !isPreviousElementPreservingSpace &&
+                                                     !isNextElementPreservingSpace))
+                    {
+                        textNode.Remove();
+                        if (firstTextNode == textNode)
+                        {
+                            firstTextNode = null;
+                        }
+                    }
+                    else
+                    {
+                        // Replace the previous textnode
+                        previousTextNode = textNode;
                     }
                 }
 
-                // If we are not in the context of a tag that doesn't accept to collapse whitespaces, 
-                // we can collapse them for this text node
-                textNode.Slice.CollapseSpaces();
-
-                // If the text node is empty, remove it from the tree
-                if (textNode.Slice.IsEmpty() || (textNode.Slice.IsEmptyOrWhiteSpace() && !isPreviousElementPreservingSpace && !isNextElementPreservingSpace))
+                // Trim any trailing spaces of the last known text node if we are moving to a block level
+                if (previousTextNode != null && previousTextNode.NextSibling == null)
                 {
-                    textNode.Remove();
-                    if (firstTextNode == textNode)
+                    previousTextNode.Slice.TrimEnd();
+                    if (previousTextNode.Slice.IsEmpty())
                     {
-                        firstTextNode = null;
+                        previousTextNode.Remove();
                     }
-                }
-                else
-                {
-                    // Replace the previous textnode
-                    previousTextNode = textNode;
-                }
-            }
-
-            // Trim any trailing spaces of the last known text node if we are moving to a block level
-            if (previousTextNode != null && previousTextNode.NextSibling == null)
-            {
-                previousTextNode.Slice.TrimEnd();
-                if (previousTextNode.Slice.IsEmpty())
-                {
-                    previousTextNode.Remove();
                 }
             }
 

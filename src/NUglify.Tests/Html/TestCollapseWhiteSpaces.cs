@@ -35,6 +35,17 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void PreTagRetainsWhitespace()
+        {
+            var settings = new HtmlSettings();
+            //settings.CollapseWhitespaces = false;
+            equal(minify("<pre>Line1\nLine2</pre>", settings), "<pre>Line1\nLine2</pre>");
+            equal(minify("<pre>    Line1\n    Line2</pre>", settings), "<pre>    Line1\n    Line2</pre>");
+            equal(minify("<pre><code>Line1\nLine2</code></pre>", settings), "<pre><code>Line1\nLine2</code></pre>");
+            equal(minify("<pre><code>    Line1\n    Line2</code></pre>", settings), "<pre><code>    Line1\n    Line2</code></pre>");
+        }
+
+        [Test]
         public void TestSpaceCollapsing2()
         {
             equal(minify("<span><strong>Multipage Version</strong> <code>whatwg.org/html</code></span>"),
