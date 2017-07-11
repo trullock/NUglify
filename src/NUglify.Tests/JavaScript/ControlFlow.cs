@@ -34,6 +34,18 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void BreakLabel()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
+        public void BreakNoLabel()
+        {
+            TestHelper.Instance.RunErrorTest("-ignore:JS1021", JSError.NoLabel, JSError.BadBreak);
+        }
+
+        [Test]
         public void Continue()
         {
             // don't optimize if(cond)continue;

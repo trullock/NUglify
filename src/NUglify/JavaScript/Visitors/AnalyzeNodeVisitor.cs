@@ -1587,7 +1587,8 @@ namespace NUglify.JavaScript.Visitors
                     node.Label = null;
                 }
 
-                if (!IsInsideLoop(node, true))
+                // check the break is inside a loop or in a label block
+                if (!IsInsideLoop(node, true) && (node.Label == null || !IsInsideLabel(node, node.Label)))
                 {
                     node.Context.HandleError(JSError.BadBreak, true);
                 }
@@ -4415,6 +4416,28 @@ namespace NUglify.JavaScript.Visitors
 
             // if we get here, we're not in a loop
             return insideLoop;
+        }
+
+        private static bool IsInsideLabel(AstNode node, string label)
+        {
+            // assume we are not
+            var insideLabel = false;
+
+            // go up until we get to the top or we get to a function object
+            while (node != null && !(node is FunctionObject))
+            {
+                if (node is LabeledStatement && string.Compare(((LabeledStatement)node).Label, label) == 0)
+                {
+                    // we have a matching label
+                    return true;
+                }
+
+                // go up the tree
+                node = node.Parent;
+            }
+
+            // if we get here, we're not in a nested label
+            return insideLabel;
         }
 
         private static AstNode ReplaceCultureValue(ConstantWrapper node)
