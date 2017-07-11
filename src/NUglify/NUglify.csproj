@@ -5,13 +5,15 @@
     <Copyright>Alexandre Mutel</Copyright>
     <AssemblyTitle>NUglify</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>1.5.7</VersionPrefix>
+    <VersionPrefix>1.5.8</VersionPrefix>
     <Authors>Ron Logan;Alexandre Mutel</Authors>
     <TargetFrameworks>net35;net40;netstandard1.3</TargetFrameworks>
     <AssemblyName>NUglify</AssemblyName>
     <PackageId>NUglify</PackageId>
     <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
-    <PackageReleaseNotes>    
+    <PackageReleaseNotes>
+&gt; 1.5.8
+- Fix Check for break outside of a loop but inside a label block (#31)
 &gt; 1.5.7
 - Fix issue in Html compact with pre/textarea tags not keeping whitespaces      
 &gt; 1.5.6
