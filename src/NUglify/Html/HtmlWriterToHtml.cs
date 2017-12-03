@@ -67,7 +67,36 @@ namespace NUglify.Html
                 lastNewLine = true;
             }
 
-            base.WriteStartTag(node);
+            Write("<");
+            var isProcessing = (node.Kind & ElementKind.ProcessingInstruction) != 0;
+            if (isProcessing)
+            {
+                Write("?");
+            }
+            Write(node.Name);
+
+            if (node.Attributes != null)
+            {
+                var count = node.Attributes.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var attribute = node.Attributes[i];
+                    Write(" ");
+                    WriteAttribute(node, attribute, i + 1 == count);
+                }
+            }
+
+            if (isProcessing)
+            {
+                Write("?");
+            }
+
+            if ((node.Kind & ElementKind.SelfClosing) != 0 && (XmlNamespaceLevel > 0 || !settings.RemoveOptionalTags))
+            {
+                Write(" /");
+            }
+
+            Write(">");
 
             if (shouldPretty)
             {

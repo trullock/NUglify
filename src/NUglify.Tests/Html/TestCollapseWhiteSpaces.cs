@@ -207,10 +207,10 @@ namespace NUglify.Tests.Html
                 equal(minify(input), output);
             });
 
-            equal(minify("<p>foo <img> bar</p>", disableRemoveOptTag), "<p>foo <img> bar</p>");
-            equal(minify("<p>foo<img>bar</p>", disableRemoveOptTag), "<p>foo<img>bar</p>");
-            equal(minify("<p>foo <img>bar</p>", disableRemoveOptTag), "<p>foo <img>bar</p>");
-            equal(minify("<p>foo<img> bar</p>", disableRemoveOptTag), "<p>foo<img> bar</p>");
+            equal(minify("<p>foo <img> bar</p>", disableRemoveOptTag), "<p>foo <img /> bar</p>");
+            equal(minify("<p>foo<img>bar</p>", disableRemoveOptTag), "<p>foo<img />bar</p>");
+            equal(minify("<p>foo <img>bar</p>", disableRemoveOptTag), "<p>foo <img />bar</p>");
+            equal(minify("<p>foo<img> bar</p>", disableRemoveOptTag), "<p>foo<img /> bar</p>");
             equal(minify("<p>  <a href=\"#\">  <code>foo</code></a> bar</p>", disableRemoveOptTag), "<p><a href=#><code>foo</code></a> bar</p>");
             equal(minify("<p><a href=\"#\"><code>foo</code></a> bar</p>", disableRemoveOptTag), "<p><a href=#><code>foo</code></a> bar</p>");
             equal(minify("<p>  <a href=\"#\">  <code>   foo</code></a> bar   </p>", disableRemoveOptTag), "<p><a href=#><code>foo</code></a> bar</p>");
