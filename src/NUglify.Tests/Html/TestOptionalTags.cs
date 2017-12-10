@@ -83,5 +83,37 @@ namespace NUglify.Tests.Html
             output = @"<table><tbody><tr><td><span>A</span></td><td><span>B</span></td><td><span>C</span></td></tr><tr><td><span>A</span></td><td><span>B</span></td><td><span>C</span></td></tr></tbody></table>";
             equal(minify(input, new HtmlSettings() {RemoveOptionalTags = false, IsFragmentOnly = true}), output);
         }
+
+        [Test]
+        public void TestSelfClosingTagWithOptionalTags()
+        {
+            var settings = new HtmlSettings()
+            {
+                IsFragmentOnly = true,
+                RemoveOptionalTags = false,
+                RemoveQuotedAttributes = false
+            };
+
+            input = "<link rel=\"stylesheet\" href=\"style.css\" />";
+            output = "<link rel=\"stylesheet\" href=\"style.css\" />";
+
+            equal(minify(input, settings), output);
+        }
+
+        [Test]
+        public void TestSelfClosingTagWithoutOptionalTags()
+        {
+            var settings = new HtmlSettings()
+            {
+                IsFragmentOnly = true,
+                RemoveOptionalTags = true,
+                RemoveQuotedAttributes = false
+            };
+
+            input = "<link rel=\"stylesheet\" href=\"style.css\" />";
+            output = "<link rel=\"stylesheet\" href=\"style.css\">";
+
+            equal(minify(input, settings), output);
+        }
     }
 }

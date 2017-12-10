@@ -8,7 +8,7 @@ namespace NUglify.Html
 {
     public abstract class HtmlWriterBase
     {
-        private int xmlNamespaceLevel;
+        protected int XmlNamespaceLevel { get; private set; }
 
         protected HtmlWriterBase()
         {
@@ -73,14 +73,14 @@ namespace NUglify.Html
 
             if (isInXml)
             {
-                xmlNamespaceLevel++;
+                XmlNamespaceLevel++;
             }
 
             WriteChildren(node);
 
             if (isInXml)
             {
-                xmlNamespaceLevel--;
+                XmlNamespaceLevel--;
             }
 
             if (shouldClose)
@@ -120,7 +120,7 @@ namespace NUglify.Html
                 Write("?");
             }
 
-            if ((node.Kind & ElementKind.SelfClosing) != 0 && xmlNamespaceLevel > 0)
+            if ((node.Kind & ElementKind.SelfClosing) != 0 && XmlNamespaceLevel > 0)
             {
                 Write(" /");
             }
