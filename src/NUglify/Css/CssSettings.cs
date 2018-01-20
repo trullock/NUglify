@@ -131,6 +131,7 @@ namespace NUglify.Css
                 CssType = this.CssType,
                 BlocksStartOnSameLine = this.BlocksStartOnSameLine,
                 RemoveEmptyBlocks = this.RemoveEmptyBlocks,
+                IgnoreRazorEscapeSequence = this.IgnoreRazorEscapeSequence,
             };
 
             // add the resource strings (if any)
@@ -214,6 +215,15 @@ namespace NUglify.Css
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether a double-at Razor escape sequence is ignored.
+        /// </summary>
+        public bool IgnoreRazorEscapeSequence
+        {
+            get;
+            set;
         }
     }
 }

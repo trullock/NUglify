@@ -66,6 +66,8 @@ namespace NUglify.Css
 
         public bool AllowEmbeddedAspNetBlocks { get; set; }
 
+        public bool IgnoreRazorEscapeSequence { get; set; }
+
         public bool GotEndOfLine { get; set; }
 
         private bool addNewLine;
@@ -679,6 +681,14 @@ namespace NUglify.Css
             // is followed by an identifier, in which case it's an at-symbol.
             TokenType tokenType = TokenType.Character;
 
+            // if the "@" symbol is immediately followed by another "@" and if we have enabled the option
+            // for the Razor escape sequence, then this is okay.
+            var doubleAt = (m_currentChar == '@') && IgnoreRazorEscapeSequence;
+            if (doubleAt)
+            {
+                NextChar();
+            }
+
             // if the next character is a hyphen, then we're going to want to pull it off and see if the
             // NEXT token is an identifier. If it's not, we'll stuff the hyphen back into the read buffer.
             bool startsWithHyphen = m_currentChar == '-';
@@ -806,7 +816,12 @@ namespace NUglify.Css
                 PushChar('-');
             }
 
-            return new CssToken(tokenType, '@' + (ident == null ? string.Empty : ident), m_context);
+            if (doubleAt)
+            {
+                ident = "@" + (ident ?? string.Empty);
+            }
+
+            return new CssToken(tokenType, '@' + (ident ?? string.Empty), m_context);
         }
 
         private CssToken ScanImportant()

@@ -138,6 +138,9 @@ namespace NUglify.Tests.Css.Common
             // we want to know if the analyze flag is specified in the arguments provided to us
             bool analyzeSpecified = false;
 
+            // check if the test is for Razor-specific scenarios
+            bool razorOutputEnabled = false;
+
             // create a list we will append all our arguments to
             LinkedList<string> args = new LinkedList<string>();
             if (!string.IsNullOrEmpty(extraArguments))
@@ -210,6 +213,10 @@ namespace NUglify.Tests.Css.Common
                             // yes, we specified the analyze flag
                             analyzeSpecified = true;
                         }
+                        else if (option.StartsWith("-razor-out", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            razorOutputEnabled = true;
+                        }
                     }
                 }
             }
@@ -231,6 +238,11 @@ namespace NUglify.Tests.Css.Common
             if (!analyzeSpecified)
             {
                 args.AddLast("-analyze");
+            }
+
+            if (razorOutputEnabled)
+            {
+                args.AddLast("-razor");
             }
 
             // add the output parameter

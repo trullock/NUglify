@@ -1514,6 +1514,10 @@ namespace NUglify
                                 }
                                 break;
 
+                            case "RAZOR":
+                                CssSettings.IgnoreRazorEscapeSequence = true;
+                                break;
+
                             case "RENAME":
                                 if (paramPartUpper == null)
                                 {
