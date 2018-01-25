@@ -108,5 +108,11 @@ namespace NUglify.Tests.Css
     {
         TestHelper.Instance.RunTest("-pretty -braces:source");
     }
+
+    [Test]
+    public void RazorEscapedDoubleAt()
+    {
+      TestHelper.Instance.RunTest("-razor");
+    }
   }
 }
