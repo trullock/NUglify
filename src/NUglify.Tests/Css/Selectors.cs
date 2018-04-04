@@ -126,5 +126,11 @@ namespace NUglify.Tests.Css
     {
         TestHelper.Instance.RunTest();
     }
+
+    [Test]
+    public void Bootstrap4CssVariables()
+    {
+        TestHelper.Instance.RunTest();
+    }
   }
 }
