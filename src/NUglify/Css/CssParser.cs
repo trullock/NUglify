@@ -4085,6 +4085,13 @@ namespace NUglify.Css
                             // for identifiers, if the first character is a hyphen or an underscore, then it's a prefix
                             // and we want to look at the next character for nmstart.
                             firstIndex = text[0] == '_' || text[0] == '-' ? 1 : 0;
+
+                            // CSS variables start with double dash --
+                            if (text.StartsWith("--") && text.Length >= 3)
+                            {
+                                firstIndex = 2;
+                            }
+                            
                             if (firstIndex < text.Length)
                             {
                                 // the only valid non-escaped first characters are A-Z (and a-z)
