@@ -4086,8 +4086,8 @@ namespace NUglify.Css
                             // and we want to look at the next character for nmstart.
                             firstIndex = text[0] == '_' || text[0] == '-' ? 1 : 0;
 
-                            // CSS variables start with double dash --
-                            if (text.StartsWith("--") && text.Length >= 3)
+                            var isCssVariable = text.StartsWith("--") && text.Length >= 3;
+                            if (isCssVariable)
                             {
                                 firstIndex = 2;
                             }
