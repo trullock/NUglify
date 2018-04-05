@@ -12,6 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUglify.Tests", "NUglify.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{061866E2-005C-4D13-A338-EA464BBEC60F}"
 	ProjectSection(SolutionItems) = preProject
+		..\changelog.md = ..\changelog.md
 		..\license.txt = ..\license.txt
 		..\readme.md = ..\readme.md
 	EndProjectSection
@@ -66,5 +67,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5645EFD9-F177-4353-AF15-3EFED47AAEE8}
 	EndGlobalSection
 EndGlobal

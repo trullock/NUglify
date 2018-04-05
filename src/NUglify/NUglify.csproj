@@ -5,35 +5,13 @@
     <Copyright>Alexandre Mutel</Copyright>
     <AssemblyTitle>NUglify</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>1.5.9</VersionPrefix>
+    <VersionPrefix>1.5.10</VersionPrefix>
     <Authors>Ron Logan;Alexandre Mutel</Authors>
     <TargetFrameworks>net35;net40;netstandard1.3</TargetFrameworks>
     <AssemblyName>NUglify</AssemblyName>
     <PackageId>NUglify</PackageId>
     <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
-    <PackageReleaseNotes>
-&gt; 1.5.9
-- Respect self-closing tags with "RemoveOptionalTags" option disabled
-&gt; 1.5.8
-- Fix Check for break outside of a loop but inside a label block (#31)
-&gt; 1.5.7
-- Fix issue in Html compact with pre/textarea tags not keeping whitespaces      
-&gt; 1.5.6
-- Add new HtmlSettings.KeepTags to selectively keep a list of optional start/end tags even when  settings.RemoveOptionalTags is true
-&gt; 1.5.5
-- Fix possible NullReferenceException when using HtmlSettings.RemoveJavaScript = true
-&gt; 1.5.4
-- Fix regression when collapsing spaces introduced previously
-&gt; 1.5.3
-- Add option HtmlSettings.KeepOneSpaceWhenCollapsing to keep at least one space when collapsing them
-&gt; 1.5.2
-- Add support for keeping knockout comments
-- Don't minify (0,eval)('this') expressions
-&gt; 1.5.1
-- Fix bug while minimizing HTML style CSS attribute
-&gt; 1.5.0
-- Add support to dotnet RTM, switch to netstandard1.6
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/xoofx/NUglify/blob/master/changelog.md</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/xoofx/NUglify/master/images/nuglify.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/xoofx/NUglify</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/xoofx/NUglify/blob/master/license.txt</PackageLicenseUrl>
