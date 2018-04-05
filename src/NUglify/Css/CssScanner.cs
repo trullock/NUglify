@@ -1604,6 +1604,7 @@ namespace NUglify.Css
             {
                 if (IsNonAscii(m_currentChar)
                   || (m_currentChar == '_')
+                  || (m_currentChar == '-') // CSS variables start with double dash
                   || ('a' <= m_currentChar && m_currentChar <= 'z')
                   || ('A' <= m_currentChar && m_currentChar <= 'Z'))
                 {
