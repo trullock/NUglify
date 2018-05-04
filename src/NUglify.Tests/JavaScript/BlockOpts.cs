@@ -129,6 +129,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void ReturnLiteral()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
         public void ExprReturn()
         {
             TestHelper.Instance.RunTest();

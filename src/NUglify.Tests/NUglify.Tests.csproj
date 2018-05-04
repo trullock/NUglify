@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\ArrowConcise.cs" />
+    <Compile Include="Core\ArrowLiteral.cs" />
     <Compile Include="Core\CommandLine.cs" />
     <Compile Include="Core\CssEncoding.cs" />
     <Compile Include="Core\DebugBlock.cs" />
@@ -382,6 +383,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\CSS\Input\Selectors\Bootstrap4CssVariables.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\BlockOpts\ReturnLiteral.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\ControlFlow\BreakNoLabel.js">
@@ -2411,6 +2415,9 @@
     <Content Include="TestData\JS\Input\AstMods\opAssignCombine.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\JS\Input\BlockOpts\ReturnLiteral.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\JS\Input\Classes\ClassDecl.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3371,6 +3378,9 @@
       <Project>{6ed835a6-8a8a-44ec-8679-7ebbe2a0dbe4}</Project>
       <Name>NUglifyApp</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildThisFileDirectory)..\NUglify.shared.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
