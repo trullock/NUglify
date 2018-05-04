@@ -3871,7 +3871,16 @@ namespace NUglify.JavaScript.Visitors
                 {
                     // the arrow function body has only one "statement" and it's not a return.
                     // assume it's a concise expression body and just output it
+                    var isLiteral = node.Body[0].GetType() == typeof(ObjectLiteral);
+                    if (isLiteral)
+                    {
+                        Output("{return");
+                    }
                     node.Body[0].Accept(this);
+                    if (isLiteral)
+                    {
+                        Output("}");
+                    }
                 }
                 else
                 {
