@@ -11,3 +11,8 @@ function test2(a)
     };
 }
 
+function test3(a)
+{
+    delete a.x;
+    return a;
+}

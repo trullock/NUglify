@@ -1,1 +1,1 @@
-﻿function test1(a){return{x:a+1,y:a-1}}function test2(a){return{a}}
+﻿function test1(a){return{x:a+1,y:a-1}}function test2(a){return{a}}function test3(a){return delete a.x,a}
