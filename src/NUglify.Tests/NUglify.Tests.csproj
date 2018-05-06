@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\ArrowConcise.cs" />
-    <Compile Include="Core\ArrowLiteral.cs" />
+    <Compile Include="Core\ArrowExplicitReturn.cs" />
     <Compile Include="Core\CommandLine.cs" />
     <Compile Include="Core\CssEncoding.cs" />
     <Compile Include="Core\DebugBlock.cs" />
