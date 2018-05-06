@@ -3876,12 +3876,12 @@ namespace NUglify.JavaScript.Visitors
 
                     if (requiresExplicitReturn)
                     {
-                        Output("{return");
+                        Output("(");
                     }
                     node.Body[0].Accept(this);
                     if (requiresExplicitReturn)
                     {
-                        Output("}");
+                        Output(")");
                     }
                 }
                 else
