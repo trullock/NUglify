@@ -5,7 +5,7 @@
     <Copyright>Alexandre Mutel</Copyright>
     <AssemblyTitle>NUglify</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>1.5.10</VersionPrefix>
+    <VersionPrefix>1.5.11</VersionPrefix>
     <Authors>Ron Logan;Alexandre Mutel</Authors>
     <TargetFrameworks>net35;net40;netstandard1.3</TargetFrameworks>
     <AssemblyName>NUglify</AssemblyName>
