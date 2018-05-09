@@ -1468,6 +1468,11 @@ namespace NUglify.JavaScript.Visitors
             // nothing to do
         }
 
+        public void Visit(ComputedPropertyField node)
+        {
+            // nothing to do
+        }
+
         public void Visit(ObjectLiteralProperty node)
         {
             if (node != null)

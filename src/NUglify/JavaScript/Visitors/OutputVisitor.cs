@@ -204,6 +204,62 @@ namespace NUglify.JavaScript.Visitors
             m_noIn = isNoIn;
         }
 
+        public void Visit(ComputedPropertyField node)
+        {
+            var isNoIn = m_noIn;
+            m_noIn = false;
+
+            var arrayNode = node.ArrayNode;
+
+            if (node != null)
+            {
+                var symbol = StartSymbol(node);
+
+                OutputPossibleLineBreak('[');
+                MarkSegment(node, null, node.Context);
+                SetContextOutputPosition(node.Context);
+
+                m_startOfStatement = false;
+
+                if (arrayNode.Elements.Count > 0)
+                {
+                    Indent();
+
+                    AstNode element = null;
+                    for (var ndx = 0; ndx < arrayNode.Elements.Count; ++ndx)
+                    {
+                        if (ndx > 0)
+                        {
+                            OutputPossibleLineBreak(',');
+                            MarkSegment(node, null, element.IfNotNull(e => e.TerminatingContext));
+
+                            if (m_settings.OutputMode == OutputMode.MultipleLines)
+                            {
+                                OutputPossibleLineBreak(' ');
+                            }
+                        }
+
+                        element = arrayNode.Elements[ndx];
+                        if (element != null)
+                        {
+                            AcceptNodeWithParens(element, element.Precedence == OperatorPrecedence.Comma);
+                        }
+                    }
+
+                    Unindent();
+                }
+
+                Output(']');
+                OutputPossibleLineBreak(':');
+
+                MarkSegment(node, null, node.Context);
+
+                EndSymbol(symbol);
+            }
+
+            m_noIn = isNoIn;
+        }
+
         public void Visit(AspNetBlockNode node)
         {
             if (node != null)

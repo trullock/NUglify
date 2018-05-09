@@ -400,6 +400,11 @@ namespace NUglify.JavaScript.Visitors
             ReportError(node);
         }
 
+        public void Visit(ComputedPropertyField node)
+        {
+            ReportError(node);
+        }
+
         public void Visit(RegExpLiteral node)
         {
             ReportError(node);

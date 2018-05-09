@@ -28,6 +28,8 @@ function resetTop(elem)
     return prev;
 }
 
+var prop = 'bar';
+
 var es6 = {
         // regular property/value syntax
         myProperty: 42,
@@ -35,6 +37,11 @@ var es6 = {
         // ES5 getter/setter syntax
         get foo() { return this.foo; },
         set foo(value) { this.foo = value; },
+
+        // ES2015 computed property name
+        [prop]: 'hey',
+        ['b' + 'az']: 'there',
+        ['c' + x()]: 'hello',
 
         // ES6 implicit property name from a lookup name
         location,

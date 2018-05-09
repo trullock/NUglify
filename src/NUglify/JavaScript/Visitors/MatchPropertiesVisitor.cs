@@ -346,6 +346,11 @@ namespace NUglify.JavaScript.Visitors
             // not applicable; terminate
         }
 
+        public void Visit(ComputedPropertyField node)
+        {
+            // not applicable; terminate
+        }
+
         public void Visit(ObjectLiteralField node)
         {
             // not applicable; terminate

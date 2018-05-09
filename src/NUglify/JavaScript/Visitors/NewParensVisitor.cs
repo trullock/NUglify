@@ -257,6 +257,11 @@ namespace NUglify.JavaScript.Visitors
             Debug.Fail("shouldn't get here");
         }
 
+        public void Visit(ComputedPropertyField node)
+        {
+            Debug.Fail("shouldn't get here");
+        }
+
         public void Visit(ObjectLiteralField node)
         {
             Debug.Fail("shouldn't get here");

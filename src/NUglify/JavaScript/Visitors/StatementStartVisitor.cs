@@ -388,6 +388,12 @@ namespace NUglify.JavaScript.Visitors
             Debug.Fail("shouldn't get here");
         }
 
+        public void Visit(ComputedPropertyField node)
+        {
+            // shoudn't get here
+            Debug.Fail("shouldn't get here");
+        }
+
         public void Visit(ObjectLiteralField node)
         {
             // shoudn't get here

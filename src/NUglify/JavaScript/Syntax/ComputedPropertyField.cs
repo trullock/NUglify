@@ -1,4 +1,4 @@
-// gettersetter.cs
+﻿// gettersetter.cs
 //
 // Copyright 2010 Microsoft Corporation
 //
@@ -14,32 +14,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using NUglify.JavaScript.Visitors;
 
 namespace NUglify.JavaScript.Syntax
 {
-    public sealed class GetterSetter : ObjectLiteralField
+    public sealed class ComputedPropertyField : ObjectLiteralField
     {
-        public bool IsGetter { get; set; }
+        public ArrayLiteral ArrayNode { get; private set; }
 
-        public GetterSetter(String identifier, bool isGetter, SourceContext context)
-            : base(identifier, PrimitiveType.String, context)
+        public ComputedPropertyField(ArrayLiteral literalNode, SourceContext context): base(literalNode.Context.Code, PrimitiveType.Other, context)
         {
-            IsGetter = isGetter;
+            ArrayNode = literalNode;
         }
 
         public override void Accept(IVisitor visitor)
         {
-            if (visitor != null)
+            if( visitor != null)
             {
                 visitor.Visit(this);
             }
-        }
-
-        public override String ToString()
-        {
-            return Value.ToString();
         }
     }
 }

@@ -4691,6 +4691,34 @@ namespace NUglify.JavaScript
                     ParsedVersion = ScriptVersion.EcmaScript6;
                 }
             }
+            else if (m_currentToken.Is(JSToken.LeftBracket))
+            {
+                var computedValue = ParseExpression() as ArrayLiteral;
+                field = new ComputedPropertyField(computedValue, computedValue.Context);
+                if( field != null)
+                {
+                    ParsedVersion = ScriptVersion.EcmaScript6;
+                    field.ColonContext = m_currentToken.Clone();
+                }
+                if ( m_currentToken.Token != JSToken.Colon)
+                {
+                    ReportError(JSError.NoColon);
+                }
+
+                GetNextToken();
+                value = ParseObjectPropertyValue(isBindingPattern);
+                if (isBindingPattern && m_currentToken.Is(JSToken.Assign))
+                {
+                    var assignContext = m_currentToken.Clone();
+                    GetNextToken();
+                    value = new InitializerNode(assignContext.Clone())
+                    {
+                        Binding = value,
+                        AssignContext = assignContext,
+                        Initializer = ParseExpression(true)
+                    };
+                }
+            }
 
             if (field != null || value != null)
             {

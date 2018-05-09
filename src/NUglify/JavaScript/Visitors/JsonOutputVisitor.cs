@@ -114,6 +114,64 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
+        public void Visit(ComputedPropertyField node)
+        {
+            if (node != null && node.ArrayNode != null)
+            {
+                // if this is multi-line output, we're going to want to run some checks first
+                // to see if we want to put the array all on one line or put elements on separate lines.
+                var multiLine = false;
+                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                {
+                    if (node.ArrayNode.Elements.Count > 5 || NotJustPrimitives(node.ArrayNode.Elements))
+                    {
+                        multiLine = true;
+                    }
+                }
+
+                m_writer.Write('[');
+                if (node.ArrayNode.Elements != null)
+                {
+                    if (multiLine)
+                    {
+                        // multiline -- let's pretty it up a bit
+                        m_settings.Indent();
+                        try
+                        {
+                            var first = true;
+                            foreach (var element in node.ArrayNode.Elements)
+                            {
+                                if (first)
+                                {
+                                    first = false;
+                                }
+                                else
+                                {
+                                    m_writer.Write(',');
+                                }
+
+                                NewLine();
+                                element.Accept(this);
+                            }
+                        }
+                        finally
+                        {
+                            m_settings.Unindent();
+                        }
+
+                        NewLine();
+                    }
+                    else
+                    {
+                        // not multiline, so just run through all the items
+                        node.ArrayNode.Elements.Accept(this);
+                    }
+                }
+
+                m_writer.Write(']');
+            }
+        }
+
         public void Visit(AstNodeList node)
         {
             if (node != null)
