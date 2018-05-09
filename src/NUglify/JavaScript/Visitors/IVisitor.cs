@@ -44,6 +44,7 @@ namespace NUglify.JavaScript.Visitors
         void Visit(ConstantWrapperPP node);
         void Visit(ConstStatement node);
         void Visit(ContinueStatement node);
+        void Visit(ComputedPropertyField node);
         void Visit(CustomNode node);
         void Visit(DebuggerNode node);
         void Visit(DirectivePrologue node);

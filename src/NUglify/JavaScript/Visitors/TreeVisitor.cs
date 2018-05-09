@@ -549,6 +549,11 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
+        public virtual void Visit(ComputedPropertyField node)
+        {
+            // no children
+        }
+
         public virtual void Visit(ObjectLiteralField node)
         {
             // no children
