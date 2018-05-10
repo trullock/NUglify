@@ -1,0 +1,1 @@
+﻿var{op,lhs,rhs}=getASTNode(),{op:a,lhs:{op:b},rhs:c}=getASTNode(),obj={a:1},list=[1],{a,b=2}=obj,[x,y=2]=list

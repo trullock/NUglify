@@ -1,0 +1,1 @@
+﻿nums.forEach(v=>{v%5==0&&fives.push(v)})

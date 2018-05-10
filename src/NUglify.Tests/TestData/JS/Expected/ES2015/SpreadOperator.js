@@ -1,0 +1,1 @@
+﻿function f(x,y,...a){return(x+y)*a.length}var params=["hello",!0,7],other=[1,2,...params],str,chars;f(1,2,...params)===9;str="foo";chars=[...str]

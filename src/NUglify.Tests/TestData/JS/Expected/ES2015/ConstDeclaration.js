@@ -1,0 +1,1 @@
+﻿const f=2,g="abc"

@@ -1,0 +1,1 @@
+﻿function f(x,y,...a){return(x+y)*a.length}f(1,2,"hello",!0,7)===9
