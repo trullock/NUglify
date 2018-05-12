@@ -112,6 +112,7 @@
     <Compile Include="JavaScript\Declarations.cs" />
     <Compile Include="JavaScript\Encodings.cs" />
     <Compile Include="JavaScript\ES2015.cs" />
+    <Compile Include="JavaScript\ES2017.cs" />
     <Compile Include="JavaScript\FunctionCreation.cs" />
     <Compile Include="JavaScript\GlobalMethods.cs" />
     <Compile Include="JavaScript\JsPopular.cs" />
@@ -663,6 +664,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\ES2015\StringInterpolation.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ES2017\TrailingComma.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ES2017\AsyncAwait.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\GlobalMethods\SpecialEval.js">
@@ -2972,6 +2979,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\ES2015\TaggedTemplates.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ES2017\AsyncAwait.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ES2017\TrailingComma.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\FunctionCreation\Arguments.js">
