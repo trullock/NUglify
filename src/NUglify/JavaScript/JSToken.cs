@@ -164,6 +164,8 @@ namespace NUglify.JavaScript
         Public,
         Static,
         Yield,
+        Async,
+        Await,
 
         // browser-specific don't uses
         Native, // Chrome

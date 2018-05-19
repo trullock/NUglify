@@ -71,6 +71,8 @@ namespace NUglify.JavaScript
                 case JSToken.Private: return "private";
                 case JSToken.Protected: return "protected";
                 case JSToken.Public: return "public";
+                case JSToken.Async: return "async";
+                case JSToken.Await: return "await";
                 case JSToken.Static: return "static";
                 case JSToken.Yield: return "yield";
 
@@ -124,6 +126,7 @@ namespace NUglify.JavaScript
         {
             JSKeyword[] keywords = new JSKeyword[26];
             // a
+            keywords['a' - 'a'] = new JSKeyword(JSToken.Async, "async", new JSKeyword(JSToken.Await, "await"));
             // b
             keywords['b' - 'a'] = new JSKeyword(JSToken.Break, "break");
             // c

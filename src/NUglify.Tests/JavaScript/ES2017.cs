@@ -6,7 +6,7 @@ namespace NUglify.Tests.JavaScript
     [TestFixture]
     public class ES2017
     {
-        //[Test]
+        [Test]
         public void AsyncAwait()
         {
             TestHelper.Instance.RunTest();
