@@ -1798,6 +1798,11 @@ namespace NUglify.JavaScript.Visitors
             }
             else
             {
+                if (node.IsAsync)
+                {
+                    Output("async");
+                }
+
                 Output("function");
                 MarkSegment(node, functionName, node.Context);
                 SetContextOutputPosition(node.Context);
@@ -3799,6 +3804,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.ArrowFunction: return "=>";
                 case JSToken.RestSpread: return "...";
                 case JSToken.Yield: return "yield";
+                case JSToken.Await: return "await";
                 case JSToken.Get: return "get";
                 case JSToken.Set: return "set";
 

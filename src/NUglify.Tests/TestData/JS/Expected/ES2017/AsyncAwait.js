@@ -1,1 +1,1 @@
-﻿async function getDataFromAjax(url){let data;try{data=await fetch(url);fillClientStateWithData(data.json())}catch(error){handleAjaxError(error)}};getDataFromAjax()
+﻿async function getDataFromAjax(url){let data;try{data=await fetch(url);fillClientStateWithData(data.json())}catch(error){handleAjaxError(error)}}getDataFromAjax()

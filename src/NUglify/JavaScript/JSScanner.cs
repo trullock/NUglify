@@ -1176,6 +1176,7 @@ namespace NUglify.JavaScript
                             case JSToken.Public:
                             case JSToken.Static:
                             case JSToken.Yield:
+                            case JSToken.Await:
                                 // in strict mode, these ARE keywords, otherwise they are okay
                                 // to be identifiers
                                 isKeyword = strictMode;

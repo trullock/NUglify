@@ -813,12 +813,24 @@ namespace NUglify.JavaScript
                     case JSToken.Try:
                         return ParseTryStatement();
 
+                    case JSToken.Async:
+                        // Treat `async(` as if its a normal expression
+                        if (PeekToken() == JSToken.LeftParenthesis)
+                        {
+                            goto default;
+                        }
+                        else
+                        {
+                            // Treat 'async function' as a function declaration
+                            goto case (JSToken.Function);
+                        }
                     case JSToken.Function:
-                        // parse a function declaration
-                        var function = ParseFunction(FunctionType.Declaration, m_currentToken.Clone());
-                        function.IsSourceElement = fSourceElement;
-                        return function;
-
+                        {
+                            // parse a function declaration
+                            var function = ParseFunction(FunctionType.Declaration, m_currentToken.Clone());
+                            function.IsSourceElement = fSourceElement;
+                            return function;
+                        }
                     case JSToken.Class:
                         return ParseClassNode(ClassType.Declaration);
 
@@ -2780,6 +2792,13 @@ namespace NUglify.JavaScript
             BlockStatement body = null;
             bool inExpression = (functionType == FunctionType.Expression);
 
+            var isAsync = m_currentToken.Is(JSToken.Async);
+            if (isAsync)
+            {
+                // skip the async keyword
+                GetNextToken();
+                ParsedVersion = ScriptVersion.EcmaScript6;
+            }
             // skip the opening token (function, get, or set).
             // methods will start off with no prefix -- right to the name.
             if (functionType != FunctionType.Method)
@@ -2924,7 +2943,8 @@ namespace NUglify.JavaScript
                     Binding = name,
                     ParameterDeclarations = formalParameters,
                     Body = body,
-                    IsGenerator = isGenerator
+                    IsGenerator = isGenerator,
+                    IsAsync = isAsync
                 };
         }
 
@@ -3454,7 +3474,8 @@ namespace NUglify.JavaScript
 
             if (term != null)
             {
-                if (term.Context.Token == JSToken.Yield && term is LookupExpression)
+                if ((term.Context.Token == JSToken.Yield || term.Context.Token == JSToken.Await)
+                    && term is LookupExpression)
                 {
                     var expression = ParseExpression(true);
                     if (expression != null)
@@ -3462,7 +3483,7 @@ namespace NUglify.JavaScript
                         // yield expression
                         term = new UnaryExpression(term.Context.CombineWith(expression.Context))
                             {
-                                OperatorToken = JSToken.Yield,
+                                OperatorToken = term.Context.Token,
                                 OperatorContext = term.Context,
                                 Operand = expression
                             };
@@ -4062,6 +4083,23 @@ namespace NUglify.JavaScript
                     GetNextToken();
                     break;
 
+                case JSToken.Await:
+                    {
+                        if (ParsedVersion == ScriptVersion.EcmaScript6 || m_settings.ScriptVersion == ScriptVersion.EcmaScript6)
+                        {
+                            ast = ParseAwaitExpression();
+                        }
+                        else
+                        {
+                            // we need to protect against non-ES6 code using "await" as a variable name
+                            ast = new LookupExpression(m_currentToken.Clone())
+                            {
+                                Name = "await"
+                            };
+                            GetNextToken();
+                        }
+                    }
+                    break;
                 case JSToken.Yield:
                     {
                         // TODO: not sure if this is the right place to hook for the ES6 YieldExpression semantics!
@@ -4268,6 +4306,36 @@ namespace NUglify.JavaScript
                     Operand = expression,
                     IsDelegator = isDelegator
                 };
+        }
+
+        private AstNode ParseAwaitExpression()
+        {
+            ParsedVersion = ScriptVersion.EcmaScript6;
+
+            // save the context of the yield operator, then skip past it
+            var context = m_currentToken.Clone();
+            var operatorContext = context.Clone();
+            GetNextToken();
+
+            // must be followed by an expression
+            var expression = ParseExpression(true);
+            if (expression == null)
+            {
+                // we only call this method if we KNOW we are ES6, so if there is no expression,
+                // then throw an error.
+                ReportError(JSError.ExpressionExpected);
+            }
+            else
+            {
+                context.UpdateWith(expression.Context);
+            }
+
+            return new UnaryExpression(context)
+            {
+                OperatorContext = operatorContext,
+                OperatorToken = JSToken.Await,
+                Operand = expression
+            };
         }
 
         private FunctionObject ParseArrowFunction(AstNode parameters)
