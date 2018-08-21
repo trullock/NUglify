@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.12 (21 Aug 2018)
+- ECMAScript 6 Support for computed names in object property definitions
+- Add support for async and await.
+- Add support for netstandard2.0
 ## 1.5.11 (6 May 2018)
 - Support for ES6 arrow functions ([PRs](https://github.com/xoofx/NUglify/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3Asamjudson+created%3A%3C2018-05-07))
 ## 1.5.10 (5 Apr 2018)
