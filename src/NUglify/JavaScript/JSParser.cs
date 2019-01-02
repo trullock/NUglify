@@ -4065,6 +4065,19 @@ namespace NUglify.JavaScript
                     ast = ParseObjectLiteral(false);
                     break;
 
+                // async function expression
+                case JSToken.Async:
+                    if (PeekToken() == JSToken.Function)
+                    {
+                        // treat 'async function' as a function expression
+                        goto case (JSToken.Function); 
+                    }
+                    else
+                    {
+                        // 'async' as an identifier
+                        goto default;
+                    }
+
                 // function expression
                 case JSToken.Function:
                     ast = ParseFunction(FunctionType.Expression, m_currentToken.Clone());
