@@ -1,0 +1,1 @@
+﻿let func=async function(x){return x+1};func();let async=1,variable=async
