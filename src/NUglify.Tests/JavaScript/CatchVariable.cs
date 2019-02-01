@@ -111,13 +111,13 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
-        public void ForOfLet()
+        public void ForInLet()
         {
             TestHelper.Instance.RunTest();
         }
 
         [Test]
-        public void ForOfLet_h()
+        public void ForInLet_h()
         {
             TestHelper.Instance.RunTest("-rename:all");
         }

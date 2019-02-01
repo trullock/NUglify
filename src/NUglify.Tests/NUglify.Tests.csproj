@@ -390,10 +390,10 @@
     <Content Include="TestData\JS\Expected\BlockOpts\ReturnLiteral.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\CatchVariable\ForOfLet.js">
+    <Content Include="TestData\JS\Expected\CatchVariable\ForInLet.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\CatchVariable\ForOfLet_h.js">
+    <Content Include="TestData\JS\Expected\CatchVariable\ForInLet_h.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\ControlFlow\BreakNoLabel.js">
@@ -2522,7 +2522,7 @@
     <Content Include="TestData\JS\Input\BlockOpts\ReturnLiteral.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\CatchVariable\ForOfLet.js">
+    <Content Include="TestData\JS\Input\CatchVariable\ForInLet.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\Classes\ClassDecl.js">

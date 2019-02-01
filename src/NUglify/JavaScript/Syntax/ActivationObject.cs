@@ -923,19 +923,13 @@ namespace NUglify.JavaScript.Syntax
                             || !(Settings.RemoveFunctionExpressionNames && Settings.IsModificationAllowed(TreeModifications.RemoveFunctionExpressionNames))))
                         {
                             localField.CrunchedName = crunchEnum.NextName();
-                            if (localField.Declarations.FirstOrDefault()?.Parent.Parent.Parent is ForInStatement
-                                forInStatement)
+
+                            if (localField.Declarations.FirstOrDefault()?.Parent?.Parent?.Parent is ForInStatement forInStatement &&
+                                forInStatement.Collection is MemberExpression memberExpression &&
+                                memberExpression.Root is INameReference nameReference &&
+                                localField.CrunchedName == (nameReference.VariableField.CrunchedName ?? nameReference.VariableField.Name))
                             {
-                                if (forInStatement.Collection is MemberExpression memberExpression)
-                                {
-                                    if (memberExpression.Root is INameReference nameReference)
-                                    {
-                                        if (localField.CrunchedName == (nameReference.VariableField.CrunchedName ?? nameReference.VariableField.Name))
-                                        {
-                                            localField.CrunchedName = crunchEnum.NextName();
-                                        }
-                                    }
-                                }
+                                localField.CrunchedName = crunchEnum.NextName();
                             }
                         }
                     }
