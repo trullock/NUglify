@@ -1,0 +1,1 @@
+﻿function go(scope){for(let test in scope.a)console.log(test)}go({a:[1,2,3]});

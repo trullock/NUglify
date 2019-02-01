@@ -1,0 +1,1 @@
+﻿function go(n){for(let t in n.prop)console.log(t)}go({prop:[1,2,3]})
