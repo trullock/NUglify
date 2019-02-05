@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NUglify.Helpers;
 using NUglify.JavaScript.Visitors;
@@ -922,6 +923,14 @@ namespace NUglify.JavaScript.Syntax
                             || !(Settings.RemoveFunctionExpressionNames && Settings.IsModificationAllowed(TreeModifications.RemoveFunctionExpressionNames))))
                         {
                             localField.CrunchedName = crunchEnum.NextName();
+
+                            if (localField.Declarations.FirstOrDefault()?.Parent?.Parent?.Parent is ForInStatement forInStatement &&
+                                forInStatement.Collection is MemberExpression memberExpression &&
+                                memberExpression.Root is INameReference nameReference &&
+                                localField.CrunchedName == (nameReference.VariableField.CrunchedName ?? nameReference.VariableField.Name))
+                            {
+                                localField.CrunchedName = crunchEnum.NextName();
+                            }
                         }
                     }
                 }

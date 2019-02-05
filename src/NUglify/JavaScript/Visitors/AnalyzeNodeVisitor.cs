@@ -249,13 +249,9 @@ namespace NUglify.JavaScript.Visitors
                 {
                     CombineWithPreviousExpression(node, ndx);
                 }
-                else
+                else if (node[ndx - 1] is VarDeclaration previousVar)
                 {
-                    var previousVar = node[ndx - 1] as VarDeclaration;
-                    if (previousVar != null)
-                    {
-                        CombineWithPreviousVar(node, ndx, previousVar);
-                    }
+                    CombineWithPreviousVar(node, ndx, previousVar);
                 }
             }
         }

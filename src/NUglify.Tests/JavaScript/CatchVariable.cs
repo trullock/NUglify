@@ -111,6 +111,18 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void ForInLet()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
+        public void ForInLet_h()
+        {
+            TestHelper.Instance.RunTest("-rename:all");
+        }
+
+        [Test]
         public void OuterIsGlobal()
         {
             TestHelper.Instance.RunTest("-rename:all");

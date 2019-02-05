@@ -276,11 +276,7 @@ namespace NUglify.JavaScript
         /// <returns>new name if it exists, null otherwise</returns>
         public string GetNewName(string sourceName)
         {
-            string newName;
-            if (!m_identifierReplacementMap.TryGetValue(sourceName, out newName))
-            {
-                newName = null;
-            }
+            m_identifierReplacementMap.TryGetValue(sourceName, out var newName);
 
             return newName;
         }
