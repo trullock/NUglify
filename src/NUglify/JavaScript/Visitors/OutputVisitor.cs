@@ -3843,6 +3843,24 @@ namespace NUglify.JavaScript.Visitors
             m_startOfStatement = false;
         }
 
+        private static bool shouldWrapArgumentListInParens(FunctionObject node)
+        {
+            // we need to wrap the parens for all function object other than arrow functions,
+            // and for arrow functions where there are zero or more than one parameter.
+            // if it IS an arrow function with a single parameter, we still want to wrap the
+            // parameter in parens if it's a rest argument or a destructuring array.
+            if (node.FunctionType != FunctionType.ArrowFunction
+                || node.ParameterDeclarations.Count != 1)
+            {
+                return true;
+            }
+
+            var declaration = node.ParameterDeclarations[0] as ParameterDeclaration;
+            return declaration == null
+                || declaration.HasRest
+                || declaration.Binding is ArrayLiteral;
+        }
+
         /// <summary>
         /// Output everything for a function except the initial keyword
         /// </summary>
@@ -3856,13 +3874,7 @@ namespace NUglify.JavaScript.Visitors
                 {
                     Indent();
 
-                    // we need to wrap the parens for all function object other than arrow functions,
-                    // and for arrow functions where there are zero or more than one parameter.
-                    // if it IS an arrow function with a single parameter, we still want to wrap the
-                    // parameter in parens if it's a rest argument.
-                    var wrapInParens = node.FunctionType != FunctionType.ArrowFunction 
-                        || node.ParameterDeclarations.Count != 1
-                        || (node.ParameterDeclarations[0] as ParameterDeclaration).IfNotNull(d => d.HasRest, true);
+                    bool wrapInParens = shouldWrapArgumentListInParens(node);
 
                     if (wrapInParens)
                     {

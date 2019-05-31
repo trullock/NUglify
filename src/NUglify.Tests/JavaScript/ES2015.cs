@@ -31,6 +31,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void ExpressionBodiesWithDestructuring()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
         public void StatementBodies()
         {
             TestHelper.Instance.RunTest();

@@ -1,0 +1,1 @@
+﻿tuples=evens.map(([v,i])=>v+i)
