@@ -151,7 +151,6 @@ namespace NUglify.Css
         String,
         Identifier,
         Supports,
-        SupportsLogicalOperator,
         Hash,
         ImportSymbol,
         PageSymbol,
