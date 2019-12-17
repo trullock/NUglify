@@ -114,5 +114,14 @@ namespace NUglify.Tests.Css
     {
       TestHelper.Instance.RunTest("-razor");
     }
-  }
+
+
+    [Test]
+    public void Supports()
+    {
+        TestHelper.Instance.RunTest();
+    }
+
+
+    }
 }

@@ -1,0 +1,47 @@
+@supports not (transform-origin: 10em 10em 10em) {
+    h1 {
+        color: white;
+    }
+}
+
+@supports not (not (transform-origin: 2px)) {
+    h1 {
+        color: #FFFFFF;
+    }
+}
+
+@supports (display: table-cell) and (display: list-item) and (display:run-in) {
+    .sticky-top {
+        position: sticky;
+    }
+}
+
+@supports (display: grid) and ( not (display: inline-grid)) {
+    h1 {
+        color: #FFF;
+    }
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+    .sticky-top {
+        position: sticky;
+    }
+}
+
+@supports ((position: -webkit-sticky) and (position: sticky)) {
+    .sticky-top {
+        position: sticky;
+    }
+}
+
+@supports (display: table-cell) and (display: list-item) and (display:run-in) {
+    .sticky-top {
+        position: sticky;
+    }
+}
+
+
+@supports (display: table-cell) and (display: list-item) and (display:run-in) {
+
+
+}
