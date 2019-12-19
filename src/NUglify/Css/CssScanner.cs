@@ -711,6 +711,9 @@ namespace NUglify.Css
                     case "IMPORT":
                         tokenType = TokenType.ImportSymbol;
                         break;
+                    case "SUPPORTS":
+                        tokenType = TokenType.Supports;
+                        break;
 
                     case "PAGE":
                         tokenType = TokenType.PageSymbol;

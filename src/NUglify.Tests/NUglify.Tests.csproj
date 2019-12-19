@@ -378,7 +378,13 @@
     <Content Include="TestData\CSS\Expected\AtRules\RazorEscapedDoubleAt.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\CSS\Expected\AtRules\Supports.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\CSS\Expected\Selectors\Bootstrap4CssVariables.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\CSS\Input\AtRules\Supports.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\CSS\Input\AtRules\RazorEscapedDoubleAt.css">

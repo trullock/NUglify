@@ -150,6 +150,7 @@ namespace NUglify.Css
         SubstringMatch,
         String,
         Identifier,
+        Supports,
         Hash,
         ImportSymbol,
         PageSymbol,

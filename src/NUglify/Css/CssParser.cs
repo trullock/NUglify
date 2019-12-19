@@ -782,6 +782,10 @@ namespace NUglify.Css
                 NewLine();
                 parsed = Parsed.True;
             }
+            else if(CurrentTokenType == TokenType.Supports)
+            {
+                parsed = ParseSupports();
+            }
             else if (CurrentTokenType == TokenType.CharacterSetSymbol)
             {
                 // we found a charset at-rule. Problem is, @charset can only be the VERY FIRST token
@@ -790,7 +794,182 @@ namespace NUglify.Css
                 ReportError(2, CssErrorCode.UnexpectedCharset, CurrentTokenText);
                 parsed = ParseCharset();
             }
+            return parsed;
+        }
 
+        private Parsed ParseSupportsCondition(bool notOperatorAllowed, bool andOrOperatorsNeeded)
+        {
+            bool foundSupportsCondition = false;
+            //more operators? no let parent finish ')'
+            if (CurrentTokenType == TokenType.Character && andOrOperatorsNeeded)
+            {
+                if (CurrentTokenText == ")")
+                {
+                    return Parsed.Empty;
+                }
+            }
+
+            bool operatorFound = false;
+            if (CurrentTokenType == TokenType.Identifier)
+            {
+                operatorFound =
+                ParseSupportsOperator(notOperatorAllowed, andOrOperatorsNeeded) == Parsed.True;
+                if (!operatorFound) //no operator should be declaration then let parent finish that...
+                {
+                    return Parsed.Empty;
+                }
+            }
+
+            if (CurrentTokenType == TokenType.Character && CurrentTokenText == "(")
+            {
+                AppendCurrent();
+                SkipSpace();
+                if (ParseSupportsCondition(true, false) == Parsed.True)
+                {
+                    foundSupportsCondition = true;
+                }
+                if (CurrentTokenType == TokenType.Identifier)
+                {
+                    if (ParseDeclaration() == Parsed.True)
+                    {
+                        foundSupportsCondition = true;
+                        SkipIfSpace();
+                        if (CurrentTokenType == TokenType.Character && CurrentTokenText == ")")
+                        {
+                            AppendCurrent();
+                            SkipSpace();
+                            ParseSupportsCondition(false, true);
+                        }
+                    }
+                }
+                else if (foundSupportsCondition && CurrentTokenType == TokenType.Character && CurrentTokenText == ")")
+                {//found a condition somewere so we can close up 
+                    AppendCurrent();
+                    SkipSpace(); //finish up
+                }
+                else
+                {
+                    ReportError(0, CssErrorCode.UnexpectedToken, CurrentTokenText);
+                    return Parsed.False;
+                }
+
+            }
+            return foundSupportsCondition ? Parsed.True : Parsed.False;
+        }
+        
+        private Parsed ParseSupportsOperator(bool notOperatorAllowed, bool andOrOperatorsNeeded)
+        {
+            var parsed = Parsed.False;
+            if (notOperatorAllowed)
+            {
+                if (CurrentTokenText.ToUpperInvariant() == "NOT")
+                {
+                    Append("not");
+                    Append(' ');
+                    SkipSpace();
+                    parsed = Parsed.True;
+                }
+            }
+            if (andOrOperatorsNeeded)
+            {
+                var upper = CurrentTokenText.ToUpperInvariant();
+                if (upper == "AND" || upper == "OR")
+                {
+                    Append(' ');
+                    Append(upper.ToLower());
+                    Append(' ');
+                    SkipSpace();
+                    parsed = Parsed.True;
+                }
+                else
+                {
+                    ReportError(0, CssErrorCode.UnexpectedToken, CurrentTokenText);
+                    return Parsed.False;
+                }
+            }
+            return parsed;
+        }
+        
+        private Parsed ParseSupports()
+        {
+            bool notOperatorAllowed = false;
+            bool andOrOperatorsNeeded = false;
+
+            var keepDirective = true;
+            Parsed parsed = Parsed.False;
+            if (CurrentTokenType == TokenType.Supports)
+            {
+                PushWaypoint();
+                NewLine();
+                AppendCurrent();
+                Append(' ');
+                SkipSpace();
+
+
+                if (CurrentTokenType == TokenType.Identifier)
+                {
+                    if (CurrentTokenText.ToUpperInvariant() == "NOT")
+                    {
+                        notOperatorAllowed = true;
+                    }
+                    else
+                    {
+                        ReportError(0, CssErrorCode.UnexpectedToken, CurrentTokenText);
+                        return Parsed.False;
+                    }
+                }
+
+                if (ParseSupportsCondition(notOperatorAllowed, andOrOperatorsNeeded) == Parsed.True)
+                {
+                    // expect current token to be the opening brace when calling
+                    if (CurrentTokenType != TokenType.Character || CurrentTokenText != "{")
+                    {
+                        ReportError(0, CssErrorCode.ExpectedOpenBrace, CurrentTokenText);
+                        SkipToEndOfStatement();
+                        AppendCurrent();
+                        SkipSpace();
+                    }
+                    else
+                    {
+                        NewLine();
+                        AppendCurrent();
+                        SkipSpace();
+
+
+                        PushWaypoint();
+
+                        // the main guts of stuff (copied from stylesheet)
+                        while (ParseRule() == Parsed.True
+                          || ParseMedia() == Parsed.True
+                          || ParsePage() == Parsed.True
+                          || ParseFontFace() == Parsed.True
+                          || ParseKeyFrames() == Parsed.True
+                          || ParseAtKeyword() == Parsed.True
+                          || ParseAspNetBlock() == Parsed.True)
+                        {
+                            // any number of S, Comment, CDO or CDC elements
+                            // (or semicolons possibly introduced via concatenation)
+                            ParseSCDOCDCComments();
+                        }
+                        SkipIfSpace();
+
+                        keepDirective = PopWaypoint(true);
+
+                        if (CurrentTokenType != TokenType.Character || CurrentTokenText != "}")
+                        {
+                            ReportError(0, CssErrorCode.ExpectedClosingBrace, CurrentTokenText);
+                            SkipToEndOfStatement();
+                        }
+                        else
+                        {
+                            AppendCurrent();
+                            SkipSpace();
+                            parsed = Parsed.True;
+                        }
+                    }
+                }
+                PopWaypoint(keepDirective);
+            }
             return parsed;
         }
 
