@@ -107,6 +107,7 @@ namespace NUglify.Css
             RemoveEmptyBlocks = true;
             FixIE8Fonts = true;
             ExcludeVendorPrefixes = new List<string>();
+            DecodeEscapes = true;
         }
 
         public CssSettings Clone()
@@ -132,6 +133,7 @@ namespace NUglify.Css
                 BlocksStartOnSameLine = this.BlocksStartOnSameLine,
                 RemoveEmptyBlocks = this.RemoveEmptyBlocks,
                 IgnoreRazorEscapeSequence = this.IgnoreRazorEscapeSequence,
+                DecodeEscapes = this.DecodeEscapes
             };
 
             // add the resource strings (if any)
@@ -221,6 +223,15 @@ namespace NUglify.Css
         /// Gets or sets a value indicating whether a double-at Razor escape sequence is ignored.
         /// </summary>
         public bool IgnoreRazorEscapeSequence
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether unicode escape strings (eg. '\ff0e') would be replaced by it's actual character or not. Default is true.
+        /// </summary>
+        public bool DecodeEscapes
         {
             get;
             set;

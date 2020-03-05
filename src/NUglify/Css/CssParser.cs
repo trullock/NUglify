@@ -331,6 +331,7 @@ namespace NUglify.Css
                         m_scanner = new CssScanner(reader);
                         m_scanner.AllowEmbeddedAspNetBlocks = this.Settings.AllowEmbeddedAspNetBlocks;
                         m_scanner.IgnoreRazorEscapeSequence = this.Settings.IgnoreRazorEscapeSequence;
+                        m_scanner.DecodeEscapes = this.Settings.DecodeEscapes;
                         m_scanner.ScannerError += (sender, ea) =>
                             {
                                 ea.Error.File = this.FileContext;
