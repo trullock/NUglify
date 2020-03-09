@@ -1777,6 +1777,11 @@ namespace NUglify.JavaScript.Visitors
         {
             if (node.FunctionType == FunctionType.Method)
             {
+                if (node.IsAsync)
+                {
+                    Output("async");
+                }
+
                 if (node.IsGenerator)
                 {
                     Output('*');
@@ -1825,6 +1830,11 @@ namespace NUglify.JavaScript.Visitors
 
                 if (node.FunctionType == FunctionType.ArrowFunction)
                 {
+                    if (node.IsAsync)
+                    {
+                        Output("async");
+                    }
+
                     // arrow functions are simple...
                     OutputFunctionArgsAndBody(node);
                 }

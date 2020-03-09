@@ -4035,7 +4035,8 @@ namespace NUglify.JavaScript
                                 {
                                     ast = new GroupingOperator(leftParen)
                                         {
-                                            Operand = operand
+                                            Operand = operand,
+                                            Parent = ast
                                         };
                                     ast.UpdateWith(operand.Context);
 
@@ -4067,10 +4068,26 @@ namespace NUglify.JavaScript
 
                 // async function expression
                 case JSToken.Async:
-                    if (PeekToken() == JSToken.Function)
+                    var nextToken = PeekToken();
+                    if (nextToken == JSToken.Function)
                     {
                         // treat 'async function' as a function expression
                         goto case (JSToken.Function); 
+                    }
+                    else if (nextToken == JSToken.LeftParenthesis)
+                    {
+                        ast = new LookupExpression(m_currentToken.Clone())
+                        {
+                            Name = JSKeyword.CanBeIdentifier(m_currentToken.Token)
+                        };
+                        
+                        GetNextToken();
+
+                        nextToken = PeekToken();
+                        if (nextToken == JSToken.Function)
+                            break;
+
+                        goto case (JSToken.LeftParenthesis);
                     }
                     else
                     {
@@ -4362,7 +4379,8 @@ namespace NUglify.JavaScript
                 {
                     ParameterDeclarations = BindingTransform.ToParameters(parameters),
                     FunctionType = FunctionType.ArrowFunction,
-                };
+                    IsAsync = parameters.Parent is LookupExpression lookupExpression && lookupExpression.Name == JSKeyword.CanBeIdentifier(JSToken.Async)
+            };
             functionObject.UpdateWith(arrowContext);
             if (m_currentToken.Is(JSToken.LeftCurly))
             {

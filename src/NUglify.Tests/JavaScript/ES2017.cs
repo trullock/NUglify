@@ -23,5 +23,17 @@ namespace NUglify.Tests.JavaScript
         {
             TestHelper.Instance.RunTest();
         }
+
+        [Test]
+        public void AsyncClassFunction()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
+        public void AsyncArrowFunction()
+        {
+            TestHelper.Instance.RunTest();
+        }
     }
 }
