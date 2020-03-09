@@ -35,7 +35,7 @@ namespace NUglify
         }
 
         /// <summary>
-        /// Gets the the uglified code. May ne null if <see cref="HasErrors"/> is <c>true</c>.
+        /// Gets the the uglified code. May be null if <see cref="HasErrors"/> is <c>true</c>.
         /// </summary>
         public string Code { get; }
 
