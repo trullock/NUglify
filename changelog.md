@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.14 (9 Mar 2020)
+- Fix async/await JS minifier
+- Add support for CSS @supports
+- Adding a options to turoff escape decoding in CSS files.
+
 ## 1.5.13 (04 Jun 2019)
 - Allow async function expressions ([(PR #65)](https://github.com/xoofx/NUglify/pull/65))
 - Fix for(let x of y.prop) ([(PR #69)](https://github.com/xoofx/NUglify/pull/69))
