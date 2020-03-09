@@ -1,0 +1,1 @@
+﻿const object={doSomething:test=>"done"+test,doSomethingAsync:async url=>await fetch(url)};object.doSomethingAsync()

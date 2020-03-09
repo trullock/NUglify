@@ -5,14 +5,14 @@
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.lock.json</ProjectAssetsFile>
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\Goran\.nuget\packages\;C:\Microsoft\Xamarin\NuGet\</NuGetPackageFolders>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\alexr.GTSRO\.nuget\packages\</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">ProjectJson</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.4.0</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.3.1</NuGetToolVersion>
   </PropertyGroup>
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgNUnit3TestAdapter Condition=" '$(PkgNUnit3TestAdapter)' == '' ">C:\Users\Goran\.nuget\packages\nunit3testadapter\3.5.0</PkgNUnit3TestAdapter>
+    <PkgNUnit3TestAdapter Condition=" '$(PkgNUnit3TestAdapter)' == '' ">C:\Users\alexr.GTSRO\.nuget\packages\nunit3testadapter\3.5.0</PkgNUnit3TestAdapter>
   </PropertyGroup>
 </Project>
