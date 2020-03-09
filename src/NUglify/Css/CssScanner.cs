@@ -70,6 +70,8 @@ namespace NUglify.Css
 
         public bool GotEndOfLine { get; set; }
 
+        public bool DecodeEscapes { get; set; }
+
         private bool addNewLine;
 
         private bool m_isAtEOF;// = false;
@@ -1501,7 +1503,7 @@ namespace NUglify.Css
             if (m_currentChar == '\\')
             {
                 char ch = PeekChar();
-                if (IsH(ch))
+                if (this.DecodeEscapes && IsH(ch))
                 {
                     // let's actually decode the escapes so another encoding
                     // format might actually save us some space.
