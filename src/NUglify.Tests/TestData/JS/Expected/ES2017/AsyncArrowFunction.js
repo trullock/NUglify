@@ -1,1 +1,1 @@
-﻿const object={doSomething:test=>"done"+test,doSomethingAsync:async url=>await fetch(url)};object.doSomethingAsync()
+﻿const object={regularFunction:test=>"done"+test,asyncArrowFunctionWithoutParameters:async()=>await fetch("someurl"),asyncArrowFunctionWithParameters:async url=>await fetch(url)};object.doSomethingAsync()
