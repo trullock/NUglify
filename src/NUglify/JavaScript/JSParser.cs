@@ -3967,6 +3967,7 @@ namespace NUglify.JavaScript
                 case JSToken.LeftParenthesis:
                     {
                         var leftParen = m_currentToken.Clone();
+                        var parentAst = ast;
                         GetNextToken();
                         if (m_currentToken.Is(JSToken.For))
                         {
@@ -4035,8 +4036,7 @@ namespace NUglify.JavaScript
                                 {
                                     ast = new GroupingOperator(leftParen)
                                         {
-                                            Operand = operand,
-                                            Parent = ast
+                                            Operand = operand
                                         };
                                     ast.UpdateWith(operand.Context);
 
@@ -4052,6 +4052,8 @@ namespace NUglify.JavaScript
                                     }
                                 }
                             }
+
+                            ast.Parent = parentAst;
                         }
                     }
                     break;
