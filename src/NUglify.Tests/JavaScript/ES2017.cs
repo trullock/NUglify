@@ -35,5 +35,11 @@ namespace NUglify.Tests.JavaScript
         {
             TestHelper.Instance.RunTest();
         }
+
+        [Test]
+        public void MultipleAwaitExpression()
+        {
+            TestHelper.Instance.RunTest();
+        }
     }
 }

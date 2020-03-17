@@ -1,0 +1,1 @@
+﻿async function getNumberAfterTimeout(value){return new Promise(resolve=>{window.setTimeout(()=>resolve(value),2e3)})}async function sum(x){var a=getNumberAfterTimeout(20),b=getNumberAfterTimeout(30);return x+await a+await b}(async()=>x+await a(t)+await b)()(async()=>x+(await a(t)+await b))()

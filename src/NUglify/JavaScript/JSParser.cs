@@ -4344,30 +4344,21 @@ namespace NUglify.JavaScript
         {
             ParsedVersion = ScriptVersion.EcmaScript6;
 
-            // save the context of the yield operator, then skip past it
+            // save the context of the await operator, then skip past it
             var context = m_currentToken.Clone();
             var operatorContext = context.Clone();
             GetNextToken();
 
-            // must be followed by an expression
-            var expression = ParseExpression(true);
-            if (expression == null)
-            {
-                // we only call this method if we KNOW we are ES6, so if there is no expression,
-                // then throw an error.
-                ReportError(JSError.ExpressionExpected);
-            }
-            else
-            {
-                context.UpdateWith(expression.Context);
-            }
+            bool bAssign;
+            AstNode expression = ParseUnaryExpression(out bAssign, false);
+            expression = new UnaryExpression(expression.Context.CombineWith(operatorContext))
+                {
+                    OperatorContext = operatorContext,
+                    OperatorToken = JSToken.Await,
+                    Operand = expression
+                };
 
-            return new UnaryExpression(context)
-            {
-                OperatorContext = operatorContext,
-                OperatorToken = JSToken.Await,
-                Operand = expression
-            };
+            return expression;
         }
 
         private FunctionObject ParseArrowFunction(AstNode parameters)

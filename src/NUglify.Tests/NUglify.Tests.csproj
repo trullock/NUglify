@@ -687,6 +687,9 @@
     <Content Include="TestData\JS\Expected\ES2017\AsyncFunctionExpressions.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\JS\Expected\ES2017\MultipleAwaitExpression.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\JS\Expected\ES2017\TrailingComma.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3012,6 +3015,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\ES2017\AsyncArrowFunction.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ES2017\MultipleAwaitExpression.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\ES2017\AsyncClassFunction.js">
