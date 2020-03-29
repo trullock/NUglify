@@ -4749,6 +4749,25 @@ namespace NUglify.JavaScript
                     };
                 }
             }
+            else if (m_currentToken.Is(JSToken.RestSpread))
+            {
+                // spread operator used in creating objects in ES6
+                ParsedVersion = ScriptVersion.EcmaScript6;
+                var restContext = m_currentToken.Clone();
+                GetNextToken();
+
+                value = ParseExpression(true);
+
+                if (value != null)
+                {
+                    value = new UnaryExpression(restContext.CombineWith(value.Context))
+                    {
+                        OperatorContext = restContext,
+                        OperatorToken = JSToken.RestSpread,
+                        Operand = value
+                    };
+                }
+            }
             else if (m_currentToken.IsEither(JSToken.Get, JSToken.Set))
             {
                 bool isGet = (m_currentToken.Is(JSToken.Get));
