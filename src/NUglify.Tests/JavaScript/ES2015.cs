@@ -185,5 +185,11 @@ namespace NUglify.Tests.JavaScript
         {
             TestHelper.Instance.RunTest();
         }
+
+        [Test]
+        public void ObjectSpreadOperator()
+        {
+            TestHelper.Instance.RunTest();
+        }
     }
 }
