@@ -15,7 +15,7 @@ namespace NUglify.Tests.Core
             var mapPath = @"someSource.map.js";
 
             // just some random source
-            var sourceCode = "var foo = 42;function globalFunc(text){ alert(text); }";
+            var sourceCode = "var foo = 42;function globalFunc(text){ alert(text); }var arrow = e => { return e * 2; }";
 
             string minifiedCode = null;
 
@@ -44,7 +44,7 @@ namespace NUglify.Tests.Core
             // shouldn't be any linebreaks other than that.
             var indexLineBreak = minifiedCode.IndexOf('\n');
             var trimmedCode = indexLineBreak < 0 ? minifiedCode : minifiedCode.Substring(0, indexLineBreak);
-            Assert.AreEqual("function globalFunc(n){alert(n)}var foo=42", trimmedCode, "minified code not expected");
+            Assert.AreEqual("function globalFunc(n){alert(n)}var foo=42,arrow=n=>n*2", trimmedCode, "minified code not expected");
 
             // verify that the minified code has the sourceMappingURL directive in it
             Assert.IsTrue(minifiedCode.Contains("sourceMappingURL=" + mapPath), "sourceMappingURL should be in minified content");
