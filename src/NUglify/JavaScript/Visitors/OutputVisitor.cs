@@ -1835,6 +1835,11 @@ namespace NUglify.JavaScript.Visitors
                         Output("async");
                     }
 
+                    if (m_settings.SymbolsMap != null)
+                    {
+                        m_functionStack.Push("(anonymous)");
+                    }
+
                     // arrow functions are simple...
                     OutputFunctionArgsAndBody(node);
                 }
