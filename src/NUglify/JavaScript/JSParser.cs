@@ -2190,6 +2190,7 @@ namespace NUglify.JavaScript
                     // This is an error, there is no case or default. Assume a default was missing and keep going
                     defaultStatement = true;
                     ReportError(JSError.BadSwitch);
+                    break;
                 }
 
                 if (m_currentToken.IsNot(JSToken.Colon))
