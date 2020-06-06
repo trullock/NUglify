@@ -100,6 +100,7 @@
     <Compile Include="JavaScript\AstMods.cs" />
     <Compile Include="JavaScript\BlockOpts.cs" />
     <Compile Include="JavaScript\Booleans.cs" />
+    <Compile Include="JavaScript\Bugs.cs" />
     <Compile Include="JavaScript\CatchVariable.cs" />
     <Compile Include="JavaScript\Classes.cs" />
     <Compile Include="JavaScript\CommandLine.cs" />
@@ -394,6 +395,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\BlockOpts\ReturnLiteral.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Bugs\Bug92.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\CatchVariable\ForInLet.js">
@@ -2538,6 +2542,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\BlockOpts\ReturnLiteral.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Bugs\Bug92.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\CatchVariable\ForInLet.js">

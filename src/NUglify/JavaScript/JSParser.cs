@@ -4091,6 +4091,24 @@ namespace NUglify.JavaScript
 
                         goto case (JSToken.LeftParenthesis);
                     }
+                    else if (nextToken == JSToken.Identifier)
+                    {
+                        ast = new LookupExpression(m_currentToken.Clone())
+                        {
+                            Name = JSKeyword.CanBeIdentifier(m_currentToken.Token)
+                        };
+
+                        GetNextToken();
+
+                        ast = new LookupExpression(m_currentToken.Clone())
+                        {
+                            Name = m_scanner.Identifier,
+                            Parent = ast
+                        };
+                        GetNextToken();
+                        ast = ParseArrowFunction(ast);
+                        break;
+                    }
                     else
                     {
                         // 'async' as an identifier

@@ -1,0 +1,1 @@
+﻿var x=async()=>0;Promise.then(async()=>0)
