@@ -556,6 +556,7 @@ namespace NUglify.Html
                 case "application/javascript":
                 case "application/x-javascript":
                 case "application/ecmascript":
+                case "application/ld+json":
                     return true;
             }
             return false;
