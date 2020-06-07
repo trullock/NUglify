@@ -7,6 +7,12 @@ namespace NUglify.Tests.JavaScript
     public class Bugs
     {
         [Test]
+        public void Bug79()
+        {
+            TestHelper.Instance.RunTest("-rename:all");
+        }
+
+        [Test]
         public void Bug92()
         {
             TestHelper.Instance.RunTest();
