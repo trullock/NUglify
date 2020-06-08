@@ -169,7 +169,8 @@ namespace NUglify.Html
             }
 
             // If current node requires preserving formatting inside it we need to trim all pending text node that we collected before
-            if (settings.CollapseWhitespaces && node is HtmlElement && settings.TagsWithNonCollapsableWhitespaces.ContainsKey(((HtmlElement) node).Descriptor?.Name))
+            var nodeName = node is HtmlElement ? ((HtmlElement) node).Name : null;
+            if (settings.CollapseWhitespaces && !string.IsNullOrEmpty(nodeName) && settings.TagsWithNonCollapsableWhitespaces.ContainsKey(nodeName))
             {
                 TrimPendingTextNodes();
             }
