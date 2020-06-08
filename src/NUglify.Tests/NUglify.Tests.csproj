@@ -396,11 +396,14 @@
     </Content>
     <Content Include="TestData\JS\Expected\BlockOpts\ReturnLiteral.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content
+    </Content>
     <Content Include="TestData\JS\Expected\Bugs\Bug79.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\Bugs\Bug78.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\Bugs\Bug63.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\Bugs\Bug92.js">
@@ -2553,7 +2556,10 @@
     <Content Include="TestData\JS\Input\Bugs\Bug79.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\Bugs\Bug78.js
+    <Content Include="TestData\JS\Input\Bugs\Bug63.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\Bugs\Bug78.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\Bugs\Bug92.js">
