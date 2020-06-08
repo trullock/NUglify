@@ -1,0 +1,5 @@
+﻿@supports (position: sticky) {
+    html:not(.windows) body {
+        top: 9rem;
+    }
+}
