@@ -924,12 +924,23 @@ namespace NUglify.JavaScript.Syntax
                         {
                             localField.CrunchedName = crunchEnum.NextName();
 
-                            if (localField.Declarations.FirstOrDefault()?.Parent?.Parent?.Parent is ForInStatement forInStatement &&
-                                forInStatement.Collection is MemberExpression memberExpression &&
-                                memberExpression.Root is INameReference nameReference &&
-                                localField.CrunchedName == (nameReference.VariableField.CrunchedName ?? nameReference.VariableField.Name))
+                            // This whole block feels like a horrible hack, and is almost certainly missing many other cases.
+                            // The following tests currently cover this block:
+                            //  CatchVariable/ForInLet
+                            //  Bugs/Bug79
+                            if (localField.Declarations.FirstOrDefault()?.Parent?.Parent?.Parent is ForInStatement forInStatement)
                             {
-                                localField.CrunchedName = crunchEnum.NextName();
+                                if (forInStatement.Collection is MemberExpression memberExpression &&
+                                    memberExpression.Root is INameReference nameReference &&
+                                    localField.CrunchedName == (nameReference.VariableField.CrunchedName ?? nameReference.VariableField.Name))
+                                {
+                                    localField.CrunchedName = crunchEnum.NextName();
+                                } 
+                                else if (forInStatement.Collection is LookupExpression lookupExpression &&
+                                           localField.CrunchedName == (lookupExpression.VariableField.CrunchedName ?? lookupExpression.VariableField.Name))
+                                {
+                                    localField.CrunchedName = crunchEnum.NextName();
+                                }
                             }
                         }
                     }
