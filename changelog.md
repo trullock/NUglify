@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.15 (8 June 2020)
+- Fix for whitespace preceeding a textarea ([(PR #103)](https://github.com/xoofx/NUglify/pull/103))
+- Include application/ld+json in list of processable javascript type blocks ([(PR #102)](https://github.com/xoofx/NUglify/pull/102))
+- Fixes infinite loop when dealing with malformed switch statements  ([(PR #99](https://github.com/xoofx/NUglify/pull/99))
+- Fixes arrow function parenthesis issue ([(PR #98](https://github.com/xoofx/NUglify/pull/98))
+- Fixes arrow functions + sourcemaps bug ([(PR #97](https://github.com/xoofx/NUglify/pull/97))
+- Fixes spread operator bug ([(PR #91](https://github.com/xoofx/NUglify/pull/91))
+- Fixes issue with mutliple await return ([(PR #90](https://github.com/xoofx/NUglify/pull/90))
+- Fixes issue with parameterless arrow functions ([(PR #89](https://github.com/xoofx/NUglify/pull/89))
+
 ## 1.5.14 (9 Mar 2020)
 - Fix async/await JS minifier
 - Add support for CSS @supports
