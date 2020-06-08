@@ -98,6 +98,13 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void TestTextareaPreserveNewLine()
+        {
+            var settings = new HtmlSettings();
+            equal(minify("\n<label>Text</label>\n    <textarea>   Line1   \n    Line2   </textarea>", settings), "<label>Text</label><textarea>   Line1   \n    Line2   </textarea>");
+        }
+
+        [Test]
         public void SpaceNormalizationAroundText()
         {
             // Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev

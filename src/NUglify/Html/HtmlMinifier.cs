@@ -130,7 +130,7 @@ namespace NUglify.Html
             foreach (var subNode in node.Children)
             {
                 ProcessNode(subNode);
-            }            
+            }
         }
 
         private void TrimNodeOnStart(HtmlNode node)
@@ -166,6 +166,13 @@ namespace NUglify.Html
             if (settings.RemoveJavaScript && node is HtmlElement && ((HtmlElement) node).Descriptor?.Name == "script")
             {
                 node.Remove();
+            }
+
+            // If current node requires preserving formatting inside it we need to trim all pending text node that we collected before
+            var nodeName = node is HtmlElement ? ((HtmlElement) node).Name : null;
+            if (settings.CollapseWhitespaces && !string.IsNullOrEmpty(nodeName) && settings.TagsWithNonCollapsableWhitespaces.ContainsKey(nodeName))
+            {
+                TrimPendingTextNodes();
             }
         }
 
