@@ -39,6 +39,10 @@ namespace NUglify.Css
         private string m_lastOutputString;
         private bool m_mightNeedSpace;
         private bool m_skippedSpace;
+        
+        private bool m_insideCalc;
+        private bool m_parsingZeroReducibleProperty;
+
         private int m_lineLength;
         private bool m_noColorAbbreviation;
         private bool m_encounteredNewLine;
@@ -229,6 +233,11 @@ namespace NUglify.Css
         // and have a string to replace it with
         private string m_valueReplacement;// = null;
 
+        private static bool IsZeroReducibleProperty(string propertyName)
+        {
+            // Are there other delcarations which shouldn't have 0px->0 within them?
+            return !propertyName.Equals("flex", StringComparison.OrdinalIgnoreCase);
+        }
         #endregion
 
         #region Sharepoint replacement comment regex
@@ -283,6 +292,9 @@ namespace NUglify.Css
             // create a list of strings that represent the namespaces declared
             // in a @namespace statement. We will clear this every time we parse a new source string.
             m_namespaces = new HashSet<string>();
+
+            // default is true
+            m_parsingZeroReducibleProperty = true;
         }
 
         public string Parse(string source)
@@ -2627,6 +2639,7 @@ namespace NUglify.Css
                 else 
                 {
                     m_parsingColorValue = MightContainColorNames(propertyName);
+                    m_parsingZeroReducibleProperty = IsZeroReducibleProperty(propertyName);
                     parsed = ParseExpr();
                     m_parsingColorValue = false;
 
@@ -2636,6 +2649,8 @@ namespace NUglify.Css
                         SkipToEndOfDeclaration();
                         return Parsed.True;
                     }
+
+                    m_parsingZeroReducibleProperty = true;
                 }
 
                 // optional
@@ -3730,6 +3745,7 @@ namespace NUglify.Css
             if (CurrentTokenType == TokenType.Function
                 && string.Compare(GetRoot(CurrentTokenText), "calc(", StringComparison.OrdinalIgnoreCase) == 0)
             {
+                m_insideCalc = true;
                 Append(CurrentTokenText.ToLowerInvariant());
                 SkipSpace();
 
@@ -3749,6 +3765,8 @@ namespace NUglify.Css
                 {
                     ReportError(0, CssErrorCode.ExpectedClosingParenthesis, CurrentTokenText);
                 }
+
+                m_insideCalc = false;
             }
 
             return parsed;
@@ -3761,7 +3779,7 @@ namespace NUglify.Css
         // skip to the next token, but output any comments we may find as we go along
         private TokenType NextToken()
         {
-            m_currentToken = m_scanner.NextToken();
+            m_currentToken = m_scanner.NextToken(!m_insideCalc && m_parsingZeroReducibleProperty);
             if (EchoWriter != null)
             {
                 EchoWriter.Write(CurrentTokenText);
@@ -3776,7 +3794,7 @@ namespace NUglify.Css
                 {
                     NewLine();
                 }
-                m_currentToken = m_scanner.NextToken();
+                m_currentToken = m_scanner.NextToken(!m_insideCalc);
                 if (EchoWriter != null)
                 {
                     EchoWriter.Write(CurrentTokenText);
@@ -3790,7 +3808,7 @@ namespace NUglify.Css
         // just skip to the next token; don't skip over comments
         private TokenType NextRawToken()
         {
-            m_currentToken = m_scanner.NextToken();
+            m_currentToken = m_scanner.NextToken(!m_insideCalc);
             if (EchoWriter != null)
             {
                 EchoWriter.Write(CurrentTokenText);
@@ -3809,7 +3827,7 @@ namespace NUglify.Css
             try
             {
                 // get the next token
-                m_currentToken = m_scanner.NextToken();
+                m_currentToken = m_scanner.NextToken(!m_insideCalc);
                 if (EchoWriter != null)
                 {
                     EchoWriter.Write(CurrentTokenText);
@@ -3898,7 +3916,7 @@ namespace NUglify.Css
                     }
 
                     // next token
-                    m_currentToken = m_scanner.NextToken();
+                    m_currentToken = m_scanner.NextToken(!m_insideCalc);
                     if (EchoWriter != null)
                     {
                         EchoWriter.Write(CurrentTokenText);
