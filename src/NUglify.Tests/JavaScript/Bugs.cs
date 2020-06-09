@@ -9,6 +9,12 @@ namespace NUglify.Tests.JavaScript
     {
       
 		[Test]
+        public void Bug57()
+        {
+            TestHelper.Instance.RunErrorTest();
+        }
+      
+		[Test]
         public void Bug63()
         {
             TestHelper.Instance.RunErrorTest(JSError.NoLeftParenthesis, JSError.ExpressionExpected, JSError.NoLeftCurly, JSError.BadSwitch);

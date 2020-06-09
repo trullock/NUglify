@@ -2949,7 +2949,7 @@ namespace NUglify.JavaScript.Visitors
                 logicalNot.Apply();
                 newOperator = JSToken.LogicalOr;
             }
-
+            
             // because the true block is an expression, we know it must only have
             // ONE statement in it, so we can just dereference it directly.
             var binaryOp = new BinaryExpression(ifNode.Context)
