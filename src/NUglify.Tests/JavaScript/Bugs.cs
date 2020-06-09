@@ -27,6 +27,12 @@ namespace NUglify.Tests.JavaScript
         }
 		
         [Test]
+        public void Bug87()
+        {
+            TestHelper.Instance.RunTest("-reorder:false -fnames:lock -term:true -unused:remove");
+        }
+
+        [Test]
         public void Bug92()
         {
             TestHelper.Instance.RunTest();
