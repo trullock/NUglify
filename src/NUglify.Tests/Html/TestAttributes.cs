@@ -1,6 +1,8 @@
 // Copyright (c) Alexandre Mutel. All rights reserved.
 // This file is licensed under the BSD-Clause 2 license. 
 // See the license.txt file in the project root for more information.
+
+using NUglify.Html;
 using NUnit.Framework;
 
 namespace NUglify.Tests.Html
@@ -29,6 +31,9 @@ namespace NUglify.Tests.Html
 
             input = "<input value=\"\" name=\"foo\">";
             equal(minify(input), "<input name=foo>");
+
+            input = "<input value=\"true\" name=\"foo\">";
+            equal(minify(input, new HtmlSettings { ShortBooleanAttribute = true}), "<input value=true name=foo>");
 
             input = "<img src=\"\" alt=\"\">";
             equal(minify(input), "<img src=\"\" alt=\"\">");

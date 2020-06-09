@@ -485,7 +485,7 @@ namespace NUglify.Html
                 }
             }
 
-            if (settings.ShortBooleanAttribute && attribute.Value == "true")
+            if (settings.ShortBooleanAttribute && attribute.Value == "true" && attribute.Name != "value")
             {
                 attribute.Value = null;
             }
