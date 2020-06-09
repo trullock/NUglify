@@ -231,7 +231,7 @@ namespace NUglify.Html
         /// <returns></returns>
         public static HtmlSettings Pretty()
         {
-            return new HtmlSettings()
+            return new HtmlSettings
             {
                 RemoveComments = false,
                 RemoveOptionalTags = false,
