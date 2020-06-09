@@ -657,6 +657,7 @@ namespace NUglify.Css
                   || ParseMedia() == Parsed.True
                   || ParsePage() == Parsed.True
                   || ParseFontFace() == Parsed.True
+                  || ParseKeyFrames() == Parsed.True
                   || ParseAtKeyword() == Parsed.True
                   || ParseAspNetBlock() == Parsed.True)
                 {
