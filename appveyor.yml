@@ -3,6 +3,7 @@ image: Visual Studio 2017
 configuration: Release
 install:
 - ps: >-
+
     git submodule update --init --recursive
    
     cd src
@@ -16,7 +17,7 @@ install:
     $env:appveyor_nuget_push = 'false'
 
     if(-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) {
-      if($env:appveyor_repo_tag -eq 'True') {
+      if($env:appveyor_repo_tag -eq 'true') {
         if($env:appveyor_repo_tag_name -match '^v[0-9]') {
            $env:appveyor_nuget_push = 'true'
            $env:THISLIB_VERSION_SUFFIX = ""
@@ -27,6 +28,9 @@ install:
         }
       }
     }
+
+    
+    dir env:
 build:
   project: src/NUglify.sln
   verbosity: minimal
@@ -38,6 +42,6 @@ artifacts:
 deploy:
 - provider: NuGet
   api_key:
-    secure: HpTMQNQnCIXrfWPCaS8sr5NtVzRMFxwOJECIQsWDyi7e3RS+SotFjMSSb2+nYRpU
+    secure: HpTMQNQnCIXrfWPCaS8sr5NtVzRMFxwOJECIQsWDyi7e3RS+SotFjMSSb2+nYRpUx
   on:
     appveyor_nuget_push: true
