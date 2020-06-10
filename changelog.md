@@ -9,6 +9,9 @@
 - Fixes spread operator bug ([(PR #91](https://github.com/xoofx/NUglify/pull/91))
 - Fixes issue with mutliple await return ([(PR #90](https://github.com/xoofx/NUglify/pull/90))
 - Fixes issue with parameterless arrow functions ([(PR #89](https://github.com/xoofx/NUglify/pull/89))
+- Fixes bug with KeyFrames in css ([(PR #107](https://github.com/xoofx/NUglify/pull/107))
+- Fixes bug with ShortBooleanAttribute=true incorrectly removes value tags from inputs ([(PR #108](https://github.com/xoofx/NUglify/pull/108))
+- Fixes bug with css calc, flex and 0px ([(PR #109](https://github.com/xoofx/NUglify/pull/109))
 
 ## 1.5.14 (9 Mar 2020)
 - Fix async/await JS minifier
