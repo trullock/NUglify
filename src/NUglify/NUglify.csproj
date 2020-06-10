@@ -2,21 +2,21 @@
 
   <PropertyGroup>
     <Description>NUglify provides minify and compression methods for CSS, JavaScript and HTML files for .NET (fork of AjaxMin + new features)</Description>
-    <Copyright>Alexandre Mutel</Copyright>
+    <Copyright>Alexandre Mutel;Andrew Bullock</Copyright>
     <AssemblyTitle>NUglify</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
     <VersionPrefix>1.5.14</VersionPrefix>
-    <Authors>Ron Logan;Alexandre Mutel</Authors>
+    <Authors>Ron Logan;Alexandre Mutel;Andrew Bullock</Authors>
     <TargetFrameworks>net35;net40;netstandard1.3;netstandard2.0</TargetFrameworks>
     <AssemblyName>NUglify</AssemblyName>
     <PackageId>NUglify</PackageId>
     <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
-    <PackageReleaseNotes>https://github.com/xoofx/NUglify/blob/master/changelog.md</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/trullock/NUglify/blob/master/changelog.md</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/xoofx/NUglify/master/images/nuglify.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/xoofx/NUglify</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/xoofx/NUglify/blob/master/license.txt</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>git://github.com/xoofx/NUglify</RepositoryUrl>
+    <RepositoryUrl>git://github.com/trullock/NUglify</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
     <Version>1.6.0</Version>
   </PropertyGroup>

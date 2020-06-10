@@ -103,6 +103,8 @@ Microsoft Ajax Minifier was created and maintained by Ron Logan, with contributi
 
 Nuglify was ported and refactored to github by Alexandre Mutel aka [xoofx](http://xoofx.com)
 
+It is now maintained by Andrew Bullock aka [trullock](https://github.com/trullock)
+
 ## Credits
 
 The logo Monster is by [Joel McKinney](https://thenounproject.com/joel.mckinney/) from the Noun Project
