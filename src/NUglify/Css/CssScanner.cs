@@ -92,7 +92,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification="Big case statement")]
-        public CssToken NextToken()
+        public CssToken NextToken(bool reduceZeros)
         {
             GotEndOfLine = false;
 
@@ -229,7 +229,7 @@ namespace NUglify.Css
                     case '8':
                     case '9':
                     case '.':
-                        token = ScanNum();
+                        token = ScanNum(reduceZeros);
                         break;
 
                     default:
@@ -1039,7 +1039,7 @@ namespace NUglify.Css
             return (token != null ? token : ScanIdent());
         }
 
-        private CssToken ScanNum()
+        private CssToken ScanNum(bool reduceZeros)
         {
             CssToken token = null;
             string num = GetNum();
@@ -1137,6 +1137,7 @@ namespace NUglify.Css
                         // ALSO, if we don't recognize the dimension, leave it -- it could be a browser hack or some
                         // other intentional construct.
                         if (num == "0" 
+                            && reduceZeros
                             && tokenType != TokenType.Dimension
                             && tokenType != TokenType.Angle
                             && tokenType != TokenType.Time

@@ -26,7 +26,19 @@ namespace NUglify.Tests.Css
     public class Bugs
     {
         [Test]
+        public void Bug33()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
         public void Bug56()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
+        public void Bug74()
         {
             TestHelper.Instance.RunTest();
         }
