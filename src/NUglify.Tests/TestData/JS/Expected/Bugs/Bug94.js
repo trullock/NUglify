@@ -1,1 +1,1 @@
-﻿function test(module){module.exports=function(){}}const test="1"
+﻿function test(module){function x(module){module.bar="baz"}module.exports=function(){};module.foo=x(module)}const test="1"
