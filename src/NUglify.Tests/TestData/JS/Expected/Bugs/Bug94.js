@@ -1,6 +1,1 @@
-﻿const test = "1";
-function test(module) {
-    module.exports = function () {
-
-    };
-}
+﻿function test(module){module.exports=function(){}}const test="1"

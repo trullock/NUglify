@@ -1,4 +1,5 @@
-﻿using NUglify.JavaScript;
+﻿using System.IO;
+using NUglify.JavaScript;
 using NUglify.Tests.JavaScript.Common;
 using NUnit.Framework;
 

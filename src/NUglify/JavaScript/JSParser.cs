@@ -5602,6 +5602,19 @@ namespace NUglify.JavaScript
             // shortcut the whole process. If we KNOW we are parsing ES6, then yes: parse a module
             if (ParsedVersion == ScriptVersion.EcmaScript6 || m_settings.ScriptVersion == ScriptVersion.EcmaScript6)
             {
+                var clone = m_scanner.Clone();
+                clone.SuppressErrors = true;
+                var next = clone.ScanNextToken();
+
+                if (next?.HasCode == true && next?.Code == ".")
+                {
+                    next = clone.ScanNextToken();
+                    if (next?.HasCode == true && next?.Code == "exports")
+                    {
+                        return false;
+                    }
+                }
+
                 return true;
             }
 

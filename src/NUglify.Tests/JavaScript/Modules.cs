@@ -24,6 +24,12 @@ namespace NUglify.Tests.JavaScript
     public class Modules
     {
         [Test]
+        public void Header()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
         public void NotModules()
         {
             TestHelper.Instance.RunErrorTest("-unused:keep -ignore:JS1310,JS1135");
