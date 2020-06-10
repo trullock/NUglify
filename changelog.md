@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1 (10 June 2020)
+- Updates Nuget package details
+- Fixes generators bug ([(PR #111](https://github.com/xoofx/NUglify/pull/111))
+
 ## 1.6.0 (10 June 2020)
 - Fix for whitespace preceeding a textarea ([(PR #103)](https://github.com/xoofx/NUglify/pull/103))
 - Include application/ld+json in list of processable javascript type blocks ([(PR #102)](https://github.com/xoofx/NUglify/pull/102))
