@@ -439,8 +439,13 @@ namespace NUglify.JavaScript.Visitors
                         var rightPrecedence = node.Operand2.Precedence;
                         var rightNeedsParens = rightPrecedence < ourPrecedence;
 
-                        var rightHandBinary = node.Operand2 as BinaryExpression;
-                        if (rightHandBinary != null)
+                        // This is a bit of a hack. Two possible fixes - is yield really a unaryexpression? Should unaryExpression always bind higher than the others, or should there be a subdivision of precedences?
+                        if (node.Operand2 is UnaryExpression unaryExpression)
+                        {
+                            if (unaryExpression.OperatorToken == JSToken.Yield)
+                                rightNeedsParens = true;
+                        }
+                        else if (node.Operand2 is BinaryExpression rightHandBinary)
                         {
                             // they are BOTH binary expressions. This is where it gets complicated.
                             // because most binary tokens (except assignment) are evaluated from left to right,

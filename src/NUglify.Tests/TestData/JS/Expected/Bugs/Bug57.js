@@ -1,0 +1,1 @@
+﻿var a;a!=null&&(yield 1)
