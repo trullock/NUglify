@@ -1,8 +1,13 @@
 # Changelog
 
+## 1.6.3 (10 June 2020)
+- Fixes further module variable bugs ([(PR #113](https://github.com/xoofx/NUglify/pull/113))
+
+## 1.6.2 (10 June 2020)
+- Fixes module variable bugs ([(PR #112](https://github.com/xoofx/NUglify/pull/112))
+
 ## 1.6.1 (10 June 2020)
 - Updates Nuget package details
-- Fixes generators bug ([(PR #111](https://github.com/xoofx/NUglify/pull/111))
 
 ## 1.6.0 (10 June 2020)
 - Fix for whitespace preceeding a textarea ([(PR #103)](https://github.com/xoofx/NUglify/pull/103))
