@@ -1,4 +1,4 @@
-# NUglify [![Build status](https://ci.appveyor.com/api/projects/status/vep1cdnie9cls48p?svg=true)](https://ci.appveyor.com/project/xoofx/ajaxmin)  [![NuGet](https://img.shields.io/nuget/v/NUglify.svg)](https://www.nuget.org/packages/NUglify/)
+# NUglify [![Build status](https://ci.appveyor.com/api/projects/status/b2o4d1j7nhsttd7l?svg=true)](https://ci.appveyor.com/project/trullock/nuglify)  [![NuGet](https://img.shields.io/nuget/v/NUglify.svg)](https://www.nuget.org/packages/NUglify/)
 
 <img align="right" width="160px" height="160px" src="images/nuglify.png">
 

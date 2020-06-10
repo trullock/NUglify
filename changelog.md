@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.5.15 (8 June 2020)
+## 1.6.0 (10 June 2020)
 - Fix for whitespace preceeding a textarea ([(PR #103)](https://github.com/xoofx/NUglify/pull/103))
 - Include application/ld+json in list of processable javascript type blocks ([(PR #102)](https://github.com/xoofx/NUglify/pull/102))
 - Fixes infinite loop when dealing with malformed switch statements  ([(PR #99](https://github.com/xoofx/NUglify/pull/99))
