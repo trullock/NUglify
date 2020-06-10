@@ -29,7 +29,6 @@ install:
       }
     }
 
-    
     dir env:
 build:
   project: src/NUglify.sln
@@ -42,6 +41,6 @@ artifacts:
 deploy:
 - provider: NuGet
   api_key:
-    secure: HpTMQNQnCIXrfWPCaS8sr5NtVzRMFxwOJECIQsWDyi7e3RS+SotFjMSSb2+nYRpUx
+    secure: HpTMQNQnCIXrfWPCaS8sr5NtVzRMFxwOJECIQsWDyi7e3RS+SotFjMSSb2+nYRpU
   on:
     appveyor_nuget_push: true
