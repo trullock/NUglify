@@ -1,4 +1,5 @@
-﻿using NUglify.JavaScript;
+﻿using System.IO;
+using NUglify.JavaScript;
 using NUglify.Tests.JavaScript.Common;
 using NUnit.Framework;
 
@@ -40,6 +41,12 @@ namespace NUglify.Tests.JavaScript
 
         [Test]
         public void Bug92()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
+        public void Bug94()
         {
             TestHelper.Instance.RunTest();
         }

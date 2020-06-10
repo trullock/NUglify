@@ -1,0 +1,1 @@
+﻿function test(module){module.exports=function(){}}const test="1"

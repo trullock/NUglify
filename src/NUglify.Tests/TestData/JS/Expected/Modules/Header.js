@@ -1,0 +1,1 @@
+﻿(function(factory){typeof define=="function"&&define.amd?define(["a"],factory):typeof module=="object"&&module.exports?module.exports=function(a){return a}:factory(a)})
