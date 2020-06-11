@@ -715,7 +715,10 @@ namespace NUglify.JavaScript.Visitors
                             && ifNode.FalseBlock != null)
                         {
                             // now check to see if the true block ends in a return statement
-                            if (ifNode.TrueBlock[ifNode.TrueBlock.Count - 1] is ReturnStatement)
+                            if (ifNode.TrueBlock[ifNode.TrueBlock.Count - 1] is ReturnStatement
+                                // If it has its own scope it will contain `let` or other scoped declarations which could conflict with outer scopes.
+                                // We can probably be more optimal here in terms of minification and do further renaming, but for now this is at least safe
+                                && !ifNode.FalseBlock.HasOwnScope)
                             {
                                 // transform: if(cond){statements1;return}else{statements2} to if(cond){statements1;return}statements2
                                 // it does. insert all the false-block statements after the if-statement
