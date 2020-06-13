@@ -118,6 +118,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void ArrowFunctionAsArgument()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
         public void DefaultValues()
         {
             TestHelper.Instance.RunTest();

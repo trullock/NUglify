@@ -1,0 +1,1 @@
+hello(([t])=>t);hello(({t})=>t);hello(t=>t)
