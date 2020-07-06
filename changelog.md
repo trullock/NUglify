@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.4 (6 July 2020)
+- Fixes issue with const name redeclaration
+
 ## 1.6.3 (10 June 2020)
 - Fixes further module variable bugs ([(PR #113](https://github.com/xoofx/NUglify/pull/113))
 
