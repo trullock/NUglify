@@ -895,6 +895,13 @@ namespace NUglify.Html
 
                     CurrentParent.AppendChild(invalidTag);
 
+                    // if only <html> exists in the stack, attempt to create missing structure
+                    if (stack.Count == 1)
+                    {
+                        var parent = CurrentParent;
+                        TryCreateOptionalStart(ref parent, invalidTag);
+                    }
+
                     if (descriptor != null && descriptor.EndKind == TagEndKind.AutoSelfClosing)
                     {
                         invalidTag.Kind = ElementKind.SelfClosing;
