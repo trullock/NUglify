@@ -1,5 +1,5 @@
 ﻿let p = null;
-let r = p ?? true;
+let r = p ? p ?? true : false;
 let s = null ?? 3;
 let x = false ?? "string";
 

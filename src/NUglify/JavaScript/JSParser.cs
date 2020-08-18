@@ -3358,18 +3358,13 @@ namespace NUglify.JavaScript
                         stackPrec = JSScanner.GetOperatorPrecedence(opsStack.Peek());
                     }
 
-                    // now the current operator has higher precedence that every scanned operators on the stack, or
+                    // now the current operator has higher precedence than every scanned operators on the stack, or
                     // it has the same precedence as the one at the top of the stack and it is right associative
                     // push operator and next term
 
                     // but first: special case conditional '?:'
-                    if (m_currentToken.Is(JSToken.ConditionalIf))
+                    if (m_currentToken.Is(JSToken.ConditionalIf) && PeekToken() != JSToken.ConditionalIf)
                     {
-                        var nextToken = PeekToken();
-                        if (nextToken == JSToken.ConditionalIf)
-                        {
-
-                        }
                         // pop term stack
                         AstNode condition = termStack.Pop();
 
