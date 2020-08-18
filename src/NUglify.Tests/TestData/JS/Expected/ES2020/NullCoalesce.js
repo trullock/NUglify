@@ -1,0 +1,1 @@
+﻿function y(){return 1}let p=null,r=p??!0,s=3,x=!1;let z=y()+s

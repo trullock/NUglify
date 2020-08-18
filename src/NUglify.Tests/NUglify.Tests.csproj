@@ -114,6 +114,8 @@
     <Compile Include="JavaScript\Declarations.cs" />
     <Compile Include="JavaScript\Encodings.cs" />
     <Compile Include="JavaScript\ES2015.cs" />
+    <Compile Include="JavaScript\ES2020.cs" />
+    <Compile Include="JavaScript\ES2018.cs" />
     <Compile Include="JavaScript\ES2017.cs" />
     <Compile Include="JavaScript\FunctionCreation.cs" />
     <Compile Include="JavaScript\GlobalMethods.cs" />
@@ -432,6 +434,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\Bugs\Bug63.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ES2020\NullCoalesce.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ES2018\SpreadOperator.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\Modules\Header.js">
@@ -2612,6 +2620,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\Bugs\Bug92.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ES2018\SpreadOperator.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ES2020\NullCoalesce.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\Modules\Header.js">

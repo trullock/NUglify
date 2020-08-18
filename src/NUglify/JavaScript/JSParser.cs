@@ -3365,6 +3365,11 @@ namespace NUglify.JavaScript
                     // but first: special case conditional '?:'
                     if (m_currentToken.Is(JSToken.ConditionalIf))
                     {
+                        var nextToken = PeekToken();
+                        if (nextToken == JSToken.ConditionalIf)
+                        {
+
+                        }
                         // pop term stack
                         AstNode condition = termStack.Pop();
 
@@ -5286,6 +5291,7 @@ namespace NUglify.JavaScript
                 case JSToken.LessThanEqual:
                 case JSToken.LogicalAnd:
                 case JSToken.LogicalOr:
+                case JSToken.NullCoalesce:
                 case JSToken.Minus:
                 case JSToken.MinusAssign:
                 case JSToken.Modulo:
