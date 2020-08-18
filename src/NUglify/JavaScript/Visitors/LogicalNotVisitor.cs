@@ -181,6 +181,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.UnsignedRightShift:
                 case JSToken.In:
                 case JSToken.InstanceOf:
+                case JSToken.Exponent:
                     // these operators have no logical not, which means we need to wrap them in
                     // a unary logical-not operator. And since they have a lower precedence than
                     // the unary logical-not, they'll have to be wrapped in parens. So that means
@@ -293,6 +294,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.In:
                 case JSToken.InstanceOf:
                 case JSToken.NullCoalesce:
+                case JSToken.Exponent:
                     WrapWithLogicalNot(node);
                     break;
 

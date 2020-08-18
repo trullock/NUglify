@@ -294,6 +294,10 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.NullCoalesce:
                     newLiteral = NullCoalesce(left, right);
                     break;
+					
+                case JSToken.Exponent:
+                    newLiteral = Exponent(left, right);
+                    break;
 
                 default:
                     // an operator we don't want to evaluate
@@ -1724,6 +1728,45 @@ namespace NUglify.JavaScript.Visitors
                 catch (InvalidCastException)
                 {
                     // if we couldn't cast to bool, ignore
+                }
+            }
+
+            return newLiteral;
+        }
+		
+        private ConstantWrapper Exponent(ConstantWrapper left, ConstantWrapper right)
+        {
+            ConstantWrapper newLiteral = null;
+
+            if (left.IsOkayToCombine && right.IsOkayToCombine
+                                     && m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
+            {
+                try
+                {
+                    double leftValue = left.ToNumber();
+                    double rightValue = right.ToNumber();
+                    double result = Math.Pow(leftValue, rightValue);
+
+                    if (ConstantWrapper.NumberIsOkayToCombine(result))
+                    {
+                        newLiteral = new ConstantWrapper(result, PrimitiveType.Number, left.Context.FlattenToStart());
+                    }
+                    else
+                    {
+                        if (!left.IsNumericLiteral && ConstantWrapper.NumberIsOkayToCombine(leftValue))
+                        {
+                            left.Parent.ReplaceChild(left, new ConstantWrapper(leftValue, PrimitiveType.Number, left.Context));
+                        }
+                        if (!right.IsNumericLiteral && ConstantWrapper.NumberIsOkayToCombine(rightValue))
+                        {
+                            right.Parent.ReplaceChild(right, new ConstantWrapper(rightValue, PrimitiveType.Number, right.Context));
+                        }
+                    }
+                }
+                catch (InvalidCastException)
+                {
+                    // some kind of casting in ToNumber caused a situation where we don't want
+                    // to perform the combination on these operands
                 }
             }
 

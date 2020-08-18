@@ -126,6 +126,9 @@ namespace NUglify.JavaScript.Syntax
                     case JSToken.Modulo:
                         return OperatorPrecedence.Multiplicative;
 
+                    case JSToken.Exponent:
+                        return OperatorPrecedence.Exponentiation;
+
                     case JSToken.Plus:
                     case JSToken.Minus:
                         return OperatorPrecedence.Additive;
@@ -168,6 +171,8 @@ namespace NUglify.JavaScript.Syntax
                 case JSToken.RightShiftAssign:
                 case JSToken.UnsignedRightShift:
                 case JSToken.UnsignedRightShiftAssign:
+                case JSToken.Exponent:
+				case JSToken.ExponentAssign:
                     // always returns a number
                     return PrimitiveType.Number;
 

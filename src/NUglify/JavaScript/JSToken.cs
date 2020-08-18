@@ -127,6 +127,8 @@ namespace NUglify.JavaScript
         UnsignedRightShiftAssign,       // >>>=
         LastAssign = UnsignedRightShiftAssign,
 
+        Exponent,                       // **
+
         ConditionalIf,                  // ? // MUST FOLLOW LastBinaryOp
         Colon,                          // :
         LastOperator = Colon,
