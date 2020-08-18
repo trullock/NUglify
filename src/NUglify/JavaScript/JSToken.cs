@@ -117,6 +117,7 @@ namespace NUglify.JavaScript
         PlusAssign,                     // +=
         MinusAssign,                    // -=
         MultiplyAssign,                 // *=
+        ExponentAssign,                 // **=
         DivideAssign,                   // /=
         ModuloAssign,                   // %=
         BitwiseAndAssign,               // &=

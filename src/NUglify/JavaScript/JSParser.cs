@@ -5287,9 +5287,10 @@ namespace NUglify.JavaScript
                 case JSToken.LogicalAnd:
                 case JSToken.LogicalOr:
                 case JSToken.NullCoalesce:
-                case JSToken.Exponent:
                 case JSToken.Minus:
                 case JSToken.MinusAssign:
+                case JSToken.Exponent:
+                case JSToken.ExponentAssign:
                 case JSToken.Modulo:
                 case JSToken.ModuloAssign:
                 case JSToken.Multiply:

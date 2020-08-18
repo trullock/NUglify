@@ -159,6 +159,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.Assign:
                 case JSToken.PlusAssign:
                 case JSToken.MinusAssign:
+                case JSToken.ExponentAssign:
                 case JSToken.MultiplyAssign:
                 case JSToken.DivideAssign:
                 case JSToken.ModuloAssign:
@@ -271,6 +272,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.Assign:
                 case JSToken.PlusAssign:
                 case JSToken.MinusAssign:
+                case JSToken.ExponentAssign:
                 case JSToken.MultiplyAssign:
                 case JSToken.DivideAssign:
                 case JSToken.ModuloAssign:

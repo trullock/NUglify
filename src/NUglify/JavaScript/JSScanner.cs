@@ -430,8 +430,8 @@ namespace NUglify.JavaScript
                         nextChar = GetChar(++m_currentPosition);
                         if ('=' == nextChar)
                         {
-                            //token = JSToken.ExponentAssign;
-                            //++m_currentPosition;
+                            token = JSToken.ExponentAssign;
+                            ++m_currentPosition;
                         }
                     }
 
@@ -4062,6 +4062,7 @@ namespace NUglify.JavaScript
             operatorsPrec[JSToken.Assign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.PlusAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.MinusAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
+            operatorsPrec[JSToken.ExponentAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.MultiplyAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.DivideAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.BitwiseAndAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;

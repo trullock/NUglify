@@ -3810,6 +3810,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.LessThan: return "<";
                 case JSToken.LessThanEqual: return "<=";
                 case JSToken.MinusAssign: return "-=";
+                case JSToken.ExponentAssign: return "**=";
                 case JSToken.Modulo: return "%";
                 case JSToken.ModuloAssign: return "%=";
                 case JSToken.MultiplyAssign: return "*=";

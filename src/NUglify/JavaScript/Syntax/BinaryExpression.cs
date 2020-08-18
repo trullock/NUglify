@@ -77,6 +77,7 @@ namespace NUglify.JavaScript.Syntax
                     case JSToken.DivideAssign:
                     case JSToken.LeftShiftAssign:
                     case JSToken.MinusAssign:
+                    case JSToken.ExponentAssign:
                     case JSToken.ModuloAssign:
                     case JSToken.MultiplyAssign:
                     case JSToken.RightShiftAssign:
@@ -163,6 +164,7 @@ namespace NUglify.JavaScript.Syntax
                 case JSToken.LeftShiftAssign:
                 case JSToken.Minus:
                 case JSToken.MinusAssign:
+                case JSToken.ExponentAssign:
                 case JSToken.Modulo:
                 case JSToken.ModuloAssign:
                 case JSToken.Multiply:
@@ -310,6 +312,7 @@ namespace NUglify.JavaScript.Syntax
                     case JSToken.Assign:
                     case JSToken.PlusAssign:
                     case JSToken.MinusAssign:
+                    case JSToken.ExponentAssign:
                     case JSToken.MultiplyAssign:
                     case JSToken.DivideAssign:
                     case JSToken.ModuloAssign:
