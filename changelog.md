@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.5 (19 August 2020)
+- Adds Exponent `**` and Exponent Assign `**=` support
+- Adds Null Coalesce `??` operator support
+
 ## 1.6.4 (6 July 2020)
 - Fixes issue with const name redeclaration
 

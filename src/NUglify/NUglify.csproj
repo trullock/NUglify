@@ -13,12 +13,12 @@
     <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
     <PackageReleaseNotes>https://github.com/trullock/NUglify/blob/master/changelog.md</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/xoofx/NUglify/master/images/nuglify.png</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/xoofx/NUglify</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/trullock/NUglify</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/xoofx/NUglify/blob/master/license.txt</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/trullock/NUglify</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
-    <Version>1.6.4</Version>
+    <Version>1.6.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
