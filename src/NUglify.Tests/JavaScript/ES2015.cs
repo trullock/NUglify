@@ -197,5 +197,10 @@ namespace NUglify.Tests.JavaScript
         {
             TestHelper.Instance.RunTest();
         }
+        [Test]
+        public void ExponentAssign()
+        {
+            TestHelper.Instance.RunTest();
+        }
     }
 }
