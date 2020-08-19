@@ -164,7 +164,6 @@ namespace NUglify.JavaScript.Syntax
                 case JSToken.LeftShiftAssign:
                 case JSToken.Minus:
                 case JSToken.MinusAssign:
-                case JSToken.ExponentAssign:
                 case JSToken.Modulo:
                 case JSToken.ModuloAssign:
                 case JSToken.Multiply:
