@@ -106,6 +106,8 @@ namespace NUglify.JavaScript
 
         LogicalAnd,                     // &&
         LogicalOr,                      // ||
+        
+        NullCoalesce,                   // ??
 
         InstanceOf,
         In,

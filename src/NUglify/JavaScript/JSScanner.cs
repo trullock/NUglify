@@ -698,6 +698,14 @@ namespace NUglify.JavaScript
                 case '?':
                     token = JSToken.ConditionalIf;
                     ++m_currentPosition;
+
+                    ch = GetChar(m_currentPosition);
+                    if ('?' == ch)
+                    {
+                        ++m_currentPosition;
+                        token = JSToken.NullCoalesce;
+                    }
+
                     break;
 
                 case '@':
@@ -4012,6 +4020,7 @@ namespace NUglify.JavaScript
 
             operatorsPrec[JSToken.LogicalOr - JSToken.FirstBinaryOperator] = OperatorPrecedence.LogicalOr;
             operatorsPrec[JSToken.LogicalAnd - JSToken.FirstBinaryOperator] = OperatorPrecedence.LogicalAnd;
+            operatorsPrec[JSToken.NullCoalesce - JSToken.FirstBinaryOperator] = OperatorPrecedence.NullCoalesce;
             operatorsPrec[JSToken.BitwiseOr - JSToken.FirstBinaryOperator] = OperatorPrecedence.BitwiseOr;
             operatorsPrec[JSToken.BitwiseXor - JSToken.FirstBinaryOperator] = OperatorPrecedence.BitwiseXor;
             operatorsPrec[JSToken.BitwiseAnd - JSToken.FirstBinaryOperator] = OperatorPrecedence.BitwiseAnd;

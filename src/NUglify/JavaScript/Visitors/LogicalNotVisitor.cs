@@ -196,11 +196,12 @@ namespace NUglify.JavaScript.Visitors
 
                 case JSToken.LogicalAnd:
                 case JSToken.LogicalOr:
+                case JSToken.NullCoalesce:
                     if (node.Parent is BlockStatement || (node.Parent is CommaExpression && node.Parent.Parent is BlockStatement))
                     {
                         // if the parent is a block, then this is a simple expression statement:
-                        // expr1 || expr2; or expr1 && expr2; If so, then the result isn't
-                        // used anywhere and we're just using the || or && operator as a
+                        // expr1 || expr2; or expr1 && expr2; or expr1 ?? expr2; If so, then the result isn't
+                        // used anywhere and we're just using the || or && or ?? operator as a
                         // shorter if-statement. So we don't need to negate the right-hand
                         // side, just the left-hand side.
                         if (node.Operand1 != null)
@@ -291,6 +292,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.UnsignedRightShift:
                 case JSToken.In:
                 case JSToken.InstanceOf:
+                case JSToken.NullCoalesce:
                     WrapWithLogicalNot(node);
                     break;
 

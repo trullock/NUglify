@@ -90,6 +90,9 @@ namespace NUglify.JavaScript.Syntax
                     case JSToken.LogicalAnd:
                         return OperatorPrecedence.LogicalAnd;
 
+                    case JSToken.NullCoalesce:
+                        return OperatorPrecedence.NullCoalesce;
+
                     case JSToken.BitwiseOr:
                         return OperatorPrecedence.BitwiseOr;
 
@@ -196,7 +199,8 @@ namespace NUglify.JavaScript.Syntax
 
                 case JSToken.LogicalAnd:
                 case JSToken.LogicalOr:
-                    // these two are special. They return either the left or the right operand
+                case JSToken.NullCoalesce:
+                    // these three are special. They return either the left or the right operand
                     // (depending on their values), so unless they are both known types AND the same,
                     // then we can't know for sure.
                     leftType = Operand1.FindPrimitiveType();

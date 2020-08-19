@@ -291,6 +291,10 @@ namespace NUglify.JavaScript.Visitors
                     newLiteral = LogicalOr(left, right);
                     break;
 
+                case JSToken.NullCoalesce:
+                    newLiteral = NullCoalesce(left, right);
+                    break;
+
                 default:
                     // an operator we don't want to evaluate
                     break;
@@ -1707,6 +1711,25 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
+        private ConstantWrapper NullCoalesce(ConstantWrapper left, ConstantWrapper right)
+        {
+            ConstantWrapper newLiteral = null;
+            if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
+            {
+                try
+                {
+                    // if the left-hand side evaluates to null, return the right hand side, otherwise return the left.
+                    newLiteral = left.PrimitiveType == PrimitiveType.Null ? right : left;
+                }
+                catch (InvalidCastException)
+                {
+                    // if we couldn't cast to bool, ignore
+                }
+            }
+
+            return newLiteral;
+        }
+
         private static bool OnlyHasConstantItems(ArrayLiteral arrayLiteral)
         {
             var elementCount = arrayLiteral.Elements.Count;
@@ -1926,6 +1949,19 @@ namespace NUglify.JavaScript.Visitors
                             {
                                 // replace the comma operator with the right-hand operand
                                 ReplaceNodeCheckParens(node, node.Operand2);
+                            }
+                        }
+                        else if (node.OperatorToken == JSToken.NullCoalesce)
+                        {
+                            // we have a literal on the left of a null coalesce.
+                            // if its null we can just ues the right, else use the left
+                            if (left.PrimitiveType == PrimitiveType.Null)
+                            {
+                                ReplaceNodeCheckParens(node, node.Operand2);
+                            }
+                            else
+                            {
+                                ReplaceNodeCheckParens(node, left);
                             }
                         }
                         else

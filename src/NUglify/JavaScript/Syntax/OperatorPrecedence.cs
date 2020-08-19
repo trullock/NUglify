@@ -28,6 +28,7 @@ namespace NUglify.JavaScript.Syntax
         Conditional,
         LogicalOr,
         LogicalAnd,
+        NullCoalesce,
         BitwiseOr,
         BitwiseXor,
         BitwiseAnd,
