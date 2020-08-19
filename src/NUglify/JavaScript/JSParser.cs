@@ -3452,7 +3452,7 @@ namespace NUglify.JavaScript
                 while (opsStack.Peek() != null)
                 {
                     // pop the top two term and the top operator, combine them into a new term,
-                    // and push the results back onto the term stacck
+                    // and push the results back onto the term stack
                     AstNode operand2 = termStack.Pop();
                     AstNode operand1 = termStack.Pop();
                     expr = CreateExpressionNode(opsStack.Pop(), operand1, operand2);
@@ -5289,6 +5289,8 @@ namespace NUglify.JavaScript
                 case JSToken.NullCoalesce:
                 case JSToken.Minus:
                 case JSToken.MinusAssign:
+                case JSToken.Exponent:
+                case JSToken.ExponentAssign:
                 case JSToken.Modulo:
                 case JSToken.ModuloAssign:
                 case JSToken.Multiply:

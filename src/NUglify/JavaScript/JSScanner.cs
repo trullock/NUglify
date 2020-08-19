@@ -417,10 +417,22 @@ namespace NUglify.JavaScript
 
                 case '*':
                     token = JSToken.Multiply;
-                    if ('=' == GetChar(++m_currentPosition))
+                    var nextChar = GetChar(++m_currentPosition);
+
+                    if ('=' == nextChar)
                     {
                         ++m_currentPosition;
                         token = JSToken.MultiplyAssign;
+                    } 
+                    else if ('*' == nextChar)
+                    {
+                        token = JSToken.Exponent;
+                        nextChar = GetChar(++m_currentPosition);
+                        if ('=' == nextChar)
+                        {
+                            token = JSToken.ExponentAssign;
+                            ++m_currentPosition;
+                        }
                     }
 
                     break;
@@ -4045,9 +4057,12 @@ namespace NUglify.JavaScript
             operatorsPrec[JSToken.Divide - JSToken.FirstBinaryOperator] = OperatorPrecedence.Multiplicative;
             operatorsPrec[JSToken.Modulo - JSToken.FirstBinaryOperator] = OperatorPrecedence.Multiplicative;
 
+            operatorsPrec[JSToken.Exponent - JSToken.FirstBinaryOperator] = OperatorPrecedence.Exponentiation;
+
             operatorsPrec[JSToken.Assign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.PlusAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.MinusAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
+            operatorsPrec[JSToken.ExponentAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.MultiplyAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.DivideAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.BitwiseAndAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;

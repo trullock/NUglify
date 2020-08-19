@@ -117,6 +117,7 @@ namespace NUglify.JavaScript
         PlusAssign,                     // +=
         MinusAssign,                    // -=
         MultiplyAssign,                 // *=
+        ExponentAssign,                 // **=
         DivideAssign,                   // /=
         ModuloAssign,                   // %=
         BitwiseAndAssign,               // &=
@@ -126,6 +127,8 @@ namespace NUglify.JavaScript
         RightShiftAssign,               // >>=
         UnsignedRightShiftAssign,       // >>>=
         LastAssign = UnsignedRightShiftAssign,
+
+        Exponent,                       // **
 
         ConditionalIf,                  // ? // MUST FOLLOW LastBinaryOp
         Colon,                          // :

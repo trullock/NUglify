@@ -37,6 +37,7 @@ namespace NUglify.JavaScript.Syntax
         Shift,
         Additive,
         Multiplicative,
+        Exponentiation,
         Unary,
         FieldAccess,
         Primary,
