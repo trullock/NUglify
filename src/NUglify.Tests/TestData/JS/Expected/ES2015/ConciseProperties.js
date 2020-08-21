@@ -1,0 +1,1 @@
+﻿var name="tester",o={name}
