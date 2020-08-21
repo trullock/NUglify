@@ -814,15 +814,17 @@ namespace NUglify.JavaScript
                         return ParseTryStatement();
 
                     case JSToken.Async:
-                        // Treat `async(` as if its a normal expression
-                        if (PeekToken() == JSToken.LeftParenthesis)
-                        {
-                            goto default;
-                        }
-                        else
+                        
+                        var peekToken = PeekToken();
+                        if (peekToken == JSToken.Function)
                         {
                             // Treat 'async function' as a function declaration
                             goto case (JSToken.Function);
+                        }
+                        else
+                        {
+                            // Treat `async(` as if its a normal expression
+                            goto default;
                         }
                     case JSToken.Function:
                         {
