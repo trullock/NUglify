@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.1 (24 August 2020)
+- Removes deprecated lineCount from SourceMaps
+- Adds `MakePathsRelative` true/false to `V3SourceMap` to control path munging
+- Fixes JS bug with getters and setters, primarily when used within `defineProperty`
+
 ## 1.7.2 (24 August 2020)
 - Adds support for HTML attribute removal
 - Adds support for HTML attribute reordering
