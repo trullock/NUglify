@@ -136,5 +136,16 @@ namespace NUglify.Tests.Html
             output = "<div data-foo=bar><div id=id></div><p></div>";
             equal(minify(input, settings), output);
         }
+
+        [Test]
+        public void AlphaOrderAttributes()
+        {
+            var settings  = new HtmlSettings
+            {
+                AlphabeticallyOrderAttributes = true
+            };
+            input = "<div x=\"1\" y=\"1\" r=\"1\" q=\"1\" p=\"1\"></div>";
+            equal(minify(input, settings), "<div p=1 q=1 r=1 x=1 y=1></div>");
+        }
     }
 }
