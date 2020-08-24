@@ -281,7 +281,8 @@ namespace NUglify.JavaScript
                 WriteProperty("file", MakeRelative(m_minifiedPath, m_mapPath));
 
                 // line number comes in zero-based, so add one to get the line count
-                WriteProperty("lineCount", m_maxMinifiedLine + 1);
+                // lineCount is deprecated in the sourcemap specification, so stop outputting it
+                //WriteProperty("lineCount", m_maxMinifiedLine + 1);
 
                 WriteProperty("mappings", GenerateMappings(m_sourceFileList, m_nameList));
 
