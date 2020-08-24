@@ -3,7 +3,9 @@
 // See the license.txt file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace NUglify.Html
 {
@@ -77,12 +79,17 @@ namespace NUglify.Html
 
             if (node.Attributes != null)
             {
+                IEnumerable<HtmlAttribute> attributes = node.Attributes;
+
+                if (settings.AlphabeticallyOrderAttributes)
+                    attributes = attributes.OrderBy(a => a.Name);
+
                 var count = node.Attributes.Count;
-                for (int i = 0; i < count; i++)
+                var i = 0;
+                foreach (var attribute in attributes)
                 {
-                    var attribute = node.Attributes[i];
                     Write(" ");
-                    WriteAttribute(node, attribute, i + 1 == count);
+                    WriteAttribute(node, attribute, i++ == count);
                 }
             }
 

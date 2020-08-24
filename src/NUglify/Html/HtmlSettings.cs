@@ -233,6 +233,11 @@ namespace NUglify.Html
         public HashSet<string> RemoveAttributes { get; set; }
 
         /// <summary>
+        /// Output the attributes of each element in alphabetical order
+        /// </summary>
+        public bool AlphabeticallyOrderAttributes { get; set; }
+
+        /// <summary>
         /// returns settings to output a pretty HTML
         /// </summary>
         /// <returns></returns>
