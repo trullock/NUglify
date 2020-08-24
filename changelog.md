@@ -1,6 +1,10 @@
 # Changelog
 
-## 1.7.1 (19 August 2020)
+## 1.7.2 (24 August 2020)
+- Adds support for HTML attribute removal
+- Adds support for HTML attribute reordering
+
+## 1.7.1 (24 August 2020)
 - Changes (fixes) how HTML5 comments are handled. Previously valid/invalid comments may now be handled differently (correctly)
 
 ## 1.6.6 (21 August 2020)
