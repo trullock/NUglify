@@ -88,6 +88,7 @@
     <Compile Include="Html\TestHtmlParserBase.cs" />
     <Compile Include="Html\TestInvalidHtml.cs" />
     <Compile Include="Html\TestOptionalTags.cs" />
+    <Compile Include="Html\Bugs.cs" />
     <Compile Include="Html\TestSafeHtml.cs" />
     <Compile Include="Html\TestStandard.cs" />
     <Compile Include="Html\TestSvg.cs" />

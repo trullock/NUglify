@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.1 (19 August 2020)
+- Changes (fixes) how HTML5 comments are handled. Previously valid/invalid comments may now be handled differently (correctly)
+
+## 1.6.6 (21 August 2020)
+- Fixes overloading of `async` keyword
+
 ## 1.6.5 (19 August 2020)
 - Adds Exponent `**` and Exponent Assign `**=` support
 - Adds Null Coalesce `??` operator support

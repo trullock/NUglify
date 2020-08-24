@@ -936,7 +936,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TryProcessComment()
+        void TryProcessComment()
         {
             c = NextChar();
             if (c != '-')
@@ -946,40 +946,30 @@ namespace NUglify.Html
             }
 
             var commentPosition = position + 1;
-
+            var hyphenCount = 0;
+            
             while (true)
             {
                 c = NextChar();
 
-                if (c == '-')
+                if (hyphenCount >= 2 && c == '>')
                 {
                     c = NextChar();
-                    if (c == '-')
+
+                    var comment = new HtmlComment
                     {
-                        c = NextChar();
-                        if (c == '>')
-                        {
-                            // Don't eat last char, as it will be processed by main loop
-                            c = NextChar();
-
-                            var comment = new HtmlComment()
-                            {
-                                Location = startTagLocation,
-                                Slice = new StringSlice(text, commentPosition, position - 4)
-                            };
-                            CurrentParent.AppendChild(comment);
-                            return;
-                        }
-
-                        Error(c == 0
-                            ? $"Invalid EOF found while parsing <!--"
-                            : $"Invalid character '{c}' found while parsing <!--");
-
-                        AppendText(startTagLocation, position - 1);
-                        return;
-                    }
+                        Location = startTagLocation,
+                        Slice = new StringSlice(text, commentPosition, position - 4)
+                    };
+                    CurrentParent.AppendChild(comment);
+                    return;
                 }
 
+                if (c == '-')
+                    hyphenCount++;
+                else
+                    hyphenCount = 0;
+                
                 if (c == '\0')
                 {
                     Error($"Invalid EOF found while parsing comment");

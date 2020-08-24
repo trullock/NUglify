@@ -236,13 +236,12 @@ namespace NUglify.Tests.Html
                 "[0001] !com: <!---10-->"
                 );
         }
-
+        
         [Test]
         public void TestComment3()
         {
             AssertHtml("<!----10--->",
-                "[0001] #txt: <!----10--->",
-                "(1,7): error : Invalid character '1' found while parsing <!--"
+                "[0001] !com: <!----10--->"
                 );
         }
 
@@ -251,7 +250,7 @@ namespace NUglify.Tests.Html
         {
             AssertHtml("<!----10---",
                 "[0001] #txt: <!----10---",
-                "(1,7): error : Invalid character '1' found while parsing <!--"
+                "(1,12): error : Invalid EOF found while parsing comment"
                 );
         }
 
@@ -565,7 +564,7 @@ namespace NUglify.Tests.Html
 
             var output = doc.DumpDom();
 
-            // Replace outptu with printable NL character
+            // Replace output with printable NL character
             for (int i = 0; i < output.Count; i++)
             {
                 var text = output[i];
