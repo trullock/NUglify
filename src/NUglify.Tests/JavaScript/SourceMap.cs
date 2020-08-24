@@ -14,6 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+using System.IO;
+using System.Text;
+using NUglify.JavaScript;
 using NUglify.Tests.JavaScript.Common;
 using NUnit.Framework;
 
@@ -41,6 +45,48 @@ namespace NUglify.Tests.JavaScript
         public void SourceMapV3()
         {
             TestHelper.Instance.RunTest("-map:v3", "ScriptSharpMap.js", "MapArgNotSpecified.js");
+        }
+
+
+        [Test]
+        public void SourceMapForMultipleFiles()
+        {
+            var assetBuilder = new StringBuilder();
+            var assets = new[]{ "SourceMapForMultipleFiles1.js", "SourceMapForMultipleFiles2.js", "SourceMapForMultipleFiles3.js" };
+
+            var currentPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            foreach (var asset in assets)
+            {
+                assetBuilder.AppendLine("///#source 1 1 " + asset);
+                var path = Path.Combine(currentPath, "TestData\\JS\\Input\\SourceMap\\" + asset);
+                assetBuilder.AppendLine(File.ReadAllText(path));
+            }
+
+            var stringBuilder = new StringBuilder();
+
+            using (var textWriter = new StringWriter(stringBuilder))
+            {
+                var sourceMap = new V3SourceMap(textWriter);
+
+                sourceMap.StartPackage("infile.js", "SourceMapForMultipleFiles.js.map");
+                var uglifyResult = Uglify.Js(assetBuilder.ToString(), "SourceMapForMultipleFiles.js", new CodeSettings
+                {
+                    SymbolsMap = sourceMap,
+                    SourceMode = JavaScriptSourceMode.Program,
+                    MinifyCode = true,
+                    OutputMode = OutputMode.SingleLine,
+                    StripDebugStatements = false,
+                    LineTerminator = "\r\n"
+                });
+                sourceMap.EndPackage();
+                sourceMap.Dispose();
+
+                var code = uglifyResult.Code;
+                Assert.AreEqual(File.ReadAllText(Path.Combine(currentPath, "TestData\\JS\\Expected\\SourceMap\\SourceMapForMultipleFiles.js")), code);
+                var builder = stringBuilder.ToString();
+                Assert.AreEqual(File.ReadAllText(Path.Combine(currentPath, "TestData\\JS\\Expected\\SourceMap\\SourceMapForMultipleFiles.js.map")), builder);
+            }
         }
     }
 }

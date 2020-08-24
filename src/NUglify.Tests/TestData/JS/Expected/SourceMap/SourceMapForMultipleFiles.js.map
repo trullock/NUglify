@@ -1,0 +1,7 @@
+{
+"version":3,
+"file":"infile.js",
+"mappings":"AAAAA,SAASA,KAAK,CAAA,CAAG,CACb,OAAO,CADM,CCAjBC,SAASA,KAAK,CAAA,CAAG,CACb,OAAO,CADM,CCAjBC,SAASA,KAAK,CAAA,CAAG,CACb,OAAO,CADM",
+"sources":["SourceMapForMultipleFiles1.js","SourceMapForMultipleFiles2.js","SourceMapForMultipleFiles3.js"],
+"names":["func1","func2","func3"]
+}
