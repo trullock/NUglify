@@ -118,5 +118,23 @@ namespace NUglify.Tests.Html
             input = "<div action=\"  foo-bar-baz \">blah</div>";
             equal(minify(input), input);
         }
+
+
+        [Test]
+        public void RemoveAttributes()
+        {
+            var settings = new HtmlSettings
+            {
+                RemoveAttributes =
+                {
+                    "data-test",
+                    "class"
+                }
+            };
+
+            input = "<div CLASS=\"a\" data-foo=\"bar\"><div id=\"id\"></div><p data-test=\"test\"></div>";
+            output = "<div data-foo=bar><div id=id></div><p></div>";
+            equal(minify(input, settings), output);
+        }
     }
 }
