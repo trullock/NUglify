@@ -74,34 +74,29 @@ namespace NUglify.JavaScript
         /// <summary>
         /// Gets or sets an optional source root URI that will be added to the map object as the sourceRoot property if set
         /// </summary>
-        public string SourceRoot
-        {
-            get;
-            set;
-        }
+        public string SourceRoot { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating whether or not to prepend the map file with an XSSI (cross-site script injection) protection string
         /// </summary>
-        public bool SafeHeader
-        {
-            get;
-            set;
-        }
+        public bool SafeHeader { get; set; }
 
-        public static string ImplementationName
-        {
-            get { return "V3"; }
-        }
+        /// <summary>
+        /// True to make outputted paths (to source map and the maps' sources) relative.
+        /// False to leave paths untouched.
+        /// Default: true
+        /// </summary>
+        public bool MakePathsRelative { get; set; }
 
-        public string Name
-        {
-            get { return ImplementationName; }
-        }
+        public static string ImplementationName => "V3";
+
+        public string Name => ImplementationName;
 
         public V3SourceMap(TextWriter writer)
         {
             m_writer = writer;
+
+            this.MakePathsRelative = true;
 
             // source files normally aren't duplicated, so this is a bit of over-kill.
             // if we do get duplicated source files in the code, let's treat different
@@ -137,6 +132,7 @@ namespace NUglify.JavaScript
         /// Called when we start a new minified output file
         /// </summary>
         /// <param name="sourcePath">output file path</param>
+        /// <param name="mapPath"></param>
         public void StartPackage(string sourcePath, string mapPath)
         {
             m_minifiedPath = sourcePath;
@@ -186,9 +182,7 @@ namespace NUglify.JavaScript
         public void MarkSegment(AstNode node, int startLine, int startColumn, string name, SourceContext context)
         {
             if (startLine == int.MaxValue)
-            {
                 throw new ArgumentOutOfRangeException("startLine");
-            }
 
             // add the offsets
             startLine += m_lineOffset;
@@ -243,20 +237,7 @@ namespace NUglify.JavaScript
             // where the URI is the relative uri from m_minifiedPath to the map file
             if (writer != null && !m_mapPath.IsNullOrWhiteSpace())
             {
-                // make relative to output, don't just output the mapfile path as-is.
-                // and it's supposed to be a URL anyway
                 writer.Write(newLine);
-
-                // the original spec called for //@ but that gets confused with IE's conditional-compilation
-                // syntax. So wrap it in multi-line comments so it works everywhere.
-                //writer.Write("/*");
-                //writer.Write(newLine);
-                //writer.Write("//@ sourceMappingURL={0}", MakeRelative(m_mapPath, m_minifiedPath));
-                //writer.Write(newLine);
-                //writer.Write("*/");
-
-                // eventually, though, the spec changed to //# -- the tools appear to have caught up, so
-                // let's use that syntax now.
                 writer.Write("//# sourceMappingURL={0}", MakeRelative(m_mapPath, m_minifiedPath));
                 writer.Write(newLine);
             }
@@ -435,8 +416,12 @@ namespace NUglify.JavaScript
 
         #region private helper methods
 
-        private static string MakeRelative(string path, string relativeFrom)
+        private string MakeRelative(string path, string relativeFrom)
         {
+            // If we've disabled relative path conversion, abort
+            if (!MakePathsRelative)
+                return path;
+
             // if either one is null or blank, just return the original path
             if (!path.IsNullOrWhiteSpace() && !relativeFrom.IsNullOrWhiteSpace())
             {

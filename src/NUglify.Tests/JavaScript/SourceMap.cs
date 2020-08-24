@@ -87,6 +87,35 @@ namespace NUglify.Tests.JavaScript
                 var builder = stringBuilder.ToString();
                 Assert.AreEqual(File.ReadAllText(Path.Combine(currentPath, "TestData\\JS\\Expected\\SourceMap\\SourceMapForMultipleFiles.js.map")), builder);
             }
+		}
+		
+        [Test]
+        public void RelativePaths()
+        {
+            UglifyResult result;
+
+            string sFileContent = @"function test(t){
+	return t**2;
+}";
+
+            var builder = new StringBuilder();
+            using (TextWriter mapWriter = new StringWriter(builder))
+            {
+                using (var sourceMap = new V3SourceMap(mapWriter))
+                {
+                    sourceMap.MakePathsRelative = false;
+
+                    var settings = new CodeSettings();
+                    settings.SymbolsMap = sourceMap;
+                    sourceMap.StartPackage(@"C:\some\long\path\to\js", @"C:\some\other\path\to\map");
+
+                    result = Uglify.Js(sFileContent, @"C:\some\path\to\output\js", settings);
+                }
+            }
+
+            Assert.AreEqual("function test(n){return n**2}\n//# sourceMappingURL=C:\\some\\other\\path\\to\\map\n", result.Code);
+            
+            Assert.AreEqual("{\r\n\"version\":3,\r\n\"file\":\"C:\\some\\long\\path\\to\\js\",\r\n\"mappings\":\"AAAAA,SAASA,IAAI,CAACC,CAAD,CAAG,CACf,OAAOA,CAAC,EAAE,CADK\",\r\n\"sources\":[\"C:\\some\\path\\to\\output\\js\"],\r\n\"names\":[\"test\",\"t\"]\r\n}\r\n", builder.ToString());
         }
     }
 }
