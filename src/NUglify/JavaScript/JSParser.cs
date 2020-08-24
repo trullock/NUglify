@@ -2841,21 +2841,24 @@ namespace NUglify.JavaScript
                 {
                     if (!inExpression)
                     {
-                        // if this isn't a function expression, then we need to throw an error because
-                        // function DECLARATIONS always need a valid identifier name
-                        ReportError(JSError.NoIdentifier);
-
-                        // BUT if the current token is a left paren, we don't want to use it as the name.
-                        // (fix for issue #14152)
-                        if (m_currentToken.IsNot(JSToken.LeftParenthesis)
-                            && m_currentToken.IsNot(JSToken.LeftCurly))
+                        if (!((functionType == FunctionType.Getter || functionType == FunctionType.Setter) && m_currentToken.Is(JSToken.LeftParenthesis)))
                         {
-                            identifier = m_currentToken.Code;
-                            name = new BindingIdentifier(CurrentPositionContext)
+                            // if this isn't a function expression and we're not an identifierless getter/setter, then we need to throw an error because
+                            // function DECLARATIONS always need a valid identifier name
+                            ReportError(JSError.NoIdentifier);
+
+                            // BUT if the current token is a left paren, we don't want to use it as the name.
+                            // (fix for issue #14152)
+                            if (m_currentToken.IsNot(JSToken.LeftParenthesis)
+                                && m_currentToken.IsNot(JSToken.LeftCurly))
+                            {
+                                identifier = m_currentToken.Code;
+                                name = new BindingIdentifier(CurrentPositionContext)
                                 {
                                     Name = identifier
                                 };
-                            GetNextToken();
+                                GetNextToken();
+                            }
                         }
                     }
                 }
@@ -4797,8 +4800,11 @@ namespace NUglify.JavaScript
                 
                 if (funcExpr != null)
                 {
-                    // getter/setter is just the literal name with a get/set flag
-                    field = new GetterSetter(funcExpr.Binding.Name, isGet, funcExpr.Binding.Context.Clone());
+                    // Binding can be null for identifierless getter/setters
+                    if(funcExpr.Binding != null)
+                        // getter/setter is just the literal name with a get/set flag
+                        field = new GetterSetter(funcExpr.Binding.Name, isGet, funcExpr.Binding.Context.Clone());
+
                     value = funcExpr;
 
                     if (isBindingPattern)
