@@ -32,6 +32,8 @@ namespace NUglify.Html
             RemoveScriptStyleTypeAttribute = true;
             ShortBooleanAttribute = true;
             IsFragmentOnly = false;
+            RemoveAttributes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            
             MinifyJs = true;
             // MinifyJsAttributes = true;
             JsSettings = new CodeSettings();
@@ -91,7 +93,7 @@ namespace NUglify.Html
 
             KeepCommentsRegex = new List<Regex>()
             {
-                new Regex(@"^!"), // Keep conditionnal comments
+                new Regex(@"^!"), // Keep conditional comments
                 new Regex(@"^/?ko(?:[\s\-]|$)") // Keep knockout comments
             };
         }
@@ -169,7 +171,7 @@ namespace NUglify.Html
         /// <summary>
         /// Gets or sets the minify js settings.
         /// </summary>
-        public JavaScript.CodeSettings JsSettings { get; set; }
+        public CodeSettings JsSettings { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether minify css inside &lt;style&gt; tags. Default is <c>true</c> using <see cref="Uglify.Css(string,NUglify.Css.CssSettings,NUglify.JavaScript.CodeSettings)"/>
@@ -184,7 +186,7 @@ namespace NUglify.Html
         /// <summary>
         /// Gets or sets the minify css settings.
         /// </summary>
-        public Css.CssSettings CssSettings{ get; set; }
+        public CssSettings CssSettings{ get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to output an indented html (for debug).
@@ -224,6 +226,11 @@ namespace NUglify.Html
         /// Gets the list of tags that will be kept even if they have an optional start/end tag.
         /// </summary>
         public HashSet<string> KeepTags { get; }
+
+        /// <summary>
+        /// A list of attributes (names) to be removed from all tags
+        /// </summary>
+        public HashSet<string> RemoveAttributes { get; set; }
 
         /// <summary>
         /// returns settings to output a pretty HTML

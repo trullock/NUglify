@@ -450,6 +450,9 @@ namespace NUglify.Html
             var tag = element.Name.ToLowerInvariant();
             var attr = attribute.Name.ToLowerInvariant();
 
+            if (settings.RemoveAttributes.Contains(attribute.Name))
+                return true;
+
             if (attribute.Value != null)
             {
                 if (settings.RemoveJavaScript)
