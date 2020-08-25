@@ -989,7 +989,8 @@ namespace NUglify.Html
 
         private void AppendText(char character)
         {
-            GetTextNode(GetSourceLocation()).Append(text, position, character);
+            var textNode = GetTextNode(GetSourceLocation());
+            textNode.Append(text, position, character);
         }
 
         private void AppendText(SourceLocation from, int to)

@@ -27,7 +27,8 @@ namespace NUglify.Tests.Html
         public void Bug119()
         {
             input = "This is a fragment </p> and it continues here <a>";
-            Assert.AreEqual("This is a fragmentand it continues here", Uglify.HtmlToText(input));
+            var htmlToText = Uglify.HtmlToText(input);
+            equal("This is a fragment and it continues here  ", htmlToText.Code);
         }
     }
 }

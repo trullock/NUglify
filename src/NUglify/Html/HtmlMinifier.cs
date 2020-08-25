@@ -102,29 +102,38 @@ namespace NUglify.Html
                 xmlNamespaceCount++;
             }
 
-            TrimNodeOnStart(node);
-            
-            bool isContentNonCollapsible = false;
-            if (element != null && settings.TagsWithNonCollapsableWhitespaces.ContainsKey(element.Name))
+            // If we have a rogue closing tag, just remove it and pretend we never encountered it
+            if (settings.RemoveInvalidClosingTags && element?.Kind == ElementKind.Closing)
             {
-                pendingTagNonCollapsibleWithSpaces++;
-                isContentNonCollapsible = true;
+                element.Remove();
             }
+            else
+            {
+                TrimNodeOnStart(node);
 
-            ProcessChildren(node);
+                bool isContentNonCollapsible = false;
+                if (element != null && settings.TagsWithNonCollapsableWhitespaces.ContainsKey(element.Name))
+                {
+                    pendingTagNonCollapsibleWithSpaces++;
+                    isContentNonCollapsible = true;
+                }
 
-            TrimNodeOnEnd(node);
+                ProcessChildren(node);
+
+                TrimNodeOnEnd(node);
+
+                if (isContentNonCollapsible)
+                {
+                    pendingTagNonCollapsibleWithSpaces--;
+                }
+            }
 
             if (isInXml)
             {
                 xmlNamespaceCount--;
             }
-
-            if (isContentNonCollapsible)
-            {
-                pendingTagNonCollapsibleWithSpaces--;
-            }
         }
+
         private void ProcessChildren(HtmlNode node)
         {
             foreach (var subNode in node.Children)
@@ -233,13 +242,7 @@ namespace NUglify.Html
             {
                 TrimPendingTextNodes();
             }
-
-            // Remove invalid closing tags
-            if (settings.RemoveInvalidClosingTags && element.Kind == ElementKind.Closing)
-            {
-                element.Remove();
-            }
-
+            
             if (element.Attributes != null)
             {
                 for (int i = element.Attributes.Count - 1; i >= 0; i--)
