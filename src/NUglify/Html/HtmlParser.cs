@@ -895,6 +895,13 @@ namespace NUglify.Html
 
                     CurrentParent.AppendChild(invalidTag);
 
+                    // if only <html> exists in the stack, attempt to create missing structure
+                    if (stack.Count == 1)
+                    {
+                        var parent = CurrentParent;
+                        TryCreateOptionalStart(ref parent, invalidTag);
+                    }
+                    
                     if (descriptor != null && descriptor.EndKind == TagEndKind.AutoSelfClosing)
                     {
                         invalidTag.Kind = ElementKind.SelfClosing;
@@ -982,7 +989,8 @@ namespace NUglify.Html
 
         private void AppendText(char character)
         {
-            GetTextNode(GetSourceLocation()).Append(text, position, character);
+            var textNode = GetTextNode(GetSourceLocation());
+            textNode.Append(text, position, character);
         }
 
         private void AppendText(SourceLocation from, int to)

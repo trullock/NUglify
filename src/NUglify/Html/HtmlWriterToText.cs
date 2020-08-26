@@ -48,7 +48,7 @@ namespace NUglify.Html
                         .Replace('\t', ' ')
                         .Replace('\f', ' ');
                 }
-
+                
                 if (ShouldKeepFormatting || !ShouldKeepHtmlEscape)
                 {
                     text = text.Replace("&lt;", "<");

@@ -22,5 +22,13 @@ namespace NUglify.Tests.Html
 ";
             equal(minify(input, settings), "<p>para1<h2>heading2</h2>");
         }
+		
+        [Test]
+        public void Bug119()
+        {
+            input = "This is a fragment </p> and it continues here <a>";
+            var htmlToText = Uglify.HtmlToText(input);
+            equal("This is a fragment and it continues here  ", htmlToText.Code);
+        }
     }
 }
