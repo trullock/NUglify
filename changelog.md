@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.1 (25 August 2020)
+- Improves handling of rogue closing tags in HTML, manifesting at least in how HtmlToText behaves. There shouldn't be any regressions but we've gone up a minor revision just in case.
+
 ## 1.8.1 (24 August 2020)
 - Removes deprecated lineCount from SourceMaps
 - Adds `MakePathsRelative` true/false to `V3SourceMap` to control path munging

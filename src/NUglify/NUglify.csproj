@@ -18,7 +18,7 @@
     <RepositoryUrl>git://github.com/trullock/NUglify</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
     <Version>1.8.1</Version>
-    <PackageLicenseExpression>http://opensource.org/licenses/BSD-2-Clause</PackageLicenseExpression>
+    <PackageLicenseExpression></PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
