@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>NUglify provides minify and compression methods for CSS, JavaScript and HTML files for .NET (fork of AjaxMin + new features)</Description>
+    <Description>NUglify provides minification and compression methods for CSS, JavaScript and HTML files for .NET</Description>
     <Copyright>Alexandre Mutel;Andrew Bullock</Copyright>
     <AssemblyTitle>NUglify</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -17,7 +17,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/trullock/NUglify</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
-    <Version>1.8.1</Version>
+    <Version>1.9.1</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
   </PropertyGroup>
 
