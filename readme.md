@@ -18,7 +18,7 @@ See the [ChangeLog](changelog.md)
 - Css minification
 - HTML minification
   - Can help to reduce by 5-10% a standard HTML document
-  - Supports several minifications methods: remove comments, collapse whitespaces, remove optional tags (p, li...), remove quoted attributes, decode HTML entities, compress inline style and script using NUglify
+  - Supports several minifications methods: remove comments, collapse whitespaces, remove optional tags (p, li...), remove quoted attributes, remove specific attributes, decode HTML entities, compress inline style and script using NUglify
   - No regex involved, full HTML parser
   - Supports HTML5, works best on valid HTML documents (but can still work on invalid documents)
   - Similar to the popular [html-minifier in JS](https://github.com/kangax/html-minifier)
