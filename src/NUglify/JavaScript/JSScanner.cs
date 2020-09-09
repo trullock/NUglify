@@ -2897,7 +2897,7 @@ namespace NUglify.JavaScript
                         // save the start of the next run (if any)
                         startOfRun = m_currentPosition + 1;
                     }
-                    else if (IsLineTerminator(ch, 1))
+                    else if (IsLineTerminator(ch, 0))
                     {
                         // we'll just keep this as part of the unescaped run
                         ++m_currentPosition;
