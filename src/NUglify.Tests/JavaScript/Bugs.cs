@@ -85,6 +85,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void Bug138()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
         public void Bug139()
         {
             TestHelper.Instance.RunTest();

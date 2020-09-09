@@ -4817,7 +4817,7 @@ namespace NUglify.JavaScript
                     ReportError(JSError.FunctionExpressionExpected);
                 }
             }
-            else if (m_currentToken.Is(JSToken.Multiply) || nextToken == JSToken.LeftParenthesis)
+            else if (m_currentToken.Is(JSToken.Multiply) || m_currentToken.Is(JSToken.Async) || nextToken == JSToken.LeftParenthesis)
             {
                 // method declaration in ES6
                 // starts off right with the name. Don't set the name field -- the method
