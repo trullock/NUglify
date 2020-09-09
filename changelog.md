@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.2 (9 September 2020)
+- Fixes bug with `crlf` immediately before a closing template literal
+- Fixes bug with `async` shortand object initializer syntax
+
 ## 1.9.1 (25 August 2020)
 - Improves handling of rogue closing tags in HTML, manifesting at least in how HtmlToText behaves. There shouldn't be any regressions but we've gone up a minor revision just in case.
 
