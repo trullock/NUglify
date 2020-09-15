@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.3 (15 September 2020)
+- Fixes bug with single argument functions with a default parameter value
+
 ## 1.9.2 (9 September 2020)
 - Fixes bug with `crlf` immediately before a closing template literal
 - Fixes bug with `async` shortand object initializer syntax
