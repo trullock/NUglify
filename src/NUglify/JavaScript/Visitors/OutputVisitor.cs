@@ -3882,6 +3882,7 @@ namespace NUglify.JavaScript.Visitors
 
             var declaration = node.ParameterDeclarations[0] as ParameterDeclaration;
             return declaration == null
+                || declaration.Initializer != null
                 || declaration.HasRest
                 || declaration.Binding is ArrayLiteral
                 || declaration.Binding is ObjectLiteral;
