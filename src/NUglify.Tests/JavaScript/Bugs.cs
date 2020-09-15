@@ -95,5 +95,38 @@ namespace NUglify.Tests.JavaScript
         {
             TestHelper.Instance.RunTest();
         }
+
+        [Test]
+        public void Bug139_A()
+        {
+            // previously these would throw exceptions because the closing backtick was skipped, creating an invalid ast
+            // manually define cr and lfs to be sure we dont have platform sillynes
+
+            var uglifyResult = Uglify.Js(@"var testString = `
+`;
+            testString += `} async init(){ }`;");
+            Assert.AreEqual("var testString=`\n`+`} async init(){ }`", uglifyResult.Code);
+
+            // CR
+            uglifyResult = Uglify.Js("var testString = `"+ (char)13 +@"`;
+            testString += `} async init(){ }`;");
+            Assert.AreEqual("var testString=`\r`+`} async init(){ }`", uglifyResult.Code);
+
+            // LF
+            uglifyResult = Uglify.Js("var testString = `" + (char)10 + @"`;
+            testString += `} async init(){ }`;");
+            Assert.AreEqual("var testString=`\n`+`} async init(){ }`", uglifyResult.Code);
+
+            // CRLF
+            uglifyResult = Uglify.Js("var testString = `" + (char)13 + (char)10 + @"`;
+            testString += `} async init(){ }`;");
+            Assert.AreEqual("var testString=`\r\n`+`} async init(){ }`", uglifyResult.Code);
+
+            //LFCR
+            uglifyResult = Uglify.Js("var testString = `" + (char)10 + (char)13 + @"`;
+            testString += `} async init(){ }`;");
+            Assert.AreEqual("var testString=`\n\r`+`} async init(){ }`", uglifyResult.Code);
+
+        }
     }
 }
