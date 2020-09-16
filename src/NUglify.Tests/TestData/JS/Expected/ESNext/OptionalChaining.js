@@ -1,0 +1,1 @@
+﻿let x=foo.?bar,y=foo.?(),z=foo.?().?[],p=foo?.3:0;return x+y+z

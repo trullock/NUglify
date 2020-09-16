@@ -22,58 +22,39 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class CallExpression : Expression
     {
-        private AstNode m_function;
-        private AstNodeList m_arguments;
+        AstNode m_function;
+        AstNodeList m_arguments;
 
         public AstNode Function
         {
-            get { return m_function; }
-            set
-            {
-                ReplaceNode(ref m_function, value);
-            }
+            get => m_function;
+            set => ReplaceNode(ref m_function, value);
         }
 
         public AstNodeList Arguments
         {
-            get { return m_arguments; }
-            set
-            {
-                ReplaceNode(ref m_arguments, value);
-            }
+            get => m_arguments;
+            set => ReplaceNode(ref m_arguments, value);
         }
-
-        public bool IsConstructor
-        {
-            get;
-            set;
-        }
-
-        public bool InBrackets
-        {
-            get;
-            set;
-        }
+        
+        public bool IsConstructor { get; set; }
+        public bool InBrackets { get; set; }
+        public bool OptionalChaining { get; set; }
 
         public CallExpression(SourceContext context)
             : base(context)
         {
         }
 
-        public override OperatorPrecedence Precedence
-        {
-            get
-            {
-                // new-operator is the unary precedence; () and [] are  field access
-                return /*IsConstructor ? OperatorPrecedence.Unary :*/ OperatorPrecedence.FieldAccess;
-            }
-        }
+        public override OperatorPrecedence Precedence =>
+            // new-operator is the unary precedence; () and [] are  field access
+            /*IsConstructor ? OperatorPrecedence.Unary :*/OperatorPrecedence.FieldAccess;
 
         public override bool IsExpression
         {
             get
             {
-                // normall this would be an expression. BUT we want to check for a
+                // normally this would be an expression. BUT we want to check for a
                 // call to a member function that is in the "onXXXX" pattern and passing
                 // parameters. This is because of a bug in IE that will throw a script error 
                 // if you call a native event handler like onclick and pass in a parameter
@@ -82,14 +63,12 @@ namespace NUglify.JavaScript.Syntax
                 // calls to any member operator where the property name starts with "on" and
                 // we are passing in arguments as if it were NOT an expression, and it won't
                 // get combined.
-                MemberExpression callMember = Function as MemberExpression;
+                var callMember = Function as MemberExpression;
                 if (callMember != null
                     && callMember.Name.StartsWith("on", StringComparison.Ordinal)
                     && Arguments.Count > 0)
-                {
                     // popped positive -- don't treat it like an expression.
                     return false;
-                }
 
                 // otherwise it's okay -- it's an expression and can be combined.
                 return true;
@@ -98,19 +77,10 @@ namespace NUglify.JavaScript.Syntax
 
         public override void Accept(IVisitor visitor)
         {
-            if (visitor != null)
-            {
-                visitor.Visit(this);
-            }
+            visitor?.Visit(this);
         }
 
-        public override IEnumerable<AstNode> Children
-        {
-            get
-            {
-                return EnumerateNonNullNodes(Function, Arguments);
-            }
-        }
+        public override IEnumerable<AstNode> Children => EnumerateNonNullNodes(Function, Arguments);
 
         public override bool ReplaceChild(AstNode oldNode, AstNode newNode)
         {
@@ -119,6 +89,7 @@ namespace NUglify.JavaScript.Syntax
                 Function = newNode;
                 return true;
             }
+
             if (Arguments == oldNode)
             {
                 if (newNode == null)
@@ -138,17 +109,12 @@ namespace NUglify.JavaScript.Syntax
                     }
                 }
             }
+
             return false;
         }
 
-        public override AstNode LeftHandSide
-        {
-            get
-            {
-                // the function is on the left
-                return Function.LeftHandSide;
-            }
-        }
+        // the function is on the left
+        public override AstNode LeftHandSide =>  Function.LeftHandSide;
 
         public override bool IsEquivalentTo(AstNode otherNode)
         {
@@ -156,10 +122,11 @@ namespace NUglify.JavaScript.Syntax
             // are all equivalent (and be sure to check for brackets and constructor)
             var otherCall = otherNode as CallExpression;
             return otherCall != null
-                && this.InBrackets == otherCall.InBrackets
-                && this.IsConstructor == otherCall.IsConstructor
-                && this.Function.IsEquivalentTo(otherCall.Function)
-                && this.Arguments.IsEquivalentTo(otherCall.Arguments);
+                   && InBrackets == otherCall.InBrackets
+                   && IsConstructor == otherCall.IsConstructor
+                   && OptionalChaining == otherCall.OptionalChaining
+                   && Function.IsEquivalentTo(otherCall.Function)
+                   && Arguments.IsEquivalentTo(otherCall.Arguments);
         }
     }
 }

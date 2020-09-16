@@ -69,7 +69,7 @@ namespace NUglify.JavaScript.Visitors
                             // we want to replace the call with operator with a new member dot operation, and
                             // since we won't be analyzing it (we're past the analyze phase, we're going to need
                             // to use the new string value
-                            MemberExpression replacementMember = new MemberExpression(parentCall.Context)
+                            MemberExpression replacementMember = new MemberExpression(parentCall.Context, false)
                                 {
                                     Root = parentCall.Function,
                                     Name = newName,
@@ -97,7 +97,7 @@ namespace NUglify.JavaScript.Visitors
                             && !JSScanner.IsKeyword(combinedString, (parentCall.EnclosingScope ?? m_parser.GlobalScope).UseStrict))
                         {
                             // yes -- replace the parent call with a new member node using the newly-combined string
-                            MemberExpression replacementMember = new MemberExpression(parentCall.Context)
+                            MemberExpression replacementMember = new MemberExpression(parentCall.Context, false)
                                 {
                                     Root = parentCall.Function,
                                     Name = combinedString,

@@ -67,6 +67,7 @@ namespace NUglify.JavaScript
         LeftParenthesis,                // (
         LeftBracket,                    // [
         AccessField,                    // .
+        OptionalChaining,               // ?.
         ArrowFunction,                  // =>
         RestSpread,                     // ...
 
