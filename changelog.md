@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.5
+- Adds support for Optional Chaining
+
 ## 1.9.4
 - Fixes bug with `crlf` immediately before a closing template literal
 
