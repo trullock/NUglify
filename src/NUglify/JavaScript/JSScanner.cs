@@ -2021,6 +2021,10 @@ namespace NUglify.JavaScript
                         noMoreDot = true;
                         token = JSToken.NumericLiteral;
                     }
+                    else if ('_' == c)
+                    {
+                        m_currentPosition++;
+                    }
                     else if ('e' == c || 'E' == c)
                     {
                         if (exponent)
