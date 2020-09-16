@@ -1920,7 +1920,7 @@ namespace NUglify.JavaScript
             bool noMoreDot = '.' == leadChar;
             JSToken token = noMoreDot ? JSToken.NumericLiteral : JSToken.IntegerLiteral;
             bool exponent = false;
-            char c, lastC;
+            char c;
             m_literalIssues = false;
 
             if ('0' == leadChar)
