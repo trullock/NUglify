@@ -83,6 +83,9 @@ namespace NUglify.JavaScript.Syntax
                     case JSToken.RightShiftAssign:
                     case JSToken.UnsignedRightShiftAssign:
                     case JSToken.PlusAssign:
+                    case JSToken.LogicalAndAssign:
+                    case JSToken.LogicalOrAssign:
+                    case JSToken.LogicalNullishAssign:
                         return OperatorPrecedence.Assignment;
 
                     case JSToken.LogicalOr:
@@ -91,7 +94,7 @@ namespace NUglify.JavaScript.Syntax
                     case JSToken.LogicalAnd:
                         return OperatorPrecedence.LogicalAnd;
 
-                    case JSToken.NullCoalesce:
+                    case JSToken.NullishCoalesce:
                         return OperatorPrecedence.NullCoalesce;
 
                     case JSToken.BitwiseOr:
@@ -207,8 +210,11 @@ namespace NUglify.JavaScript.Syntax
 
                 case JSToken.LogicalAnd:
                 case JSToken.LogicalOr:
-                case JSToken.NullCoalesce:
-                    // these three are special. They return either the left or the right operand
+                case JSToken.LogicalOrAssign:
+                case JSToken.LogicalAndAssign:
+                case JSToken.LogicalNullishAssign:
+                case JSToken.NullishCoalesce:
+                    // these are special. They return either the left or the right operand
                     // (depending on their values), so unless they are both known types AND the same,
                     // then we can't know for sure.
                     leftType = Operand1.FindPrimitiveType();
@@ -323,6 +329,9 @@ namespace NUglify.JavaScript.Syntax
                     case JSToken.LeftShiftAssign:
                     case JSToken.RightShiftAssign:
                     case JSToken.UnsignedRightShiftAssign:
+                    case JSToken.LogicalAndAssign:
+                    case JSToken.LogicalOrAssign:
+                    case JSToken.LogicalNullishAssign:
                         return true;
 
                     default:

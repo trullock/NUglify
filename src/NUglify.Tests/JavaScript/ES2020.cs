@@ -109,5 +109,23 @@ namespace NUglify.Tests.JavaScript
         {
             TestHelper.Instance.RunErrorTest(JSError.BadNumericLiteral);
         }
+
+        [Test]
+        public void LogicalAndAssign()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
+        public void LogicalOrAssign()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
+        public void LogicalNullishAssign()
+        {
+            TestHelper.Instance.RunTest();
+        }
     }
 }

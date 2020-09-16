@@ -479,7 +479,7 @@ namespace NUglify.JavaScript.Visitors
                                         case JSToken.BitwiseOr:
                                         case JSToken.LogicalAnd:
                                         case JSToken.LogicalOr:
-                                        case JSToken.NullCoalesce:
+                                        case JSToken.NullishCoalesce:
                                         case JSToken.Exponent:
                                             // these are the same regardless
                                             rightNeedsParens = false;
@@ -3798,7 +3798,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.BitwiseXor: return "^";
                 case JSToken.LogicalAnd: return "&&";
                 case JSToken.LogicalOr: return "||";
-                case JSToken.NullCoalesce: return "??";
+                case JSToken.NullishCoalesce: return "??";
                 case JSToken.Exponent: return "**";
                 case JSToken.Assign: return "=";
                 case JSToken.BitwiseAndAssign: return "&=";
@@ -3816,6 +3816,9 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.LessThanEqual: return "<=";
                 case JSToken.MinusAssign: return "-=";
                 case JSToken.ExponentAssign: return "**=";
+                case JSToken.LogicalAndAssign: return "&&=";
+                case JSToken.LogicalNullishAssign: return "??=";
+                case JSToken.LogicalOrAssign: return "||=";
                 case JSToken.Modulo: return "%";
                 case JSToken.ModuloAssign: return "%=";
                 case JSToken.MultiplyAssign: return "*=";

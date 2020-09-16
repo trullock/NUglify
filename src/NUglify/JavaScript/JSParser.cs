@@ -5340,7 +5340,7 @@ namespace NUglify.JavaScript
                 case JSToken.LessThanEqual:
                 case JSToken.LogicalAnd:
                 case JSToken.LogicalOr:
-                case JSToken.NullCoalesce:
+                case JSToken.NullishCoalesce:
                 case JSToken.Minus:
                 case JSToken.MinusAssign:
                 case JSToken.Exponent:
@@ -5358,6 +5358,9 @@ namespace NUglify.JavaScript
                 case JSToken.StrictNotEqual:
                 case JSToken.UnsignedRightShift:
                 case JSToken.UnsignedRightShiftAssign:
+                case JSToken.LogicalAndAssign:
+                case JSToken.LogicalNullishAssign:
+                case JSToken.LogicalOrAssign:
                     // regular binary operator
                     return new BinaryExpression(context)
                         {

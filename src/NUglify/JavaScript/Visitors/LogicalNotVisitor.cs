@@ -169,6 +169,9 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.LeftShiftAssign:
                 case JSToken.RightShiftAssign:
                 case JSToken.UnsignedRightShiftAssign:
+                case JSToken.LogicalAndAssign:
+                case JSToken.LogicalOrAssign:
+                case JSToken.LogicalNullishAssign:
                 case JSToken.BitwiseAnd:
                 case JSToken.BitwiseOr:
                 case JSToken.BitwiseXor:
@@ -199,7 +202,7 @@ namespace NUglify.JavaScript.Visitors
 
                 case JSToken.LogicalAnd:
                 case JSToken.LogicalOr:
-                case JSToken.NullCoalesce:
+                case JSToken.NullishCoalesce:
                     if (node.Parent is BlockStatement || (node.Parent is CommaExpression && node.Parent.Parent is BlockStatement))
                     {
                         // if the parent is a block, then this is a simple expression statement:
@@ -283,6 +286,9 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.LeftShiftAssign:
                 case JSToken.RightShiftAssign:
                 case JSToken.UnsignedRightShiftAssign:
+                case JSToken.LogicalAndAssign:
+                case JSToken.LogicalNullishAssign:
+                case JSToken.LogicalOrAssign:
                 case JSToken.BitwiseAnd:
                 case JSToken.BitwiseOr:
                 case JSToken.BitwiseXor:
@@ -297,7 +303,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.In:
                 case JSToken.Of:
                 case JSToken.InstanceOf:
-                case JSToken.NullCoalesce:
+                case JSToken.NullishCoalesce:
                 case JSToken.Exponent:
                     WrapWithLogicalNot(node);
                     break;

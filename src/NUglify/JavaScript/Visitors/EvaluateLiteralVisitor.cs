@@ -291,7 +291,7 @@ namespace NUglify.JavaScript.Visitors
                     newLiteral = LogicalOr(left, right);
                     break;
 
-                case JSToken.NullCoalesce:
+                case JSToken.NullishCoalesce:
                     newLiteral = NullCoalesce(left, right);
                     break;
 					
@@ -1994,7 +1994,7 @@ namespace NUglify.JavaScript.Visitors
                                 ReplaceNodeCheckParens(node, node.Operand2);
                             }
                         }
-                        else if (node.OperatorToken == JSToken.NullCoalesce)
+                        else if (node.OperatorToken == JSToken.NullishCoalesce)
                         {
                             // we have a literal on the left of a null coalesce.
                             // if its null we can just ues the right, else use the left
