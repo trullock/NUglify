@@ -474,7 +474,22 @@
     <Content Include="TestData\JS\Expected\ES2015\Exponent.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsBad.js">
+    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsDecimalAfter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsDecimalBefore.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsExponentAfter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsExponentBefore.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsNoAdjacent.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsNoTrailing.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsBinary1.js">
@@ -2735,6 +2750,24 @@
     <Content Include="TestData\JS\Input\ES2015\Exponent.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsExponentAfter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsDecimalAfter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsExponentBefore.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsDecimalBefore.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsNoAdjacent.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsNoTrailing.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsHex2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2766,9 +2799,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsInteger.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsBad.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\ESNext\OptionalChaining.js">
