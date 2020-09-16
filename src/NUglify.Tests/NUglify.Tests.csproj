@@ -474,58 +474,58 @@
     <Content Include="TestData\JS\Expected\ES2015\Exponent.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsDecimalAfter.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsDecimalAfter.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsDecimalBefore.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsDecimalBefore.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsExponentAfter.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsExponentAfter.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsExponentBefore.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsExponentBefore.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsNoAdjacent.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsNoAdjacent.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsNoTrailing.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsNoTrailing.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsBinary1.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsBinary1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsBinary2.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsBinary2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsDecimal1.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsDecimal1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsDecimal2.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsDecimal2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsExponent1.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsExponent1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsExponent2.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsExponent2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsHex1.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsHex1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsHex2.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsHex2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsInteger.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsInteger.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsOctal1.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsOctal1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\NumericSeparatorsOctal2.js">
+    <Content Include="TestData\JS\Expected\ES2020\NumericSeparatorsOctal2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ESNext\OptionalChaining.js">
+    <Content Include="TestData\JS\Expected\ES2020\OptionalChaining.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\Modules\Header.js">
@@ -2750,58 +2750,58 @@
     <Content Include="TestData\JS\Input\ES2015\Exponent.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsExponentAfter.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsExponentAfter.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsDecimalAfter.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsDecimalAfter.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsExponentBefore.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsExponentBefore.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsDecimalBefore.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsDecimalBefore.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsNoAdjacent.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsNoAdjacent.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsNoTrailing.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsNoTrailing.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsHex2.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsHex2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsHex1.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsHex1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsOctal2.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsOctal2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsOctal1.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsOctal1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsBinary2.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsBinary2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsBinary1.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsBinary1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsExponent2.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsExponent2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsExponent1.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsExponent1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsDecimal2.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsDecimal2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsDecimal1.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsDecimal1.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\NumericSeparatorsInteger.js">
+    <Content Include="TestData\JS\Input\ES2020\NumericSeparatorsInteger.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ESNext\OptionalChaining.js">
+    <Content Include="TestData\JS\Input\ES2020\OptionalChaining.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\Modules\Header.js">
@@ -3900,7 +3900,10 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TestData\JS\Expected\ESNext\" />
+    <Folder Include="TestData\JS\Input\ESNext\" />
+  </ItemGroup>
   <Import Project="$(MSBuildThisFileDirectory)..\NUglify.shared.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
