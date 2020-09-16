@@ -5383,6 +5383,7 @@ namespace NUglify.JavaScript
         {
             try
             {
+                str = str.Replace("_", string.Empty);
                 if (isInteger)
                 {
                     if (str[0] == '0' && str.Length > 1)

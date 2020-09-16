@@ -1920,7 +1920,7 @@ namespace NUglify.JavaScript
             bool noMoreDot = '.' == leadChar;
             JSToken token = noMoreDot ? JSToken.NumericLiteral : JSToken.IntegerLiteral;
             bool exponent = false;
-            char c;
+            char c, lastC;
             m_literalIssues = false;
 
             if ('0' == leadChar)
@@ -1931,7 +1931,7 @@ namespace NUglify.JavaScript
                 {
                     if (JSScanner.IsHexDigit(GetChar(m_currentPosition + 1)))
                     {
-                        while (JSScanner.IsHexDigit(GetChar(++m_currentPosition)))
+                        while (JSScanner.IsHexDigit(c = GetChar(++m_currentPosition)) || c == '_')
                         {
                             // empty
                         }
@@ -1945,7 +1945,7 @@ namespace NUglify.JavaScript
                     c = GetChar(m_currentPosition + 1);
                     if (c == '1' || c == '0')
                     {
-                        while ('0' == (c = GetChar(++m_currentPosition)) || c == '1')
+                        while ('0' == (c = GetChar(++m_currentPosition)) || c == '1' || c == '_')
                         {
                             // iterator handled in the condition
                         }
@@ -1959,7 +1959,7 @@ namespace NUglify.JavaScript
                     c = GetChar(m_currentPosition + 1);
                     if ('0' <= c && c <= '7')
                     {
-                        while ('0' <= (c = GetChar(++m_currentPosition)) && c <= '7')
+                        while (('0' <= (c = GetChar(++m_currentPosition)) && c <= '7') || c == '_')
                         {
                             // iterator handled in the condition
                         }
@@ -2013,13 +2013,32 @@ namespace NUglify.JavaScript
                 {
                     if ('.' == c)
                     {
-                        if (noMoreDot)
+                        if (GetChar(m_currentPosition - 1) == '_')
                         {
-                            break;
+                            m_literalIssues = true;
+                            HandleError(JSError.BadNumericLiteral);
                         }
+
+                        if (noMoreDot)
+                            break;
 
                         noMoreDot = true;
                         token = JSToken.NumericLiteral;
+                    }
+                    else if ('_' == c)
+                    {
+                        c = GetChar(m_currentPosition - 1);
+                        // report multiple adjacent separators as an error, although we can handle it so still minify
+                        if (c == '_')
+                        {
+                            m_literalIssues = true;
+                            HandleError(JSError.BadNumericLiteral);
+                        }
+                        else if (c == '.')
+                        {
+                            m_literalIssues = true;
+                            HandleError(JSError.BadNumericLiteral);
+                        }
                     }
                     else if ('e' == c || 'E' == c)
                     {
@@ -2041,6 +2060,11 @@ namespace NUglify.JavaScript
                     }
                     else
                     {
+                        if (GetChar(m_currentPosition - 1) == '_')
+                        {
+                            m_literalIssues = true;
+                            HandleError(JSError.BadNumericLiteral);
+                        }
                         break;
                     }
                 }
@@ -3339,7 +3363,7 @@ namespace NUglify.JavaScript
 
         #region private Is methods
 
-        private static bool IsHexDigit(char c)
+        static bool IsHexDigit(char c)
         {
             return ('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
         }
