@@ -1,10 +1,10 @@
 # Changelog
 
-## 1.9.5
+## 1.9.5 (Not yet published)
 - Adds support for Optional Chaining
 - Adds support for Numeric Separators
 
-## 1.9.4
+## 1.9.4 (15 September 2020)
 - Fixes bug with `crlf` immediately before a closing template literal
 
 ## 1.9.3 (15 September 2020)
