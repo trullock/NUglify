@@ -3,6 +3,7 @@
 ## 1.9.5 (Not yet published)
 - Adds support for Optional Chaining
 - Adds support for Numeric Separators
+- Adds support for Logical Assignment operators
 
 ## 1.9.4 (15 September 2020)
 - Fixes bug with `crlf` immediately before a closing template literal
