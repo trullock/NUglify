@@ -4989,125 +4989,35 @@ namespace NUglify.JavaScript
                 switch (m_currentToken.Token)
                 {
                     case JSToken.LeftParenthesis:
-                        AstNodeList args = null;
-                        args = ParseExpressionList(JSToken.RightParenthesis);
-
-                        expression = new CallExpression(expression.Context.CombineWith(args.Context))
-                            {
-                                Function = expression,
-                                Arguments = args,
-                                InBrackets = false
-                            };
-
-                        if (null != newContexts && newContexts.Count > 0)
-                        {
-                            (newContexts[newContexts.Count - 1]).UpdateWith(expression.Context);
-                            if (!(expression is CallExpression))
-                            {
-                                expression = new CallExpression(newContexts[newContexts.Count - 1])
-                                    {
-                                        Function = expression,
-                                        Arguments = new AstNodeList(CurrentPositionContext)
-                                    };
-                            }
-                            else
-                            {
-                                expression.Context = newContexts[newContexts.Count - 1];
-                            }
-
-                            ((CallExpression)expression).IsConstructor = true;
-                            newContexts.RemoveAt(newContexts.Count - 1);
-                        }
-
-                        GetNextToken();
+                        ParseMemberExpression_LeftParenthesis(ref expression, newContexts, false);
                         break;
 
                     case JSToken.LeftBracket:
-                        //
-                        // ROTOR parses a[b,c] as a call to a, passing in the arguments b and c.
-                        // the correct parse is a member lookup on a of c -- the "b,c" should be
-                        // a single expression with a comma operator that evaluates b but only
-                        // returns c.
-                        // So we'll change the default behavior from parsing an expression list to
-                        // parsing a single expression, but returning a single-item list (or an empty
-                        // list if there is no expression) so the rest of the code will work.
-                        //
-                        //args = ParseExpressionList(JSToken.RightBracket);
-                        GetNextToken();
-                        args = new AstNodeList(CurrentPositionContext);
-
-                        AstNode accessor = ParseExpression();
-                        if (accessor != null)
-                        {
-                            args.Append(accessor);
-                        }
-
-                        expression = new CallExpression(expression.Context.CombineWith(m_currentToken))
-                            {
-                                Function = expression,
-                                Arguments = args,
-                                InBrackets = true
-                            };
-
-                        // there originally was code here in the ROTOR sources that checked the new context list and
-                        // changed this member call to a constructor call, effectively combining the two. I believe they
-                        // need to remain separate.
-
-                        // remove the close bracket token
-                        GetNextToken();
+                        ParseMemberExpression_LeftBracket(ref expression, false);
                         break;
 
                     case JSToken.AccessField:
-                        ConstantWrapper id = null;
-
-                        string name = null;
-                        // we want the name context to start with the dot
-                        SourceContext nameContext = m_currentToken.Clone();
-                        GetNextToken();
-                        if (m_currentToken.IsNot(JSToken.Identifier))
-                        {
-                            name = JSKeyword.CanBeIdentifier(m_currentToken.Token);
-                            if (null != name)
-                            {
-                                // don't report an error here -- it's actually okay to have a property name
-                                // that is a keyword which is okay to be an identifier. For instance,
-                                // jQuery has a commonly-used method named "get" to make an ajax request
-                                //ForceReportInfo(JSError.KeywordUsedAsIdentifier);
-                                id = new ConstantWrapper(name, PrimitiveType.String, m_currentToken.Clone());
-                            }
-                            else if (JSScanner.IsValidIdentifier(m_currentToken.Code))
-                            {
-                                // it must be a keyword, because it can't technically be an identifier,
-                                // but it IS a valid identifier format. Throw a warning but still
-                                // create the constant wrapper so we can output it as-is
-                                ReportError(JSError.KeywordUsedAsIdentifier);
-                                name = m_currentToken.Code;
-                                id = new ConstantWrapper(name, PrimitiveType.String, m_currentToken.Clone());
-                            }
-                            else
-                            {
-                                ReportError(JSError.NoIdentifier);
-                            }
-                        }
-                        else
-                        {
-                            name = m_scanner.Identifier;
-                            id = new ConstantWrapper(name, PrimitiveType.String, m_currentToken.Clone());
-                        }
-
-                        if (id != null)
-                        {
-                            nameContext.UpdateWith(id.Context);
-                        }
-
-                        GetNextToken();
-                        expression = new MemberExpression(expression != null ? expression.Context.CombineWith(nameContext) : nameContext.Clone())
-                            {
-                                Root = expression,
-                                Name = name,
-                                NameContext = nameContext
-                            };
+                        ParseMemberExpression_AccessField(ref expression, false);
                         break;
+
+                    case JSToken.OptionalChaining:
+                        
+                        var nextToken = PeekToken();
+
+                        if (nextToken == JSToken.LeftBracket)
+                        {
+                            GetNextToken();
+                            ParseMemberExpression_LeftBracket(ref expression, true);
+                        }
+                        else if (nextToken == JSToken.LeftParenthesis)
+                        {
+                            GetNextToken();
+                            ParseMemberExpression_LeftParenthesis(ref expression, newContexts, true);
+                        }
+                        else 
+                            ParseMemberExpression_AccessField(ref expression, true);
+                        break;
+
                     default:
                         if (null != newContexts)
                         {
@@ -5126,6 +5036,134 @@ namespace NUglify.JavaScript
                         return expression;
                 }
             }
+        }
+
+        void ParseMemberExpression_AccessField(ref AstNode expression, bool optionalChaining)
+        {
+            ConstantWrapper id = null;
+
+            string name;
+            // we want the name context to start with the dot
+            SourceContext nameContext = m_currentToken.Clone();
+            GetNextToken();
+            if (m_currentToken.IsNot(JSToken.Identifier))
+            {
+                name = JSKeyword.CanBeIdentifier(m_currentToken.Token);
+                if (null != name)
+                {
+                    // don't report an error here -- it's actually okay to have a property name
+                    // that is a keyword which is okay to be an identifier. For instance,
+                    // jQuery has a commonly-used method named "get" to make an ajax request
+                    //ForceReportInfo(JSError.KeywordUsedAsIdentifier);
+                    id = new ConstantWrapper(name, PrimitiveType.String, m_currentToken.Clone());
+                }
+                else if (JSScanner.IsValidIdentifier(m_currentToken.Code))
+                {
+                    // it must be a keyword, because it can't technically be an identifier,
+                    // but it IS a valid identifier format. Throw a warning but still
+                    // create the constant wrapper so we can output it as-is
+                    ReportError(JSError.KeywordUsedAsIdentifier);
+                    name = m_currentToken.Code;
+                    id = new ConstantWrapper(name, PrimitiveType.String, m_currentToken.Clone());
+                }
+                else
+                {
+                    ReportError(JSError.NoIdentifier);
+                }
+            }
+            else
+            {
+                name = m_scanner.Identifier;
+                id = new ConstantWrapper(name, PrimitiveType.String, m_currentToken.Clone());
+            }
+
+            if (id != null)
+            {
+                nameContext.UpdateWith(id.Context);
+            }
+
+            GetNextToken();
+            expression = new MemberExpression(expression != null ? expression.Context.CombineWith(nameContext) : nameContext.Clone(), optionalChaining)
+            {
+                Root = expression,
+                Name = name,
+                NameContext = nameContext
+            };
+        }
+
+        void ParseMemberExpression_LeftParenthesis(ref AstNode expression, List<SourceContext> newContexts, bool optionalChaining)
+        {
+            AstNodeList args = null;
+            args = ParseExpressionList(JSToken.RightParenthesis);
+
+            expression = new CallExpression(expression.Context.CombineWith(args.Context))
+            {
+                Function = expression,
+                Arguments = args,
+                InBrackets = false,
+                OptionalChaining = optionalChaining
+            };
+
+            if (null != newContexts && newContexts.Count > 0)
+            {
+                (newContexts[newContexts.Count - 1]).UpdateWith(expression.Context);
+                if (!(expression is CallExpression))
+                {
+                    expression = new CallExpression(newContexts[newContexts.Count - 1])
+                    {
+                        Function = expression,
+                        Arguments = new AstNodeList(CurrentPositionContext),
+                        OptionalChaining = optionalChaining
+                    };
+                }
+                else
+                {
+                    expression.Context = newContexts[newContexts.Count - 1];
+                }
+
+                ((CallExpression) expression).IsConstructor = true;
+                newContexts.RemoveAt(newContexts.Count - 1);
+            }
+
+            GetNextToken();
+        }
+
+        void ParseMemberExpression_LeftBracket(ref AstNode expression, bool optionalChaining)
+        {
+            AstNodeList args;
+            //
+            // ROTOR parses a[b,c] as a call to a, passing in the arguments b and c.
+            // the correct parse is a member lookup on a of c -- the "b,c" should be
+            // a single expression with a comma operator that evaluates b but only
+            // returns c.
+            // So we'll change the default behavior from parsing an expression list to
+            // parsing a single expression, but returning a single-item list (or an empty
+            // list if there is no expression) so the rest of the code will work.
+            //
+            //args = ParseExpressionList(JSToken.RightBracket);
+            GetNextToken();
+            args = new AstNodeList(CurrentPositionContext);
+
+            AstNode accessor = ParseExpression();
+            if (accessor != null)
+            {
+                args.Append(accessor);
+            }
+
+            expression = new CallExpression(expression.Context.CombineWith(m_currentToken))
+            {
+                Function = expression,
+                Arguments = args,
+                InBrackets = true,
+                OptionalChaining = optionalChaining
+            };
+
+            // there originally was code here in the ROTOR sources that checked the new context list and
+            // changed this member call to a constructor call, effectively combining the two. I believe they
+            // need to remain separate.
+
+            // remove the close bracket token
+            GetNextToken();
         }
 
         //---------------------------------------------------------------------------------------

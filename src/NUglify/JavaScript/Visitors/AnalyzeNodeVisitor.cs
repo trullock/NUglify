@@ -1801,7 +1801,7 @@ namespace NUglify.JavaScript.Visitors
                                 // new member node -- and it might convert the new name to something else. So instead we're
                                 // just going to convert this existing string to a member node WITH THE OLD STRING, 
                                 // and THEN analyze it (which will convert the old string to newName)
-                                MemberExpression replacementMember = new MemberExpression(node.Context)
+                                MemberExpression replacementMember = new MemberExpression(node.Context, false)
                                     {
                                         Root = node.Function,
                                         Name = argText,
@@ -1827,7 +1827,7 @@ namespace NUglify.JavaScript.Visitors
                         {
                             // not a replacement, but the string literal is a safe identifier. So we will
                             // replace this call node with a Member-dot operation
-                            MemberExpression replacementMember = new MemberExpression(node.Context)
+                            MemberExpression replacementMember = new MemberExpression(node.Context, false)
                                 {
                                     Root = node.Function,
                                     Name = argText,

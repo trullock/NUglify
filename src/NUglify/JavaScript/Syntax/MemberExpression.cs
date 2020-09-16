@@ -33,12 +33,15 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
+
         public string Name { get; set; }
         public SourceContext NameContext { get; set; }
+        public bool OptionalChaining { get; set; }
 
-        public MemberExpression(SourceContext context)
+        public MemberExpression(SourceContext context, bool optionalChaining)
             : base(context)
         {
+            OptionalChaining = optionalChaining;
         }
 
         public override OperatorPrecedence Precedence
