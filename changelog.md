@@ -4,6 +4,7 @@
 - Adds support for Optional Chaining
 - Adds support for Numeric Separators
 - Adds support for Logical Assignment operators
+- Ensures `globalThis` works properly
 
 ## 1.9.4 (15 September 2020)
 - Fixes bug with `crlf` immediately before a closing template literal
