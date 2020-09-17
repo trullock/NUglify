@@ -167,6 +167,8 @@ namespace NUglify.JavaScript
             keywords['n' - 'a'] = new JSKeyword(JSToken.New, "new",
                 new JSKeyword(JSToken.Null, "null",
                     new JSKeyword(JSToken.Native, "native")));
+            // o
+            keywords['o' - 'a'] = new JSKeyword(JSToken.Of, "of");
             // p
             keywords['p' - 'a'] = new JSKeyword(JSToken.Public, "public",
                 new JSKeyword(JSToken.Package, "package",

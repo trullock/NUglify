@@ -1688,10 +1688,16 @@ namespace NUglify.JavaScript.Visitors
                 MarkSegment(node, null, node.Context);
                 SetContextOutputPosition(node.Context);
 
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (node.IsAwait)
                 {
-                    OutputPossibleLineBreak(' ');
+                    if (m_settings.OutputMode == OutputMode.MultipleLines)
+                        OutputPossibleLineBreak(' ');
+                    Output("await");
+                    MarkSegment(node, null, node.Context);
                 }
+
+                if (m_settings.OutputMode == OutputMode.MultipleLines) 
+                    OutputPossibleLineBreak(' ');
 
                 OutputPossibleLineBreak('(');
                 m_startOfStatement = false;
@@ -1738,10 +1744,9 @@ namespace NUglify.JavaScript.Visitors
                 Output("for");
                 MarkSegment(node, null, node.Context);
                 SetContextOutputPosition(node.Context);
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
-                {
+                
+                if (m_settings.OutputMode == OutputMode.MultipleLines) 
                     OutputPossibleLineBreak(' ');
-                }
 
                 OutputPossibleLineBreak('(');
                 m_startOfStatement = false;
@@ -1757,26 +1762,17 @@ namespace NUglify.JavaScript.Visitors
                 OutputPossibleLineBreak(';');
                 MarkSegment(node, null, node.Separator1Context ?? node.Context); 
                 if (m_settings.OutputMode == OutputMode.MultipleLines)
-                {
                     OutputPossibleLineBreak(' ');
-                }
+                
 
-                if (node.Condition != null)
-                {
-                    node.Condition.Accept(this);
-                }
+                node.Condition?.Accept(this);
 
                 OutputPossibleLineBreak(';');
                 MarkSegment(node, null, node.Separator2Context ?? node.Context);
                 if (m_settings.OutputMode == OutputMode.MultipleLines)
-                {
                     OutputPossibleLineBreak(' ');
-                }
-
-                if (node.Incrementer != null)
-                {
-                    node.Incrementer.Accept(this);
-                }
+                
+                node.Incrementer?.Accept(this);
 
                 OutputPossibleLineBreak(')');
                 MarkSegment(node, null, node.Context);

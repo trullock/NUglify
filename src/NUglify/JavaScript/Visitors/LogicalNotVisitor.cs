@@ -181,6 +181,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.RightShift:
                 case JSToken.UnsignedRightShift:
                 case JSToken.In:
+                case JSToken.Of:
                 case JSToken.InstanceOf:
                 case JSToken.Exponent:
                     // these operators have no logical not, which means we need to wrap them in
@@ -294,6 +295,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.RightShift:
                 case JSToken.UnsignedRightShift:
                 case JSToken.In:
+                case JSToken.Of:
                 case JSToken.InstanceOf:
                 case JSToken.NullCoalesce:
                 case JSToken.Exponent:

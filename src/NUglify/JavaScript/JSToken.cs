@@ -111,7 +111,8 @@ namespace NUglify.JavaScript
         NullCoalesce,                   // ??
 
         InstanceOf,
-        In,
+        In,                             // in
+        Of,                             // of
         Comma,                          // ,
 
         Assign,                         // =
