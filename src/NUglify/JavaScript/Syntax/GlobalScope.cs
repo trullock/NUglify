@@ -66,7 +66,9 @@ namespace NUglify.JavaScript.Syntax
                 "screen", "screenLeft", "screenTop", "screenX", "screenY", "self", "sessionStorage", "status", 
                 "top", 
                 "undefined", 
-                "window"};
+                "window",
+                "globalThis"
+            };
 
             m_globalFunctions = new HashSet<string> {
                 "ActiveXObject", "Array", "ArrayBuffer", "ArrayBufferView", 

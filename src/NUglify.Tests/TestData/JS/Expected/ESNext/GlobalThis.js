@@ -1,0 +1,1 @@
+﻿function f(n){return n*2}f(globalThis)
