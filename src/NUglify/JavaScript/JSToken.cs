@@ -108,7 +108,7 @@ namespace NUglify.JavaScript
         LogicalAnd,                     // &&
         LogicalOr,                      // ||
         
-        NullCoalesce,                   // ??
+        NullishCoalesce,                // ??
 
         InstanceOf,
         In,                             // in
@@ -128,7 +128,10 @@ namespace NUglify.JavaScript
         LeftShiftAssign,                // <<=
         RightShiftAssign,               // >>=
         UnsignedRightShiftAssign,       // >>>=
-        LastAssign = UnsignedRightShiftAssign,
+        LogicalOrAssign,                // ||=
+        LogicalAndAssign,               // &&=
+        LogicalNullishAssign,           // ??=
+        LastAssign = LogicalNullishAssign,
 
         Exponent,                       // **
 

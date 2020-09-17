@@ -1,0 +1,2 @@
+﻿let x = null;
+x ??= y ?? true;

@@ -322,6 +322,7 @@ namespace NUglify.JavaScript
         public SourceContext ScanNextToken()
         {
             var token = JSToken.None;
+            char nextChar;
 
             m_currentToken.StartPosition = m_currentPosition;
             m_currentToken.StartLineNumber = m_currentLine;
@@ -391,16 +392,23 @@ namespace NUglify.JavaScript
 
                 case '&':
                     token = JSToken.BitwiseAnd;
-                    ch = GetChar(++m_currentPosition);
-                    if ('&' == ch)
-                    {
-                        ++m_currentPosition;
-                        token = JSToken.LogicalAnd;
-                    }
-                    else if ('=' == ch)
+                    nextChar = GetChar(++m_currentPosition);
+
+                    if ('=' == nextChar)
                     {
                         ++m_currentPosition;
                         token = JSToken.BitwiseAndAssign;
+                    }
+                    else if ('&' == nextChar)
+                    {
+                        token = JSToken.LogicalAnd;
+                        nextChar = GetChar(++m_currentPosition);
+
+                        if ('=' == nextChar)
+                        {
+                            token = JSToken.LogicalAndAssign;
+                            ++m_currentPosition;
+                        }
                     }
 
                     break;
@@ -417,7 +425,7 @@ namespace NUglify.JavaScript
 
                 case '*':
                     token = JSToken.Multiply;
-                    var nextChar = GetChar(++m_currentPosition);
+                    nextChar = GetChar(++m_currentPosition);
 
                     if ('=' == nextChar)
                     {
@@ -428,6 +436,7 @@ namespace NUglify.JavaScript
                     {
                         token = JSToken.Exponent;
                         nextChar = GetChar(++m_currentPosition);
+
                         if ('=' == nextChar)
                         {
                             token = JSToken.ExponentAssign;
@@ -714,8 +723,13 @@ namespace NUglify.JavaScript
                     ch = GetChar(m_currentPosition);
                     if ('?' == ch)
                     {
-                        ++m_currentPosition;
-                        token = JSToken.NullCoalesce;
+                        token = JSToken.NullishCoalesce;
+
+                        if (GetChar(++m_currentPosition) == '|')
+                        {
+                            token = JSToken.LogicalNullishAssign;
+                            ++m_currentPosition;
+                        }
                     }
 					else if ('.' == GetChar(m_currentPosition))
                     {
@@ -1024,16 +1038,23 @@ namespace NUglify.JavaScript
 
                 case '|':
                     token = JSToken.BitwiseOr;
-                    ch = GetChar(++m_currentPosition);
-                    if ('|' == ch)
-                    {
-                        ++m_currentPosition;
-                        token = JSToken.LogicalOr;
-                    }
-                    else if ('=' == ch)
+                    nextChar = GetChar(++m_currentPosition);
+
+                    if ('=' == nextChar)
                     {
                         ++m_currentPosition;
                         token = JSToken.BitwiseOrAssign;
+                    }
+                    else if ('|' == nextChar)
+                    {
+                        token = JSToken.LogicalOr;
+                        nextChar = GetChar(++m_currentPosition);
+
+                        if ('=' == nextChar)
+                        {
+                            token = JSToken.LogicalOrAssign;
+                            ++m_currentPosition;
+                        }
                     }
                     break;
 
@@ -4065,7 +4086,7 @@ namespace NUglify.JavaScript
 
             operatorsPrec[JSToken.LogicalOr - JSToken.FirstBinaryOperator] = OperatorPrecedence.LogicalOr;
             operatorsPrec[JSToken.LogicalAnd - JSToken.FirstBinaryOperator] = OperatorPrecedence.LogicalAnd;
-            operatorsPrec[JSToken.NullCoalesce - JSToken.FirstBinaryOperator] = OperatorPrecedence.NullCoalesce;
+            operatorsPrec[JSToken.NullishCoalesce - JSToken.FirstBinaryOperator] = OperatorPrecedence.NullCoalesce;
             operatorsPrec[JSToken.BitwiseOr - JSToken.FirstBinaryOperator] = OperatorPrecedence.BitwiseOr;
             operatorsPrec[JSToken.BitwiseXor - JSToken.FirstBinaryOperator] = OperatorPrecedence.BitwiseXor;
             operatorsPrec[JSToken.BitwiseAnd - JSToken.FirstBinaryOperator] = OperatorPrecedence.BitwiseAnd;
@@ -4106,6 +4127,9 @@ namespace NUglify.JavaScript
             operatorsPrec[JSToken.LeftShiftAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.RightShiftAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
             operatorsPrec[JSToken.UnsignedRightShiftAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
+            operatorsPrec[JSToken.LogicalAndAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
+            operatorsPrec[JSToken.LogicalNullishAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
+            operatorsPrec[JSToken.LogicalOrAssign - JSToken.FirstBinaryOperator] = OperatorPrecedence.Assignment;
 
             operatorsPrec[JSToken.ConditionalIf - JSToken.FirstBinaryOperator] = OperatorPrecedence.Conditional;
             operatorsPrec[JSToken.Colon - JSToken.FirstBinaryOperator] = OperatorPrecedence.Conditional;
