@@ -112,6 +112,7 @@ namespace NUglify.JavaScript.Syntax
                     case JSToken.GreaterThan:
                     case JSToken.GreaterThanEqual:
                     case JSToken.In:
+                    case JSToken.Of:
                     case JSToken.InstanceOf:
                     case JSToken.LessThan:
                     case JSToken.LessThanEqual:
@@ -181,6 +182,7 @@ namespace NUglify.JavaScript.Syntax
                 case JSToken.GreaterThan:
                 case JSToken.GreaterThanEqual:
                 case JSToken.In:
+                case JSToken.Of:
                 case JSToken.InstanceOf:
                 case JSToken.LessThan:
                 case JSToken.LessThanEqual:
@@ -339,17 +341,10 @@ namespace NUglify.JavaScript.Syntax
         /// <summary>
         /// Returns true if the expression contains an in-operator
         /// </summary>
-        public override bool ContainsInOperator
-        {
-            get
-            {
-                // if we are an in-operator, then yeah: we contain one.
-                // otherwise recurse the operands.
-                return OperatorToken == JSToken.In
-                    ? true
-                    : Operand1.ContainsInOperator || Operand2.ContainsInOperator;
-            }
-        }
+        public override bool ContainsInOperator =>
+            // if we are an in-operator, then yeah: we contain one.
+            // otherwise recurse the operands.
+            OperatorToken == JSToken.In || (Operand1.ContainsInOperator || Operand2.ContainsInOperator);
 
         public override bool IsConstant
         {

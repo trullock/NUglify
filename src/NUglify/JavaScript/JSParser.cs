@@ -1605,6 +1605,13 @@ namespace NUglify.JavaScript
             AstNode forNode = null;
             SourceContext forCtx = m_currentToken.Clone();
             GetNextToken();
+            bool isAwait = false;
+            if (m_currentToken.Is(JSToken.Await))
+            {
+                isAwait = true;
+                GetNextToken();
+            }
+
             if (m_currentToken.Is(JSToken.LeftParenthesis))
             {
                 GetNextToken();
@@ -1661,7 +1668,7 @@ namespace NUglify.JavaScript
             }
 
             // either we are at a semicolon or an in/of token
-            var isForIn = m_currentToken.Is(JSToken.In) || m_currentToken.Is("of");
+            var isForIn = m_currentToken.Is(JSToken.In) || m_currentToken.Is(JSToken.Of);
             if (isForIn)
             {
                 // this IS a for..in or for..of statement
@@ -1732,12 +1739,13 @@ namespace NUglify.JavaScript
             if (isForIn)
             {
                 forNode = new ForInStatement(forCtx)
-                    {
-                        Variable = initializer,
-                        OperatorContext = operatorContext,
-                        Collection = condOrColl,
-                        Body = AstNode.ForceToBlock(body),
-                    };
+                {
+                    IsAwait = isAwait,
+                    Variable = initializer,
+                    OperatorContext = operatorContext,
+                    Collection = condOrColl,
+                    Body = AstNode.ForceToBlock(body),
+                };
             }
             else
             {
@@ -4625,7 +4633,7 @@ namespace NUglify.JavaScript
                 binding = ParseBinding();
                 binding.IfNotNull(b => clauseContext.UpdateWith(b.Context));
 
-                if (m_currentToken.Is(JSToken.In) || m_currentToken.Is("of"))
+                if (m_currentToken.Is(JSToken.In) || m_currentToken.Is(JSToken.Of))
                 {
                     isInOperation = m_currentToken.Is(JSToken.In);
                     ofContext = m_currentToken.Clone();

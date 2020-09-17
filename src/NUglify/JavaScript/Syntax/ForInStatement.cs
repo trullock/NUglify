@@ -22,30 +22,25 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class ForInStatement : IterationStatement
     {
-        private AstNode m_variable;
-        private AstNode m_collection;
+        AstNode m_variable;
+        AstNode m_collection;
 
         public AstNode Variable
         {
-            get { return m_variable; }
-            set
-            {
-                ReplaceNode(ref m_variable, value);
-            }
+            get => m_variable;
+            set => ReplaceNode(ref m_variable, value);
         }
 
         public AstNode Collection
         {
-            get { return m_collection; }
-            set
-            {
-                ReplaceNode(ref m_collection, value);
-            }
+            get => m_collection;
+            set => ReplaceNode(ref m_collection, value);
         }
 
         public SourceContext OperatorContext { get; set; }
-
         public BlockScope BlockScope { get; set; }
+        public bool IsAwait { get; set; }
+        public override IEnumerable<AstNode> Children => EnumerateNonNullNodes(Variable, Collection, Body);
 
         public override SourceContext TerminatingContext
         {
@@ -63,18 +58,7 @@ namespace NUglify.JavaScript.Syntax
 
         public override void Accept(IVisitor visitor)
         {
-            if (visitor != null)
-            {
-                visitor.Visit(this);
-            }
-        }
-
-        public override IEnumerable<AstNode> Children
-        {
-            get
-            {
-                return EnumerateNonNullNodes(Variable, Collection, Body);
-            }
+            visitor?.Visit(this);
         }
 
         public override bool ReplaceChild(AstNode oldNode, AstNode newNode)
@@ -84,23 +68,26 @@ namespace NUglify.JavaScript.Syntax
                 Variable = newNode;
                 return true;
             }
+
             if (Collection == oldNode)
             {
                 Collection = newNode;
                 return true;
             }
+
             if (Body == oldNode)
             {
                 Body = ForceToBlock(newNode);
                 return true;
             }
+
             return false;
         }
 
         internal override bool EncloseBlock(EncloseBlockType type)
         {
             // pass the query on to the body
-            return Body == null ? false : Body.EncloseBlock(type);
+            return Body?.EncloseBlock(type) ?? false;
         }
     }
 }

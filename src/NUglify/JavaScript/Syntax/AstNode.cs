@@ -152,7 +152,7 @@ namespace NUglify.JavaScript.Syntax
         {
             get
             {
-                // recursivelt check all children
+                // recursively check all children
                 foreach (var child in Children)
                 {
                     if (child.ContainsInOperator)
@@ -161,7 +161,7 @@ namespace NUglify.JavaScript.Syntax
                     }
                 }
 
-                // if we get here, we didn'thave any in-operators
+                // if we get here, we didn't have any in-operators
                 return false;
             }
         }

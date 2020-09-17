@@ -1,22 +1,19 @@
-﻿using System.IO;
-using System.Text;
-using NUglify.JavaScript;
-using NUglify.Tests.JavaScript.Common;
+﻿using NUglify.Tests.JavaScript.Common;
 using NUnit.Framework;
 
 namespace NUglify.Tests.JavaScript
 {
     [TestFixture]
-    public class ES2018
+    public class ES2016
     {
         [Test]
-        public void SpreadOperator()
+        public void Exponent()
         {
             TestHelper.Instance.RunTest();
         }
 
         [Test]
-        public void ForAwait()
+        public void ExponentAssign()
         {
             TestHelper.Instance.RunTest();
         }

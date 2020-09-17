@@ -23,35 +23,26 @@ namespace NUglify.JavaScript.Syntax
 
     public sealed class ForStatement : IterationStatement
     {
-        private AstNode m_initializer;
-        private AstNode m_condition;
-        private AstNode m_incrementer;
+        AstNode m_initializer;
+        AstNode m_condition;
+        AstNode m_incrementer;
 
         public AstNode Initializer
         {
-            get { return m_initializer; }
-            set
-            {
-                ReplaceNode(ref m_initializer, value);
-            }
+            get => m_initializer;
+            set => ReplaceNode(ref m_initializer, value);
         }
 
         public AstNode Condition
         {
-            get { return m_condition; }
-            set
-            {
-                ReplaceNode(ref m_condition, value);
-            }
+            get => m_condition;
+            set => ReplaceNode(ref m_condition, value);
         }
 
         public AstNode Incrementer
         {
-            get { return m_incrementer; }
-            set
-            {
-                ReplaceNode(ref m_incrementer, value);
-            }
+            get => m_incrementer;
+            set => ReplaceNode(ref m_incrementer, value);
         }
 
         /// <summary>Context for the first semicolon, separating the initializer and the condition</summary>
@@ -61,7 +52,7 @@ namespace NUglify.JavaScript.Syntax
         public SourceContext Separator2Context { get; set; }
 
         public BlockScope BlockScope { get; set; }
-
+        
         public override SourceContext TerminatingContext
         {
             get
@@ -71,6 +62,8 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
+        public override IEnumerable<AstNode> Children => EnumerateNonNullNodes(Initializer, Condition, Incrementer, Body);
+
         public ForStatement(SourceContext context)
             : base(context)
         {
@@ -78,25 +71,15 @@ namespace NUglify.JavaScript.Syntax
 
         public override void Accept(IVisitor visitor)
         {
-            if (visitor != null)
-            {
-                visitor.Visit(this);
-            }
+            visitor?.Visit(this);
         }
 
         internal override bool EncloseBlock(EncloseBlockType type)
         {
             // pass the query on to the body
-            return Body == null || Body.Count == 0 ? false : Body.EncloseBlock(type);
+            return Body != null && Body.Count != 0 && Body.EncloseBlock(type);
         }
 
-        public override IEnumerable<AstNode> Children
-        {
-            get
-            {
-                return EnumerateNonNullNodes(Initializer, Condition, Incrementer, Body);
-            }
-        }
 
         public override bool ReplaceChild(AstNode oldNode, AstNode newNode)
         {
@@ -105,21 +88,25 @@ namespace NUglify.JavaScript.Syntax
                 Initializer = newNode;
                 return true;
             }
+
             if (Condition == oldNode)
             {
                 Condition = newNode;
                 return true;
             }
+
             if (Incrementer == oldNode)
             {
                 Incrementer = newNode;
                 return true;
             }
+
             if (Body == oldNode)
             {
                 Body = ForceToBlock(newNode);
                 return true;
             }
+
             return false;
         }
     }
