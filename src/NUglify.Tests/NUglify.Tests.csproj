@@ -463,7 +463,7 @@
     <Content Include="TestData\JS\Expected\ES2015\ConciseProperties.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Expected\ES2020\BigInt.js">
+    <Content Include="TestData\JS\Expected\ES2020\BigIntInitialisation.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Expected\ES2021\LogicalNullishAssign.js">
@@ -2760,7 +2760,7 @@
     <Content Include="TestData\JS\Input\ES2018\SpreadOperator.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\ES2020\BigInt.js">
+    <Content Include="TestData\JS\Input\ES2020\BigIntInitialisation.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\ES2021\LogicalNullishAssign.js">

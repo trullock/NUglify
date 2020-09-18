@@ -1866,41 +1866,8 @@ namespace NUglify.JavaScript.Visitors
                     member = node.Function as MemberExpression;
                     lookup = node.Function as LookupExpression;
 
-                    var isEval = false;
-                    if (lookup != null
-                        && string.CompareOrdinal(lookup.Name, "eval") == 0
-                        && lookup.VariableField.FieldType == FieldType.Predefined)
-                    {
-                        // call to predefined eval function
-                        isEval = true;
-                    }
-                    else if (member != null && string.CompareOrdinal(member.Name, "eval") == 0)
-                    {
-                        // if this is a window.eval call, then we need to mark this scope as unknown just as
-                        // we would if this was a regular eval call.
-                        // (unless, of course, the parser settings say evals are safe)
-                        // call AFTER recursing so we know the left-hand side properties have had a chance to
-                        // lookup their fields to see if they are local or global
-                        if (member.Root.IsWindowLookup)
-                        {
-                            // this is a call to window.eval()
-                            isEval = true;
-                        }
-                    }
-                    else
-                    {
-                        CallExpression callNode = node.Function as CallExpression;
-                        if (callNode != null
-                            && callNode.InBrackets
-                            && callNode.Function.IsWindowLookup
-                            && callNode.Arguments.IsSingleConstantArgument("eval"))
-                        {
-                            // this is a call to window["eval"]
-                            isEval = true;
-                        }
-                    }
-
-                    if (isEval)
+                    // if this is a call to eval()
+                    if (VisitCallExpressionIsGlobalFunction(node, lookup, member, "eval"))
                     {
                         if (m_parser.Settings.EvalTreatment != EvalTreatment.Ignore)
                         {
@@ -1909,8 +1876,68 @@ namespace NUglify.JavaScript.Visitors
                             m_scopeStack.Peek().IsKnownAtCompileTime = false;
                         }
                     }
+                    
+                    // if this is a call to BigInt()
+                    if (VisitCallExpressionIsGlobalFunction(node, lookup, member, "BigInt"))
+                    {
+                        if (node.Arguments[0] is ConstantWrapper constArg)
+                        {
+                            if (constArg.Value is string constArgStringValue)
+                            {
+                                double bigInt;
+                                if (m_parser.ConvertBigIntLiteralToBigInteger(constArgStringValue, out bigInt))
+                                    node.Parent.ReplaceChild(node, new ConstantWrapper((long)bigInt + "n", PrimitiveType.Other, node.Arguments[0].Context));
+                                
+                                return;
+                            }
+
+                            var constArgValueLong = (long)(double)constArg.Value;
+                            node.Parent.ReplaceChild(node, new ConstantWrapper(constArgValueLong + "n", PrimitiveType.Other, node.Arguments[0].Context));
+                        }
+                    }
                 }
             }
+        }
+
+        static bool VisitCallExpressionIsGlobalFunction(CallExpression node, LookupExpression lookup, MemberExpression member, string functionName)
+        {
+            if (lookup != null
+                && string.CompareOrdinal(lookup.Name, functionName) == 0
+                && lookup.VariableField.FieldType == FieldType.Predefined)
+            {
+                // call to predefined <functionName> function
+                return true;
+
+            }
+
+            if (member != null && string.CompareOrdinal(member.Name, functionName) == 0)
+            {
+                // Example: window.eval():
+                //      if this is a window.eval call, then we need to mark this scope as unknown just as
+                //      we would if this was a regular eval call.
+                //      (unless, of course, the parser settings say evals are safe)
+                //      call AFTER recursing so we know the left-hand side properties have had a chance to
+                //      lookup their fields to see if they are local or global
+                if (member.Root.IsWindowOrGlobalThisLookup)
+                {
+                    // this is a call to window.<functionName>() or globalThis.<functionName>()
+                    return true;
+                }
+            }
+            else
+            {
+                CallExpression callNode = node.Function as CallExpression;
+                if (callNode != null
+                    && callNode.InBrackets
+                    && callNode.Function.IsWindowOrGlobalThisLookup
+                    && callNode.Arguments.IsSingleConstantArgument(functionName))
+                {
+                    // this is a call to window["<functionName>"] or globalThis["<functionName>"]
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]

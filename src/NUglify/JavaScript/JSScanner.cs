@@ -1960,7 +1960,8 @@ namespace NUglify.JavaScript
 
                     return CheckForNumericBadEnding(token);
                 }
-                else if ('b' == c || 'B' == c)
+
+                if ('b' == c || 'B' == c)
                 {
                     // ES6 binary literal?
                     c = GetChar(m_currentPosition + 1);
@@ -1974,7 +1975,8 @@ namespace NUglify.JavaScript
 
                     return CheckForNumericBadEnding(token);
                 }
-                else if ('o' == c || 'O' == c)
+
+                if ('o' == c || 'O' == c)
                 {
                     // ES6 octal literal?
                     c = GetChar(m_currentPosition + 1);
@@ -1988,7 +1990,8 @@ namespace NUglify.JavaScript
 
                     return CheckForNumericBadEnding(token);
                 }
-                else if ('0' <= c && c <= '7')
+
+                if ('0' <= c && c <= '7')
                 {
                     // this is a zero followed by a digit between 0 and 7.
                     // This could be interpreted as an octal literal, which isn't strictly supported.
@@ -2016,7 +2019,8 @@ namespace NUglify.JavaScript
                     HandleError(JSError.OctalLiteralsDeprecated);
                     return token;
                 }
-                else if (c != 'e' && c != 'E' && IsValidIdentifierStart(m_strSourceCode, m_currentPosition))
+
+                if (c != 'e' && c != 'E' && IsValidIdentifierStart(m_strSourceCode, m_currentPosition))
                 {
                     // invalid for an integer (in this case '0') the be followed by
                     // an identifier part. The 'e' is okay, though, because that will
@@ -2078,6 +2082,11 @@ namespace NUglify.JavaScript
                         {
                             break;
                         }
+                    }
+                    else if ('n' == c)
+                    {
+                        // TODO: handle decimals
+                        token = JSToken.BigIntLiteral;
                     }
                     else
                     {

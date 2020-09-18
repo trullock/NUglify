@@ -62,6 +62,7 @@ namespace NUglify.JavaScript
         StringLiteral,
         IntegerLiteral,
         NumericLiteral,
+        BigIntLiteral,
         TemplateLiteral,                // (may be complete, head, middle or tail)
 
         LeftParenthesis,                // (

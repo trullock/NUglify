@@ -90,13 +90,13 @@ namespace NUglify.JavaScript.Syntax
         /// <summary>
         /// Gets a boolean value representing whether this node is a Lookup node resolving to the global predefined window object.
         /// </summary>
-        public bool IsWindowLookup
+        public bool IsWindowOrGlobalThisLookup
         {
             get
             {
                 LookupExpression lookup = this as LookupExpression;
                 return (lookup != null
-                        && string.CompareOrdinal(lookup.Name, "window") == 0
+                        && (string.CompareOrdinal(lookup.Name, "window") == 0 || string.CompareOrdinal(lookup.Name, "globalThis") == 0)
                         && (lookup.VariableField == null || lookup.VariableField.FieldType == FieldType.Predefined));
             }
         }
@@ -242,7 +242,7 @@ namespace NUglify.JavaScript.Syntax
                 var member = this as MemberExpression;
                 if (member != null
                     && member.Root != null
-                    && member.Root.IsWindowLookup
+                    && member.Root.IsWindowOrGlobalThisLookup
                     && name.Equals(member.Name, StringComparison.Ordinal))
                 {
                     // match on a member lookup off the global object with the target name

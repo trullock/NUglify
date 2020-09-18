@@ -26,9 +26,9 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
-        public void BigInt()
+        public void BigIntInitialisation()
         {
-            TestHelper.Instance.RunTest("-rename:all");
+            TestHelper.Instance.RunTest();
         }
 
     }

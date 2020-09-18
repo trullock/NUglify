@@ -17,12 +17,13 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/trullock/NUglify</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
-    <Version>1.9.4</Version>
+    <Version>1.10.0</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="*.resx;Css\*.resx;JavaScript\*.resx" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <EmbeddedResource Include="*.resx;Css\*.resx;JavaScript\*.resx"
+                      Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">

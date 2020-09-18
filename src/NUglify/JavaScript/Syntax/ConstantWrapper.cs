@@ -45,39 +45,15 @@ namespace NUglify.JavaScript.Syntax
 
         public Object Value { get; set; }
 
-        public PrimitiveType PrimitiveType
-        {
-            get;
-            set;
-        }
+        public PrimitiveType PrimitiveType { get; set; }
 
-        public override bool IsConstant
-        {
-            get
-            {
-                // this is a constant
-                return true;
-            }
-        }
+        public override bool IsConstant => true;
 
-        public bool IsNumericLiteral
-        {
-            get
-            {
-                return PrimitiveType == PrimitiveType.Number;
-            }
-        }
+        public bool IsNumericLiteral => PrimitiveType == PrimitiveType.Number;
 
-        public bool IsFiniteNumericLiteral
-        {
-            get
-            {
-                // numeric literal, but not NaN, +Infinity, or -Infinity
-                return IsNumericLiteral
-                    ? !double.IsNaN((double)Value) && !double.IsInfinity((double)Value)
-                    : false;
-            }
-        }
+        public bool IsFiniteNumericLiteral =>
+            // numeric literal, but not NaN, +Infinity, or -Infinity
+            IsNumericLiteral && (!double.IsNaN((double)Value) && !double.IsInfinity((double)Value));
 
         public bool IsIntegerLiteral
         {
@@ -110,45 +86,15 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        public bool IsNaN
-        {
-            get
-            {
-                return IsNumericLiteral && double.IsNaN((double)Value);
-            }
-        }
+        public bool IsNaN => IsNumericLiteral && double.IsNaN((double)Value);
 
-        public bool IsInfinity
-        {
-            get
-            {
-                return IsNumericLiteral && double.IsInfinity((double)Value);
-            }
-        }
+        public bool IsInfinity => IsNumericLiteral && double.IsInfinity((double)Value);
 
-        public bool IsZero
-        {
-            get
-            {
-                return IsNumericLiteral && ((double)Value == 0);
-            }
-        }
+        public bool IsZero => IsNumericLiteral && ((double)Value == 0);
 
-        public bool IsBooleanLiteral
-        {
-            get
-            {
-                return PrimitiveType == PrimitiveType.Boolean;
-            }
-        }
+        public bool IsBooleanLiteral => PrimitiveType == PrimitiveType.Boolean;
 
-        public bool IsStringLiteral
-        {
-            get
-            {
-                return PrimitiveType == PrimitiveType.String;
-            }
-        }
+        public bool IsStringLiteral => PrimitiveType == PrimitiveType.String;
 
         public bool IsParameterToRegExp { get; set; }
 
@@ -166,23 +112,12 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        public bool IsOtherDecimal
-        {
-            get
-            {
-                return PrimitiveType == PrimitiveType.Other
-                    && Value != null
-                    && IsOnlyDecimalDigits(Value.ToString());
-            }
-        }
+        public bool IsOtherDecimal =>
+            PrimitiveType == PrimitiveType.Other
+            && Value != null
+            && IsOnlyDecimalDigits(Value.ToString());
 
-        public bool StringContainsAspNetReplacement
-        {
-            get
-            {
-                return IsStringLiteral && s_aspNetSubstitution.IsMatch((string)Value);
-            }
-        }
+        public bool StringContainsAspNetReplacement => IsStringLiteral && s_aspNetSubstitution.IsMatch((string)Value);
 
         public ConstantWrapper(Object value, PrimitiveType primitiveType, SourceContext context)
             : base(context)
@@ -556,7 +491,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        static public bool NumberIsOkayToCombine(double numericValue)
+        public static bool NumberIsOkayToCombine(double numericValue)
         {
             return (double.IsNaN(numericValue) || double.IsInfinity(numericValue)) ||
                 (-0x20000000000000 <= numericValue && numericValue <= 0x20000000000000
@@ -778,14 +713,5 @@ namespace NUglify.JavaScript.Syntax
             // or false is ANY ONE character isn't.
             return text.IfNotNull(s => !s.Any(c => !JSScanner.IsDigit(c)));
         }
-    }
-
-    public enum PrimitiveType
-    {
-        Null = 0,
-        Boolean,
-        Number,
-        String,
-        Other
     }
 }
