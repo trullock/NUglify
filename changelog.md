@@ -5,6 +5,7 @@
 - Adds support for Numeric Separators
 - Adds support for Logical Assignment operators
 - Ensures `globalThis` works properly
+- Adds basic support for BigInt (minification of BigInt syntax is not yet optimal)
 
 ## 1.9.4 (15 September 2020)
 - Fixes bug with `crlf` immediately before a closing template literal

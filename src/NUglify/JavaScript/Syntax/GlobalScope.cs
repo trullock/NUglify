@@ -101,7 +101,9 @@ namespace NUglify.JavaScript.Syntax
                 "parseFloat", "parseInt", "postMessage", "prompt", 
                 "releaseEvents", "removeEventListener", "requestAnimationFrame", "resizeBy", "resizeTo", 
                 "scroll", "scrollBy", "scrollTo", "setActive", "setImmediate", "setInterval", "setTimeout", "showModalDialog", "showModelessDialog", "styleMedia",
-                "unescape"};
+                "unescape",
+                "BigInt"
+            };
         }
 
         public void AddUndefinedReference(UndefinedReference exception)

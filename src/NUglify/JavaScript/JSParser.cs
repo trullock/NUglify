@@ -3925,6 +3925,53 @@ namespace NUglify.JavaScript
                         break;
                     }
 
+                case JSToken.BigIntLiteral:
+                    {
+                        SourceContext numericContext = m_currentToken.Clone();
+                        double bigIntValue;
+                        if (ConvertBigIntLiteralToBigInteger(m_currentToken.Code, out bigIntValue) && false)
+                        {
+                            // conversion worked fine
+                            // check for some boundary conditions
+                            var mayHaveIssues = m_scanner.LiteralHasIssues;
+                            // if (doubleValue == double.MaxValue)
+                            // {
+                            //     ReportError(JSError.NumericMaximum, numericContext);
+                            // }
+                            // else if (isMinus && -doubleValue == double.MinValue)
+                            // {
+                            //     ReportError(JSError.NumericMinimum, numericContext);
+                            // }
+
+                            // create the constant wrapper from the value
+                            ast = new ConstantWrapper(bigIntValue, PrimitiveType.Other, numericContext)
+                            {
+                                MayHaveIssues = mayHaveIssues
+                            };
+                        }
+                        else
+                        {
+                            // if we went overflow or are not a number, then we will use the "Other"
+                            // primitive type so we don't try doing any numeric calcs with it. 
+                            // if (double.IsInfinity(doubleValue))
+                            // {
+                            //     // overflow
+                            //     // and if we ARE an overflow, report it
+                            //     ReportError(JSError.NumericOverflow, numericContext);
+                            // }
+
+                            // regardless, we're going to create a special constant wrapper
+                            // that simply echos the input as-is
+                            ast = new ConstantWrapper(m_currentToken.Code, PrimitiveType.Other, numericContext)
+                            {
+                                MayHaveIssues = true
+                            };
+                        }
+
+                        GetNextToken();
+                        break;
+                    }
+
                 case JSToken.True:
                     ast = new ConstantWrapper(true, PrimitiveType.Boolean, m_currentToken.Clone());
                     GetNextToken();
@@ -4912,27 +4959,46 @@ namespace NUglify.JavaScript
 
                 case JSToken.IntegerLiteral:
                 case JSToken.NumericLiteral:
+                    double doubleValue;
+                    if (ConvertNumericLiteralToDouble(m_currentToken.Code, (m_currentToken.Is(JSToken.IntegerLiteral)), out doubleValue))
                     {
-                        double doubleValue;
-                        if (ConvertNumericLiteralToDouble(m_currentToken.Code, (m_currentToken.Is(JSToken.IntegerLiteral)), out doubleValue))
-                        {
-                            // conversion worked fine
-                            field = new ObjectLiteralField(doubleValue, PrimitiveType.Number, m_currentToken.Clone());
-                        }
-                        else
-                        {
-                            // something went wrong and we're not sure the string representation in the source is 
-                            // going to convert to a numeric value well
-                            if (double.IsInfinity(doubleValue))
-                            {
-                                ReportError(JSError.NumericOverflow);
-                            }
-
-                            // use the source as the field name, not the numeric value
-                            field = new ObjectLiteralField(m_currentToken.Code, PrimitiveType.Other, m_currentToken.Clone());
-                        }
-                        break;
+                        // conversion worked fine
+                        field = new ObjectLiteralField(doubleValue, PrimitiveType.Number, m_currentToken.Clone());
                     }
+                    else
+                    {
+                        // something went wrong and we're not sure the string representation in the source is 
+                        // going to convert to a numeric value well
+                        if (double.IsInfinity(doubleValue))
+                        {
+                            ReportError(JSError.NumericOverflow);
+                        }
+
+                        // use the source as the field name, not the numeric value
+                        field = new ObjectLiteralField(m_currentToken.Code, PrimitiveType.Other, m_currentToken.Clone());
+                    }
+                    break;
+
+                case JSToken.BigIntLiteral:
+                    double bigIntValue;
+                    if (ConvertBigIntLiteralToBigInteger(m_currentToken.Code, out bigIntValue) && false)
+                    {
+                        // conversion worked fine
+                        field = new ObjectLiteralField(bigIntValue, PrimitiveType.Number, m_currentToken.Clone());
+                    }
+                    else
+                    {
+                        // something went wrong and we're not sure the string representation in the source is 
+                        // going to convert to a numeric value well
+                        // if (double.IsInfinity(doubleValue))
+                        // {
+                        //     ReportError(JSError.NumericOverflow);
+                        // }
+
+                        // use the source as the field name, not the numeric value
+                        field = new ObjectLiteralField(m_currentToken.Code, PrimitiveType.Other, m_currentToken.Clone());
+                    }
+                    break;
 
                 default:
                     // NOT: identifier token, string, number, or getter/setter.
@@ -5390,7 +5456,7 @@ namespace NUglify.JavaScript
         /// <param name="isInteger">we should know alreasdy if it's an integer or not</param>
         /// <param name="doubleValue">output value</param>
         /// <returns>true if there were no problems; false if there were</returns>
-        private bool ConvertNumericLiteralToDouble(string str, bool isInteger, out double doubleValue)
+        bool ConvertNumericLiteralToDouble(string str, bool isInteger, out double doubleValue)
         {
             try
             {
@@ -5511,7 +5577,109 @@ namespace NUglify.JavaScript
             }
         }
 
-        private void AppendImportantComments(BlockStatement block)
+        /// <summary>
+        /// Convert the given bigint string to a BigInteger value
+        /// </summary>
+        /// <param name="str">string representation of a number</param>
+        /// <param name="doubleValue">output value</param>
+        /// <returns>true if there were no problems; false if there were</returns>
+        public bool ConvertBigIntLiteralToBigInteger(string str, out double bigIntegerValue)
+        {
+            try
+            {
+                str = str.Replace("_", string.Empty);
+
+                if (str[0] == '0' && str.Length > 1)
+                {
+                    if (str[1] == 'x' || str[1] == 'X')
+                    {
+                        if (str.Length == 2)
+                        {
+                            // 0x???? must be a parse error. Just return zero
+                            bigIntegerValue = 0;
+                            return false;
+                        }
+
+                        // parse the number as a hex integer, converted to a double
+                        bigIntegerValue = (double)System.Convert.ToInt64(str, 16);
+                    }
+                    else if (str[1] == 'o' || str[1] == 'O')
+                    {
+                        if (str.Length == 2)
+                        {
+                            // 0o???? must be a parse error. Just return zero
+                            bigIntegerValue = 0;
+                            return false;
+                        }
+
+                        // parse the number as an octal integer without the prefix, converted to a double
+                        bigIntegerValue = (double)System.Convert.ToInt64(str.Substring(2), 8);
+                    }
+                    else if (str[1] == 'b' || str[1] == 'B')
+                    {
+                        if (str.Length == 2)
+                        {
+                            // 0b???? must be a parse error. Just return zero
+                            bigIntegerValue = 0;
+                            return false;
+                        }
+
+                        // parse the number as a binary integer without the prefix, converted to a double
+                        bigIntegerValue = (double)System.Convert.ToInt64(str.Substring(2), 2);
+                    }
+                    else
+                    {
+                        // might be an octal value... try converting to octal
+                        // and if it fails, just convert to decimal
+                        try
+                        {
+                            bigIntegerValue = (double)System.Convert.ToInt64(str, 8);
+                
+                            // if we got here, we successfully converted it to octal.
+                            // now, octal literals are deprecated -- not all JS implementations will
+                            // decode them. If this decoded as an octal, it can also be a decimal. Check
+                            // the decimal value, and if it's the same, then we'll just treat it
+                            // as a normal decimal value. Otherwise we'll throw a warning and treat it
+                            // as a special no-convert literal.
+                            double decimalValue = (double)System.Convert.ToInt64(str, 10);
+                            if (decimalValue != bigIntegerValue)
+                            {
+                                // throw a warning!
+                                ReportError(JSError.OctalLiteralsDeprecated);
+                
+                                // return false because octals are deprecated and might have
+                                // cross-browser issues
+                                return false;
+                            }
+                        }
+                        catch (FormatException)
+                        {
+                            // ignore the format exception and fall through to parsing
+                            // the value as a base-10 decimal value
+                            bigIntegerValue = Convert.ToDouble(str, CultureInfo.InvariantCulture);
+                        }
+                    }
+                }
+                else
+                {
+                    // just parse the integer as a bigint value
+                    bigIntegerValue = double.Parse(str.TrimEnd('n'), CultureInfo.InvariantCulture);
+                }
+                
+                // if we got here, we should have an appropriate value in doubleValue
+                return true;
+            }
+            catch (FormatException)
+            {
+                // format exception converts to NaN
+                bigIntegerValue = 0;
+
+                // not successful
+                return false;
+            }
+        }
+
+        void AppendImportantComments(BlockStatement block)
         {
             if (block != null)
             {
