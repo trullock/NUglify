@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.9.5 (Not yet published)
+## 1.9.5 (18 September 2020)
 - Adds support for Optional Chaining
 - Adds support for Numeric Separators
 - Adds support for Logical Assignment operators
