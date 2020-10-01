@@ -128,5 +128,11 @@ namespace NUglify.Tests.JavaScript
             Assert.AreEqual("var testString=`\n\r`+`} async init(){ }`", uglifyResult.Code);
 
         }
+
+        [Test]
+        public void Bug156()
+        {
+            TestHelper.Instance.RunTest();
+        }
     }
 }
