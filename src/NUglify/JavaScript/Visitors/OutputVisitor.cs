@@ -748,8 +748,8 @@ namespace NUglify.JavaScript.Visitors
                 {
                     if (node.OptionalChaining)
                     {
-                        OutputPossibleLineBreak('.');
                         OutputPossibleLineBreak('?');
+                        OutputPossibleLineBreak('.');
                     }
 
                     OutputPossibleLineBreak(node.InBrackets ? '[' : '(');
@@ -2499,9 +2499,9 @@ namespace NUglify.JavaScript.Visitors
                     SetContextOutputPosition(node.Context);
                 }
 
-                OutputPossibleLineBreak('.');
-                if(node.OptionalChaining)
+                if (node.OptionalChaining)
                     OutputPossibleLineBreak('?');
+                OutputPossibleLineBreak('.');
                 
                 MarkSegment(node, node.Name, node.NameContext);
                 Output(node.Name);
