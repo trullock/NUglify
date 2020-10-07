@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
 
@@ -532,9 +533,21 @@ namespace NUglify.JavaScript.Visitors
                 UnnestBlocks(node);
 
                 // if we get here, we are going to want to optimize the curly-braces to eliminate
-                // unneeded ones in all blocks except try/catch/finally. So make sure we reset the 
-                // force-braces properties for all blocks whose parent isn't a try-statement.
-                node.ForceBraces = node.Parent is TryStatement;
+                // unneeded ones in all blocks except try/catch/finally, or where the block has a single let/const declaration.
+                // So make sure we reset the force-braces properties for all blocks whose parent isn't a try-statement.
+                if (node.Parent is TryStatement)
+	                node.ForceBraces = true;
+                else
+                {
+	                if (node.Count == 1 && node[0] is LexicalDeclaration)
+	                {
+		                node.ForceBraces = true;
+	                }
+	                else
+	                {
+		                node.ForceBraces = false;
+	                }
+                }
 
                 if (m_combineAdjacentVars)
                 {

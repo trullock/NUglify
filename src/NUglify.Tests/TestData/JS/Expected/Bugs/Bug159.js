@@ -1,0 +1,1 @@
+﻿if(x){const n=x}while(y){let n=y}
