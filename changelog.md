@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.7 (7 October 2020)
+- Fixes bug with single-lined blocks with a lexical declaration
+- Fixes bug with arrow functions returning && and || logical BinaryExpressions
+
 ## 1.9.6 (1 October 2020)
 - Fixes bug with Optional Chaining
 
