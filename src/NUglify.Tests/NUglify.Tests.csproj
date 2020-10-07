@@ -433,6 +433,9 @@
     <Content Include="TestData\JS\Expected\Bugs\Bug160.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\JS\Expected\Bugs\Bug159.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\JS\Expected\Bugs\Bug70.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2718,8 +2721,11 @@
     <Content Include="TestData\JS\Input\Bugs\Bug138.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\JS\Input\Bugs\Bug160.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <Content Include="TestData\JS\Input\Bugs\Bug160.js">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	<Content Include="TestData\JS\Input\Bugs\Bug159.js">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\Bugs\Bug57.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
