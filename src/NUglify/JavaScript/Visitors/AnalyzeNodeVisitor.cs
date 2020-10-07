@@ -189,7 +189,7 @@ namespace NUglify.JavaScript.Visitors
                             }
                         }
                     }
-                    else if ((node.Parent is BlockStatement || (node.Parent is CommaExpression && node.Parent.Parent is BlockStatement))
+                    else if (((node.Parent is BlockStatement && !(node.Parent.Parent is FunctionObject f && f.FunctionType == FunctionType.ArrowFunction)) || (node.Parent is CommaExpression && node.Parent.Parent is BlockStatement))
                         && (node.OperatorToken == JSToken.LogicalOr || node.OperatorToken == JSToken.LogicalAnd))
                     {
                         // this is an expression statement where the operator is || or && -- basically
