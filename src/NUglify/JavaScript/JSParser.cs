@@ -869,7 +869,6 @@ namespace NUglify.JavaScript
                         return endStatement;
 
                     case JSToken.Import:
-                        // import can't be an identifier name, so it must be an import statement
                         return ParseImport();
 
                     case JSToken.Export:
@@ -2746,6 +2745,15 @@ namespace NUglify.JavaScript
                 {
                     // import identifier from "module"
                     importNode.Append(ParseBinding());
+                } 
+                else if (m_currentToken.Is(JSToken.LeftParenthesis))
+                {
+	                var ast = new LookupExpression(importNode.Context)
+	                {
+		                Name = "import"
+	                };
+
+	                return ParseMemberExpression(ast, null);
                 }
 
                 if (m_currentToken.Is("from"))
@@ -4234,6 +4242,10 @@ namespace NUglify.JavaScript
                         }
                     }
                     break;
+
+                case JSToken.Import:
+	                ast = ParseImport();
+	                break;
 
                 default:
                     var identifier = JSKeyword.CanBeIdentifier(m_currentToken.Token);
