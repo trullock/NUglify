@@ -2748,6 +2748,8 @@ namespace NUglify.JavaScript
                 } 
                 else if (m_currentToken.Is(JSToken.LeftParenthesis))
                 {
+                    // this allows `import` as an identifier where you really shouldnt.
+                    // However, if youve done something that causes this, it will be invalid before and after minification so its kind of not our problem.
 	                var ast = new LookupExpression(importNode.Context)
 	                {
 		                Name = "import"
