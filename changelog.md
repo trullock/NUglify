@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.8 (13 October 2020)
+- Fixes bug with dynamic import expressions
+
 ## 1.9.7 (7 October 2020)
 - Fixes bug with single-lined blocks with a lexical declaration
 - Fixes bug with arrow functions returning && and || logical BinaryExpressions
