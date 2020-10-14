@@ -384,7 +384,7 @@ Valid CSSOPTS are zero or more of:
   -ie8fix[:BOOL] &gt; whether or not to add a question-mark (query string) to
         .EOT font URLs (if a query string isn't already present) in order to 
         fix an IE8 client request bug. Default is true.
-   -novendor[:IDENT[,IDENT]*] &t; list of vendor-specific prefixes to exclude 
+   -novendor[:IDENT[,IDENT]*] &gt; list of vendor-specific prefixes to exclude 
         from the output. For example, specifying "webkit" would remove all
         -webkit-PROPERTY identifiers from the output. Do not include hyphens
         in the prefix identifiers. Multiple -novendor switches are additive; 

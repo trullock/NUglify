@@ -73,7 +73,6 @@
       <LastGenOutput>NUglify.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
-      <CustomToolNamespace>Microsoft.Ajax.Utilities</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="ManifestStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>

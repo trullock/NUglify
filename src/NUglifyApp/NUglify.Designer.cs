@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace NUglify {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -16,7 +19,7 @@ namespace NUglify {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class NUglify {
@@ -940,7 +943,16 @@ namespace NUglify {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Usage:
+        ///{0} [([-JS] [JSOPTS])|([-CSS[:CSSTYP]] [CSSOPTS])] OPTS* ((IFILE* [-out OFILE] [-map MFILE])|(-xml XFILE [-out ODIR]))
+        ///
+        ///Valid OPTS are zero or more of:
+        ///  -aspnet[:BOOL] &gt; whether to allow for inline ASP.NET-style substitutions,
+        ///        &lt;% ... %&gt; Default is False. 
+        ///  -braces:(new|same|source) &gt; when output is set to multiple lines, 
+        ///        determines whether opening braces are written on their own new line, 
+        ///        at the end of the previous line, or reflecting what is in the source
+        ///        code. De [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Usage {
             get {
