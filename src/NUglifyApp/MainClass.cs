@@ -174,7 +174,7 @@ namespace NUglify
             {
                 try
                 {
-                    MainClass app = new MainClass(args);
+                    var app = new MainClass(args);
                     retVal = app.Run();
                 }
                 catch (NotSupportedException e)

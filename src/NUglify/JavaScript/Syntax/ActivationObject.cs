@@ -354,7 +354,7 @@ namespace NUglify.JavaScript.Syntax
                     field = this.CreateField(nameDecl.Name, null, 0);
                     field.OriginalContext = nameDecl.Context;
                     field.IsDeclared = true;
-                    field.IsFunction = (nameDecl.Parent is FunctionObject);
+                    field.IsFunction = nameDecl.Parent is FunctionObject;
                     field.FieldValue = fieldValue;
 
                     // if this field is a constant or an import, mark it now as initialize only.
