@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.9 (14 October 2020)
+- Fixes bug with PreserveFunctionNames
+
 ## 1.9.8 (13 October 2020)
 - Fixes bug with dynamic import expressions
 
