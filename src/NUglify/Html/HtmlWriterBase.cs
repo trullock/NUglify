@@ -59,8 +59,7 @@ namespace NUglify.Html
             bool isInXml = node.Descriptor != null && (node.Descriptor.Category & ContentKind.Xml) != 0;
             var hasClosing = (node.Kind & ElementKind.Closing) != 0;
 
-            var shouldClose = hasClosing ||
-                                   (node.Descriptor != null && node.Descriptor.EndKind != TagEndKind.Required);
+            var shouldClose = hasClosing || node.Descriptor != null && node.Descriptor.EndKind != TagEndKind.Required;
 
             if ((node.Kind & (ElementKind.Opening | ElementKind.SelfClosing | ElementKind.ProcessingInstruction)) != 0)
             {

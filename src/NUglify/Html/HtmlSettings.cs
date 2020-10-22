@@ -1,8 +1,4 @@
-﻿// Copyright (c) Alexandre Mutel. All rights reserved.
-// This file is licensed under the BSD-Clause 2 license. 
-// See the license.txt file in the project root for more information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NUglify.Css;
@@ -17,7 +13,7 @@ namespace NUglify.Html
     public class HtmlSettings
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlSettings"/> class.
+        /// Initializes a new instance of the <see cref="HtmlSettings"/> class using the most aggressive minification settings.
         /// </summary>
         public HtmlSettings()
         {
@@ -40,6 +36,7 @@ namespace NUglify.Html
             MinifyCss = true;
             MinifyCssAttributes = true;
             CssSettings = new CssSettings();
+            Indent = "  ";
 
             InlineTagsPreservingSpacesAround = new[]
             {
@@ -85,7 +82,7 @@ namespace NUglify.Html
 
             KeepTags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            TagsWithNonCollapsableWhitespaces = new[]
+            TagsWithNonCollapsibleWhitespaces = new[]
             {
                 "pre",
                 "textarea",
@@ -97,69 +94,82 @@ namespace NUglify.Html
                 new Regex(@"^/?ko(?:[\s\-]|$)") // Keep knockout comments
             };
         }
-
+        
         /// <summary>
-        /// Gets or sets a value indicating whether to treat attributes as case sensitive. Default is <c>false</c>
+        /// Gets or sets a value indicating whether to treat attributes as case sensitive.
+        /// Default is <c>false</c>
         /// </summary>
         public bool AttributesCaseSensitive { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to collapse whitespaces. Default is <c>true</c>
+        /// Gets or sets a value indicating whether to collapse whitespaces.
+        /// Default is <c>true</c>
         /// </summary>
         public bool CollapseWhitespaces { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to remove comments. Default is <c>true</c>
+        /// Gets or sets a value indicating whether to remove comments.
+        /// Default is <c>true</c>
         /// </summary>
         public bool RemoveComments { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to remove optional tags (e.g: &lt;/p&gt; or &lt;/li&gt;). Default is <c>true</c>
+        /// Gets or sets a value indicating whether to remove optional tags (e.g: &lt;/p&gt; or &lt;/li&gt;).
+        /// Default is <c>true</c>
         /// </summary>
         public bool RemoveOptionalTags { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to remove invalid closing tags (tags with only a end tag and a missing start tag)
+        /// Default is <c>true</c>
         /// </summary>
         public bool RemoveInvalidClosingTags { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to remove empty attributes with whitespace only characters.
+        /// Default is <c>true</c>
         /// </summary>
         public bool RemoveEmptyAttributes { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to remove quoted attributes when possible. Default is <c>true</c>
+        /// Gets or sets a value indicating whether to remove quoted attributes when possible.
+        /// Default is <c>true</c>
         /// </summary>
         public bool RemoveQuotedAttributes { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to decode entity characters to their shorter character equivalents. Default is <c>true</c>
+        /// Gets or sets a value indicating whether to decode entity characters to their shorter character equivalents.
+        /// Default is <c>true</c>
         /// </summary>
         public bool DecodeEntityCharacters { get; set; }
 
         /// <summary>
-        /// Gets or sets the quote character used for attribute values. Default is null, meaning that it will let the minifier decide which is best. Default is <c>null</c>
+        /// Gets or sets the quote character used for attribute values. Default is null, meaning that it will let the minifier decide which is best.
+        /// Default is <c>null</c>
         /// </summary>
         public char? AttributeQuoteChar { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to remove script/style type attribute. Default is <c>true</c>
+        /// Gets or sets a value indicating whether to remove script/style type attribute.
+        /// Default is <c>true</c>
         /// </summary>
         public bool RemoveScriptStyleTypeAttribute { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to use the short version of a boolean attribute if value is true. Default is <c>true</c>
+        /// Gets or sets a value indicating whether to use the short version of a boolean attribute if value is true.
+        /// Default is <c>true</c>
         /// </summary>
         public bool ShortBooleanAttribute { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the parsing is occuring on an HTML fragment to avoid creating missing tags (like html, body, head). Default is <c>false</c>
+        /// Gets or sets a value indicating whether the parsing is occuring on an HTML fragment to avoid creating missing tags (like html, body, head).
+        /// Default is <c>false</c>
         /// </summary>
         public bool IsFragmentOnly { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether minify js inside &lt;script&gt; tags. Default is <c>true</c> using <see cref="Uglify.Js(string,NUglify.JavaScript.CodeSettings)"/>
+        /// Gets or sets a value indicating whether minify js inside &lt;script&gt; tags.
+        /// Default is <c>true</c> using <see cref="Uglify.Js(string, CodeSettings)"/>
         /// </summary>
         public bool MinifyJs { get; set; }
 
@@ -174,12 +184,14 @@ namespace NUglify.Html
         public CodeSettings JsSettings { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether minify css inside &lt;style&gt; tags. Default is <c>true</c> using <see cref="Uglify.Css(string,NUglify.Css.CssSettings,NUglify.JavaScript.CodeSettings)"/>
+        /// Gets or sets a value indicating whether minify css inside &lt;style&gt; tags.
+        /// Default is <c>true</c> using <see cref="Uglify.Css(string, Css.CssSettings, CodeSettings)"/>
         /// </summary>
         public bool MinifyCss { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether minify css inside style attribute.
+        /// Default is <c>true</c>
         /// </summary>
         public bool MinifyCssAttributes { get; set; }
 
@@ -189,58 +201,76 @@ namespace NUglify.Html
         public CssSettings CssSettings{ get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to output an indented html (for debug).
+        /// Gets or sets a value indicating whether to output an indented html. See Indent property
+        /// Default is <c>false</c>
         /// </summary>
         public bool PrettyPrint { get; set; }
 
         /// <summary>
+        /// The string used for one level of indent (e.g. a tab or 4 spaces)
+        /// Default: two spaces
+        /// </summary>
+        public string Indent { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to remove any JavaScript code (in script tag or in html attributes)
+        /// Default is <c>false</c>
         /// </summary>
         public bool RemoveJavaScript { get; set; }
 
         /// <summary>
-        /// Gets the inline tags preserving spaces around (default: a, abbr, acronym, b, bdi, 
-        /// bdo, big, button, cite, code, del, dfn, em, font, i, ins, kbd, label, 
-        /// mark, math, nobr, q, rp, rt, s, samp, small, span, strike, strong, sub, sup, 
-        /// svg, time, tt, u, var)
+        /// Gets the inline tags preserving spaces around
+        /// Default: a, abbr, acronym, b, bdi, bdo, big, button, cite, code, del, dfn, em, font, i, ins, kbd, label, mark, math, nobr, q, rp, rt, s, samp, small, span, strike, strong, sub, sup,  svg, time, tt, u, var
         /// </summary>
         public Dictionary<string, bool> InlineTagsPreservingSpacesAround { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to keep one space when collapsing.
+        /// Gets or sets a value indicating whether to keep one space when collapsing multiple adjacent whitespace characters.
         /// </summary>
         /// <value><c>true</c> to keep one space when collapsing; otherwise, <c>false</c>.</value>
+        /// Default: false
         public bool KeepOneSpaceWhenCollapsing { get; set; }
 
         /// <summary>
-        /// Gets the tags with non collapsable whitespaces (default: pre, textarea)
+        /// Gets the tags with non collapsible whitespaces
+        /// Default: pre, textarea
         /// </summary>
-        public Dictionary<string, bool> TagsWithNonCollapsableWhitespaces { get; }
+        [Obsolete("Use TagsWithNonCollapsibleWhitespaces (correct spelling) instead")]
+        public Dictionary<string, bool> TagsWithNonCollapsableWhitespaces => this.TagsWithNonCollapsibleWhitespaces;
+
+        /// <summary>
+        /// Gets the tags with non collapsible whitespaces
+        /// Default: pre, textarea
+        /// </summary>
+        public Dictionary<string, bool> TagsWithNonCollapsibleWhitespaces { get; }
 
         /// <summary>
         /// Gets a list of regex that will be matched against a HTML comment content. If a regex matches a HTML comment content, the comment will be kept
+        /// Default: Conditional and knockout comments
         /// </summary>
-        public List<Regex> KeepCommentsRegex { get; private set; }
+        public List<Regex> KeepCommentsRegex { get; }
 
         /// <summary>
         /// Gets the list of tags that will be kept even if they have an optional start/end tag.
+        /// Default: none
         /// </summary>
         public HashSet<string> KeepTags { get; }
 
         /// <summary>
         /// A list of attributes (names) to be removed from all tags
+        /// Default: none
         /// </summary>
-        public HashSet<string> RemoveAttributes { get; set; }
+        public HashSet<string> RemoveAttributes { get; }
 
         /// <summary>
-        /// Output the attributes of each element in alphabetical order
+        /// Output the attributes of each element in alphabetical order or the order they were in the source HTML
+        /// Default: false
         /// </summary>
         public bool AlphabeticallyOrderAttributes { get; set; }
 
         /// <summary>
-        /// returns settings to output a pretty HTML
+        /// Returns settings to output pretty/formatted HTML
         /// </summary>
-        /// <returns></returns>
         public static HtmlSettings Pretty()
         {
             return new HtmlSettings

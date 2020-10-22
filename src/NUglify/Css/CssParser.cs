@@ -4825,7 +4825,7 @@ namespace NUglify.Css
                 if (Settings.OutputMode == OutputMode.MultipleLines)
                 {
 
-                    var indentSpaces = Settings.TabSpaces;
+                    var indentSpaces = Settings.GetIndent();
                     m_lineLength = indentSpaces.Length;
                     if (m_lineLength > 0)
                     {

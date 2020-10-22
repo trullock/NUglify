@@ -157,13 +157,7 @@ namespace NUglify
             }
         }
 
-        internal string TabSpaces
-        {
-            get
-            {
-                return new string(' ', m_indentLevel * IndentSize);
-            }
-        }
+        internal string GetIndent() => new string(' ', m_indentLevel * IndentSize);
 
         #endregion
 

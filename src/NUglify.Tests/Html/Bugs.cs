@@ -30,5 +30,24 @@ namespace NUglify.Tests.Html
             var htmlToText = Uglify.HtmlToText(input);
             equal("This is a fragment and it continues here  ", htmlToText.Code);
         }
+
+
+        [Test]
+        public void Bug169()
+        {
+	        input = "<html><head><title>Please indent me properly</title></head></html>";
+	        var htmlSettings = HtmlSettings.Pretty();
+	        htmlSettings.Indent = "\t";
+	        var htmlToText = Uglify.Html(input, htmlSettings);
+	        equal(htmlToText.Code, @"
+<html>
+	<head>
+		<title>
+			Please indent me properly
+		</title>
+	</head>
+</html>
+");
+        }
     }
 }
