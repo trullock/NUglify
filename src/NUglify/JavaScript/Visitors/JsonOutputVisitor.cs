@@ -887,7 +887,7 @@ namespace NUglify.JavaScript.Visitors
         private void NewLine()
         {
             m_writer.WriteLine();
-            m_writer.Write(m_settings.TabSpaces);
+            m_writer.Write(m_settings.GetIndent());
         }
 
         #endregion

@@ -33,6 +33,8 @@ NUglify is available as a NuGet package: [![NuGet](https://img.shields.io/nuget/
 
 ## Usage
 
+### Basic usage
+
 The main entry point for the API is the `Uglify` class:
 
 For JavaScript:
@@ -62,6 +64,26 @@ Extract text from Html:
 var result = Uglify.HtmlToText("<div>  <p>This is <em>   a text    </em></p>   </div>");
 Console.WriteLine(result.Code);   // prints: This is a text
 ```
+
+### HTML
+
+See the xmldoc comments on the properties of `NUglify.Html.HtmlSettings` for all your HTML minification needs.
+
+For example, to output indented (with tabs) HTML:
+
+```
+var htmlSettings = HtmlSettings.Pretty();
+htmlSettings.Indent = "\t";
+var output = Uglify.Html(input, htmlSettings);
+```
+
+### JS
+
+TODO
+
+### CSS
+
+TODO
 
 ## Known Issues
 

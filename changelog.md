@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.10 (22 October 2020)
+- Improved readme and docs
+- Improved HTMLSettings comments
+- Added ability to control indentation when prettifying HTML
+- Deprecated `HtmlSettings.TagsWithNonCollapsableWhitespaces` in favour of the correct spelling `TagsWithNonCollapsibleWhitespaces`
+
 ## 1.9.9 (14 October 2020)
 - Fixes bug with PreserveFunctionNames
 

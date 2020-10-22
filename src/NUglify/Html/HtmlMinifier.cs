@@ -112,7 +112,7 @@ namespace NUglify.Html
                 TrimNodeOnStart(node);
 
                 bool isContentNonCollapsible = false;
-                if (element != null && settings.TagsWithNonCollapsableWhitespaces.ContainsKey(element.Name))
+                if (element != null && settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(element.Name))
                 {
                     pendingTagNonCollapsibleWithSpaces++;
                     isContentNonCollapsible = true;
@@ -179,7 +179,7 @@ namespace NUglify.Html
 
             // If current node requires preserving formatting inside it we need to trim all pending text node that we collected before
             var nodeName = node is HtmlElement ? ((HtmlElement) node).Name : null;
-            if (settings.CollapseWhitespaces && !string.IsNullOrEmpty(nodeName) && settings.TagsWithNonCollapsableWhitespaces.ContainsKey(nodeName))
+            if (settings.CollapseWhitespaces && !string.IsNullOrEmpty(nodeName) && settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(nodeName))
             {
                 TrimPendingTextNodes();
             }

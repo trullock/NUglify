@@ -36,9 +36,7 @@ namespace NUglify.Html
             if (settings.PrettyPrint && lastNewLine && allowIndent)
             {
                 for (int i = 0; i < Depth; i++)
-                {
-                    Writer.Write("  ");
-                }
+	                Writer.Write(settings.Indent);
                 lastNewLine = false;
             }
 
@@ -50,9 +48,7 @@ namespace NUglify.Html
             if (settings.PrettyPrint && lastNewLine && allowIndent)
             {
                 for (int i = 0; i < Depth; i++)
-                {
-                    Writer.Write("  ");
-                }
+	                Writer.Write(settings.Indent);
                 lastNewLine = false;
             }
 
@@ -62,7 +58,7 @@ namespace NUglify.Html
         protected override void WriteStartTag(HtmlElement node)
         {
             var shouldPretty = ShouldPretty(node);
-            allowIndent = (settings.PrettyPrint && !settings.TagsWithNonCollapsableWhitespaces.ContainsKey(node.Name));
+            allowIndent = (settings.PrettyPrint && !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(node.Name));
             if (shouldPretty && !lastNewLine)
             {
                 Writer.WriteLine();
@@ -71,10 +67,9 @@ namespace NUglify.Html
 
             Write("<");
             var isProcessing = (node.Kind & ElementKind.ProcessingInstruction) != 0;
-            if (isProcessing)
-            {
-                Write("?");
-            }
+            if (isProcessing) 
+	            Write("?");
+
             Write(node.Name);
 
             if (node.Attributes != null)
@@ -93,15 +88,11 @@ namespace NUglify.Html
                 }
             }
 
-            if (isProcessing)
-            {
-                Write("?");
-            }
+            if (isProcessing) 
+	            Write("?");
 
-            if ((node.Kind & ElementKind.SelfClosing) != 0 && (XmlNamespaceLevel > 0 || !settings.RemoveOptionalTags))
-            {
-                Write(" /");
-            }
+            if ((node.Kind & ElementKind.SelfClosing) != 0 && (XmlNamespaceLevel > 0 || !settings.RemoveOptionalTags)) 
+	            Write(" /");
 
             Write(">");
 
