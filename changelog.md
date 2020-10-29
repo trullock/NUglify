@@ -1,5 +1,8 @@
 # Changelog
 
+## vNext (unpublished)
+- Made contents of `<script>` and `<style>` elements fully indented with outputting pretty HTML
+
 ## 1.9.10 (22 October 2020)
 - Improved readme and docs
 - Improved HTMLSettings comments
