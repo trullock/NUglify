@@ -1,7 +1,7 @@
 # Changelog
 
 ## vNext (unpublished)
-- Made contents of `<script>` and `<style>` elements fully indented with outputting pretty HTML
+- Made contents of `<script>` and `<style>` elements fully indented when outputting pretty HTML
 
 ## 1.9.10 (22 October 2020)
 - Improved readme and docs
