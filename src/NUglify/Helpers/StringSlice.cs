@@ -94,7 +94,7 @@ namespace NUglify.Helpers
         {
             Text = text;
             Start = text == null ? 1 : 0;
-            End = text != null ? text.Length - 1 : 0;
+            End = text?.Length - 1 ?? 0;
         }
 
         public override string ToString()
