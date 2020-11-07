@@ -92,7 +92,7 @@ namespace NUglify.JavaScript
         public bool IgnoreConditionalCompilation { get; set; }
 
         /// <summary>
-        /// Gets or sets whether to allow ASP.NET <% ... %> syntax within the script
+        /// Gets or sets whether to allow ASP.NET &lt;% ... %&gt; syntax within the script
         /// </summary>
         public bool AllowEmbeddedAspNetBlocks { get; set; }
 
