@@ -6,19 +6,19 @@ using System;
 using System.Collections.Generic;
 using NUglify.Css;
 using NUglify.Helpers;
+using NUglify.JavaScript;
 
 namespace NUglify.Html
 {
     public class HtmlMinifier
     {
-        private readonly HtmlDocument html;
-        private int pendingTagNonCollapsibleWithSpaces;
-        private readonly List<HtmlText> pendingTexts;
-        private readonly HtmlSettings settings;
-        private readonly CssSettings attributeCssSettings;
-        private int xmlNamespaceCount;
+        readonly HtmlDocument html;
+        int pendingTagNonCollapsibleWithSpaces;
+        readonly List<HtmlText> pendingTexts;
+        readonly HtmlSettings settings;
+        int xmlNamespaceCount;
 
-        private static readonly Dictionary<string, bool> AttributesRemovedIfEmpty = new[]
+        static readonly Dictionary<string, bool> AttributesRemovedIfEmpty = new[]
         {
             "class",
             "id",
@@ -41,41 +41,14 @@ namespace NUglify.Html
             "onkeyup",
         }.ToDictionaryBool(false);
 
-        private static readonly Dictionary<string, bool> ScriptAttributes = new string[]
-        {
-            "onAbort",
-            "onBlur",
-            "onChange",
-            "onClick",
-            "onDblClick",
-            "onDragDrop",
-            "onError",
-            "onFocus",
-            "onKeyDown",
-            "onKeyPress",
-            "onKeyUp",
-            "onLoad",
-            "onMouseDown",
-            "onMouseMove",
-            "onMouseOut",
-            "onMouseOver",
-            "onMouseUp",
-            "onMove",
-            "onReset",
-            "onResize",
-            "onSelect",
-            "onSubmit",
-            "onUnload",
-        }.ToDictionaryBool(false);
+        static readonly Dictionary<string, bool> ScriptAttributes = new [] { "onafterprint", "onbeforeprint", "onbeforeunload", "onerror", "onhashchange", "onload", "onmessage", "onoffline", "ononline", "onpagehide", "onpageshow", "onpopstate", "onresize", "onstorage", "onunload", "onblur", "onchange", "oncontextmenu", "onfocus", "oninput", "oninvalid", "onreset", "onsearch", "onselect", "onsubmit", "onkeydown", "onkeypress", "onkeyup", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", "onmousewheel", "onwheel", "ondrag", "ondragend", "ondragenter", "ondragleave", "ondragover", "ondragstart", "ondrop", "onscroll", "oncopy", "oncut", "onpaste", "onabort", "oncanplay", "oncanplaythrough", "oncuechange", "ondurationchange", "onemptied", "onended", "onerror", "onloadeddata", "onloadedmetadata", "onloadstart", "onpause", "onplay", "onplaying", "onprogress", "onratechange", "onseeked", "onseeking", "onstalled", "onsuspend", "ontimeupdate", "onvolumechange", "onwaiting", "ontoggle"}.ToDictionaryBool(false);
 
         public HtmlMinifier(HtmlDocument html, HtmlSettings settings = null)
         {
-            if (html == null) throw new ArgumentNullException(nameof(html));
-            this.settings = settings ?? new HtmlSettings();
-            attributeCssSettings = this.settings.CssSettings.Clone();
-            attributeCssSettings.CssType = CssType.DeclarationList;
+	        this.html = html ?? throw new ArgumentNullException(nameof(html));
 
-            this.html = html;
+            this.settings = settings ?? new HtmlSettings();
+            
             pendingTexts = new List<HtmlText>();
             Errors = new List<UglifyError>();
         }
@@ -370,24 +343,19 @@ namespace NUglify.Html
 
             pendingTexts.Clear();
         }
-        private void TrimScriptOrStyle(HtmlElement element, bool isJs)
+        
+        void TrimScriptOrStyle(HtmlElement element, bool isJs)
         {
             // We remove the type attribute, as it default to text/css and text/javascript
-            if (settings.RemoveScriptStyleTypeAttribute)
-            {
-                element.RemoveAttribute("type");
-            }
+            if (settings.RemoveScriptStyleTypeAttribute) 
+	            element.RemoveAttribute("type");
 
             if ((isJs && !settings.MinifyJs) || (!isJs && !settings.MinifyCss))
-            {
-                return;
-            }
-
+	            return;
+            
             var raw = element.FirstChild as HtmlRaw;
             if (raw == null)
-            {
                 return;
-            }
 
             var slice = raw.Slice;
 
@@ -404,23 +372,19 @@ namespace NUglify.Html
 
             var textMinified = MinifyJsOrCss(text, isJs);
             if (textMinified == null)
-            {
                 return;
-            }
+
             raw.Slice = new StringSlice(textMinified);
         }
-
-
-        private string MinifyJsOrCss(string text, bool isJs)
+        
+        string MinifyJsOrCss(string text, bool isJs)
         {
             var result = isJs
                 ? Uglify.Js(text, "inner_js", settings.JsSettings)
                 : Uglify.Css(text, "inner_css", settings.CssSettings);
 
             if (result.Errors != null)
-            {
                 Errors.AddRange(result.Errors);
-            }
 
             if (result.HasErrors)
             {
@@ -431,13 +395,13 @@ namespace NUglify.Html
             return result.Code;
         }
 
-        private string MinifyCssAttribute(string text)
+        string MinifyCssAttribute(string text)
         {
+	        var attributeCssSettings = this.settings.CssSettings.Clone();
+	        attributeCssSettings.CssType = CssType.DeclarationList;
             var result = Uglify.Css(text, "inner_css", attributeCssSettings);
             if (result.Errors != null)
-            {
                 Errors.AddRange(result.Errors);
-            }
 
             if (result.HasErrors)
             {
@@ -448,7 +412,24 @@ namespace NUglify.Html
             return result.Code;
         }
 
-        private bool TrimAttribute(HtmlElement element, HtmlAttribute attribute)
+        string MinifyJsAttribute(string text)
+        {
+	        var attributeJsSettings = this.settings.JsSettings.Clone();
+	        attributeJsSettings.SourceMode = JavaScriptSourceMode.EventHandler;
+            var result = Uglify.Js(text, attributeJsSettings);
+	        if (result.Errors != null) 
+		        Errors.AddRange(result.Errors);
+
+	        if (result.HasErrors)
+	        {
+		        HasErrors = true;
+		        return text;
+	        }
+
+	        return result.Code;
+        }
+        
+        bool TrimAttribute(HtmlElement element, HtmlAttribute attribute)
         {
             var tag = element.Name.ToLowerInvariant();
             var attr = attribute.Name.ToLowerInvariant();
@@ -461,9 +442,7 @@ namespace NUglify.Html
                 if (settings.RemoveJavaScript)
                 {
                     if (ScriptAttributes.ContainsKey(attr) || attribute.Value.Trim().StartsWith("javascript:", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return true;
-                    }
+	                    return true;
                 }
 
                 if (IsUriTypeAttribute(element.Name, attribute.Name))
@@ -484,10 +463,17 @@ namespace NUglify.Html
                     }
                     return attribute.Value == string.Empty;
                 }
-                else if (attr == "style" && element.Descriptor != null && settings.MinifyCssAttributes)
+
+                if (attr == "style" && element.Descriptor != null && settings.MinifyCssAttributes)
                 {
-                    attribute.Value = MinifyCssAttribute(attribute.Value);
-                    return attribute.Value == string.Empty;
+	                attribute.Value = MinifyCssAttribute(attribute.Value);
+	                return attribute.Value == string.Empty;
+                }
+
+                if (settings.MinifyJsAttributes && ScriptAttributes.ContainsKey(attr))
+                {
+	                attribute.Value = MinifyJsAttribute(attribute.Value);
+	                return attribute.Value == string.Empty;
                 }
             }
 
