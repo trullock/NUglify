@@ -9,6 +9,26 @@ namespace NUglify.Html
     /// </summary>
     public struct SourceLocation
     {
+	    /// <summary>
+        /// The source file name (may be null)
+        /// </summary>
+        public string File { get; set; }
+
+        /// <summary>
+        /// The absolute position from the beginning of the file
+        /// </summary>
+        public int Position { get; set; }
+
+        /// <summary>
+        /// The line position (start at 1)
+        /// </summary>
+        public int Line { get; set; }
+
+        /// <summary>
+        /// The character position (start at 1) (warning, does not count tabs)
+        /// </summary>
+        public int Column { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SourceLocation"/> struct.
         /// </summary>
@@ -18,30 +38,10 @@ namespace NUglify.Html
         /// <param name="column">The column.</param>
         public SourceLocation(string file, int position, int line, int column)
         {
-            File = file;
-            Position = position;
-            Line = line;
-            Column = column;
+	        File = file;
+	        Position = position;
+	        Line = line;
+	        Column = column;
         }
-
-        /// <summary>
-        /// The source file name (may be null)
-        /// </summary>
-        public string File;
-
-        /// <summary>
-        /// The absolute position from the begining of the file
-        /// </summary>
-        public int Position;
-
-        /// <summary>
-        /// The line position (start at 1)
-        /// </summary>
-        public int Line;
-
-        /// <summary>
-        /// The character position (start at 1) (warning, does not count tabs)
-        /// </summary>
-        public int Column;
     }
 }

@@ -29,11 +29,12 @@ namespace NUglify.JavaScript
         // keyword table
         static readonly JSKeyword[] keywords = JSKeyword.InitKeywords();
         static readonly OperatorPrecedence[] operatorsPrec = InitOperatorsPrec();
-        static bool[] validIdentifierPartMap = InitializeValidIdentifierPartMap();
+        static readonly bool[] validIdentifierPartMap = InitializeValidIdentifierPartMap();
+
+        readonly StringBuilder identifier;
 
         string sourceCode;
         int endPos;
-        StringBuilder identifier;
 
         // a list of strings that we can add new ones to or clear depending on comments we may find in the source
         internal ICollection<string> DebugLookupCollection { get; set; }
@@ -130,9 +131,7 @@ namespace NUglify.JavaScript
         public JSScanner(DocumentContext sourceContext)
         {
             if (sourceContext == null)
-            {
-                throw new ArgumentNullException("sourceContext");
-            }
+	            throw new ArgumentNullException("sourceContext");
 
             // create a new empty context. By default the constructor will make the context
             // represent the entire document, but we want to start it off at just the beginning of it.
@@ -179,9 +178,7 @@ namespace NUglify.JavaScript
         internal JSScanner PeekClone()
         {
             if (peekClone == null)
-            {
-                peekClone = new JSScanner(this.defines);
-            }
+	            peekClone = new JSScanner(this.defines);
 
             peekClone.AllowEmbeddedAspNetBlocks = this.AllowEmbeddedAspNetBlocks;
             peekClone.IgnoreConditionalCompilation = this.IgnoreConditionalCompilation;
@@ -248,9 +245,7 @@ namespace NUglify.JavaScript
                 foreach (var nameValuePair in defines)
                 {
                     if (JSScanner.IsValidIdentifier(nameValuePair.Key) && !this.defines.ContainsKey(nameValuePair.Key))
-                    {
-                        this.defines.Add(nameValuePair.Key, nameValuePair.Value);
-                    }
+	                    this.defines.Add(nameValuePair.Key, nameValuePair.Value);
                 }
             }
             else
@@ -268,7 +263,7 @@ namespace NUglify.JavaScript
          System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "big case statement")]
         public SourceContext ScanNextToken()
         {
-            var token = JSToken.None;
+            JSToken token;
             char nextChar;
 
             CurrentToken.StartPosition = currentPosition;
@@ -3427,9 +3422,7 @@ namespace NUglify.JavaScript
             {
                 identifier = sourceCode.Substring(startPos, currentPosition - startPos);
                 if (forceUpper)
-                {
-                    identifier = identifier.ToUpperInvariant();
-                }
+	                identifier = identifier.ToUpperInvariant();
             }
 
             return identifier;
@@ -3439,9 +3432,7 @@ namespace NUglify.JavaScript
         {
             var startPos = currentPosition;
             while (IsDigit(GetChar(currentPosition)))
-            {
-                ++currentPosition;
-            }
+	            ++currentPosition;
 
             var success = false;
             if (currentPosition > startPos)

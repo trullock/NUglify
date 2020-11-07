@@ -15,6 +15,12 @@ namespace NUglify.Html
 	    bool outputEnabled;
 	    readonly HtmlToTextOptions options;
 
+	    public TextWriter Writer { get; }
+
+	    bool ShouldKeepStructure => (options & HtmlToTextOptions.KeepStructure) != 0;
+        bool ShouldKeepFormatting => (options & HtmlToTextOptions.KeepFormatting) != 0;
+        bool ShouldKeepHtmlEscape => (options & HtmlToTextOptions.KeepHtmlEscape) != 0;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlWriterToText"/> class.
         /// </summary>
@@ -23,18 +29,9 @@ namespace NUglify.Html
         /// <exception cref="System.ArgumentNullException">if writer is null</exception>
         public HtmlWriterToText(TextWriter writer, HtmlToTextOptions options)
         {
-            if (writer == null) throw new ArgumentNullException(nameof(writer));
-            Writer = writer;
-            this.options = options;
+	        Writer = writer ?? throw new ArgumentNullException(nameof(writer));
+	        this.options = options;
         }
-
-        public TextWriter Writer { get; }
-
-        bool ShouldKeepStructure => (options & HtmlToTextOptions.KeepStructure) != 0;
-
-        bool ShouldKeepFormatting => (options & HtmlToTextOptions.KeepFormatting) != 0;
-
-        bool ShouldKeepHtmlEscape => (options & HtmlToTextOptions.KeepHtmlEscape) != 0;
 
         protected override void Write(string text)
         {

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace NUglify.Helpers
 {
@@ -54,7 +53,7 @@ namespace NUglify.Helpers
         {
             try
             {
-                number = System.Convert.ToSingle(text, CultureInfo.InvariantCulture);
+                number = Convert.ToSingle(text, CultureInfo.InvariantCulture);
                 return true;
             }
             catch (FormatException)
@@ -72,13 +71,13 @@ namespace NUglify.Helpers
         public static bool TryParseIntInvariant(this string text, NumberStyles numberStyles, out int number)
         {
             number = default(int);
-            return text == null ? false : int.TryParse(text, numberStyles, CultureInfo.InvariantCulture, out number);
+            return text != null && int.TryParse(text, numberStyles, CultureInfo.InvariantCulture, out number);
         }
 
         public static bool TryParseLongInvariant(this string text, NumberStyles numberStyles, out long number)
         {
             number = default(long);
-            return text == null ? false : long.TryParse(text, numberStyles, CultureInfo.InvariantCulture, out number);
+            return text != null && long.TryParse(text, numberStyles, CultureInfo.InvariantCulture, out number);
         }
 
         public static bool IsNullOrWhiteSpace(this string text)
@@ -101,11 +100,8 @@ namespace NUglify.Helpers
 
         public static string SubstringUpToFirst(this string text, char delimiter)
         {
-            // if the string is null, return null
             if (text == null)
-            {
-                return null;
-            }
+	            return null;
 
             // get the index of the first delimiter character
             var indexOf = text.IndexOf(delimiter);
@@ -143,18 +139,14 @@ namespace NUglify.Helpers
         public static void ForEach<TObject>(this IEnumerable<TObject> collection, Action<TObject> action)
         {
             if (action == null)
-            {
-                throw new ArgumentNullException("action");
-            }
+	            throw new ArgumentNullException(nameof(action));
 
             if (collection != null)
             {
                 foreach (var item in collection)
                 {
                     if (item != null)
-                    {
-                        action(item);
-                    }
+	                    action(item);
                 }
             }
         }
@@ -162,9 +154,7 @@ namespace NUglify.Helpers
         public static TResult IfNotNull<TObject, TResult>(this TObject obj, Func<TObject, TResult> action)
         {
             if (action == null)
-            {
-                throw new ArgumentNullException("action");
-            }
+	            throw new ArgumentNullException(nameof(action));
 
             return obj == null ? default(TResult) : action(obj);
         }
@@ -172,9 +162,7 @@ namespace NUglify.Helpers
         public static TResult IfNotNull<TObject, TResult>(this TObject obj, Func<TObject, TResult> action, TResult defaultValue)
         {
             if (action == null)
-            {
-                throw new ArgumentNullException("action");
-            }
+	            throw new ArgumentNullException(nameof(action));
 
             return obj == null ? defaultValue : action(obj);
         }
@@ -182,29 +170,21 @@ namespace NUglify.Helpers
         public static void IfNotNull<TObject>(this TObject obj, Action<TObject> action)
         {
             if (action == null)
-            {
-                throw new ArgumentNullException("action");
-            }
+	            throw new ArgumentNullException(nameof(action));
 
             if (obj != null)
-            {
-                action(obj);
-            }
+	            action(obj);
         }
 
         public static void CopyItemsTo<TSource>(this ICollection<TSource> fromSet, ICollection<TSource> toSet)
         {
             if (toSet == null)
-            {
-                throw new ArgumentNullException("toSet");
-            }
+	            throw new ArgumentNullException(nameof(toSet));
 
             if ((fromSet != null) && (fromSet.Count != 0))
             {
                 foreach (var item in fromSet)
-                {
-                    toSet.Add(item);
-                }
+	                toSet.Add(item);
             }
         }
 #if NET_20 || NET_35

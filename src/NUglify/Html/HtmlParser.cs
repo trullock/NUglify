@@ -33,17 +33,17 @@ namespace NUglify.Html
 	    HtmlDocument rootDocument;
 
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlParser"/> class.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        /// <param name="sourceFileName">Name of the source file.</param>
-        /// <exception cref="System.ArgumentNullException"></exception>
-        public HtmlParser(string text, string sourceFileName = null, HtmlSettings settings = null)
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="HtmlParser"/> class.
+	    /// </summary>
+	    /// <param name="text">The text.</param>
+	    /// <param name="sourceFileName">Name of the source file.</param>
+	    /// <param name="settings"></param>
+	    /// <exception cref="System.ArgumentNullException"></exception>
+	    public HtmlParser(string text, string sourceFileName = null, HtmlSettings settings = null)
         {
-            if (text == null) throw new ArgumentNullException(nameof(text));
+	        this.text = text ?? throw new ArgumentNullException(nameof(text));
             this.sourceFileName = sourceFileName;
-            this.text = text;
             this.settings = settings ?? new HtmlSettings();
             tempBuilder = new StringBuilder();
             Errors = new List<UglifyError>();

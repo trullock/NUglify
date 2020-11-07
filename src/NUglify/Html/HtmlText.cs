@@ -13,10 +13,6 @@ namespace NUglify.Html
     /// <seealso cref="HtmlTextBase" />
     public class HtmlText : HtmlTextBase
     {
-        public HtmlText()
-        {
-        }
-
         public override string ToString()
         {
             return $"html-text: {Slice}";
@@ -40,14 +36,14 @@ namespace NUglify.Html
 
         public void Append(string text, int from, int to)
         {
-            if (text == null) throw new ArgumentNullException(nameof(text));
-            if (from < 0) throw new ArgumentOutOfRangeException(nameof(from), "From position cannot be null");
+            if (text == null) 
+	            throw new ArgumentNullException(nameof(text));
+            if (from < 0) 
+	            throw new ArgumentOutOfRangeException(nameof(from), "From position cannot be null");
 
             // For to, limit them (this is a safeguard, should not happen, but we don't want to crash if this is the case) 
             if (to >= text.Length)
-            {
-                to = text.Length - 1;
-            }
+	            to = text.Length - 1;
 
             if (Slice.Text == null)
             {
@@ -56,10 +52,7 @@ namespace NUglify.Html
             else
             {
                 if (from != Slice.End + 1)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(from),
-                        $"Position [{from}] is not consecutive to the previous position [{Slice.End}]");
-                }
+	                throw new ArgumentOutOfRangeException(nameof(from), $"Position [{from}] is not consecutive to the previous position [{Slice.End}]");
                 Slice.End = to;
             }
         }
