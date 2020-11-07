@@ -55,7 +55,7 @@ namespace NUglify.Tests.Html
         {
 	        input = @"
 <div>
-	<p onclick=""doSomething(1 + 2)"">click me</p>
+	<p onclick=""doSomething(1 + 2); "">click me</p>
 </div>";
 			var htmlSettings = new HtmlSettings();
 			var htmlToText = Uglify.Html(input, htmlSettings);
