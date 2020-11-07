@@ -104,9 +104,7 @@ namespace NUglify.JavaScript
             lineOffset = 0;
             columnOffset = 0;
         }
-
-        #region ISourceMap implementation
-
+        
         /// <summary>
         /// Called when we start a new minified output file
         /// </summary>
@@ -161,7 +159,7 @@ namespace NUglify.JavaScript
         public void MarkSegment(AstNode node, int startLine, int startColumn, string name, SourceContext context)
         {
             if (startLine == int.MaxValue)
-                throw new ArgumentOutOfRangeException("startLine");
+                throw new ArgumentOutOfRangeException(nameof(startLine));
 
             // add the offsets
             startLine += lineOffset;
@@ -171,9 +169,7 @@ namespace NUglify.JavaScript
             // will return false. If it doesn't already exist, Add will return true and we'll append it to the list
             // of names. That way we have a nice list of names ordered by their first occurrence in the minified file.
             if (!string.IsNullOrEmpty(name) && names.Add(name))
-            {
-                nameList.Add(name);
-            }
+	            nameList.Add(name);
 
             // if this is a newline, the startline will be bigger than the largest line we've had so far
             maxMinifiedLine = Math.Max(maxMinifiedLine, startLine);
@@ -264,9 +260,6 @@ namespace NUglify.JavaScript
             }
         }
 
-        #endregion
-
-        #region GenerateMappings method
 
         Segment CreateSegment(int destinationLine, int destinationColumn, int sourceLine, int sourceColumn, string fileName, string symbolName)
         {
@@ -390,10 +383,6 @@ namespace NUglify.JavaScript
             }
             while (value > 0);
         }
-
-        #endregion
-
-        #region private helper methods
 
         string MakeRelative(string path, string relativeFrom)
         {
