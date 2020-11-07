@@ -24,60 +24,43 @@ using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript
 {
-    public enum UpdateHint
+	public sealed class JSScanner
     {
-        None = 0,
-        RegularExpression,
-        TemplateLiteral,
-        ReplacementToken,
-    }
-
-    public sealed class JSScanner
-    {
-        #region static fields
-
         // keyword table
-        private static readonly JSKeyword[] s_Keywords = JSKeyword.InitKeywords();
+        static readonly JSKeyword[] s_Keywords = JSKeyword.InitKeywords();
 
-        private static readonly OperatorPrecedence[] s_OperatorsPrec = InitOperatorsPrec();
+        static readonly OperatorPrecedence[] s_OperatorsPrec = InitOperatorsPrec();
 
-        private static bool[] ValidIdentifierPartMap = InitializeValidIdentifierPartMap();
+        static bool[] ValidIdentifierPartMap = InitializeValidIdentifierPartMap();
 
-        #endregion
+        
+        string m_strSourceCode;
+        int m_endPos;
+        StringBuilder m_identifier;
+        bool m_literalIssues;
 
-        #region private fields
-
-        private string m_strSourceCode;
-
-        private int m_endPos;
-
-        private StringBuilder m_identifier;
-        private bool m_literalIssues;
-
-        // a list of strings that we can add new ones to or clear
-        // depending on comments we may find in the source
+        // a list of strings that we can add new ones to or clear depending on comments we may find in the source
         internal ICollection<string> DebugLookupCollection { get; set; }
 
         // for pre-processor
-        private Dictionary<string, string> m_defines;
+        Dictionary<string, string> m_defines;
 
-        private int m_startLinePosition;
-        private int m_currentPosition;
-        private int m_currentLine;
-        private int m_lastPosOnBuilder;
-        private int m_ifDirectiveLevel;
-        private int m_conditionalCompilationIfLevel;
-        private bool m_conditionalCompilationOn;
-        private bool m_inConditionalComment;
-        private bool m_inSingleLineComment;
-        private bool m_inMultipleLineComment;
-        private bool m_mightBeKeyword;
-        private string m_decodedString;
-        private SourceContext m_currentToken;
+        int m_startLinePosition;
+        int m_currentPosition;
+        int m_currentLine;
+        int m_lastPosOnBuilder;
+        int m_ifDirectiveLevel;
+        int m_conditionalCompilationIfLevel;
+        bool m_conditionalCompilationOn;
+        bool m_inConditionalComment;
+        bool m_inSingleLineComment;
+        bool m_inMultipleLineComment;
+        bool m_mightBeKeyword;
+        string m_decodedString;
+        SourceContext m_currentToken;
 
-        private JSScanner m_peekClone;
+        JSScanner m_peekClone;
 
-        #endregion
 
         #region public settings properties
 
@@ -4336,18 +4319,4 @@ namespace NUglify.JavaScript
             #endregion
         }
     }
-
-    #region event args classes 
-
-    public class GlobalDefineEventArgs : EventArgs
-    {
-        public string Name { get; set; }
-    }
-
-    public class NewModuleEventArgs : EventArgs
-    {
-        public string Module { get; set; }
-    }
-
-    #endregion
 }
