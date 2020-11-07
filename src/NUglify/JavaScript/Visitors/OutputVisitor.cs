@@ -1840,14 +1840,10 @@ namespace NUglify.JavaScript.Visitors
                 if (node.FunctionType == FunctionType.ArrowFunction)
                 {
                     if (node.IsAsync)
-                    {
-                        Output("async");
-                    }
+	                    Output("async");
 
                     if (m_settings.SymbolsMap != null)
-                    {
-                        m_functionStack.Push("(anonymous)");
-                    }
+	                    m_functionStack.Push("(anonymous)");
 
                     // arrow functions are simple...
                     OutputFunctionArgsAndBody(node);
@@ -1856,9 +1852,7 @@ namespace NUglify.JavaScript.Visitors
                 {
                     var encloseInParens = node.IsExpression && m_startOfStatement;
                     if (encloseInParens)
-                    {
-                        OutputPossibleLineBreak('(');
-                    }
+	                    OutputPossibleLineBreak('(');
 
                     // get the function name we will use for symbol references.
                     // use the function's real name if:
@@ -1890,10 +1884,9 @@ namespace NUglify.JavaScript.Visitors
                         var minFunctionName = node.Binding.VariableField != null
                             ? node.Binding.VariableField.ToString()
                             : node.Binding.Name;
+
                         if (m_settings.SymbolsMap != null)
-                        {
-                            m_functionStack.Push(minFunctionName);
-                        }
+	                        m_functionStack.Push(minFunctionName);
 
                         if (hasName)
                         {
@@ -1914,8 +1907,7 @@ namespace NUglify.JavaScript.Visitors
 
                     if (m_settings.SymbolsMap != null && isAnonymous)
                     {
-                        BinaryExpression binaryExpression = node.Parent as BinaryExpression;
-                        if (binaryExpression != null && binaryExpression.Operand1 is LookupExpression)
+	                    if (node.Parent is BinaryExpression binaryExpression && binaryExpression.Operand1 is LookupExpression)
                         {
                             m_functionStack.Push("(anonymous) [{0}]".FormatInvariant(binaryExpression.Operand1));
                         }
@@ -1936,10 +1928,8 @@ namespace NUglify.JavaScript.Visitors
                 m_noIn = isNoIn;
                 EndSymbol(symbol);
                 if (m_settings.SymbolsMap != null)
-                {
-                    m_functionStack.Pop();
-                }
-           }
+	                m_functionStack.Pop();
+            }
         }
 
         public void Visit(GetterSetter node)
@@ -4625,12 +4615,7 @@ namespace NUglify.JavaScript.Visitors
 
         object StartSymbol(AstNode node)
         {
-            if (m_settings.SymbolsMap != null)
-            {
-                return m_settings.SymbolsMap.StartSymbol(node, m_lineCount, m_lineLength);
-            }
-
-            return null;
+	        return m_settings.SymbolsMap?.StartSymbol(node, m_lineCount, m_lineLength);
         }
 
         void MarkSegment(AstNode node, string name, SourceContext context)
@@ -4647,9 +4632,7 @@ namespace NUglify.JavaScript.Visitors
             {
                 string parentFunction = null;
                 if (m_functionStack.Count > 0)
-                {
-                    parentFunction = m_functionStack.Peek();
-                }
+	                parentFunction = m_functionStack.Peek();
 
                 m_settings.SymbolsMap.EndSymbol(symbol, m_lineCount, m_lineLength, parentFunction);
             }
