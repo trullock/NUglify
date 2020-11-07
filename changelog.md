@@ -1,7 +1,10 @@
 # Changelog
 
 ## vNext (unpublished)
+
+## v1.9.11 (7 November 2020)
 - Made contents of `<script>` and `<style>` elements fully indented when outputting pretty HTML
+- Allowed controlling HTML Indent character
 
 ## 1.9.10 (22 October 2020)
 - Improved readme and docs
