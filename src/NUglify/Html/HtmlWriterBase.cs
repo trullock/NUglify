@@ -65,32 +65,22 @@ namespace NUglify.Html
             {
                 WriteStartTag(node);
                 if (shouldClose)
-                {
                     Depth++;
-                }
             }
 
             if (isInXml)
-            {
                 XmlNamespaceLevel++;
-            }
 
             WriteChildren(node);
 
             if (isInXml)
-            {
                 XmlNamespaceLevel--;
-            }
 
             if (shouldClose)
-            {
                 Depth--;
-            }
 
-            if (hasClosing)
-            {
-                WriteEndTag(node);
-            }
+            if (hasClosing) 
+	            WriteEndTag(node);
         }
 
         protected virtual void WriteStartTag(HtmlElement node)

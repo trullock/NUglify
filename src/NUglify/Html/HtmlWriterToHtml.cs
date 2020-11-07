@@ -31,12 +31,17 @@ namespace NUglify.Html
 
         public TextWriter Writer { get; }
 
+        void WriteIndent()
+        {
+	        for (int i = 0; i < Depth; i++)
+		        Writer.Write(settings.Indent);
+        }
+
         protected override void Write(string text)
         {
             if (settings.PrettyPrint && lastNewLine && allowIndent)
             {
-                for (int i = 0; i < Depth; i++)
-	                Writer.Write(settings.Indent);
+                this.WriteIndent();
                 lastNewLine = false;
             }
 
@@ -47,8 +52,7 @@ namespace NUglify.Html
         {
             if (settings.PrettyPrint && lastNewLine && allowIndent)
             {
-                for (int i = 0; i < Depth; i++)
-	                Writer.Write(settings.Indent);
+	            this.WriteIndent();
                 lastNewLine = false;
             }
 
@@ -124,7 +128,7 @@ namespace NUglify.Html
             }
         }
 
-        private bool ShouldPretty(HtmlElement node)
+        bool ShouldPretty(HtmlElement node)
         {
             return settings.PrettyPrint && (node.Descriptor == null || !settings.InlineTagsPreservingSpacesAround.ContainsKey(node.Descriptor.Name));
         }
@@ -133,7 +137,7 @@ namespace NUglify.Html
         {
             var attrValue = attribute.Value;
 
-            var quoteChar = (char) 0;
+            char quoteChar;
 
             if (settings.AttributeQuoteChar == null)
             {
@@ -218,6 +222,25 @@ namespace NUglify.Html
                     Write(" ");
                 }
             }
+        }
+
+        protected override void Write(HtmlRaw node)
+        {
+	        if (ShouldPretty(node.Parent) && (node.Parent?.Name == "script" || node.Parent?.Name == "style"))
+	        {
+		        var lines = node.Slice.ToString().Split(new [] { Writer.NewLine }, StringSplitOptions.None);
+		        // we're already indented for the first line
+		        Write(lines[0]);
+
+                for (var i = 1; i < lines.Length; i++)
+                {
+	                Write(Writer.NewLine);
+                    WriteIndent();
+	                Write(lines[i]);
+                }
+            }
+            else
+				base.Write(node);
         }
     }
 }

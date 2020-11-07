@@ -49,5 +49,37 @@ namespace NUglify.Tests.Html
 </html>
 ");
         }
+
+        [Test]
+        public void Bug174()
+        {
+	        input = @"
+<html>
+	<head>
+		<script>let x = 1; 
+let y = function() { foo() }</script>
+		<script></script>
+		<style>h1 { color: red; }</style>
+	</head>
+</html>";
+	        var htmlSettings = HtmlSettings.Pretty();
+	        htmlSettings.Indent = "\t";
+	        var htmlToText = Uglify.Html(input, htmlSettings);
+	        equal(htmlToText.Code, @"
+<html>
+	<head>
+		<script>
+			let x = 1; 
+			let y = function() { foo() }
+		</script>
+		<script>
+		</script>
+		<style>
+			h1 { color: red; }
+		</style>
+	</head>
+</html>
+");
+        }
     }
 }
