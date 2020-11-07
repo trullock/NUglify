@@ -39,18 +39,36 @@ namespace NUglify.Tests.Html
 	        var htmlSettings = HtmlSettings.Pretty();
 	        htmlSettings.Indent = "\t";
 	        var htmlToText = Uglify.Html(input, htmlSettings);
-	        equal(htmlToText.Code, @"
-<html>
+	        equal(htmlToText.Code, @"<html>
 	<head>
 		<title>
 			Please indent me properly
 		</title>
 	</head>
-</html>
-");
+</html>");
         }
 
         [Test]
+        public void Bug171()
+        {
+	        input = @"
+<div>
+	<pre>format 
+me
+	properly
+ </pre>
+</div>";
+	        var htmlSettings = HtmlSettings.Pretty();
+	        var htmlToText = Uglify.Html(input, htmlSettings);
+	        equal(htmlToText.Code, @"<div>
+  <pre>format 
+me
+	properly
+ </pre>
+</div>");
+        }
+
+		[Test]
         public void Bug172()
         {
 	        input = @"
@@ -77,8 +95,7 @@ let y = function() { foo() }</script>
 	        var htmlSettings = HtmlSettings.Pretty();
 	        htmlSettings.Indent = "\t";
 	        var htmlToText = Uglify.Html(input, htmlSettings);
-	        equal(htmlToText.Code, @"
-<html>
+	        equal(htmlToText.Code, @"<html>
 	<head>
 		<script>
 			let x = 1; 
@@ -90,8 +107,7 @@ let y = function() { foo() }</script>
 			h1 { color: red; }
 		</style>
 	</head>
-</html>
-");
+</html>");
         }
     }
 }

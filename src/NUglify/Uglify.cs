@@ -68,7 +68,6 @@ namespace NUglify
                 var writer = new StringWriter();
                 var htmlWriter = new HtmlWriterToHtml(writer, settings);
                 htmlWriter.Write(document);
-
                 text = writer.ToString();
             }
 

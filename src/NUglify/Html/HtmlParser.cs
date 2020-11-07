@@ -778,7 +778,7 @@ namespace NUglify.Html
             stack.RemoveAt(stack.Count - 1);
         }
 
-        private void ParseScriptOrStyleContent(HtmlElement tag)
+        void ParseScriptOrStyleContent(HtmlElement tag)
         {
             int endPosition;
             var contentPosition = GetSourceLocation();
@@ -826,7 +826,7 @@ namespace NUglify.Html
 
             if (endPosition - 1 >= contentPosition.Position)
             {
-                CurrentParent.AppendChild(new HtmlRaw()
+                CurrentParent.AppendChild(new HtmlRaw
                 {
                     Location = contentPosition,
                     Slice = new StringSlice(text, contentPosition.Position, endPosition - 1)

@@ -14,48 +14,40 @@ namespace NUglify.Html
     /// </summary>
     public abstract class HtmlNode
     {
-        // This class doesn't implement full DOM methods (e.g: InsertBefore/After methods...etc.)
-        // because we only need to append childs and remove some of them when striping 
-        // the DOM tree.
+	    public SourceLocation Location { get; set; }
 
-        private HtmlElement parent;
-        private HtmlNode previousSibling;
-        private HtmlNode nextSibling;
-        private HtmlNode firstChild;
-        private HtmlNode lastChild;
+        public HtmlElement Parent { get; private set; }
 
-        public SourceLocation Location;
+        public HtmlNode PreviousSibling { get; private set; }
 
-        public HtmlElement Parent => parent;
+        public HtmlNode NextSibling { get; private set; }
 
-        public HtmlNode PreviousSibling => previousSibling;
+        public HtmlNode FirstChild { get; private set; }
 
-        public HtmlNode NextSibling => nextSibling;
-
-        public HtmlNode FirstChild => firstChild;
-
-        public HtmlNode LastChild => lastChild;
+        public HtmlNode LastChild { get; private set; }
 
         public ChildrenEnumerator Children => new ChildrenEnumerator(this);
 
         public void AppendChild(HtmlNode node)
         {
-            if (node == null) throw new ArgumentNullException(nameof(node));
-            if (node.Parent != null) throw new ArgumentException("Node has already a parent", nameof(node));
+            if (node == null) 
+	            throw new ArgumentNullException(nameof(node));
+            if (node.Parent != null) 
+	            throw new ArgumentException("Node has already a parent", nameof(node));
 
-            if (lastChild != null)
+            if (LastChild != null)
             {
-                lastChild.nextSibling = node;
-                node.previousSibling = lastChild;
-                lastChild = node;
+                LastChild.NextSibling = node;
+                node.PreviousSibling = LastChild;
+                LastChild = node;
             }
             else
             {
-                firstChild = node;
-                lastChild = node;
+                FirstChild = node;
+                LastChild = node;
             }
 
-            node.parent = (HtmlElement)this;
+            node.Parent = (HtmlElement)this;
         }
 
         public T FindNextSibling<T>() where T : HtmlNode
@@ -63,11 +55,8 @@ namespace NUglify.Html
             var next = NextSibling;
             while (next != null)
             {
-                var nextElement = next as T;
-                if (nextElement != null)
-                {
+	            if (next is T nextElement)
                     return nextElement;
-                }
 
                 next = next.NextSibling;
             }
@@ -81,44 +70,34 @@ namespace NUglify.Html
                 yield return child;
 
                 foreach (var subChild in child.FindAllDescendants())
-                {
                     yield return subChild;
-                }
             }
         }
 
         public void Remove()
         {
-            if (parent == null)
-            {
+            if (Parent == null)
                 return;
-            }
 
-            if (previousSibling != null)
-            {
-                previousSibling.nextSibling = nextSibling;
-            }
-            if (nextSibling != null)
-            {
-                nextSibling.previousSibling = previousSibling;
-            }
+            if (PreviousSibling != null)
+                PreviousSibling.NextSibling = NextSibling;
 
-            if (parent.firstChild == this)
-            {
-                parent.firstChild = nextSibling;
-            }
-            if (parent.lastChild == this)
-            {
-                parent.lastChild = nextSibling ?? previousSibling;
-            }
+            if (NextSibling != null)
+                NextSibling.PreviousSibling = PreviousSibling;
 
-            parent = null;
+            if (Parent.FirstChild == this)
+                Parent.FirstChild = NextSibling;
+
+            if (Parent.LastChild == this)
+                Parent.LastChild = NextSibling ?? PreviousSibling;
+
+            Parent = null;
         }
 
         public struct ChildrenEnumerator : IEnumerable<HtmlNode>, IEnumerator<HtmlNode>
         {
-            private readonly HtmlNode origin;
-            private HtmlNode next;
+            readonly HtmlNode origin;
+            HtmlNode next;
 
             internal ChildrenEnumerator(HtmlNode node)
             {
@@ -153,7 +132,7 @@ namespace NUglify.Html
                 if (next != null)
                 {
                     Current = next;
-                    next = Current?.nextSibling;
+                    next = Current?.NextSibling;
                     return true;
                 }
                 Current = null;
