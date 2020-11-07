@@ -31,7 +31,7 @@ namespace NUglify.Html
             RemoveAttributes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             
             MinifyJs = true;
-            // MinifyJsAttributes = true;
+            MinifyJsAttributes = true;
             JsSettings = new CodeSettings();
             MinifyCss = true;
             MinifyCssAttributes = true;
@@ -173,10 +173,11 @@ namespace NUglify.Html
         /// </summary>
         public bool MinifyJs { get; set; }
 
-        // <summary>
-        // Gets or sets a value indicating whether minify js inside JS attributes.
-        // </summary>
-        // public bool MinifyJsAttributes { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether minify js inside JS attributes.
+        /// Default is <c>true</c> using <see cref = "Uglify.Js(string, CodeSettings)" />
+        /// </summary>
+        public bool MinifyJsAttributes { get; set; }
 
         /// <summary>
         /// Gets or sets the minify js settings.

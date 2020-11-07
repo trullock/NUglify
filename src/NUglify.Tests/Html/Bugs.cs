@@ -51,6 +51,18 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void Bug172()
+        {
+	        input = @"
+<div>
+	<p onclick=""doSomething(1 + 2)"">click me</p>
+</div>";
+			var htmlSettings = new HtmlSettings();
+			var htmlToText = Uglify.Html(input, htmlSettings);
+			equal(htmlToText.Code, @"<div><p onclick=doSomething(3)>click me</div>");
+        }
+
+		[Test]
         public void Bug174()
         {
 	        input = @"

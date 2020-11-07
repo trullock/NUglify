@@ -95,6 +95,7 @@ namespace NUglify
                 RemoveScriptStyleTypeAttribute = false,
                 ShortBooleanAttribute = false,
                 MinifyJs = false,
+                MinifyJsAttributes = false,
                 MinifyCss = false,
                 MinifyCssAttributes = false
             };
