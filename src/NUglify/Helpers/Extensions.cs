@@ -18,7 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-
+#if NET_20 || NET_35
+using System.Text;
+#endif
 namespace NUglify.Helpers
 {
     public static class NUglifyExtensions
