@@ -59,6 +59,7 @@ me
  </pre>
 </div>";
 	        var htmlSettings = HtmlSettings.Pretty();
+	        htmlSettings.IsFragmentOnly = true;
 	        var htmlToText = Uglify.Html(input, htmlSettings);
 	        equal(htmlToText.Code, @"<div>
   <pre>format 

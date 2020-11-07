@@ -7,10 +7,10 @@ namespace NUglify.Html
 {
     public class HtmlWriterToHtml : HtmlWriterBase
     {
-	    static readonly char[] AttributeCharsForcingQuote = {' ', '\t', '\n', '\f', '\r', '"', '\'', '`', '=', '<', '>'};
-	    readonly HtmlSettings settings;
-	    readonly TextWriter writer;
-	    bool isFirstWrite;
+	    protected static readonly char[] AttributeCharsForcingQuote = {' ', '\t', '\n', '\f', '\r', '"', '\'', '`', '=', '<', '>'};
+	    protected readonly HtmlSettings settings;
+	    protected readonly TextWriter writer;
+	    protected bool isFirstWrite;
 
         public HtmlWriterToHtml(TextWriter writer, HtmlSettings settings = null)
         {
@@ -80,7 +80,8 @@ namespace NUglify.Html
 
         protected override void WriteEndTag(HtmlElement node)
         {
-	        if (ShouldPretty(node))
+	        var descriptorName = node.Descriptor?.Name;
+	        if (ShouldPretty(node.Parent) && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)))
             {
                 writer.WriteLine();
                 this.WriteIndent();
@@ -182,7 +183,8 @@ namespace NUglify.Html
 
         protected override void Write(HtmlText node)
         {
-            if (ShouldPretty(node.Parent))
+	        var descriptorName = node.Parent.Descriptor?.Name;
+	        if (ShouldPretty(node.Parent) && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)))
 	        {
 		        writer.WriteLine();
 		        this.WriteIndent();

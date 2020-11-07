@@ -10,6 +10,8 @@
 - Fixes many bugs with HTML minification and processing, mainly around whitespace
 - Removes public `HtmlWriterToHtml.Writer` properly
 - Fixes inheritance issues with `HtmlWriterToHtml`
+- Performance improvements to HtmlMinification
+- Fixes leading whitespace with Prettifying HTML
 
 ## v1.9.11 (7 November 2020)
 - Made contents of `<script>` and `<style>` elements fully indented when outputting pretty HTML
