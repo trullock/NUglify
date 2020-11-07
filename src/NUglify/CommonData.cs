@@ -21,12 +21,12 @@ namespace NUglify
     /// <summary>
     /// Helper class to hold common data elements
     /// </summary>
-    internal static class CommonData
+    static class CommonData
     {
         /// <summary>
         /// Regular expression to identifier replacement token syntax
         /// </summary>
-        private static Regex s_replacementToken;
+        static Regex s_replacementToken;
         public static Regex ReplacementToken
         {
             get
@@ -42,7 +42,7 @@ namespace NUglify
             }
         }
 
-        private static Regex s_decimalFormat;
+        static Regex s_decimalFormat;
         public static Regex DecimalFormat
         {
             get

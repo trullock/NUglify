@@ -26,7 +26,7 @@ namespace System.Runtime.CompilerServices
 
 namespace NUglify
 {
-    internal static class ReflectionHelper
+	static class ReflectionHelper
     {
 #if NETPRE45
         public static Type GetTypeInfo(this Type type)

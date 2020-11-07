@@ -25,8 +25,8 @@ namespace NUglify.JavaScript.Syntax
     /// </summary>
     public class InitializerNode : AstNode
     {
-        private AstNode m_binding;
-        private AstNode m_initializer;
+	    AstNode m_binding;
+	    AstNode m_initializer;
 
         public AstNode Binding
         {

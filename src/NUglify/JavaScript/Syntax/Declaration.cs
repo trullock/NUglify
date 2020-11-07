@@ -23,7 +23,7 @@ namespace NUglify.JavaScript.Syntax
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix", Justification = "AST statement")]
     public abstract class Declaration : Statement, IEnumerable<VariableDeclaration>
     {
-        private List<VariableDeclaration> m_list;
+	    List<VariableDeclaration> m_list;
 
         public JSToken StatementToken { get; set; }
 
@@ -173,7 +173,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private bool HandleDuplicates(AstNode binding)
+        bool HandleDuplicates(AstNode binding)
         {
             var notDuplicate = true;
 

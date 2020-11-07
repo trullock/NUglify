@@ -27,42 +27,29 @@ namespace NUglify.JavaScript
 	public sealed class JSScanner
     {
         // keyword table
-        static readonly JSKeyword[] s_Keywords = JSKeyword.InitKeywords();
+        static readonly JSKeyword[] keywords = JSKeyword.InitKeywords();
+        static readonly OperatorPrecedence[] operatorsPrec = InitOperatorsPrec();
+        static bool[] validIdentifierPartMap = InitializeValidIdentifierPartMap();
 
-        static readonly OperatorPrecedence[] s_OperatorsPrec = InitOperatorsPrec();
-
-        static bool[] ValidIdentifierPartMap = InitializeValidIdentifierPartMap();
-
-        
-        string m_strSourceCode;
-        int m_endPos;
-        StringBuilder m_identifier;
-        bool m_literalIssues;
+        string sourceCode;
+        int endPos;
+        StringBuilder identifier;
 
         // a list of strings that we can add new ones to or clear depending on comments we may find in the source
         internal ICollection<string> DebugLookupCollection { get; set; }
-
-        // for pre-processor
-        Dictionary<string, string> m_defines;
-
-        int m_startLinePosition;
-        int m_currentPosition;
-        int m_currentLine;
-        int m_lastPosOnBuilder;
-        int m_ifDirectiveLevel;
-        int m_conditionalCompilationIfLevel;
-        bool m_conditionalCompilationOn;
-        bool m_inConditionalComment;
-        bool m_inSingleLineComment;
-        bool m_inMultipleLineComment;
-        bool m_mightBeKeyword;
-        string m_decodedString;
-        SourceContext m_currentToken;
-
-        JSScanner m_peekClone;
+        Dictionary<string, string> defines;
+        int currentPosition;
+        int lastPosOnBuilder;
+        int ifDirectiveLevel;
+        int conditionalCompilationIfLevel;
+        bool conditionalCompilationOn;
+        bool inConditionalComment;
+        bool inSingleLineComment;
+        bool inMultipleLineComment;
+        bool mightBeKeyword;
+        JSScanner peekClone;
 
 
-        #region public settings properties
 
         /// <summary>
         /// Gets or sets whether to use NUglify preprocessor defines or ignore them
@@ -88,70 +75,47 @@ namespace NUglify.JavaScript
         /// Gets or sets whether to suppress all scanning errors
         /// </summary>
         public bool SuppressErrors { get; set; }
-
-        #endregion
-
-        #region public scan-state properties
-
+        
         /// <summary>
         /// Gets the current line of the input file
         /// </summary>
-        public int CurrentLine { get { return m_currentLine; } }
+        public int CurrentLine { get; private set; }
 
         /// <summary>
         /// Gets whether we have passed the end of the input source
         /// </summary>
-        public bool IsEndOfFile { get { return m_currentPosition >= m_endPos; } }
+        public bool IsEndOfFile => currentPosition >= endPos;
 
         /// <summary>
         /// Gets the position within the source of the start of the current line
         /// </summary>
-        public int StartLinePosition { get { return m_startLinePosition; } }
+        public int StartLinePosition { get; private set; }
 
         /// <summary>
         /// Gets whether the scanned literal has potential cross-browser issues
         /// </summary>
-        public bool LiteralHasIssues { get { return m_literalIssues; } }
+        public bool LiteralHasIssues { get; private set; }
 
         /// <summary>
         /// Gets the current decoded string literal value
         /// </summary>
-        public string StringLiteralValue { get { return m_decodedString; } }
+        public string StringLiteralValue { get; private set; }
 
         /// <summary>
         /// Gets the current decoded identifier string
         /// </summary>
-        public string Identifier
-        {
-            get
-            {
-                return m_identifier.Length > 0
-                    ? m_identifier.ToString()
-                    : m_currentToken.Code;
-            }
-        }
+        public string Identifier =>
+	        identifier.Length > 0
+		        ? identifier.ToString()
+		        : CurrentToken.Code;
 
         /// <summary>
         /// Gets the current token reference
         /// </summary>
-        public SourceContext CurrentToken
-        {
-            get { return m_currentToken; }
-        }
+        public SourceContext CurrentToken { get; private set; }
 
-        #endregion
+        bool IsAtEndOfLine => IsEndLineOrEOF(GetChar(currentPosition), 0);
 
-        #region private properties
-
-        private bool IsAtEndOfLine
-        {
-            get
-            {
-                return IsEndLineOrEOF(GetChar(m_currentPosition), 0);
-            }
-        }
-
-        #endregion
 
         #region public events
 
@@ -172,16 +136,16 @@ namespace NUglify.JavaScript
 
             // create a new empty context. By default the constructor will make the context
             // represent the entire document, but we want to start it off at just the beginning of it.
-            m_currentToken = new SourceContext(sourceContext)
+            CurrentToken = new SourceContext(sourceContext)
                 {
                     EndPosition = 0
                 };
-            m_currentLine = 1;
+            CurrentLine = 1;
 
             // just hold on to these values so we don't have to keep dereferencing them
             // from the current token
-            m_strSourceCode = sourceContext.Source;
-            m_endPos = sourceContext.Source.Length;
+            sourceCode = sourceContext.Source;
+            endPos = sourceContext.Source.Length;
 
             // by default we want to use preprocessor defines
             // and strip debug comment blocks
@@ -190,19 +154,19 @@ namespace NUglify.JavaScript
 
             // create a string builder that we'll keep reusing as we
             // scan identifiers. We'll build the unescaped name into it
-            m_identifier = new StringBuilder(128);
+            identifier = new StringBuilder(128);
         }
 
         // used only in the Clone method below
-        private JSScanner(IDictionary<string, string> defines)
+        JSScanner(IDictionary<string, string> defines)
         {
             // copy the collection, but don't share it. We don't want
             // defines we find here to populate the collection of the original.
             SetPreprocessorDefines(defines);
 
             // stuff we don't want to copy
-            m_decodedString = null;
-            m_identifier = new StringBuilder(128);
+            StringLiteralValue = null;
+            identifier = new StringBuilder(128);
 
             // create a new set so anything we find doesn't affect the original.
             DebugLookupCollection = new HashSet<string>();
@@ -214,51 +178,51 @@ namespace NUglify.JavaScript
         /// <returns></returns>
         internal JSScanner PeekClone()
         {
-            if (m_peekClone == null)
+            if (peekClone == null)
             {
-                m_peekClone = new JSScanner(this.m_defines);
+                peekClone = new JSScanner(this.defines);
             }
 
-            m_peekClone.AllowEmbeddedAspNetBlocks = this.AllowEmbeddedAspNetBlocks;
-            m_peekClone.IgnoreConditionalCompilation = this.IgnoreConditionalCompilation;
-            m_peekClone.m_conditionalCompilationIfLevel = this.m_conditionalCompilationIfLevel;
-            m_peekClone.m_conditionalCompilationOn = this.m_conditionalCompilationOn;
-            m_peekClone.m_currentLine = this.m_currentLine;
-            m_peekClone.m_currentPosition = this.m_currentPosition;
-            m_peekClone.m_currentToken = this.m_currentToken.Clone();
-            m_peekClone.m_endPos = this.m_endPos;
-            m_peekClone.m_ifDirectiveLevel = this.m_ifDirectiveLevel;
-            m_peekClone.m_inConditionalComment = this.m_inConditionalComment;
-            m_peekClone.m_inMultipleLineComment = this.m_inMultipleLineComment;
-            m_peekClone.m_inSingleLineComment = this.m_inSingleLineComment;
-            m_peekClone.m_lastPosOnBuilder = this.m_lastPosOnBuilder;
-            m_peekClone.m_startLinePosition = this.m_startLinePosition;
-            m_peekClone.m_strSourceCode = this.m_strSourceCode;
-            m_peekClone.UsePreprocessorDefines = this.UsePreprocessorDefines;
-            m_peekClone.StripDebugCommentBlocks = this.StripDebugCommentBlocks;
+            peekClone.AllowEmbeddedAspNetBlocks = this.AllowEmbeddedAspNetBlocks;
+            peekClone.IgnoreConditionalCompilation = this.IgnoreConditionalCompilation;
+            peekClone.conditionalCompilationIfLevel = this.conditionalCompilationIfLevel;
+            peekClone.conditionalCompilationOn = this.conditionalCompilationOn;
+            peekClone.CurrentLine = this.CurrentLine;
+            peekClone.currentPosition = this.currentPosition;
+            peekClone.CurrentToken = this.CurrentToken.Clone();
+            peekClone.endPos = this.endPos;
+            peekClone.ifDirectiveLevel = this.ifDirectiveLevel;
+            peekClone.inConditionalComment = this.inConditionalComment;
+            peekClone.inMultipleLineComment = this.inMultipleLineComment;
+            peekClone.inSingleLineComment = this.inSingleLineComment;
+            peekClone.lastPosOnBuilder = this.lastPosOnBuilder;
+            peekClone.StartLinePosition = this.StartLinePosition;
+            peekClone.sourceCode = this.sourceCode;
+            peekClone.UsePreprocessorDefines = this.UsePreprocessorDefines;
+            peekClone.StripDebugCommentBlocks = this.StripDebugCommentBlocks;
 
-            return m_peekClone;
+            return peekClone;
         }
 
         public JSScanner Clone()
         {
-            return new JSScanner(this.m_defines)
+            return new JSScanner(this.defines)
             {
                 AllowEmbeddedAspNetBlocks = this.AllowEmbeddedAspNetBlocks,
                 IgnoreConditionalCompilation = this.IgnoreConditionalCompilation,
-                m_conditionalCompilationIfLevel = this.m_conditionalCompilationIfLevel,
-                m_conditionalCompilationOn = this.m_conditionalCompilationOn,
-                m_currentLine = this.m_currentLine,
-                m_currentPosition = this.m_currentPosition,
-                m_currentToken = this.m_currentToken.Clone(),
-                m_endPos = this.m_endPos,
-                m_ifDirectiveLevel = this.m_ifDirectiveLevel,
-                m_inConditionalComment = this.m_inConditionalComment,
-                m_inMultipleLineComment = this.m_inMultipleLineComment,
-                m_inSingleLineComment = this.m_inSingleLineComment,
-                m_lastPosOnBuilder = this.m_lastPosOnBuilder,
-                m_startLinePosition = this.m_startLinePosition,
-                m_strSourceCode = this.m_strSourceCode,
+                conditionalCompilationIfLevel = this.conditionalCompilationIfLevel,
+                conditionalCompilationOn = this.conditionalCompilationOn,
+                CurrentLine = this.CurrentLine,
+                currentPosition = this.currentPosition,
+                CurrentToken = this.CurrentToken.Clone(),
+                endPos = this.endPos,
+                ifDirectiveLevel = this.ifDirectiveLevel,
+                inConditionalComment = this.inConditionalComment,
+                inMultipleLineComment = this.inMultipleLineComment,
+                inSingleLineComment = this.inSingleLineComment,
+                lastPosOnBuilder = this.lastPosOnBuilder,
+                StartLinePosition = this.StartLinePosition,
+                sourceCode = this.sourceCode,
                 UsePreprocessorDefines = this.UsePreprocessorDefines,
                 StripDebugCommentBlocks = this.StripDebugCommentBlocks,
             };
@@ -278,21 +242,21 @@ namespace NUglify.JavaScript
             if (defines != null && defines.Count > 0)
             {
                 // create a new dictionary, case-INsensitive
-                m_defines = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                this.defines = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
                 // add an entry for each unique, valid name passed to us.
                 foreach (var nameValuePair in defines)
                 {
-                    if (JSScanner.IsValidIdentifier(nameValuePair.Key) && !m_defines.ContainsKey(nameValuePair.Key))
+                    if (JSScanner.IsValidIdentifier(nameValuePair.Key) && !this.defines.ContainsKey(nameValuePair.Key))
                     {
-                        m_defines.Add(nameValuePair.Key, nameValuePair.Value);
+                        this.defines.Add(nameValuePair.Key, nameValuePair.Value);
                     }
                 }
             }
             else
             {
                 // we have no defined names
-                m_defines = null;
+                this.defines = null;
             }
         }
 
@@ -307,16 +271,16 @@ namespace NUglify.JavaScript
             var token = JSToken.None;
             char nextChar;
 
-            m_currentToken.StartPosition = m_currentPosition;
-            m_currentToken.StartLineNumber = m_currentLine;
-            m_currentToken.StartLinePosition = m_startLinePosition;
+            CurrentToken.StartPosition = currentPosition;
+            CurrentToken.StartLineNumber = CurrentLine;
+            CurrentToken.StartLinePosition = StartLinePosition;
 
-            m_identifier.Length = 0;
-            m_mightBeKeyword = false;
+            identifier.Length = 0;
+            mightBeKeyword = false;
 
             // our case switch should be pretty efficient -- it's 9-13 and 32-126. Thsose are the most common characters 
             // we will find in the code for the start of tokens.
-            char ch = GetChar(m_currentPosition);
+            char ch = GetChar(currentPosition);
             switch (ch)
             {
                 case '\n':
@@ -331,7 +295,7 @@ namespace NUglify.JavaScript
                     // we are asking for raw tokens, and this is the start of a stretch of whitespace.
                     // advance to the end of the whitespace, and return that as the token
                     token = JSToken.WhiteSpace;
-                    while (JSScanner.IsBlankSpace(GetChar(++m_currentPosition)))
+                    while (JSScanner.IsBlankSpace(GetChar(++currentPosition)))
                     {
                         // increment handled by condition
                     }
@@ -340,12 +304,12 @@ namespace NUglify.JavaScript
 
                 case '!':
                     token = JSToken.LogicalNot;
-                    if ('=' == GetChar(++m_currentPosition))
+                    if ('=' == GetChar(++currentPosition))
                     {
                         token = JSToken.NotEqual;
-                        if ('=' == GetChar(++m_currentPosition))
+                        if ('=' == GetChar(++currentPosition))
                         {
-                            ++m_currentPosition;
+                            ++currentPosition;
                             token = JSToken.StrictNotEqual;
                         }
                     }
@@ -365,9 +329,9 @@ namespace NUglify.JavaScript
 
                 case '%':
                     token = JSToken.Modulo;
-                    if ('=' == GetChar(++m_currentPosition))
+                    if ('=' == GetChar(++currentPosition))
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.ModuloAssign;
                     }
 
@@ -375,22 +339,22 @@ namespace NUglify.JavaScript
 
                 case '&':
                     token = JSToken.BitwiseAnd;
-                    nextChar = GetChar(++m_currentPosition);
+                    nextChar = GetChar(++currentPosition);
 
                     if ('=' == nextChar)
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.BitwiseAndAssign;
                     }
                     else if ('&' == nextChar)
                     {
                         token = JSToken.LogicalAnd;
-                        nextChar = GetChar(++m_currentPosition);
+                        nextChar = GetChar(++currentPosition);
 
                         if ('=' == nextChar)
                         {
                             token = JSToken.LogicalAndAssign;
-                            ++m_currentPosition;
+                            ++currentPosition;
                         }
                     }
 
@@ -398,32 +362,32 @@ namespace NUglify.JavaScript
 
                 case '(':
                     token = JSToken.LeftParenthesis;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 case ')':
                     token = JSToken.RightParenthesis;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 case '*':
                     token = JSToken.Multiply;
-                    nextChar = GetChar(++m_currentPosition);
+                    nextChar = GetChar(++currentPosition);
 
                     if ('=' == nextChar)
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.MultiplyAssign;
                     } 
                     else if ('*' == nextChar)
                     {
                         token = JSToken.Exponent;
-                        nextChar = GetChar(++m_currentPosition);
+                        nextChar = GetChar(++currentPosition);
 
                         if ('=' == nextChar)
                         {
                             token = JSToken.ExponentAssign;
-                            ++m_currentPosition;
+                            ++currentPosition;
                         }
                     }
 
@@ -431,15 +395,15 @@ namespace NUglify.JavaScript
 
                 case '+':
                     token = JSToken.Plus;
-                    ch = GetChar(++m_currentPosition);
+                    ch = GetChar(++currentPosition);
                     if ('+' == ch)
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.Increment;
                     }
                     else if ('=' == ch)
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.PlusAssign;
                     }
 
@@ -447,20 +411,20 @@ namespace NUglify.JavaScript
 
                 case ',':
                     token = JSToken.Comma;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 case '-':
                     token = JSToken.Minus;
-                    ch = GetChar(++m_currentPosition);
+                    ch = GetChar(++currentPosition);
                     if ('-' == ch)
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.Decrement;
                     }
                     else if ('=' == ch)
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.MinusAssign;
                     }
 
@@ -468,11 +432,11 @@ namespace NUglify.JavaScript
 
                 case '.':
                     token = JSToken.AccessField;
-                    ch = GetChar(++m_currentPosition);
-                    if (ch == '.' && GetChar(++m_currentPosition) == '.')
+                    ch = GetChar(++currentPosition);
+                    if (ch == '.' && GetChar(++currentPosition) == '.')
                     {
                         token = JSToken.RestSpread;
-                        ++m_currentPosition;
+                        ++currentPosition;
                     }
                     else if (IsDigit(ch))
                     {
@@ -483,19 +447,19 @@ namespace NUglify.JavaScript
 
                 case '/':
                     token = JSToken.Divide;
-                    ch = GetChar(++m_currentPosition);
+                    ch = GetChar(++currentPosition);
                     switch (ch)
                     {
                         case '/':
                             token = JSToken.SingleLineComment;
-                            m_inSingleLineComment = true;
-                            ch = GetChar(++m_currentPosition);
+                            inSingleLineComment = true;
+                            ch = GetChar(++currentPosition);
 
                             // see if there is a THIRD slash character
                             if (ch == '/')
                             {
                                 // advance past the slash and see if we have one of our special preprocessing directives
-                                if (GetChar(++m_currentPosition) == '#')
+                                if (GetChar(++currentPosition) == '#')
                                 {
                                     // scan preprocessing directives
                                     token = JSToken.PreprocessorDirective;
@@ -514,18 +478,18 @@ namespace NUglify.JavaScript
                                 // if we have not turned on conditional-compilation yet, then check to see if that's
                                 // what we're trying to do now.
                                 // we are currently on the @ -- start peeking from there
-                                if (m_conditionalCompilationOn
-                                    || CheckSubstring(m_currentPosition + 1, "cc_on"))
+                                if (conditionalCompilationOn
+                                    || CheckSubstring(currentPosition + 1, "cc_on"))
                                 {
                                     // if the NEXT character is not an identifier character, then we need to skip
                                     // the @ character -- otherwise leave it there
-                                    if (!IsValidIdentifierStart(m_strSourceCode, m_currentPosition + 1))
+                                    if (!IsValidIdentifierStart(sourceCode, currentPosition + 1))
                                     {
-                                        ++m_currentPosition;
+                                        ++currentPosition;
                                     }
 
                                     // we are now in a conditional comment
-                                    m_inConditionalComment = true;
+                                    inConditionalComment = true;
                                     token = JSToken.ConditionalCommentStart;
                                     break;
                                 }
@@ -536,27 +500,27 @@ namespace NUglify.JavaScript
                             // if we're still in a multiple-line comment, then we must've been in
                             // a multi-line CONDITIONAL comment, in which case this normal one-line comment
                             // won't turn off conditional comments just because we hit the end of line.
-                            if (!m_inMultipleLineComment && m_inConditionalComment)
+                            if (!inMultipleLineComment && inConditionalComment)
                             {
-                                m_inConditionalComment = false;
+                                inConditionalComment = false;
                                 token = JSToken.ConditionalCommentEnd;
                             }
 
                             break;
 
                         case '*':
-                            m_inMultipleLineComment = true;
+                            inMultipleLineComment = true;
                             token = JSToken.MultipleLineComment;
-                            ch = GetChar(++m_currentPosition);
+                            ch = GetChar(++currentPosition);
                             if (ch == '@' && !IgnoreConditionalCompilation)
                             {
                                 // we have /*@
                                 // if we have not turned on conditional-compilation yet, then let's peek to see if the next
                                 // few characters are cc_on -- if so, turn it on.
-                                if (!m_conditionalCompilationOn)
+                                if (!conditionalCompilationOn)
                                 {
                                     // we are currently on the @ -- start peeking from there
-                                    if (!CheckSubstring(m_currentPosition + 1, "cc_on"))
+                                    if (!CheckSubstring(currentPosition + 1, "cc_on"))
                                     {
                                         // we aren't turning on conditional comments. We need to ignore this comment
                                         // as just another multi-line comment
@@ -568,13 +532,13 @@ namespace NUglify.JavaScript
 
                                 // if the NEXT character is not an identifier character, then we need to skip
                                 // the @ character -- otherwise leave it there
-                                if (!IsValidIdentifierStart(m_strSourceCode, m_currentPosition + 1))
+                                if (!IsValidIdentifierStart(sourceCode, currentPosition + 1))
                                 {
-                                    ++m_currentPosition;
+                                    ++currentPosition;
                                 }
 
                                 // we are now in a conditional comment
-                                m_inConditionalComment = true;
+                                inConditionalComment = true;
                                 token = JSToken.ConditionalCommentStart;
                                 break;
                             }
@@ -582,7 +546,7 @@ namespace NUglify.JavaScript
                             {
                                 // We have /*/
                                 // advance past the slash and see if we have one of our special preprocessing directives
-                                if (GetChar(++m_currentPosition) == '#')
+                                if (GetChar(++currentPosition) == '#')
                                 {
                                     // scan preprocessing directives. When it exits we will still be within
                                     // the multiline comment, since none of the directives should eat the closing */.
@@ -603,7 +567,7 @@ namespace NUglify.JavaScript
                             break;
 
                         case '=':
-                            m_currentPosition++;
+                            currentPosition++;
                             token = JSToken.DivideAssign;
                             break;
                     }
@@ -619,38 +583,38 @@ namespace NUglify.JavaScript
                 case '7':
                 case '8':
                 case '9':
-                    ++m_currentPosition;
+                    ++currentPosition;
                     token = ScanNumber(ch);
                     break;
 
                 case ':':
                     token = JSToken.Colon;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 case ';':
                     token = JSToken.Semicolon;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 case '<':
                     if (AllowEmbeddedAspNetBlocks &&
-                        '%' == GetChar(++m_currentPosition))
+                        '%' == GetChar(++currentPosition))
                     {
                         token = ScanAspNetBlock();
                     }
                     else
                     {
                         token = JSToken.LessThan;
-                        if ('<' == GetChar(++m_currentPosition))
+                        if ('<' == GetChar(++currentPosition))
                         {
-                            ++m_currentPosition;
+                            ++currentPosition;
                             token = JSToken.LeftShift;
                         }
 
-                        if ('=' == GetChar(m_currentPosition))
+                        if ('=' == GetChar(currentPosition))
                         {
-                            ++m_currentPosition;
+                            ++currentPosition;
                             token = token == JSToken.LessThan
                                 ? JSToken.LessThanEqual
                                 : JSToken.LeftShiftAssign;
@@ -660,18 +624,18 @@ namespace NUglify.JavaScript
 
                 case '=':
                     token = JSToken.Assign;
-                    if ('=' == GetChar(++m_currentPosition))
+                    if ('=' == GetChar(++currentPosition))
                     {
                         token = JSToken.Equal;
-                        if ('=' == GetChar(++m_currentPosition))
+                        if ('=' == GetChar(++currentPosition))
                         {
-                            ++m_currentPosition;
+                            ++currentPosition;
                             token = JSToken.StrictEqual;
                         }
                     }
-                    else if (GetChar(m_currentPosition) == '>')
+                    else if (GetChar(currentPosition) == '>')
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.ArrowFunction;
                     }
 
@@ -679,19 +643,19 @@ namespace NUglify.JavaScript
 
                 case '>':
                     token = JSToken.GreaterThan;
-                    if ('>' == GetChar(++m_currentPosition))
+                    if ('>' == GetChar(++currentPosition))
                     {
                         token = JSToken.RightShift;
-                        if ('>' == GetChar(++m_currentPosition))
+                        if ('>' == GetChar(++currentPosition))
                         {
-                            ++m_currentPosition;
+                            ++currentPosition;
                             token = JSToken.UnsignedRightShift;
                         }
                     }
 
-                    if ('=' == GetChar(m_currentPosition))
+                    if ('=' == GetChar(currentPosition))
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = token == JSToken.GreaterThan ? JSToken.GreaterThanEqual
                             : token == JSToken.RightShift ? JSToken.RightShiftAssign
                             : token == JSToken.UnsignedRightShift ? JSToken.UnsignedRightShiftAssign
@@ -701,27 +665,27 @@ namespace NUglify.JavaScript
 
                 case '?':
                     token = JSToken.ConditionalIf;
-                    ++m_currentPosition;
+                    ++currentPosition;
 					
-                    ch = GetChar(m_currentPosition);
+                    ch = GetChar(currentPosition);
                     if ('?' == ch)
                     {
                         token = JSToken.NullishCoalesce;
 
-                        if (GetChar(++m_currentPosition) == '|')
+                        if (GetChar(++currentPosition) == '|')
                         {
                             token = JSToken.LogicalNullishAssign;
-                            ++m_currentPosition;
+                            ++currentPosition;
                         }
                     }
-					else if ('.' == GetChar(m_currentPosition))
+					else if ('.' == GetChar(currentPosition))
                     {
                         // ensure x?.1:2 is treated as a conditional expression not optional chaining
-                        var chNext = GetChar(m_currentPosition + 1);
+                        var chNext = GetChar(currentPosition + 1);
                         if (chNext < '0' || chNext > '9')
                         {
                             token = JSToken.OptionalChaining;
-                            ++m_currentPosition;
+                            ++currentPosition;
                         }
                     }
 
@@ -733,7 +697,7 @@ namespace NUglify.JavaScript
                         // if the switch to ignore conditional compilation is on, then we don't know
                         // anything about conditional-compilation statements, and the @-sign character
                         // is illegal at this spot.
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = IllegalCharacter();
                         break;
                     }
@@ -741,17 +705,17 @@ namespace NUglify.JavaScript
                     // see if the @-sign is immediately followed by an identifier. If it is,
                     // we'll see which one so we can tell if it's a conditional-compilation statement
                     // need to make sure the context INCLUDES the @ sign
-                    int startPosition = ++m_currentPosition;
+                    int startPosition = ++currentPosition;
                     ScanIdentifier(false);
-                    switch (m_currentPosition - startPosition)
+                    switch (currentPosition - startPosition)
                     {
                         case 0:
                             // look for '@*/'.
-                            if ('*' == GetChar(m_currentPosition) && '/' == GetChar(m_currentPosition + 1))
+                            if ('*' == GetChar(currentPosition) && '/' == GetChar(currentPosition + 1))
                             {
-                                m_currentPosition += 2;
-                                m_inMultipleLineComment = false;
-                                m_inConditionalComment = false;
+                                currentPosition += 2;
+                                inMultipleLineComment = false;
+                                inConditionalComment = false;
                                 token = JSToken.ConditionalCommentEnd;
                                 break;
                             }
@@ -767,14 +731,14 @@ namespace NUglify.JavaScript
                                 token = JSToken.ConditionalCompilationIf;
 
                                 // increment the if-level
-                                ++m_conditionalCompilationIfLevel;
+                                ++conditionalCompilationIfLevel;
 
                                 // if we're not in a conditional comment and we haven't explicitly
                                 // turned on conditional compilation when we encounter
                                 // a @if statement, then we can implicitly turn it on.
-                                if (!m_inConditionalComment && !m_conditionalCompilationOn)
+                                if (!inConditionalComment && !conditionalCompilationOn)
                                 {
-                                    m_conditionalCompilationOn = true;
+                                    conditionalCompilationOn = true;
                                 }
 
                                 break;
@@ -792,9 +756,9 @@ namespace NUglify.JavaScript
                                 // if we're not in a conditional comment and we haven't explicitly
                                 // turned on conditional compilation when we encounter
                                 // a @set statement, then we can implicitly turn it on.
-                                if (!m_inConditionalComment && !m_conditionalCompilationOn)
+                                if (!inConditionalComment && !conditionalCompilationOn)
                                 {
-                                    m_conditionalCompilationOn = true;
+                                    conditionalCompilationOn = true;
                                 }
 
                                 break;
@@ -803,10 +767,10 @@ namespace NUglify.JavaScript
                             if (CheckSubstring(startPosition, "end"))
                             {
                                 token = JSToken.ConditionalCompilationEnd;
-                                if (m_conditionalCompilationIfLevel > 0)
+                                if (conditionalCompilationIfLevel > 0)
                                 {
                                     // down one more @if level
-                                    m_conditionalCompilationIfLevel--;
+                                    conditionalCompilationIfLevel--;
                                 }
                                 else
                                 {
@@ -828,7 +792,7 @@ namespace NUglify.JavaScript
 
                                 // if we don't have a corresponding @if statement, then throw and error
                                 // (but keep processing)
-                                if (m_conditionalCompilationIfLevel <= 0)
+                                if (conditionalCompilationIfLevel <= 0)
                                 {
                                     HandleError(JSError.CCInvalidElse);
                                 }
@@ -842,7 +806,7 @@ namespace NUglify.JavaScript
 
                                 // if we don't have a corresponding @if statement, then throw and error
                                 // (but keep processing)
-                                if (m_conditionalCompilationIfLevel <= 0)
+                                if (conditionalCompilationIfLevel <= 0)
                                 {
                                     HandleError(JSError.CCInvalidElseIf);
                                 }
@@ -858,7 +822,7 @@ namespace NUglify.JavaScript
                             if (CheckSubstring(startPosition, "cc_on"))
                             {
                                 // turn it on and return the @cc_on token
-                                m_conditionalCompilationOn = true;
+                                conditionalCompilationOn = true;
                                 token = JSToken.ConditionalCompilationOn;
                                 break;
                             }
@@ -872,7 +836,7 @@ namespace NUglify.JavaScript
                             // if we haven't explicitly turned on conditional compilation,
                             // we'll keep processing, but we need to fire an error to indicate
                             // that the code should turn it on first.
-                            if (!m_conditionalCompilationOn)
+                            if (!conditionalCompilationOn)
                             {
                                 HandleError(JSError.CCOff);
                             }
@@ -914,7 +878,7 @@ namespace NUglify.JavaScript
 
                 case '[':
                     token = JSToken.LeftBracket;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 case '\\':
@@ -922,13 +886,13 @@ namespace NUglify.JavaScript
                     token = ScanIdentifier(true);
                     if (token != JSToken.Identifier)
                     {
-                        if (GetChar(m_currentPosition + 1) == 'u')
+                        if (GetChar(currentPosition + 1) == 'u')
                         {
                             // it was a unicode escape -- move past the whole "character" and mark it as illegal
-                            var beforePeek = m_currentPosition;
-                            PeekUnicodeEscape(m_strSourceCode, ref m_currentPosition);
+                            var beforePeek = currentPosition;
+                            PeekUnicodeEscape(sourceCode, ref currentPosition);
 
-                            var count = m_currentPosition - beforePeek;
+                            var count = currentPosition - beforePeek;
                             if (count > 1)
                             {
                                 // the whole escape sequence is an invalid character
@@ -942,18 +906,18 @@ namespace NUglify.JavaScript
                                 HandleError(JSError.BadHexEscapeSequence);
                             }
                         }
-                        else if (IsValidIdentifierStart(m_strSourceCode, m_currentPosition + 1))
+                        else if (IsValidIdentifierStart(sourceCode, currentPosition + 1))
                         {
                             // if the NEXT character after the backslash is a valid identifier start
                             // then we're just going to assume we had something like \while,
                             // in which case we scan the identifier AFTER the slash
-                            ++m_currentPosition;
+                            ++currentPosition;
                             token = ScanIdentifier(true);
                         }
                         else
                         {
                             // the one character is illegal
-                            ++m_currentPosition;
+                            ++currentPosition;
                             HandleError(JSError.IllegalChar);
                         }
                     }
@@ -961,21 +925,21 @@ namespace NUglify.JavaScript
 
                 case ']':
                     token = JSToken.RightBracket;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 case '^':
                     token = JSToken.BitwiseXor;
-                    if ('=' == GetChar(++m_currentPosition))
+                    if ('=' == GetChar(++currentPosition))
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.BitwiseXorAssign;
                     }
 
                     break;
 
                 case '#':
-                    ++m_currentPosition;
+                    ++currentPosition;
                     token = IllegalCharacter();
                     break;
 
@@ -1010,33 +974,33 @@ namespace NUglify.JavaScript
                 case 'x':
                 case 'y':
                 case 'z':
-                    m_mightBeKeyword = true;
-                    token = ScanKeyword(s_Keywords[ch - 'a']);
+                    mightBeKeyword = true;
+                    token = ScanKeyword(keywords[ch - 'a']);
                     break;
 
                 case '{':
                     token = JSToken.LeftCurly;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 case '|':
                     token = JSToken.BitwiseOr;
-                    nextChar = GetChar(++m_currentPosition);
+                    nextChar = GetChar(++currentPosition);
 
                     if ('=' == nextChar)
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = JSToken.BitwiseOrAssign;
                     }
                     else if ('|' == nextChar)
                     {
                         token = JSToken.LogicalOr;
-                        nextChar = GetChar(++m_currentPosition);
+                        nextChar = GetChar(++currentPosition);
 
                         if ('=' == nextChar)
                         {
                             token = JSToken.LogicalOrAssign;
-                            ++m_currentPosition;
+                            ++currentPosition;
                         }
                     }
                     break;
@@ -1044,12 +1008,12 @@ namespace NUglify.JavaScript
                 case '}':
                     // just a regular close curly-brace.
                     token = JSToken.RightCurly;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 case '~':
                     token = JSToken.BitwiseNot;
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
 
                 default:
@@ -1058,17 +1022,17 @@ namespace NUglify.JavaScript
                         if (IsEndOfFile)
                         {
                             token = JSToken.EndOfFile;
-                            if (m_conditionalCompilationIfLevel > 0)
+                            if (conditionalCompilationIfLevel > 0)
                             {
-                                m_currentToken.EndLineNumber = m_currentLine;
-                                m_currentToken.EndLinePosition = m_startLinePosition;
-                                m_currentToken.EndPosition = m_currentPosition;
+                                CurrentToken.EndLineNumber = CurrentLine;
+                                CurrentToken.EndLinePosition = StartLinePosition;
+                                CurrentToken.EndPosition = currentPosition;
                                 HandleError(JSError.NoCCEnd);
                             }
                         }
                         else
                         {
-                            ++m_currentPosition;
+                            ++currentPosition;
                             token = IllegalCharacter();
                         }
                     }
@@ -1080,7 +1044,7 @@ namespace NUglify.JavaScript
                     else if (0xd800 <= ch && ch <= 0xdbff)
                     {
                         // high-surrogate
-                        var lowSurrogate = GetChar(m_currentPosition + 1);
+                        var lowSurrogate = GetChar(currentPosition + 1);
                         if (0xdc00 <= lowSurrogate && lowSurrogate <= 0xdfff)
                         {
                             // use the surrogate pair
@@ -1089,18 +1053,18 @@ namespace NUglify.JavaScript
                             {
                                 // this surrogate pair isn't the start of an identifier,
                                 // so together they are illegal here.
-                                m_currentPosition += 2;
+                                currentPosition += 2;
                                 token = IllegalCharacter();
                             }
                         }
                         else
                         {
                             // high-surrogate NOT followed by a low surrogate
-                            ++m_currentPosition;
+                            ++currentPosition;
                             token = IllegalCharacter();
                         }
                     }
-                    else if (IsValidIdentifierStart(m_strSourceCode, m_currentPosition))
+                    else if (IsValidIdentifierStart(sourceCode, currentPosition))
                     {
                         token = ScanIdentifier(true);
                     }
@@ -1109,14 +1073,14 @@ namespace NUglify.JavaScript
                         // we are asking for raw tokens, and this is the start of a stretch of whitespace.
                         // advance to the end of the whitespace, and return that as the token
                         token = JSToken.WhiteSpace;
-                        while (JSScanner.IsBlankSpace(GetChar(++m_currentPosition)))
+                        while (JSScanner.IsBlankSpace(GetChar(++currentPosition)))
                         {
                             // increment handled in condition
                         }
                     }
                     else
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         token = IllegalCharacter();
                     }
 
@@ -1124,38 +1088,38 @@ namespace NUglify.JavaScript
             }
 
             // fix up the end of the token
-            m_currentToken.EndLineNumber = m_currentLine;
-            m_currentToken.EndLinePosition = m_startLinePosition;
-            m_currentToken.EndPosition = m_currentPosition;
+            CurrentToken.EndLineNumber = CurrentLine;
+            CurrentToken.EndLinePosition = StartLinePosition;
+            CurrentToken.EndPosition = currentPosition;
 
             // this is now the current token
-            m_currentToken.Token = token;
-            return m_currentToken;
+            CurrentToken.Token = token;
+            return CurrentToken;
         }
 
         public SourceContext UpdateToken(UpdateHint updateHint)
         {
             if (updateHint == UpdateHint.RegularExpression 
-                && (m_currentToken.IsEither(JSToken.Divide, JSToken.DivideAssign)))
+                && (CurrentToken.IsEither(JSToken.Divide, JSToken.DivideAssign)))
             {
-                m_currentToken.Token = ScanRegExp();
+                CurrentToken.Token = ScanRegExp();
             }
-            else if (updateHint == UpdateHint.TemplateLiteral && m_currentToken.Is(JSToken.RightCurly))
+            else if (updateHint == UpdateHint.TemplateLiteral && CurrentToken.Is(JSToken.RightCurly))
             {
                 // update the current token with the new ending; don't change the starting information
-                m_currentToken.Token = ScanTemplateLiteral('}');
+                CurrentToken.Token = ScanTemplateLiteral('}');
             }
-            else if (updateHint == UpdateHint.ReplacementToken && m_currentToken.Is(JSToken.Modulo))
+            else if (updateHint == UpdateHint.ReplacementToken && CurrentToken.Is(JSToken.Modulo))
             {
-                m_currentToken.Token = ScanReplacementToken();
+                CurrentToken.Token = ScanReplacementToken();
             }
 
             // update the end point of the current token, not the start since we're updating,
             // not finding a whole new token.
-            m_currentToken.EndLineNumber = m_currentLine;
-            m_currentToken.EndLinePosition = m_startLinePosition;
-            m_currentToken.EndPosition = m_currentPosition;
-            return m_currentToken;
+            CurrentToken.EndLineNumber = CurrentLine;
+            CurrentToken.EndLinePosition = StartLinePosition;
+            CurrentToken.EndPosition = currentPosition;
+            return CurrentToken;
         }
 
         #endregion
@@ -1185,10 +1149,10 @@ namespace NUglify.JavaScript
                 var index = name[0] - 'a';
 
                 // only proceed if the index is within the array length
-                if (0 <= index && index < s_Keywords.Length)
+                if (0 <= index && index < keywords.Length)
                 {
                     // get the head of the list for this index (if any)
-                    var keyword = s_Keywords[name[0] - 'a'];
+                    var keyword = keywords[name[0] - 'a'];
                     if (keyword != null)
                     {
                         // switch off the token
@@ -1268,7 +1232,7 @@ namespace NUglify.JavaScript
         /// <param name="startIndex">potential identifier string</param>
         /// <param name="index">index of the starting character</param>
         /// <returns>true if the character at the given position is a valid identifier start</returns>
-        private static bool IsValidIdentifierStart(string text, int index)
+        static bool IsValidIdentifierStart(string text, int index)
         {
             return IsValidIdentifierStart(text, ref index);
         }
@@ -1280,7 +1244,7 @@ namespace NUglify.JavaScript
         /// <param name="startIndex">potential identifier string</param>
         /// <param name="index">index of the starting character on entry; index of the NEXT character on exit</param>
         /// <returns>true if the character at the given position is a valid identifier start</returns>
-        private static bool IsValidIdentifierStart(string name, ref int startIndex)
+        static bool IsValidIdentifierStart(string name, ref int startIndex)
         {
             var isValid = false;
 
@@ -1336,7 +1300,7 @@ namespace NUglify.JavaScript
         /// <param name="startIndex">potential identifier string</param>
         /// <param name="index">index of the starting character</param>
         /// <returns>true if the character at the given position is a valid identifier part</returns>
-        private static bool IsValidIdentifierPart(string text, int index)
+        static bool IsValidIdentifierPart(string text, int index)
         {
             return IsValidIdentifierPart(text, ref index);
         }
@@ -1348,7 +1312,7 @@ namespace NUglify.JavaScript
         /// <param name="name">potential identifier string</param>
         /// <param name="startIndex">index of the starting character on entry; index of the NEXT character on exit</param>
         /// <returns>true if the character at the given position is a valid identifier part</returns>
-        private static bool IsValidIdentifierPart(string name, ref int startIndex)
+        static bool IsValidIdentifierPart(string name, ref int startIndex)
         {
             var isValid = false;
 
@@ -1398,7 +1362,7 @@ namespace NUglify.JavaScript
             return isValid;
         }
 
-        private static bool IsValidIdentifierStart(string text, int index, int length)
+        static bool IsValidIdentifierStart(string text, int index, int length)
         {
             if (text != null)
             {
@@ -1429,7 +1393,7 @@ namespace NUglify.JavaScript
             return false;
         }
 
-        private static bool IsValidIdentifierPart(string text, int index, int length)
+        static bool IsValidIdentifierPart(string text, int index, int length)
         {
             if (text != null)
             {
@@ -1507,7 +1471,7 @@ namespace NUglify.JavaScript
             var index = (int)letter;
             if (index < 256)
             {
-                return ValidIdentifierPartMap[index];
+                return validIdentifierPartMap[index];
             }
 
             return IsValidIdentifierPart(new string(letter, 1), 0);
@@ -1663,7 +1627,7 @@ namespace NUglify.JavaScript
 
         #region event methods
 
-        private void OnGlobalDefine(string name)
+        void OnGlobalDefine(string name)
         {
             if (GlobalDefine != null)
             {
@@ -1671,7 +1635,7 @@ namespace NUglify.JavaScript
             }
         }
 
-        private void OnNewModule(string newModule)
+        void OnNewModule(string newModule)
         {
             if (NewModule != null)
             {
@@ -1683,68 +1647,68 @@ namespace NUglify.JavaScript
 
         #region private scan methods
 
-        private JSToken ScanLineTerminator(char ch)
+        JSToken ScanLineTerminator(char ch)
         {
             // line terminator
             var token = JSToken.EndOfLine;
-            if (m_inConditionalComment && m_inSingleLineComment)
+            if (inConditionalComment && inSingleLineComment)
             {
                 // if we are in a single-line conditional comment, then we want
                 // to return the end of comment token WITHOUT moving past the end of line 
                 // characters
                 token = JSToken.ConditionalCommentEnd;
-                m_inConditionalComment = m_inSingleLineComment = false;
+                inConditionalComment = inSingleLineComment = false;
             }
             else
             {
-                ++m_currentPosition;
+                ++currentPosition;
                 if (ch == '\r')
                 {
                     // \r\n is a valid SINGLE line-terminator. So if the \r is
                     // followed by a \n, we only want to process a single line terminator.
-                    if (GetChar(m_currentPosition) == '\n')
+                    if (GetChar(currentPosition) == '\n')
                     {
-                        ++m_currentPosition;
-                        m_currentLine++;
+                        ++currentPosition;
+                        CurrentLine++;
                     }
                 }
                 else
                 {
-                    m_currentLine++;
+                    CurrentLine++;
                 }
 
-                m_startLinePosition = m_currentPosition;
+                StartLinePosition = currentPosition;
 
                 // keep multiple line terminators together in a single token.
                 // so get the current character after this last line terminator
                 // and then keep looping until we hit something that isn't one.
-                while ((ch = GetChar(m_currentPosition)) == '\r' || ch == '\n' || ch == '\u2028' || ch == '\u2029')
+                while ((ch = GetChar(currentPosition)) == '\r' || ch == '\n' || ch == '\u2028' || ch == '\u2029')
                 {
                     if (ch == '\r')
                     {
                         // skip over the \r and if the next one is an \n skip over it, too
-                        if (GetChar(++m_currentPosition) == '\n')
+                        if (GetChar(++currentPosition) == '\n')
                         {
                             // increment the line number and reset the start position
-                            m_currentLine++;
-                            ++m_currentPosition;
+                            CurrentLine++;
+                            ++currentPosition;
                         }
                     }
                     else
                     {
                         // skip over any other non-\r character
-                        ++m_currentPosition;
+                        ++currentPosition;
 
                         // increment the line number and reset the start position
-                        m_currentLine++;
+                        CurrentLine++;
                     }
 
-                    m_startLinePosition = m_currentPosition;
+                    StartLinePosition = currentPosition;
                 }
             }
 
             // if we WERE in a single-line comment, we aren't anymore!
-            m_inSingleLineComment = false;
+            inSingleLineComment = false;
             return token;
         }
 
@@ -1753,25 +1717,25 @@ namespace NUglify.JavaScript
         /// </summary>
         /// <returns>token scanned</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private JSToken ScanIdentifier(bool possibleTemplateLiteral)
+        JSToken ScanIdentifier(bool possibleTemplateLiteral)
         {
             // scan start character
             var isValid = false;
-            var runStart = m_currentPosition;
-            var index = m_currentPosition;
+            var runStart = currentPosition;
+            var index = currentPosition;
             char ch = GetChar(index);
             if (ch == '\\')
             {
                 // unescape the escape sequence(s)
                 // might use two sequences if they are an escaped surrogate pair
-                m_mightBeKeyword = false;
-                var unescaped = PeekUnicodeEscape(m_strSourceCode, ref index);
+                mightBeKeyword = false;
+                var unescaped = PeekUnicodeEscape(sourceCode, ref index);
                 if (unescaped != null && IsValidIdentifierStart(unescaped, 0, unescaped.Length))
                 {
                     // add the unescaped value(s) to the string builder and update the
                     // position for the next run
-                    m_identifier.Append(unescaped);
-                    runStart = m_currentPosition = index;
+                    identifier.Append(unescaped);
+                    runStart = currentPosition = index;
                     isValid = true;
                 }
             }
@@ -1780,7 +1744,7 @@ namespace NUglify.JavaScript
                 if (0xd800 <= ch && ch <= 0xdbff)
                 {
                     // high-order surrogate
-                    m_mightBeKeyword = false;
+                    mightBeKeyword = false;
                     ch = GetChar(++index);
                     if (0xdc00 <= ch && ch <= 0xdfff)
                     {
@@ -1795,10 +1759,10 @@ namespace NUglify.JavaScript
                 }
 
                 // no escape sequence, but might be a surrogate pair
-                if (IsValidIdentifierStart(m_strSourceCode, m_currentPosition, index - m_currentPosition))
+                if (IsValidIdentifierStart(sourceCode, currentPosition, index - currentPosition))
                 {
-                    m_mightBeKeyword = m_mightBeKeyword && 'a' <= ch && ch <= 'z';
-                    m_currentPosition = index;
+                    mightBeKeyword = mightBeKeyword && 'a' <= ch && ch <= 'z';
+                    currentPosition = index;
                     isValid = true;
                 }
             }
@@ -1806,36 +1770,36 @@ namespace NUglify.JavaScript
             if (isValid)
             {
                 // loop until we don't find a valid part character
-                ch = GetChar(m_currentPosition);
+                ch = GetChar(currentPosition);
                 while (ch != '\0')
                 {
-                    index = m_currentPosition;
+                    index = currentPosition;
                     if (ch == '\\')
                     {
                         // unescape the escape sequence(s)
                         // might use two sequences if they are an escaped surrogate pair
-                        m_mightBeKeyword = false;
-                        var unescaped = PeekUnicodeEscape(m_strSourceCode, ref index);
+                        mightBeKeyword = false;
+                        var unescaped = PeekUnicodeEscape(sourceCode, ref index);
                         if (unescaped == null || !IsValidIdentifierPart(unescaped, 0, unescaped.Length))
                         {
                             break;
                         }
 
                         // if there was a previous run, add it to the builder first
-                        if (m_currentPosition > runStart)
+                        if (currentPosition > runStart)
                         {
-                            m_identifier.Append(m_strSourceCode, runStart, m_currentPosition - runStart);
+                            identifier.Append(sourceCode, runStart, currentPosition - runStart);
                         }
 
-                        m_identifier.Append(unescaped);
-                        runStart = m_currentPosition = index;
+                        identifier.Append(unescaped);
+                        runStart = currentPosition = index;
                     }
                     else
                     {
                         if (0xd800 <= ch && ch <= 0xdbff)
                         {
                             // high-order surrogate
-                            m_mightBeKeyword = false;
+                            mightBeKeyword = false;
                             ch = GetChar(++index);
                             if (0xdc00 <= ch && ch <= 0xdfff)
                             {
@@ -1850,34 +1814,34 @@ namespace NUglify.JavaScript
                         }
 
                         // no escape sequence, but might be a surrogate pair
-                        if (!IsValidIdentifierPart(m_strSourceCode, m_currentPosition, index - m_currentPosition))
+                        if (!IsValidIdentifierPart(sourceCode, currentPosition, index - currentPosition))
                         {
                             break;
                         }
 
-                        m_mightBeKeyword = m_mightBeKeyword && 'a' <= ch && ch <= 'z';
-                        m_currentPosition = index;
+                        mightBeKeyword = mightBeKeyword && 'a' <= ch && ch <= 'z';
+                        currentPosition = index;
                     }
 
-                    ch = GetChar(m_currentPosition);
+                    ch = GetChar(currentPosition);
                 }
 
-                if (AllowEmbeddedAspNetBlocks && CheckSubstring(m_currentPosition, "<%="))
+                if (AllowEmbeddedAspNetBlocks && CheckSubstring(currentPosition, "<%="))
                 {
                     // the identifier has an ASP.NET <%= ... %> block as part of it.
                     // move the current position to the opening % character and call 
                     // the method that will parse it from there.
-                    ++m_currentPosition;
+                    ++currentPosition;
                     ScanAspNetBlock();
                 }
 
-                if (m_identifier.Length > 0 && m_currentPosition - runStart > 0)
+                if (identifier.Length > 0 && currentPosition - runStart > 0)
                 {
-                    m_identifier.Append(m_strSourceCode, runStart, m_currentPosition - runStart);
+                    identifier.Append(sourceCode, runStart, currentPosition - runStart);
                 }
             }
 
-            if (possibleTemplateLiteral && isValid && GetChar(m_currentPosition) == '`')
+            if (possibleTemplateLiteral && isValid && GetChar(currentPosition) == '`')
             {
                 // identifier is valid and followed immediately by a back-quote.
                 // this is a template literal starting with a function!
@@ -1887,30 +1851,30 @@ namespace NUglify.JavaScript
             return isValid ? JSToken.Identifier : JSToken.Error;
         }
 
-        private JSToken ScanKeyword(JSKeyword keyword)
+        JSToken ScanKeyword(JSKeyword keyword)
         {
             // scan an identifier
             var token = ScanIdentifier(true);
 
             // if we found one and from the first character we think we COULD be
             // a keyword, AND we didn't encounter any escapes while reading said identifier...
-            if (keyword != null && m_mightBeKeyword)
+            if (keyword != null && mightBeKeyword)
             {
                 if (token == JSToken.Identifier)
                 {
                     // walk the keyword list to find a possible match
-                    token = keyword.GetKeyword(m_strSourceCode, m_currentToken.StartPosition, m_currentPosition - m_currentToken.StartPosition);
+                    token = keyword.GetKeyword(sourceCode, CurrentToken.StartPosition, currentPosition - CurrentToken.StartPosition);
                 }
                 else if (token == JSToken.TemplateLiteral)
                 {
                     // wait a minute -- let's just make sure that lookup isn't a keyword
-                    var ndxBackquote = m_strSourceCode.IndexOf('`', m_currentToken.StartPosition);
-                    var newToken = keyword.GetKeyword(m_strSourceCode, m_currentToken.StartPosition, ndxBackquote - m_currentToken.StartPosition);
+                    var ndxBackquote = sourceCode.IndexOf('`', CurrentToken.StartPosition);
+                    var newToken = keyword.GetKeyword(sourceCode, CurrentToken.StartPosition, ndxBackquote - CurrentToken.StartPosition);
                     if (newToken != JSToken.Identifier)
                     {
                         // no, use the keyword token and back up to the opening backquote
                         token = newToken;
-                        m_currentPosition = ndxBackquote;
+                        currentPosition = ndxBackquote;
                     }
                 }
             }
@@ -1919,23 +1883,23 @@ namespace NUglify.JavaScript
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private JSToken ScanNumber(char leadChar)
+        JSToken ScanNumber(char leadChar)
         {
             bool noMoreDot = '.' == leadChar;
             JSToken token = noMoreDot ? JSToken.NumericLiteral : JSToken.IntegerLiteral;
             bool exponent = false;
             char c;
-            m_literalIssues = false;
+            LiteralHasIssues = false;
 
             if ('0' == leadChar)
             {
                 // c is now the character AFTER the leading zero
-                c = GetChar(m_currentPosition);
+                c = GetChar(currentPosition);
                 if ('x' == c || 'X' == c)
                 {
-                    if (JSScanner.IsHexDigit(GetChar(m_currentPosition + 1)))
+                    if (JSScanner.IsHexDigit(GetChar(currentPosition + 1)))
                     {
-                        while (JSScanner.IsHexDigit(c = GetChar(++m_currentPosition)) || c == '_')
+                        while (JSScanner.IsHexDigit(c = GetChar(++currentPosition)) || c == '_')
                         {
                             // empty
                         }
@@ -1947,10 +1911,10 @@ namespace NUglify.JavaScript
                 if ('b' == c || 'B' == c)
                 {
                     // ES6 binary literal?
-                    c = GetChar(m_currentPosition + 1);
+                    c = GetChar(currentPosition + 1);
                     if (c == '1' || c == '0')
                     {
-                        while ('0' == (c = GetChar(++m_currentPosition)) || c == '1' || c == '_')
+                        while ('0' == (c = GetChar(++currentPosition)) || c == '1' || c == '_')
                         {
                             // iterator handled in the condition
                         }
@@ -1962,10 +1926,10 @@ namespace NUglify.JavaScript
                 if ('o' == c || 'O' == c)
                 {
                     // ES6 octal literal?
-                    c = GetChar(m_currentPosition + 1);
+                    c = GetChar(currentPosition + 1);
                     if ('0' <= c && c <= '7')
                     {
-                        while (('0' <= (c = GetChar(++m_currentPosition)) && c <= '7') || c == '_')
+                        while (('0' <= (c = GetChar(++currentPosition)) && c <= '7') || c == '_')
                         {
                             // iterator handled in the condition
                         }
@@ -1980,17 +1944,17 @@ namespace NUglify.JavaScript
                     // This could be interpreted as an octal literal, which isn't strictly supported.
                     while ('0' <= c && c <= '7')
                     {
-                        c = GetChar(++m_currentPosition);
+                        c = GetChar(++currentPosition);
                     }
 
                     // bad octal?
                     if (IsDigit(c) && '7' < c)
                     {
                         // bad octal. Skip any other digits, throw an error, mark it has having issues
-                        m_literalIssues = true;
+                        LiteralHasIssues = true;
                         while ('0' <= c && c <= '9')
                         {
-                            c = GetChar(++m_currentPosition);
+                            c = GetChar(++currentPosition);
                         }
 
                         HandleError(JSError.BadNumericLiteral);
@@ -1998,12 +1962,12 @@ namespace NUglify.JavaScript
 
                     // return the integer token with issues, which should cause it to be output
                     // as-is and not combined with other literals or anything.
-                    m_literalIssues = true;
+                    LiteralHasIssues = true;
                     HandleError(JSError.OctalLiteralsDeprecated);
                     return token;
                 }
 
-                if (c != 'e' && c != 'E' && IsValidIdentifierStart(m_strSourceCode, m_currentPosition))
+                if (c != 'e' && c != 'E' && IsValidIdentifierStart(sourceCode, currentPosition))
                 {
                     // invalid for an integer (in this case '0') the be followed by
                     // an identifier part. The 'e' is okay, though, because that will
@@ -2016,14 +1980,14 @@ namespace NUglify.JavaScript
 
             for (;;)
             {
-                c = GetChar(m_currentPosition);
+                c = GetChar(currentPosition);
                 if (!IsDigit(c))
                 {
                     if ('.' == c)
                     {
-                        if (GetChar(m_currentPosition - 1) == '_')
+                        if (GetChar(currentPosition - 1) == '_')
                         {
-                            m_literalIssues = true;
+                            LiteralHasIssues = true;
                             HandleError(JSError.BadNumericLiteral);
                         }
 
@@ -2035,16 +1999,16 @@ namespace NUglify.JavaScript
                     }
                     else if ('_' == c)
                     {
-                        c = GetChar(m_currentPosition - 1);
+                        c = GetChar(currentPosition - 1);
                         // report multiple adjacent separators as an error, although we can handle it so still minify
                         if (c == '_')
                         {
-                            m_literalIssues = true;
+                            LiteralHasIssues = true;
                             HandleError(JSError.BadNumericLiteral);
                         }
                         else if (c == '.')
                         {
-                            m_literalIssues = true;
+                            LiteralHasIssues = true;
                             HandleError(JSError.BadNumericLiteral);
                         }
                     }
@@ -2060,7 +2024,7 @@ namespace NUglify.JavaScript
                     }
                     else if ('+' == c || '-' == c)
                     {
-                        char e = GetChar(m_currentPosition - 1);
+                        char e = GetChar(currentPosition - 1);
                         if ('e' != e && 'E' != e)
                         {
                             break;
@@ -2073,32 +2037,32 @@ namespace NUglify.JavaScript
                     }
                     else
                     {
-                        if (GetChar(m_currentPosition - 1) == '_')
+                        if (GetChar(currentPosition - 1) == '_')
                         {
-                            m_literalIssues = true;
+                            LiteralHasIssues = true;
                             HandleError(JSError.BadNumericLiteral);
                         }
                         break;
                     }
                 }
 
-                m_currentPosition++;
+                currentPosition++;
             }
 
             // get the last character of the number
-            c = GetChar(m_currentPosition - 1);
+            c = GetChar(currentPosition - 1);
             if ('+' == c || '-' == c)
             {
                 // if it's a + or -, then it's not part of the number; back it up one
-                m_currentPosition--;
-                c = GetChar(m_currentPosition - 1);
+                currentPosition--;
+                c = GetChar(currentPosition - 1);
             }
 
             if ('e' == c || 'E' == c)
             {
                 // if it's an e, it's not part of the number; back it up one
-                m_currentPosition--;
-                c = GetChar(m_currentPosition - 1);
+                currentPosition--;
+                c = GetChar(currentPosition - 1);
             }
 
             if (token == JSToken.NumericLiteral && c == '.')
@@ -2114,19 +2078,19 @@ namespace NUglify.JavaScript
             return CheckForNumericBadEnding(token);
         }
 
-        private JSToken ScanReplacementToken()
+        JSToken ScanReplacementToken()
         {
             // save this information in case we need to restore the token
             // if we don't actually have a valid replacement here.
-            int startingPosition = m_currentPosition;
-            int startingLine = m_currentLine;
-            int startingLinePosition = m_startLinePosition;
+            int startingPosition = currentPosition;
+            int startingLine = CurrentLine;
+            int startingLinePosition = StartLinePosition;
 
             // current position should be the character following the %.
             // We should have name(.name)*% at the current position for it to be a replacement token.
             // let's just simplify this and say no escape sequences or surrogate pairs allowed; just simple identifier PART
             // characters separated by periods.
-            var ch = GetChar(m_currentPosition);
+            var ch = GetChar(currentPosition);
 
             // the name portion should not START with a period
             if (ch != '.')
@@ -2134,7 +2098,7 @@ namespace NUglify.JavaScript
                 // identifier parts, hyphens, and periods are allowed as the token name.
                 while (IsValidIdentifierPart(ch) || ch == '.' || ch == '-')
                 {
-                    ch = GetChar(++m_currentPosition);
+                    ch = GetChar(++currentPosition);
                 }
 
                 // the token name can optionally be followed by a colon
@@ -2143,43 +2107,43 @@ namespace NUglify.JavaScript
                 // following identifier (if any).
                 if (ch == ':')
                 {
-                    ch = GetChar(++m_currentPosition);
+                    ch = GetChar(++currentPosition);
                     while (IsValidIdentifierPart(ch))
                     {
-                        ch = GetChar(++m_currentPosition);
+                        ch = GetChar(++currentPosition);
                     }
                 }
             }
 
             if (ch == '%' 
-                && m_currentPosition > startingPosition + 1
-                && GetChar(m_currentPosition - 1) != '.')
+                && currentPosition > startingPosition + 1
+                && GetChar(currentPosition - 1) != '.')
             {
                 // must have found AT LEAST one character for the name 
                 // and it should not have ended with a period.
-                ++m_currentPosition;
+                ++currentPosition;
                 return JSToken.ReplacementToken;
             }
 
             // reset and return what we currently have. apparently it's not a replacement token
-            m_currentPosition = startingPosition;
-            m_currentLine = startingLine;
-            m_startLinePosition = startingLinePosition;
-            return m_currentToken.Token;
+            currentPosition = startingPosition;
+            CurrentLine = startingLine;
+            StartLinePosition = startingLinePosition;
+            return CurrentToken.Token;
         }
 
-        private JSToken ScanRegExp()
+        JSToken ScanRegExp()
         {
             // save this information in case we need to restore the token
             // because we don't actually have a regular expression here.
-            int startingPosition = m_currentPosition;
-            int startingLine = m_currentLine;
-            int startingLinePosition = m_startLinePosition;
+            int startingPosition = currentPosition;
+            int startingLine = CurrentLine;
+            int startingLinePosition = StartLinePosition;
 
             bool isEscape = false;
             bool isInSet = false;
             char c;
-            while (!IsEndLineOrEOF(c = GetChar(m_currentPosition++), 0))
+            while (!IsEndLineOrEOF(c = GetChar(currentPosition++), 0))
             {
                 if (isEscape)
                 {
@@ -2202,17 +2166,17 @@ namespace NUglify.JavaScript
                 }
                 else if (c == '/')
                 {
-                    if (startingPosition == m_currentPosition)
+                    if (startingPosition == currentPosition)
                     {
                         // nothing; bail
                         break;
                     }
 
                     // pull in the flags, which are simply letter characters
-                    while (!IsEndLineOrEOF(c = GetChar(m_currentPosition), 0)
+                    while (!IsEndLineOrEOF(c = GetChar(currentPosition), 0)
                         && IsValidIdentifierPart(c))
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                     }
 
                     // found one! 
@@ -2221,17 +2185,17 @@ namespace NUglify.JavaScript
             }
 
             // reset and return what we currently have. apparently it's not a reg exp
-            m_currentPosition = startingPosition;
-            m_currentLine = startingLine;
-            m_startLinePosition = startingLinePosition;
-            return m_currentToken.Token;
+            currentPosition = startingPosition;
+            CurrentLine = startingLine;
+            StartLinePosition = startingLinePosition;
+            return CurrentToken.Token;
         }
 
         /// <summary>
         /// Scans for the end of an Asp.Net block.
         ///  On exit this.currentPos will be at the next char to scan after the asp.net block.
         /// </summary>
-        private JSToken ScanAspNetBlock()
+        JSToken ScanAspNetBlock()
         {
             // assume we find an asp.net block
             var tokenType = JSToken.AspNetBlock;
@@ -2239,24 +2203,24 @@ namespace NUglify.JavaScript
             // the current position is the % that opens the <%.
             // advance to the next character and save it because we will want 
             // to know whether it's an equals-sign later
-            var thirdChar = GetChar(++m_currentPosition);
+            var thirdChar = GetChar(++currentPosition);
 
             // advance to the next character
-            ++m_currentPosition;
+            ++currentPosition;
 
             // loop until we find a > with a % before it (%>)
-            while (!(this.GetChar(this.m_currentPosition - 1) == '%' &&
-                     this.GetChar(this.m_currentPosition) == '>') ||
+            while (!(this.GetChar(this.currentPosition - 1) == '%' &&
+                     this.GetChar(this.currentPosition) == '>') ||
                      IsEndOfFile)
             {
-                this.m_currentPosition++;
+                this.currentPosition++;
             }
 
             // we should be at the > of the %> right now.
             // set the end point of this token
-            m_currentToken.EndPosition = m_currentPosition + 1;
-            m_currentToken.EndLineNumber = m_currentLine;
-            m_currentToken.EndLinePosition = m_startLinePosition;
+            CurrentToken.EndPosition = currentPosition + 1;
+            CurrentToken.EndLineNumber = CurrentLine;
+            CurrentToken.EndLinePosition = StartLinePosition;
 
             // see if we found an unterminated asp.net block
             if (IsEndOfFile)
@@ -2266,7 +2230,7 @@ namespace NUglify.JavaScript
             else
             {
                 // Eat the last >.
-                this.m_currentPosition++;
+                this.currentPosition++;
 
                 if (thirdChar == '=')
                 {
@@ -2277,16 +2241,16 @@ namespace NUglify.JavaScript
                     // now, if the next character is an identifier part
                     // then skip to the end of the identifier. And if this is
                     // another <%= then skip to the end (%>)
-                    if (IsValidIdentifierPart(m_strSourceCode, m_currentPosition)
-                        || CheckSubstring(m_currentPosition, "<%="))
+                    if (IsValidIdentifierPart(sourceCode, currentPosition)
+                        || CheckSubstring(currentPosition, "<%="))
                     {
                         // and do it however many times we need
                         while (true)
                         {
-                            if (IsValidIdentifierPart(m_strSourceCode, ref m_currentPosition))
+                            if (IsValidIdentifierPart(sourceCode, ref currentPosition))
                             {
                                 // skip to the end of the identifier part
-                                while (IsValidIdentifierPart(m_strSourceCode, ref m_currentPosition))
+                                while (IsValidIdentifierPart(sourceCode, ref currentPosition))
                                 {
                                     // loop
                                 }
@@ -2295,26 +2259,26 @@ namespace NUglify.JavaScript
                                 // character that ISN"T an identifier-part. That means everything 
                                 // UP TO this point must have been on the 
                                 // same line, so we only need to update the position
-                                m_currentToken.EndPosition = m_currentPosition;
+                                CurrentToken.EndPosition = currentPosition;
                             }
-                            else if (CheckSubstring(m_currentPosition, "<%="))
+                            else if (CheckSubstring(currentPosition, "<%="))
                             {
                                 // skip forward four characters -- the minimum position
                                 // for the closing %>
-                                m_currentPosition += 4;
+                                currentPosition += 4;
 
                                 // and keep looping until we find it
-                                while (!(this.GetChar(this.m_currentPosition - 1) == '%' &&
-                                         this.GetChar(this.m_currentPosition) == '>') ||
+                                while (!(this.GetChar(this.currentPosition - 1) == '%' &&
+                                         this.GetChar(this.currentPosition) == '>') ||
                                          IsEndOfFile)
                                 {
-                                    this.m_currentPosition++;
+                                    this.currentPosition++;
                                 }
 
                                 // update the end of the token
-                                m_currentToken.EndPosition = m_currentPosition + 1;
-                                m_currentToken.EndLineNumber = m_currentLine;
-                                m_currentToken.EndLinePosition = m_startLinePosition;
+                                CurrentToken.EndPosition = currentPosition + 1;
+                                CurrentToken.EndLineNumber = CurrentLine;
+                                CurrentToken.EndLinePosition = StartLinePosition;
 
                                 // we should be at the > of the %> right now.
                                 // see if we found an unterminated asp.net block
@@ -2325,7 +2289,7 @@ namespace NUglify.JavaScript
                                 else
                                 {
                                     // skip the > and go around another time
-                                    ++m_currentPosition;
+                                    ++currentPosition;
                                 }
                             }
                             else
@@ -2351,16 +2315,16 @@ namespace NUglify.JavaScript
         //  This method wiil report an error when the string is unterminated or for a bad escape sequence
         //--------------------------------------------------------------------------------------------------
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private void ScanString(char delimiter)
+        void ScanString(char delimiter)
         {
-            int start = ++m_currentPosition;
-            m_decodedString = null;
-            m_literalIssues = false;
+            int start = ++currentPosition;
+            StringLiteralValue = null;
+            LiteralHasIssues = false;
             StringBuilder result = null;
             try
             {
                 char ch;
-                while ((ch = GetChar(m_currentPosition++)) != delimiter)
+                while ((ch = GetChar(currentPosition++)) != delimiter)
                 {
                     if (ch != '\\')
                     {
@@ -2379,10 +2343,10 @@ namespace NUglify.JavaScript
                             HandleError(JSError.UnterminatedString);
 
                             // back up to the start of the line terminator
-                            --m_currentPosition;
-                            if (GetChar(m_currentPosition - 1) == '\r')
+                            --currentPosition;
+                            if (GetChar(currentPosition - 1) == '\r')
                             {
-                                --m_currentPosition;
+                                --currentPosition;
                             }
 
                             break;
@@ -2392,11 +2356,11 @@ namespace NUglify.JavaScript
                         {
                             // whether it's a null literal character within the string or an
                             // actual end of file, this string literal has issues....
-                            m_literalIssues = true;
+                            LiteralHasIssues = true;
 
                             if (IsEndOfFile)
                             {
-                                m_currentPosition--;
+                                currentPosition--;
                                 HandleError(JSError.UnterminatedString);
                                 break;
                             }
@@ -2405,7 +2369,7 @@ namespace NUglify.JavaScript
 
                         if (AllowEmbeddedAspNetBlocks
                             && ch == '<'
-                            && GetChar(m_currentPosition) == '%')
+                            && GetChar(currentPosition) == '%')
                         {
                             // start of an ASP.NET block INSIDE a string literal.
                             // just skip the entire ASP.NET block -- move forward until
@@ -2414,19 +2378,19 @@ namespace NUglify.JavaScript
                             SkipAspNetReplacement();
 
                             // asp.net blocks insides strings can cause issues
-                            m_literalIssues = true;
+                            LiteralHasIssues = true;
                         }
                         else if (0xd800 <= ch && ch <= 0xdbff)
                         {
                             // high-surrogate! Make sure the next character is a low surrogate
                             // or we'll throw an error.
-                            ch = GetChar(m_currentPosition);
+                            ch = GetChar(currentPosition);
                             if (0xdc00 <= ch && ch <= 0xdfff)
                             {
                                 // we're good. Advance past the pair.
-                                ++m_currentPosition;
+                                ++currentPosition;
                             }
-                            else if (ch == '\\' && GetChar(m_currentPosition + 1) == 'u')
+                            else if (ch == '\\' && GetChar(currentPosition + 1) == 'u')
                             {
                                 // we have a unicode escape. Start working on that escaped value.
                                 if (null == result)
@@ -2437,24 +2401,24 @@ namespace NUglify.JavaScript
                                 // start points to the first position that has not been written to the StringBuilder.
                                 // The first time we get in here that position is the beginning of the string, after that
                                 // is the character immediately following the escape sequence
-                                if (m_currentPosition - start > 0)
+                                if (currentPosition - start > 0)
                                 {
                                     // append all the non escape chars to the string builder
-                                    result.Append(m_strSourceCode, start, m_currentPosition - start);
+                                    result.Append(sourceCode, start, currentPosition - start);
                                 }
 
                                 int lowSurrogate;
-                                if (ScanHexSequence(m_currentPosition += 2, 'u', out lowSurrogate))
+                                if (ScanHexSequence(currentPosition += 2, 'u', out lowSurrogate))
                                 {
                                     // valid escape, so make sure the unescaped value is added to the result regardless.
                                     result.Append((char)lowSurrogate);
-                                    start = m_currentPosition;
+                                    start = currentPosition;
 
                                     // now make sure it's in low-surrogate range
                                     if (lowSurrogate < 0xdc00 || 0xdfff < lowSurrogate)
                                     {
                                         // not a low-surrogate
-                                        m_literalIssues = true;
+                                        LiteralHasIssues = true;
                                         HandleError(JSError.HighSurrogate);
                                     }
                                 }
@@ -2462,21 +2426,21 @@ namespace NUglify.JavaScript
                                 {
                                     // not a valid unicode escape sequence, so no -- we are not 
                                     // followed by a low-surrogate
-                                    m_literalIssues = true;
+                                    LiteralHasIssues = true;
                                     HandleError(JSError.HighSurrogate);
                                 }
                             }
                             else
                             {
                                 // not followed by a low-surrogate
-                                m_literalIssues = true;
+                                LiteralHasIssues = true;
                                 HandleError(JSError.HighSurrogate);
                             }
                         }
                         else if (0xdc00 <= ch && ch <= 0xdfff)
                         {
                             // low-surrogate by itself! This is an error, but keep going
-                            m_literalIssues = true;
+                            LiteralHasIssues = true;
                             HandleError(JSError.LowSurrogate);
                         }
                     }
@@ -2494,34 +2458,34 @@ namespace NUglify.JavaScript
                         // start points to the first position that has not been written to the StringBuilder.
                         // The first time we get in here that position is the beginning of the string, after that
                         // is the character immediately following the escape sequence
-                        if (m_currentPosition - start - 1 > 0)
+                        if (currentPosition - start - 1 > 0)
                         {
                             // append all the non escape chars to the string builder
-                            result.Append(m_strSourceCode, start, m_currentPosition - start - 1);
+                            result.Append(sourceCode, start, currentPosition - start - 1);
                         }
 
                         // state variable to be reset
                         bool seqOfThree = false;
 
-                        ch = GetChar(m_currentPosition++);
+                        ch = GetChar(currentPosition++);
                         switch (ch)
                         {
                             // line terminator crap
                             case '\r':
-                                if ('\n' == GetChar(m_currentPosition))
+                                if ('\n' == GetChar(currentPosition))
                                 {
-                                    m_currentLine++;
-                                    m_currentPosition++;
+                                    CurrentLine++;
+                                    currentPosition++;
                                 }
 
-                                m_startLinePosition = m_currentPosition;
+                                StartLinePosition = currentPosition;
                                 break;
 
                             case '\n':
                             case '\u2028':
                             case '\u2029':
-                                m_currentLine++;
-                                m_startLinePosition = m_currentPosition;
+                                CurrentLine++;
+                                StartLinePosition = currentPosition;
                                 break;
 
                             // classic single char escape sequences
@@ -2539,7 +2503,7 @@ namespace NUglify.JavaScript
 
                             case 'v':
                                 // \v inside strings can cause issues
-                                m_literalIssues = true;
+                                LiteralHasIssues = true;
                                 result.Append((char)11);
                                 break;
 
@@ -2575,8 +2539,8 @@ namespace NUglify.JavaScript
                                 else
                                 {
                                     // wasn't valid -- keep the original and flag this as having issues
-                                    result.Append(m_strSourceCode.Substring(m_currentPosition - 2, 2));
-                                    m_literalIssues = true;
+                                    result.Append(sourceCode.Substring(currentPosition - 2, 2));
+                                    LiteralHasIssues = true;
                                     HandleError(JSError.BadHexEscapeSequence);
                                 }
                                 break;
@@ -2594,7 +2558,7 @@ namespace NUglify.JavaScript
                             case '6':
                             case '7':
                                 // octal literals inside strings can cause issues
-                                m_literalIssues = true;
+                                LiteralHasIssues = true;
 
                                 // esc is reset at the beginning of the loop and it is used to check that we did not go through the cases 1, 2 or 3
                                 if (!seqOfThree)
@@ -2602,13 +2566,13 @@ namespace NUglify.JavaScript
                                     esc = (ch - '0') << 3;
                                 }
 
-                                ch = GetChar(m_currentPosition++);
+                                ch = GetChar(currentPosition++);
                                 if ('0' <= ch && ch <= '7')
                                 {
                                     if (seqOfThree)
                                     {
                                         esc |= (ch - '0') << 3;
-                                        ch = GetChar(m_currentPosition++);
+                                        ch = GetChar(currentPosition++);
                                         if ('0' <= ch && ch <= '7')
                                         {
                                             esc |= ch - '0';
@@ -2619,7 +2583,7 @@ namespace NUglify.JavaScript
                                             result.Append((char)(esc >> 3));
 
                                             // do not skip over this char we have to read it back
-                                            --m_currentPosition;
+                                            --currentPosition;
                                         }
                                     }
                                     else
@@ -2640,7 +2604,7 @@ namespace NUglify.JavaScript
                                     }
 
                                     // do not skip over this char we have to read it back
-                                    --m_currentPosition;
+                                    --currentPosition;
                                 }
 
                                 HandleError(JSError.OctalLiteralsDeprecated);
@@ -2652,30 +2616,30 @@ namespace NUglify.JavaScript
                                 break;
                         }
 
-                        start = m_currentPosition;
+                        start = currentPosition;
                     }
                 }
 
                 // update the unescaped string
                 if (null != result)
                 {
-                    if (m_currentPosition - start - 1 > 0)
+                    if (currentPosition - start - 1 > 0)
                     {
                         // append all the non escape chars to the string builder
-                        result.Append(m_strSourceCode, start, m_currentPosition - start - 1);
+                        result.Append(sourceCode, start, currentPosition - start - 1);
                     }
-                    m_decodedString = result.ToString();
+                    StringLiteralValue = result.ToString();
                 }
-                else if (m_currentPosition == m_currentToken.StartPosition + 1)
+                else if (currentPosition == CurrentToken.StartPosition + 1)
                 {
                     // empty unterminated string!
-                    m_decodedString = string.Empty;
+                    StringLiteralValue = string.Empty;
                 }
                 else
                 {
                     // might be an unterminated string, so make sure that last character is the terminator
-                    int numDelimiters = (GetChar(m_currentPosition - 1) == delimiter ? 2 : 1);
-                    m_decodedString = m_strSourceCode.Substring(m_currentToken.StartPosition + 1, m_currentPosition - m_currentToken.StartPosition - numDelimiters);
+                    int numDelimiters = (GetChar(currentPosition - 1) == delimiter ? 2 : 1);
+                    StringLiteralValue = sourceCode.Substring(CurrentToken.StartPosition + 1, currentPosition - CurrentToken.StartPosition - numDelimiters);
                 }
             }
             finally
@@ -2684,13 +2648,13 @@ namespace NUglify.JavaScript
             }
         }
 
-        private bool ScanHexEscape(char hexType, out string unescaped)
+        bool ScanHexEscape(char hexType, out string unescaped)
         {
             // current character should be the first character AFTER the "\u" pair
             int numeric;
 
             // save this in case there's an error and we back up to where we started
-            var startOfDigits = m_currentPosition;
+            var startOfDigits = currentPosition;
             var isValidHex = ScanHexSequence(startOfDigits, hexType, out numeric);
             if (isValidHex)
             {
@@ -2701,13 +2665,13 @@ namespace NUglify.JavaScript
                     // an unescaped low surrogate, use it. But if the next character is a backslash,
                     // check for U, decode the escape, and then use it. If it's not okay, return
                     // false.
-                    var ch = GetChar(m_currentPosition);
+                    var ch = GetChar(currentPosition);
                     if (0xdc00 <= ch && ch <= 0xdfff)
                     {
                         // skip the single low-surrogate character and return a valid two-character string
                         // using the raw numeric values for the high and low surrogate pairs.
                         // (strings internally are UTF-16)
-                        ++m_currentPosition;
+                        ++currentPosition;
                         unescaped = new string(new[] { (char)numeric, ch });
                         return true;
                     }
@@ -2715,12 +2679,12 @@ namespace NUglify.JavaScript
                     {
                         if (ch == '\\')
                         {
-                            if (GetChar(m_currentPosition + 1) == 'u')
+                            if (GetChar(currentPosition + 1) == 'u')
                             {
                                 // advance to the character AFTER the \u and recurse
-                                m_currentPosition += 2;
+                                currentPosition += 2;
                                 int lowSurrogate;
-                                isValidHex = ScanHexSequence(m_currentPosition, hexType, out lowSurrogate);
+                                isValidHex = ScanHexSequence(currentPosition, hexType, out lowSurrogate);
                                 if (isValidHex)
                                 {
                                     // return a valid two-character string using the raw numeric values 
@@ -2735,7 +2699,7 @@ namespace NUglify.JavaScript
                         // not valid to have a high surrogate that ISN'T followed by a low-surrogate!
                         // throw the error, but return true
                         HandleError(JSError.HighSurrogate);
-                        m_literalIssues = true;
+                        LiteralHasIssues = true;
                         unescaped = new string((char)numeric, 1);
                         return true;
                     }
@@ -2745,7 +2709,7 @@ namespace NUglify.JavaScript
                     // low surrogate -- shouldn't have one by itself!
                     // throw the error, but return true
                     HandleError(JSError.LowSurrogate);
-                    m_literalIssues = true;
+                    LiteralHasIssues = true;
                     unescaped = new string((char)numeric, 1);
                     return true;
                 }
@@ -2755,7 +2719,7 @@ namespace NUglify.JavaScript
             return isValidHex;
         }
 
-        private bool ScanHexSequence(int startOfDigits, char hexType, out int accumulator)
+        bool ScanHexSequence(int startOfDigits, char hexType, out int accumulator)
         {
             // current character should be the first character AFTER the "\u" pair
             var isValidHex = true;
@@ -2763,15 +2727,15 @@ namespace NUglify.JavaScript
             // how many digits we parse depends on the type. x = 2 digits, u = 4 digits.
             // UNLESS this is a type 'u' followed by a left brace. Then it's between 1 and 6.
             int digits = hexType == 'x' ? 2 : 4;
-            if (hexType == 'u' && GetChar(m_currentPosition) == '{')
+            if (hexType == 'u' && GetChar(currentPosition) == '{')
             {
-                ++m_currentPosition;
+                ++currentPosition;
                 digits = 6;
             }
 
             accumulator = 0;
-            var ch = GetChar(m_currentPosition);
-            while (m_currentPosition - startOfDigits < digits && IsHexDigit(ch))
+            var ch = GetChar(currentPosition);
+            while (currentPosition - startOfDigits < digits && IsHexDigit(ch))
             {
                 if (IsDigit(ch))
                 {
@@ -2786,44 +2750,44 @@ namespace NUglify.JavaScript
                     accumulator = accumulator << 4 | (ch - 'a' + 10);
                 }
 
-                ch = GetChar(++m_currentPosition);
+                ch = GetChar(++currentPosition);
             }
 
             // if we didn't find any digits at all, or
             // if we didn't find the exact number of digits we were looking for,
             // then it's an error unless we were looking for 6 and the current character is
             // a closing brace (in which case we skip the brace).
-            var digitsFound = m_currentPosition - startOfDigits;
+            var digitsFound = currentPosition - startOfDigits;
             if (digitsFound == 0 || (digits != 6 && digitsFound != digits) || (digits == 6 && ch != '}'))
             {
                 isValidHex = false;
-                m_currentPosition = startOfDigits;
+                currentPosition = startOfDigits;
             }
             else if (digits == 6 && ch == '}')
             {
-                ++m_currentPosition;
+                ++currentPosition;
             }
 
             return isValidHex;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private JSToken ScanTemplateLiteral(char ch)
+        JSToken ScanTemplateLiteral(char ch)
         {
             // save the start of the current run, INCLUDING the delimiter
             StringBuilder decodedLiteral = null;
             try
             {
-                var startOfRun = m_currentToken.StartPosition;
+                var startOfRun = CurrentToken.StartPosition;
 
                 // if the first character is the open delimiter, skip past it now
                 if (ch == '`')
                 {
-                    ++m_currentPosition;
+                    ++currentPosition;
                 }
 
                 // get the current character and get the next character
-                ch = GetChar(m_currentPosition);
+                ch = GetChar(currentPosition);
                 while (ch != '\0' && ch != '`')
                 {
                     if (ch == '$')
@@ -2831,9 +2795,9 @@ namespace NUglify.JavaScript
                         // is this the start of a substitution?
                         // if so, then it's the end of the head. Otherwise it's just
                         // a simpe dollar-sign.
-                        if (GetChar(m_currentPosition + 1) == '{')
+                        if (GetChar(currentPosition + 1) == '{')
                         {
-                            m_currentPosition += 2;
+                            currentPosition += 2;
                             break;
                         }
                     }
@@ -2846,13 +2810,13 @@ namespace NUglify.JavaScript
                         }
 
                         // append the previous run of unescaped characters
-                        if (m_currentPosition > startOfRun)
+                        if (currentPosition > startOfRun)
                         {
-                            decodedLiteral.Append(m_strSourceCode, startOfRun, m_currentPosition - startOfRun);
+                            decodedLiteral.Append(sourceCode, startOfRun, currentPosition - startOfRun);
                         }
 
                         // advance past the slash and get the next escaped character
-                        ch = GetChar(++m_currentPosition);
+                        ch = GetChar(++currentPosition);
                         switch (ch)
                         {
                             default:
@@ -2904,20 +2868,20 @@ namespace NUglify.JavaScript
                                 // line continuation - don't add anything to the decoded string.
                                 // carriage return might be followed by a \n, which we will 
                                 // treat together as a single line terminator.
-                                if (GetChar(m_currentPosition + 1) == '\n')
+                                if (GetChar(currentPosition + 1) == '\n')
                                 {
-                                    m_currentLine++;
-                                    m_currentPosition++;
+                                    CurrentLine++;
+                                    currentPosition++;
                                 }
-                                m_startLinePosition = m_currentPosition;
+                                StartLinePosition = currentPosition;
                                 break;
                             case '\n':
                             case '\u2028':
                             case '\u2029':
                                 // advance the line number, but the escaped line terminator is not part
                                 // of the decoded string
-                                m_currentLine++;
-                                m_startLinePosition = m_currentPosition;
+                                CurrentLine++;
+                                StartLinePosition = currentPosition;
                                 break;
 
                             case 'x':
@@ -2925,7 +2889,7 @@ namespace NUglify.JavaScript
                                 // unicode escape. four hex digits unless enclosed in curly-braces, in which
                                 // case it can be any number of hex digits.
                                 string unescaped;
-                                ++m_currentPosition;
+                                ++currentPosition;
                                 if (ScanHexEscape(ch, out unescaped))
                                 {
                                     decodedLiteral.Append(unescaped);
@@ -2933,46 +2897,46 @@ namespace NUglify.JavaScript
                                 else
                                 {
                                     // wasn't valid -- keep the original and flag this as having issues
-                                    decodedLiteral.Append(m_strSourceCode.Substring(m_currentPosition - 2, 2));
-                                    m_literalIssues = true;
+                                    decodedLiteral.Append(sourceCode.Substring(currentPosition - 2, 2));
+                                    LiteralHasIssues = true;
                                     HandleError(JSError.BadHexEscapeSequence);
                                 }
-                                --m_currentPosition;
+                                --currentPosition;
                                 break;
                         }
 
                         // save the start of the next run (if any)
-                        startOfRun = m_currentPosition + 1;
+                        startOfRun = currentPosition + 1;
                     }
                     else if (IsLineTerminator(ch, 1))
                     {
                         // we'll just keep this as part of the unescaped run
-                        ++m_currentLine;
-                        m_startLinePosition = m_currentPosition + 1;
+                        ++CurrentLine;
+                        StartLinePosition = currentPosition + 1;
                     }
 
                     // keep going
-                    ch = GetChar(++m_currentPosition);
+                    ch = GetChar(++currentPosition);
                 }
 
                 if (ch == '`')
                 {
-                    ++m_currentPosition;
+                    ++currentPosition;
                 }
 
                 // if we were unescaping the string, pull in the last run and save the decoded string
                 if (decodedLiteral != null)
                 {
-                    if (m_currentPosition > startOfRun)
+                    if (currentPosition > startOfRun)
                     {
-                        decodedLiteral.Append(m_strSourceCode, startOfRun, m_currentPosition - startOfRun);
+                        decodedLiteral.Append(sourceCode, startOfRun, currentPosition - startOfRun);
                     }
 
-                    m_decodedString = decodedLiteral.ToString();
+                    StringLiteralValue = decodedLiteral.ToString();
                 }
                 else
                 {
-                    m_decodedString = m_strSourceCode.Substring(m_currentToken.StartPosition, m_currentPosition - m_currentToken.StartPosition);
+                    StringLiteralValue = sourceCode.Substring(CurrentToken.StartPosition, currentPosition - CurrentToken.StartPosition);
                 }
             }
             finally
@@ -2987,54 +2951,54 @@ namespace NUglify.JavaScript
 
         #region private Skip methods
 
-        private void SkipAspNetReplacement()
+        void SkipAspNetReplacement()
         {
             // the current position is on the % of the opening delimiter, so
             // advance the pointer forward to the first character AFTER the opening
             // delimiter, then keep skipping
             // forward until we find the closing %>. Be sure to set the current pointer
             // to the NEXT character AFTER the > when we find it.
-            ++m_currentPosition;
+            ++currentPosition;
 
             char ch;
-            while ((ch = GetChar(m_currentPosition++)) != '\0' || !IsEndOfFile)
+            while ((ch = GetChar(currentPosition++)) != '\0' || !IsEndOfFile)
             {
                 if (ch == '%'
-                    && GetChar(m_currentPosition) == '>')
+                    && GetChar(currentPosition) == '>')
                 {
                     // found the closing delimiter -- the current position in on the >
                     // so we need to advance to the next character and break out of the loop
-                    ++m_currentPosition;
+                    ++currentPosition;
                     break;
                 }
             }
         }
 
-        private void SkipSingleLineComment()
+        void SkipSingleLineComment()
         {
             // skip up to the terminator, but don't include them.
             // the single-line comment does NOT include the line terminator!
             SkipToEndOfLine();
 
             // no longer in a single-line comment
-            m_inSingleLineComment = false;
+            inSingleLineComment = false;
 
             // fix up the end of the token
-            m_currentToken.EndPosition = m_currentPosition;
-            m_currentToken.EndLinePosition = m_startLinePosition;
-            m_currentToken.EndLineNumber = m_currentLine;
+            CurrentToken.EndPosition = currentPosition;
+            CurrentToken.EndLinePosition = StartLinePosition;
+            CurrentToken.EndLineNumber = CurrentLine;
         }
 
-        private void SkipToEndOfLine()
+        void SkipToEndOfLine()
         {
-            var c = GetChar(m_currentPosition);
+            var c = GetChar(currentPosition);
             while (c != 0
                 && c != '\n'
                 && c != '\r'
                 && c != '\x2028'
                 && c != '\x2029')
             {
-                c = GetChar(++m_currentPosition);
+                c = GetChar(++currentPosition);
             }
         }
 
@@ -3042,9 +3006,9 @@ namespace NUglify.JavaScript
         /// skip to either the end of the line or the comment, whichever comes first, but
         /// DON'T consume either of them.
         /// </summary>
-        private void SkipToEndOfLineOrComment()
+        void SkipToEndOfLineOrComment()
         {
-            if (m_inSingleLineComment)
+            if (inSingleLineComment)
             {
                 // single line comments are easy; the end of the line IS the end of the comment
                 SkipToEndOfLine();
@@ -3052,69 +3016,69 @@ namespace NUglify.JavaScript
             else
             {
                 // multiline comments stop at the end of line OR the closing */, whichever comes first
-                var c = GetChar(m_currentPosition);
+                var c = GetChar(currentPosition);
                 while (c != 0
                     && c != '\n'
                     && c != '\r'
                     && c != '\x2028'
                     && c != '\x2029')
                 {
-                    if (c == '*' && GetChar(m_currentPosition + 1) == '/')
+                    if (c == '*' && GetChar(currentPosition + 1) == '/')
                     {
                         break;
                     }
 
-                    c = GetChar(++m_currentPosition);
+                    c = GetChar(++currentPosition);
                 }
             }
         }
 
-        private void SkipOneLineTerminator()
+        void SkipOneLineTerminator()
         {
-            var c = GetChar(m_currentPosition);
+            var c = GetChar(currentPosition);
             if (c == '\r')
             {
                 // skip over the \r; and if it's followed by a \n, skip it, too
-                if (GetChar(++m_currentPosition) == '\n')
+                if (GetChar(++currentPosition) == '\n')
                 {
-                    ++m_currentPosition;
+                    ++currentPosition;
                 }
 
-                m_currentLine++;
-                m_startLinePosition = m_currentPosition;
-                m_inSingleLineComment = false;
+                CurrentLine++;
+                StartLinePosition = currentPosition;
+                inSingleLineComment = false;
             }
             else if (c == '\n'
                 || c == '\x2028'
                 || c == '\x2029')
             {
                 // skip over the single line-feed character
-                ++m_currentPosition;
+                ++currentPosition;
 
-                m_currentLine++;
-                m_startLinePosition = m_currentPosition;
-                m_inSingleLineComment = false;
+                CurrentLine++;
+                StartLinePosition = currentPosition;
+                inSingleLineComment = false;
             }
         }
 
-        private void SkipMultilineComment()
+        void SkipMultilineComment()
         {
             for (; ; )
             {
-                char c = GetChar(m_currentPosition);
+                char c = GetChar(currentPosition);
                 while ('*' == c)
                 {
-                    c = GetChar(++m_currentPosition);
+                    c = GetChar(++currentPosition);
                     if ('/' == c)
                     {
                         // get past the trailing slash
-                        m_currentPosition++;
+                        currentPosition++;
 
                         // no longer in a multiline comment; fix up the end of the current token.
-                        m_inMultipleLineComment = false;
-                        m_currentToken.EndPosition = m_currentPosition;
-                        m_currentToken.EndLinePosition = m_startLinePosition;
-                        m_currentToken.EndLineNumber = m_currentLine;
+                        inMultipleLineComment = false;
+                        CurrentToken.EndPosition = currentPosition;
+                        CurrentToken.EndLinePosition = StartLinePosition;
+                        CurrentToken.EndLineNumber = CurrentLine;
                         return;
                     }
 
@@ -3125,9 +3089,9 @@ namespace NUglify.JavaScript
                     
                     if (IsLineTerminator(c, 1))
                     {
-                        c = GetChar(++m_currentPosition);
-                        m_currentLine++;
-                        m_startLinePosition = m_currentPosition + 1;
+                        c = GetChar(++currentPosition);
+                        CurrentLine++;
+                        StartLinePosition = currentPosition + 1;
                     }
                 }
 
@@ -3138,32 +3102,32 @@ namespace NUglify.JavaScript
 
                 if (IsLineTerminator(c, 1))
                 {
-                    m_currentLine++;
-                    m_startLinePosition = m_currentPosition + 1;
+                    CurrentLine++;
+                    StartLinePosition = currentPosition + 1;
                 }
 
-                ++m_currentPosition;
+                ++currentPosition;
             }
 
             // if we are here we got EOF
-            m_currentToken.EndPosition = m_currentPosition;
-            m_currentToken.EndLinePosition = m_startLinePosition;
-            m_currentToken.EndLineNumber = m_currentLine;
-            m_currentToken.HandleError(JSError.NoCommentEnd, true);
+            CurrentToken.EndPosition = currentPosition;
+            CurrentToken.EndLinePosition = StartLinePosition;
+            CurrentToken.EndLineNumber = CurrentLine;
+            CurrentToken.HandleError(JSError.NoCommentEnd, true);
         }
 
-        private void SkipBlanks()
+        void SkipBlanks()
         {
-            char c = GetChar(m_currentPosition);
+            char c = GetChar(currentPosition);
             while (JSScanner.IsBlankSpace(c))
             {
-                c = GetChar(++m_currentPosition);
+                c = GetChar(++currentPosition);
             }
         }
 
         #endregion
 
-        private bool CheckSubstring(int startIndex, string target)
+        bool CheckSubstring(int startIndex, string target)
         {
             for (int ndx = 0; ndx < target.Length; ++ndx)
             {
@@ -3178,9 +3142,9 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool CheckCaseInsensitiveSubstring(string target)
+        bool CheckCaseInsensitiveSubstring(string target)
         {
-            var startIndex = m_currentPosition;
+            var startIndex = currentPosition;
             for (int ndx = 0; ndx < target.Length; ++ndx)
             {
                 if (target[ndx] != char.ToUpperInvariant(GetChar(startIndex + ndx)))
@@ -3191,25 +3155,25 @@ namespace NUglify.JavaScript
             }
 
             // if we got here, the strings match. Advance the current position over it
-            m_currentPosition += target.Length;
+            currentPosition += target.Length;
             return true;
         }
 
-        private JSToken CheckForNumericBadEnding(JSToken token)
+        JSToken CheckForNumericBadEnding(JSToken token)
         {
             // it is invalid for a numeric literal to be immediately followed by another
             // digit or an identifier start character. So check for those cases and return an
             // invalid numeric literal if true.
             var isBad = false;
-            char ch = GetChar(m_currentPosition);
+            char ch = GetChar(currentPosition);
             if ('0' <= ch && ch <= '9')
             {
                 // we know that next character is invalid, so skip it and 
                 // anything else after it that's identifier-like, and throw an error.
-                ++m_currentPosition;
+                ++currentPosition;
                 isBad = true;
             }
-            else if (IsValidIdentifierStart(m_strSourceCode, ref m_currentPosition))
+            else if (IsValidIdentifierStart(sourceCode, ref currentPosition))
             {
                 isBad = true;
             }
@@ -3218,12 +3182,12 @@ namespace NUglify.JavaScript
             {
                 // since we know we had a bad, skip anything else after it that's identifier-like
                 // and throw an error.
-                while (IsValidIdentifierPart(m_strSourceCode, ref m_currentPosition))
+                while (IsValidIdentifierPart(sourceCode, ref currentPosition))
                 {
                     // advance handled in the condition
                 }
 
-                m_literalIssues = true;
+                LiteralHasIssues = true;
                 HandleError(JSError.BadNumericLiteral);
                 token = JSToken.NumericLiteral;
             }
@@ -3233,17 +3197,17 @@ namespace NUglify.JavaScript
 
         #region get/peek methods
 
-        private char GetChar(int index)
+        char GetChar(int index)
         {
-            if (index < m_endPos)
+            if (index < endPos)
             {
-                return m_strSourceCode[index];
+                return sourceCode[index];
             }
 
             return '\0';
         }
 
-        private static int GetHexValue(char hex)
+        static int GetHexValue(char hex)
         {
             int hexValue;
             if ('0' <= hex && hex <= '9')
@@ -3270,7 +3234,7 @@ namespace NUglify.JavaScript
         /// <param name="index">starting position of the escape backslash character on entry; 
         /// index of the next character after the escape sequence on exit</param>
         /// <returns>integer conversion of the valid escape sequence, or -1 if invalid</returns>
-        private static int DecodeOneUnicodeEscapeSequence(string text, ref int index)
+        static int DecodeOneUnicodeEscapeSequence(string text, ref int index)
         {
             var value = -1;
             if (text != null)
@@ -3335,7 +3299,7 @@ namespace NUglify.JavaScript
             return value;
         }
 
-        private static string PeekUnicodeEscape(string text, ref int index)
+        static string PeekUnicodeEscape(string text, ref int index)
         {
             // decode the first escape sequence
             var codePoint = DecodeOneUnicodeEscapeSequence(text, ref index);
@@ -3381,15 +3345,15 @@ namespace NUglify.JavaScript
             return ('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
         }
 
-        private bool IsLineTerminator(char c, int increment)
+        bool IsLineTerminator(char c, int increment)
         {
             switch (c)
             {
                 case '\u000d':
                     // treat 0x0D0x0A as a single character
-                    if (0x0A == GetChar(m_currentPosition + increment))
+                    if (0x0A == GetChar(currentPosition + increment))
                     {
-                        m_currentPosition++;
+                        currentPosition++;
                     }
 
                     return true;
@@ -3408,12 +3372,12 @@ namespace NUglify.JavaScript
             }
         }
 
-        private bool IsEndLineOrEOF(char c, int increment)
+        bool IsEndLineOrEOF(char c, int increment)
         {
             return IsLineTerminator(c, increment) || '\0' == c && IsEndOfFile;
         }
 
-        private static bool IsBlankSpace(char c)
+        static bool IsBlankSpace(char c)
         {
             switch (c)
             {
@@ -3439,29 +3403,29 @@ namespace NUglify.JavaScript
 
         #endregion
 
-        #region private preprocessor methods 
+        #region private preprocessor methods
 
-        private string PPScanIdentifier(bool forceUpper)
+        string PPScanIdentifier(bool forceUpper)
         {
             string identifier = null;
 
             // start at the current position
-            var startPos = m_currentPosition;
+            var startPos = currentPosition;
 
             // see if the first character is a valid identifier start
-            if (JSScanner.IsValidIdentifierStart(m_strSourceCode, ref m_currentPosition))
+            if (JSScanner.IsValidIdentifierStart(sourceCode, ref currentPosition))
             {
                 // it is -- keep going as long as we have valid part characters
-                while (JSScanner.IsValidIdentifierPart(m_strSourceCode, ref m_currentPosition))
+                while (JSScanner.IsValidIdentifierPart(sourceCode, ref currentPosition))
                 {
                     // position is advanced in the condition
                 }
             }
 
             // if we advanced at all, return the code we scanned. Otherwise return null
-            if (m_currentPosition > startPos)
+            if (currentPosition > startPos)
             {
-                identifier = m_strSourceCode.Substring(startPos, m_currentPosition - startPos);
+                identifier = sourceCode.Substring(startPos, currentPosition - startPos);
                 if (forceUpper)
                 {
                     identifier = identifier.ToUpperInvariant();
@@ -3471,18 +3435,18 @@ namespace NUglify.JavaScript
             return identifier;
         }
 
-        private bool PPScanInteger(out int intValue)
+        bool PPScanInteger(out int intValue)
         {
-            var startPos = m_currentPosition;
-            while (IsDigit(GetChar(m_currentPosition)))
+            var startPos = currentPosition;
+            while (IsDigit(GetChar(currentPosition)))
             {
-                ++m_currentPosition;
+                ++currentPosition;
             }
 
             var success = false;
-            if (m_currentPosition > startPos)
+            if (currentPosition > startPos)
             {
-                success = int.TryParse(m_strSourceCode.Substring(startPos, m_currentPosition - startPos), out intValue);
+                success = int.TryParse(sourceCode.Substring(startPos, currentPosition - startPos), out intValue);
             }
             else
             {
@@ -3492,18 +3456,18 @@ namespace NUglify.JavaScript
             return success;
         }
 
-        private int PPSkipToDirective(params string[] endStrings)
+        int PPSkipToDirective(params string[] endStrings)
         {
             // save the current position - if we hit an EOF before we find a directive
             // we're looking for, we'll use this as the end of the error context so we
             // don't have the whole rest of the file printed out with the error.
-            var endPosition = m_currentPosition;
-            var endLineNum = m_currentLine;
-            var endLinePos = m_startLinePosition;
+            var endPosition = currentPosition;
+            var endLineNum = CurrentLine;
+            var endLinePos = StartLinePosition;
 
             while (true)
             {
-                char c = GetChar(m_currentPosition++);
+                char c = GetChar(currentPosition++);
                 switch (c)
                 {
                     // EOF
@@ -3511,15 +3475,15 @@ namespace NUglify.JavaScript
                         if (IsEndOfFile)
                         {
                             // adjust the scanner state
-                            m_currentPosition--;
-                            m_currentToken.EndPosition = m_currentPosition;
-                            m_currentToken.EndLineNumber = m_currentLine;
-                            m_currentToken.EndLinePosition = m_startLinePosition;
+                            currentPosition--;
+                            CurrentToken.EndPosition = currentPosition;
+                            CurrentToken.EndLineNumber = CurrentLine;
+                            CurrentToken.EndLinePosition = StartLinePosition;
 
                             // create a clone of the current token and set the ending to be the end of the
                             // directive for which we're trying to find an end. Use THAT context for the 
                             // error context. Then throw an exception so we can bail.
-                            var contextError = m_currentToken.Clone();
+                            var contextError = CurrentToken.Clone();
                             contextError.EndPosition = endPosition;
                             contextError.EndLineNumber = endLineNum;
                             contextError.EndLinePosition = endLinePos;
@@ -3533,32 +3497,32 @@ namespace NUglify.JavaScript
 
                     // line terminator crap
                     case '\r':
-                        if (GetChar(m_currentPosition) == '\n')
+                        if (GetChar(currentPosition) == '\n')
                         {
-                            m_currentLine++;
-                            m_currentPosition++;
+                            CurrentLine++;
+                            currentPosition++;
                         }
-                        m_startLinePosition = m_currentPosition;
+                        StartLinePosition = currentPosition;
                         break;
                     case '\n':
-                        m_currentLine++;
-                        m_startLinePosition = m_currentPosition;
+                        CurrentLine++;
+                        StartLinePosition = currentPosition;
                         break;
                     case '\u2028':
-                        m_currentLine++;
-                        m_startLinePosition = m_currentPosition;
+                        CurrentLine++;
+                        StartLinePosition = currentPosition;
                         break;
                     case '\u2029':
-                        m_currentLine++;
-                        m_startLinePosition = m_currentPosition;
+                        CurrentLine++;
+                        StartLinePosition = currentPosition;
                         break;
 
                     // check for /// (and then followed by any one of the substrings passed to us)
                     case '/':
-                        if (CheckSubstring(m_currentPosition, "//"))
+                        if (CheckSubstring(currentPosition, "//"))
                         {
                             // skip it
-                            m_currentPosition += 2;
+                            currentPosition += 2;
 
                             // check to see if this is the start of ANOTHER preprocessor construct. If it
                             // is, then it's a NESTED statement and we'll need to recursively skip the 
@@ -3586,7 +3550,7 @@ namespace NUglify.JavaScript
                                 if (CheckCaseInsensitiveSubstring("#END"))
                                 {
                                     // if the current character is not whitespace, then it's not a simple "#END"
-                                    c = GetChar(m_currentPosition);
+                                    c = GetChar(currentPosition);
                                     if (IsBlankSpace(c) || IsAtEndOfLine)
                                     {
                                         // it is! Well, we were expecting either #ENDIF or #ENDDEBUG, but we found just an #END.
@@ -3605,7 +3569,7 @@ namespace NUglify.JavaScript
 
         // returns true we should skip the rest of this line,
         // or false if we are already processed the whole thing.
-        private bool ScanPreprocessingDirective()
+        bool ScanPreprocessingDirective()
         {
             // check for some NUglify preprocessor comments
             if (CheckCaseInsensitiveSubstring("#GLOBALS"))
@@ -3626,11 +3590,11 @@ namespace NUglify.JavaScript
                 {
                     return ScanIfDirective();
                 }
-                else if (CheckCaseInsensitiveSubstring("#ELSE") && m_ifDirectiveLevel > 0)
+                else if (CheckCaseInsensitiveSubstring("#ELSE") && ifDirectiveLevel > 0)
                 {
                     return ScanElseDirective();
                 }
-                else if (CheckCaseInsensitiveSubstring("#ENDIF") && m_ifDirectiveLevel > 0)
+                else if (CheckCaseInsensitiveSubstring("#ENDIF") && ifDirectiveLevel > 0)
                 {
                     return ScanEndIfDirective();
                 }
@@ -3647,7 +3611,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool ScanGlobalsDirective()
+        bool ScanGlobalsDirective()
         {
             // found ///#GLOBALS comment
             SkipBlanks();
@@ -3667,7 +3631,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool ScanSourceDirective()
+        bool ScanSourceDirective()
         {
             // found ///#SOURCE or /*/#SOURCE */ comment
             SkipBlanks();
@@ -3688,16 +3652,16 @@ namespace NUglify.JavaScript
 
                     // the path should be the last part of the line.
                     // skip to the end and then use the part between.
-                    var ndxStart = m_currentPosition;
+                    var ndxStart = currentPosition;
                     SkipToEndOfLineOrComment();
-                    if (m_currentPosition > ndxStart)
+                    if (currentPosition > ndxStart)
                     {
                         // there is a non-blank source token.
                         // so we have the line and the column and the source.
                         // use them. change the file context
-                        var newModule = m_strSourceCode.Substring(ndxStart, m_currentPosition - ndxStart).TrimEnd();
+                        var newModule = sourceCode.Substring(ndxStart, currentPosition - ndxStart).TrimEnd();
 
-                        if (m_inMultipleLineComment)
+                        if (inMultipleLineComment)
                         {
                             // for a multi-line comment, we want to read the rest of the comment.
                             // this will leave us right after the */
@@ -3711,20 +3675,20 @@ namespace NUglify.JavaScript
                         SkipOneLineTerminator();
 
                         // fire the event
-                        m_currentToken.ChangeFileContext(newModule);
+                        CurrentToken.ChangeFileContext(newModule);
 
                         // adjust the line number
-                        this.m_currentLine = linePos;
+                        this.CurrentLine = linePos;
 
                         // the start line position is the current position less the column position.
                         // and because the column position in the comment is one-based, add one to get 
                         // back to zero-based: current - (col - 1)
-                        this.m_startLinePosition = m_currentPosition - colPos + 1;
+                        this.StartLinePosition = currentPosition - colPos + 1;
 
                         // the source offset for both start and end is now the current position.
                         // this is assuming that a single token doesn't span across source files, which isn't
                         // entirely true, since a string literal or multi-line comment (for example) may do just that.
-                        this.m_currentToken.SourceOffsetStart = this.m_currentToken.SourceOffsetEnd = m_currentPosition;
+                        this.CurrentToken.SourceOffsetStart = this.CurrentToken.SourceOffsetEnd = currentPosition;
 
                         // alert anyone (the parser) that we encountered the start of a new module
                         OnNewModule(newModule);
@@ -3740,7 +3704,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool ScanIfDirective()
+        bool ScanIfDirective()
         {
             // we know we start with #IF -- see if it's #IFDEF or #IFNDEF
             var isIfDef = CheckCaseInsensitiveSubstring("DEF");
@@ -3757,11 +3721,11 @@ namespace NUglify.JavaScript
                 if (!string.IsNullOrEmpty(identifier))
                 {
                     // set a state so that if we hit an #ELSE directive, we skip to #ENDIF
-                    ++m_ifDirectiveLevel;
+                    ++ifDirectiveLevel;
 
                     // if there is a dictionary AND the identifier is in it, then the identifier IS defined.
                     // if there is not dictionary OR the identifier is NOT in it, then it is NOT defined.
-                    var isDefined = (m_defines != null && m_defines.ContainsKey(identifier));
+                    var isDefined = (defines != null && defines.ContainsKey(identifier));
 
                     // skip any blanks
                     SkipBlanks();
@@ -3785,7 +3749,7 @@ namespace NUglify.JavaScript
                             if (PPSkipToDirective("#ENDIF", "#ELSE") == 0)
                             {
                                 // encountered the #ENDIF directive, so we know to reset the flag
-                                --m_ifDirectiveLevel;
+                                --ifDirectiveLevel;
                             }
                         }
                     }
@@ -3801,7 +3765,7 @@ namespace NUglify.JavaScript
 
                             // save the current index -- this is either a non-whitespace character or the EOL.
                             // if it wasn't the EOL, skip to it now
-                            var ndxStart = m_currentPosition;
+                            var ndxStart = currentPosition;
                             if (!IsAtEndOfLine)
                             {
                                 SkipToEndOfLineOrComment();
@@ -3809,11 +3773,11 @@ namespace NUglify.JavaScript
 
                             // the value to compare against is the substring between the start and the current.
                             // (and could be empty)
-                            var compareTo = m_strSourceCode.Substring(ndxStart, m_currentPosition - ndxStart);
+                            var compareTo = sourceCode.Substring(ndxStart, currentPosition - ndxStart);
 
                             // now do the comparison and see if it's true. If the identifier isn't even defined, then
                             // the condition is false.
-                            var conditionIsTrue = isDefined && operation(m_defines[identifier], compareTo.TrimEnd());
+                            var conditionIsTrue = isDefined && operation(defines[identifier], compareTo.TrimEnd());
 
                             // if the condition is true, we just keep processing and when we hit the #END we're done,
                             // or if we hit an #ELSE we skip to the #END. But if we are not true, we need to skip to
@@ -3826,7 +3790,7 @@ namespace NUglify.JavaScript
                                 if (PPSkipToDirective("#ENDIF", "#ELSE") == 0)
                                 {
                                     // encountered the #ENDIF directive, so we know to reset the flag
-                                    --m_ifDirectiveLevel;
+                                    --ifDirectiveLevel;
                                 }
                             }
                         }
@@ -3837,7 +3801,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private Func<string,string,bool> CheckForOperator(SortedDictionary<string, Func<string,string,bool>> operators)
+        Func<string,string,bool> CheckForOperator(SortedDictionary<string, Func<string,string,bool>> operators)
         {
             // we need to make SURE we are checking the longer strings before we check the
             // shorter strings, because if the source is === and we check for ==, we'll pop positive
@@ -3855,24 +3819,24 @@ namespace NUglify.JavaScript
             return null;
         }
 
-        private bool ScanElseDirective()
+        bool ScanElseDirective()
         {
             // reset the state that says we were in an #IFDEF construct
-            --m_ifDirectiveLevel;
+            --ifDirectiveLevel;
 
             // ...then we now want to skip until the #ENDIF directive
             PPSkipToDirective("#ENDIF");
             return true;
         }
 
-        private bool ScanEndIfDirective()
+        bool ScanEndIfDirective()
         {
             // reset the state that says we were in an #IFDEF construct
-            --m_ifDirectiveLevel;
+            --ifDirectiveLevel;
             return true;
         }
 
-        private bool ScanDefineDirective()
+        bool ScanDefineDirective()
         {
             // skip past the token and any blanks
             SkipBlanks();
@@ -3887,29 +3851,29 @@ namespace NUglify.JavaScript
                     // see if we're assigning a value
                     string value = string.Empty;
                     SkipBlanks();
-                    if (GetChar(m_currentPosition) == '=')
+                    if (GetChar(currentPosition) == '=')
                     {
                         // we are! get the rest of the line as the trimmed string
-                        var ndxStart = ++m_currentPosition;
+                        var ndxStart = ++currentPosition;
                         SkipToEndOfLineOrComment();
-                        value = m_strSourceCode.Substring(ndxStart, m_currentPosition - ndxStart).Trim();
+                        value = sourceCode.Substring(ndxStart, currentPosition - ndxStart).Trim();
                     }
 
                     // if there is no dictionary of defines yet, create one now
-                    if (m_defines == null)
+                    if (defines == null)
                     {
-                        m_defines = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                        defines = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                     }
 
                     // if the identifier is not already in the dictionary, add it now
-                    if (!m_defines.ContainsKey(identifier))
+                    if (!defines.ContainsKey(identifier))
                     {
-                        m_defines.Add(identifier, value);
+                        defines.Add(identifier, value);
                     }
                     else
                     {
                         // it already exists -- just set the value
-                        m_defines[identifier] = value;
+                        defines[identifier] = value;
                     }
                 }
             }
@@ -3917,7 +3881,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool ScanUndefineDirective()
+        bool ScanUndefineDirective()
         {
             // skip past the token and any blanks
             SkipBlanks();
@@ -3932,10 +3896,10 @@ namespace NUglify.JavaScript
                 // identifier is in that dictionary...
                 if (!string.IsNullOrEmpty(identifier))
                 {
-                    if (m_defines != null && m_defines.ContainsKey(identifier))
+                    if (defines != null && defines.ContainsKey(identifier))
                     {
                         // remove the identifier from the "defines" dictionary
-                        m_defines.Remove(identifier);
+                        defines.Remove(identifier);
                     }
                 }
             }
@@ -3943,15 +3907,15 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool ScanDebugDirective()
+        bool ScanDebugDirective()
         {
             // advance to the next character. If it's an equal sign, then this
             // debug comment is setting a debug namespace, not marking debug code.
-            if (GetChar(m_currentPosition) == '=')
+            if (GetChar(currentPosition) == '=')
             {
                 // we have ///#DEBUG=
                 // get the namespace after the equal sign
-                ++m_currentPosition;
+                ++currentPosition;
                 var identifier = PPScanIdentifier(false);
                 if (identifier == null)
                 {
@@ -3965,9 +3929,9 @@ namespace NUglify.JavaScript
                     OnGlobalDefine(identifier);
 
                     // see if we have a period and keep looping to get IDENT(.IDENT)*
-                    while (GetChar(m_currentPosition) == '.')
+                    while (GetChar(currentPosition) == '.')
                     {
-                        ++m_currentPosition;
+                        ++currentPosition;
                         var nextIdentifier = PPScanIdentifier(false);
                         if (nextIdentifier != null)
                         {
@@ -3988,7 +3952,7 @@ namespace NUglify.JavaScript
                     }
                 }
             }
-            else if (StripDebugCommentBlocks && (m_defines == null || !m_defines.ContainsKey("DEBUG")))
+            else if (StripDebugCommentBlocks && (defines == null || !defines.ContainsKey("DEBUG")))
             {
                 // NOT a debug namespace assignment comment, so this is the start
                 // of a debug block. If we are skipping debug blocks (the DEBUG name
@@ -4004,19 +3968,19 @@ namespace NUglify.JavaScript
 
         #region private error methods
 
-        private void HandleError(JSError error)
+        void HandleError(JSError error)
         {
-            m_currentToken.EndPosition = m_currentPosition;
-            m_currentToken.EndLinePosition = m_startLinePosition;
-            m_currentToken.EndLineNumber = m_currentLine;
+            CurrentToken.EndPosition = currentPosition;
+            CurrentToken.EndLinePosition = StartLinePosition;
+            CurrentToken.EndLineNumber = CurrentLine;
 
             if (!this.SuppressErrors)
             {
-                m_currentToken.HandleError(error);
+                CurrentToken.HandleError(error);
             }
         }
 
-        private JSToken IllegalCharacter()
+        JSToken IllegalCharacter()
         {
             HandleError(JSError.IllegalChar);
             return JSToken.Error;
@@ -4055,10 +4019,10 @@ namespace NUglify.JavaScript
 
         public static OperatorPrecedence GetOperatorPrecedence(SourceContext op)
         {
-            return op == null || op.Token == JSToken.None ? OperatorPrecedence.None : JSScanner.s_OperatorsPrec[op.Token - JSToken.FirstBinaryOperator];
+            return op == null || op.Token == JSToken.None ? OperatorPrecedence.None : JSScanner.operatorsPrec[op.Token - JSToken.FirstBinaryOperator];
         }
 
-        private static bool[] InitializeValidIdentifierPartMap()
+        static bool[] InitializeValidIdentifierPartMap()
         {
             var validityMap = new bool[256];
             for (var ansiValue = 0; ansiValue < 256; ansiValue++)
@@ -4069,7 +4033,7 @@ namespace NUglify.JavaScript
             return validityMap;
         }
 
-        private static OperatorPrecedence[] InitOperatorsPrec()
+        static OperatorPrecedence[] InitOperatorsPrec()
         {
             OperatorPrecedence[] operatorsPrec = new OperatorPrecedence[JSToken.LastOperator - JSToken.FirstBinaryOperator + 1];
 
@@ -4137,9 +4101,9 @@ namespace NUglify.JavaScript
         /// until the scanner actually encounters syntax that needs it.
         /// The keys are sorted by length, decreasing (longest operators first).
         /// </summary>
-        private sealed class PPOperators : SortedDictionary<string, Func<string, string, bool>>
+        sealed class PPOperators : SortedDictionary<string, Func<string, string, bool>>
         {
-            private PPOperators()
+	        PPOperators()
                 : base(new LengthComparer())
             {
                 // add the operator information
@@ -4163,7 +4127,7 @@ namespace NUglify.JavaScript
                 }
             }
 
-            private static class Nested
+            static class Nested
             {
                 internal static readonly PPOperators Instance = new PPOperators();
             }
@@ -4176,7 +4140,7 @@ namespace NUglify.JavaScript
             /// Sorting class for the sorted dictionary base to make sure the operators are
             /// enumerated with the LONGEST strings first, before the shorter strings.
             /// </summary>
-            private class LengthComparer : IComparer<string>
+            class LengthComparer : IComparer<string>
             {
                 public int Compare(string x, string y)
                 {
@@ -4189,21 +4153,21 @@ namespace NUglify.JavaScript
 
             #region condition execution methods
 
-            private static bool PPIsStrictEqual(string left, string right)
+            static bool PPIsStrictEqual(string left, string right)
             {
                 // strict comparison is only a string compare -- no conversion to float if
                 // the string comparison fails.
                 return string.Compare(left, right, StringComparison.OrdinalIgnoreCase) == 0;
             }
 
-            private static bool PPIsNotStrictEqual(string left, string right)
+            static bool PPIsNotStrictEqual(string left, string right)
             {
                 // strict comparison is only a string compare -- no conversion to float if
                 // the string comparison fails.
                 return string.Compare(left, right, StringComparison.OrdinalIgnoreCase) != 0;
             }
 
-            private static bool PPIsEqual(string left, string right)
+            static bool PPIsEqual(string left, string right)
             {
                 // first see if a string compare works
                 var isTrue = string.Compare(left, right, StringComparison.OrdinalIgnoreCase) == 0;
@@ -4222,7 +4186,7 @@ namespace NUglify.JavaScript
                 return isTrue;
             }
 
-            private static bool PPIsNotEqual(string left, string right)
+            static bool PPIsNotEqual(string left, string right)
             {
                 // first see if a string compare works
                 var isTrue = string.Compare(left, right, StringComparison.OrdinalIgnoreCase) != 0;
@@ -4241,7 +4205,7 @@ namespace NUglify.JavaScript
                 return isTrue;
             }
 
-            private static bool PPIsLessThan(string left, string right)
+            static bool PPIsLessThan(string left, string right)
             {
                 // only numeric comparisons
                 bool isTrue = false;
@@ -4255,7 +4219,7 @@ namespace NUglify.JavaScript
                 return isTrue;
             }
 
-            private static bool PPIsGreaterThan(string left, string right)
+            static bool PPIsGreaterThan(string left, string right)
             {
                 // only numeric comparisons
                 bool isTrue = false;
@@ -4269,7 +4233,7 @@ namespace NUglify.JavaScript
                 return isTrue;
             }
 
-            private static bool PPIsLessThanOrEqual(string left, string right)
+            static bool PPIsLessThanOrEqual(string left, string right)
             {
                 // only numeric comparisons
                 bool isTrue = false;
@@ -4283,7 +4247,7 @@ namespace NUglify.JavaScript
                 return isTrue;
             }
 
-            private static bool PPIsGreaterThanOrEqual(string left, string right)
+            static bool PPIsGreaterThanOrEqual(string left, string right)
             {
                 // only numeric comparisons
                 bool isTrue = false;
@@ -4309,7 +4273,7 @@ namespace NUglify.JavaScript
             /// <param name="leftNumeric">first string converted to double</param>
             /// <param name="rightNumeric">second string converted to double</param>
             /// <returns>true if the conversion was successful; false otherwise</returns>
-            private static bool ConvertToNumeric(string left, string right, out double leftNumeric, out double rightNumeric)
+            static bool ConvertToNumeric(string left, string right, out double leftNumeric, out double rightNumeric)
             {
                 rightNumeric = default(double);
                 return double.TryParse(left, NumberStyles.Any, CultureInfo.InvariantCulture, out leftNumeric)

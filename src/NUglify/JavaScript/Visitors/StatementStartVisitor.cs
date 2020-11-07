@@ -32,7 +32,7 @@ namespace NUglify.JavaScript.Visitors
         /// This is the flag that we are going to return to indicate whether or not
         /// the statement start is safe (true) or requires parens (false)
         /// </summary>
-        private bool m_isSafe;
+        bool m_isSafe;
 
         #endregion
 

@@ -20,9 +20,9 @@ namespace NUglify.JavaScript
     /// </summary>
     public class StringList
     {
-        private string[] m_strings;
+	    string[] m_strings;
 
-        private void Add(StringList source, ref int pos)
+	    void Add(StringList source, ref int pos)
         {
             for (var i = 0; i < source.m_strings.Length; i ++)
             {

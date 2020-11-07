@@ -22,7 +22,7 @@ namespace NUglify.JavaScript.Syntax
 
     public sealed class DoWhileStatement : IterationStatement
     {
-        private AstNode m_condition;
+	    AstNode m_condition;
 
         public AstNode Condition 
         {

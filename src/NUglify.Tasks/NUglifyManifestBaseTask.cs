@@ -120,7 +120,7 @@ namespace NUglify
 
         #region manifest processing
 
-        private void ProcessManifest(ITaskItem taskItem, UglifyCommandParser projectDefaultSettings)
+        void ProcessManifest(ITaskItem taskItem, UglifyCommandParser projectDefaultSettings)
         {
             // save the manifest folder - paths within the manifest will be relative to it
             // if there are no InputFolder or OutputFolder values
@@ -206,7 +206,7 @@ namespace NUglify
 
         protected abstract void GenerateStyleSheet(OutputGroup outputGroup, IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding outputEncoding);
 
-        private void GenerateOutputFiles(OutputGroup outputGroup, FileInfo outputFileInfo, UglifyCommandParser uglifyCommandParser)
+        void GenerateOutputFiles(OutputGroup outputGroup, FileInfo outputFileInfo, UglifyCommandParser uglifyCommandParser)
         {
             // create combined input source
             var inputGroups = outputGroup.ReadInputGroups(uglifyCommandParser.EncodingInputName);
@@ -255,7 +255,7 @@ namespace NUglify
         /// <param name="outputFileInfo">FileInfo for the desired output file</param>
         /// <param name="symbolsFileInfo">FileInfo for the optional desired symbol file</param>
         /// <param name="manifestModifiedTime">modified time for the manifest</param>
-        private bool AnyInputsAreNewerThanOutputs(OutputGroup outputGroup, FileInfo outputFileInfo, FileInfo symbolsFileInfo, DateTime manifestModifiedTime)
+        bool AnyInputsAreNewerThanOutputs(OutputGroup outputGroup, FileInfo outputFileInfo, FileInfo symbolsFileInfo, DateTime manifestModifiedTime)
         {
             // build the output files
             var processGroup = false;
@@ -457,7 +457,7 @@ namespace NUglify
             return switchParser;
         }
 
-        private static bool CheckFolderInputFileTimes(DirectoryInfo folderInfo, string extensions, DateTime outputFileTime)
+        static bool CheckFolderInputFileTimes(DirectoryInfo folderInfo, string extensions, DateTime outputFileTime)
         {
             // get all the files in this folder
             foreach (var fileInfo in folderInfo.GetFiles())
@@ -490,7 +490,7 @@ namespace NUglify
             return false;
         }
 
-        private static string ExtensionsFromCodeType(CodeType codeType)
+        static string ExtensionsFromCodeType(CodeType codeType)
         {
             // list of extensions ends in a period so we can search for .ext. and be sure
             // to not get any substrings. For instance, if we just has ".css" and searched

@@ -18,10 +18,10 @@ namespace NUglify.JavaScript.Visitors
 {
     public class ReferencesVisitor : TreeVisitor
     {
-        private bool m_hasReference;
-        private LookupExpression m_lookup;
+	    bool m_hasReference;
+	    LookupExpression m_lookup;
 
-        private ReferencesVisitor(LookupExpression lookup)
+	    ReferencesVisitor(LookupExpression lookup)
         {
             m_lookup = lookup;
         }

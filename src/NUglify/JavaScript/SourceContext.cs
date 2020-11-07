@@ -89,7 +89,7 @@ namespace NUglify.JavaScript
             }
         }
 
-        private string ErrorSegment
+        string ErrorSegment
         {
             get
             {
@@ -418,7 +418,7 @@ namespace NUglify.JavaScript
         /// </summary>
         /// <param name="errorCode">error code</param>
         /// <returns>severity</returns>
-        private static int GetSeverity(JSError errorCode)
+        static int GetSeverity(JSError errorCode)
         {
             switch (errorCode)
             {

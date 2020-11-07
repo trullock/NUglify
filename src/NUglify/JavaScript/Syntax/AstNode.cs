@@ -20,7 +20,7 @@ using NUglify.JavaScript.Visitors;
 
 namespace NUglify.JavaScript.Syntax
 {
-    internal enum EncloseBlockType
+	enum EncloseBlockType
     {
         IfWithoutElse,
         SingleDoWhile
@@ -32,9 +32,9 @@ namespace NUglify.JavaScript.Syntax
     public abstract class AstNode
     {
         // this is used in the child enumeration for nodes that don't have any children
-        private static readonly IEnumerable<AstNode> s_emptyChildrenCollection = new AstNode[0];
+        static readonly IEnumerable<AstNode> s_emptyChildrenCollection = new AstNode[0];
 
-        private ActivationObject m_enclosingScope;
+        ActivationObject m_enclosingScope;
 
         /// <summary>
         /// Gets or sets the parent node of this node in the abstract syntax tree

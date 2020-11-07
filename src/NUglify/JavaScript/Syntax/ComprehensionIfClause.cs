@@ -21,7 +21,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public class ComprehensionIfClause : ComprehensionClause
     {
-        private AstNode m_condition;
+	    AstNode m_condition;
 
         public AstNode Condition
         {

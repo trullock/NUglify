@@ -33,11 +33,11 @@ namespace NUglify
     /// </summary>
     public sealed class Uglify
     {
-        private static readonly HtmlSettings DefaultSettings = new HtmlSettings();
+	    static readonly HtmlSettings DefaultSettings = new HtmlSettings();
 
         // Don't use static class, as we don't expect to using static as the method names are already short (Js, Css)
 
-        private Uglify()
+        Uglify()
         {
         }
 

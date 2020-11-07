@@ -27,8 +27,8 @@ namespace NUglify
 {
     public sealed class XmlScopeReport : IScopeReport
     {
-        private XmlWriter m_writer;
-        private bool m_useReferenceCounts;
+	    XmlWriter m_writer;
+	    bool m_useReferenceCounts;
 
         #region IScopeReport Members
 
@@ -104,7 +104,7 @@ namespace NUglify
         #region private methods
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification = "lower-case by design")]
-        private void ProcessScope(ActivationObject scope)
+        void ProcessScope(ActivationObject scope)
         {
             switch (scope.ScopeType)
             {
@@ -300,7 +300,7 @@ namespace NUglify
             m_writer.WriteEndElement();
         }
 
-        private void ProcessFields(ActivationObject scope)
+        void ProcessFields(ActivationObject scope)
         {
             // split fields into defined and referenced lists
             var definedFields = new List<JSVariableField>();
@@ -392,7 +392,7 @@ namespace NUglify
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification="lower-case by design")]
-        private void ProcessField(JSVariableField field, bool isDefined)
+        void ProcessField(JSVariableField field, bool isDefined)
         {
             // save THIS field's refcount value because we will
             // be adjusting hte field pointer to be the outermost field
@@ -498,7 +498,7 @@ namespace NUglify
 
         #endregion
 
-        private void OutputContextPosition(SourceContext context)
+        void OutputContextPosition(SourceContext context)
         {
             if (context != null)
             {

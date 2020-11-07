@@ -32,12 +32,12 @@ namespace NUglify.JavaScript.Syntax
         // will also capture a sign if it's present. Strictly speaking, that's not allowed
         // here, but some browsers (Firefox, Opera, Chrome) will parse it. IE and Safari
         // will not. So if we match that sign, we are in a cross-browser gray area.
-        private static Regex s_hexNumberFormat = new Regex(
+        static Regex s_hexNumberFormat = new Regex(
             @"^\s*(?<sign>[-+])?0X(?<hex>[0-9a-f]+)\s*$",
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         // used to detect possible ASP.NET substitutions in a string
-        private static Regex s_aspNetSubstitution = new Regex(
+        static Regex s_aspNetSubstitution = new Regex(
             @"\<%.*%\>",
             RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
@@ -175,7 +175,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private static void AddEscape(string unescapedRun, string escapedText, ref StringBuilder sb)
+        static void AddEscape(string unescapedRun, string escapedText, ref StringBuilder sb)
         {
             // if we haven't yet created the string builder, do it now
             if (sb == null)
@@ -350,7 +350,7 @@ namespace NUglify.JavaScript.Syntax
             return delimiter + escapedString + delimiter;
         }
 
-        private static bool OkayToDoubleQuote(string text)
+        static bool OkayToDoubleQuote(string text)
         {
             int numberOfQuotes = 0;
             int numberOfApostrophes = 0;
@@ -706,7 +706,7 @@ namespace NUglify.JavaScript.Syntax
             return Value.ToString();
         }
 
-        private static bool IsOnlyDecimalDigits(string text)
+        static bool IsOnlyDecimalDigits(string text)
         {
             // if text is null, return false. 
             // Otherwise return true if ALL the characters are decimal digits, 

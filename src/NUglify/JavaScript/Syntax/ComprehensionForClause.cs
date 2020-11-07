@@ -21,8 +21,8 @@ namespace NUglify.JavaScript.Syntax
 {
     public class ComprehensionForClause : ComprehensionClause
     {
-        private AstNode m_binding;
-        private AstNode m_expression;
+	    AstNode m_binding;
+	    AstNode m_expression;
 
         public AstNode Binding
         {

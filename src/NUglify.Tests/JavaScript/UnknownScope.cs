@@ -29,7 +29,7 @@ namespace NUglify.Tests.JavaScript
         {
         }
 
-        private TestContext testContextInstance;
+        TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides

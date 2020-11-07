@@ -89,7 +89,7 @@ namespace NUglify.Html
 			return tagDesc;
 		}
 
-        private static readonly Dictionary<string, HtmlTagDescriptor> TagDescriptors = new Dictionary<string, HtmlTagDescriptor>(StringComparer.OrdinalIgnoreCase)
+        static readonly Dictionary<string, HtmlTagDescriptor> TagDescriptors = new Dictionary<string, HtmlTagDescriptor>(StringComparer.OrdinalIgnoreCase)
         {
             ["a"] = new HtmlTagDescriptor("a", ContentKind.Flow | ContentKind.Phrasing | ContentKind.Interactive | ContentKind.Palpable, null, ContentKind.Phrasing, null, ContentKind.Transparent),
             ["abbr"] = new HtmlTagDescriptor("abbr", ContentKind.Flow | ContentKind.Phrasing | ContentKind.Palpable, null, ContentKind.Phrasing, null, ContentKind.Phrasing),
@@ -209,7 +209,7 @@ namespace NUglify.Html
             ["wbr"] = new HtmlTagDescriptor("wbr", ContentKind.Flow | ContentKind.Phrasing, null, ContentKind.Phrasing, null, ContentKind.None, TagEndKind.AutoSelfClosing),
         };
 
-        private static readonly Dictionary<string, bool> OpenTagsClosingParagraph = new string[]
+        static readonly Dictionary<string, bool> OpenTagsClosingParagraph = new string[]
         {
             "address",
             "article",
@@ -244,7 +244,7 @@ namespace NUglify.Html
             "li"
         }.ToDictionaryBool(false);
 
-        private static readonly Dictionary<string, bool> ParentTagsClosingParagraph = new string[]
+        static readonly Dictionary<string, bool> ParentTagsClosingParagraph = new string[]
         {
             "a",
             "audio",
@@ -255,7 +255,7 @@ namespace NUglify.Html
             "video"
         }.ToDictionaryBool(false);
 
-        private static bool ParagraphEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool ParagraphEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             // it is a closing nextSibling that will close this parent, so we allow it
             return nextSibling != null
@@ -263,24 +263,24 @@ namespace NUglify.Html
                 : !ParentTagsClosingParagraph.ContainsKey(parent.Parent.Name);
         }
 
-        private static bool ListItemEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool ListItemEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || nextSibling.Name.Equals("li", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool DefinitionDescriptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool DefinitionDescriptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("dt", StringComparison.OrdinalIgnoreCase) 
                 || nextSibling.Name.Equals("dd", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool RubyEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool RubyEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("rt", StringComparison.OrdinalIgnoreCase) 
                 || nextSibling.Name.Equals("rp", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool CanOmitEndTagForCaptionAndColgroup(HtmlElement tag, HtmlElement nextsibling, bool whileParsing)
+        static bool CanOmitEndTagForCaptionAndColgroup(HtmlElement tag, HtmlElement nextsibling, bool whileParsing)
         {
             return nextsibling == null ||
                    (nextsibling.Name.Equals("colgroup", StringComparison.OrdinalIgnoreCase)
@@ -291,71 +291,71 @@ namespace NUglify.Html
 
         }
 
-        private static bool CanOmitEndTagForTFoot(HtmlElement tag, HtmlElement nextsibling, bool whileParsing)
+        static bool CanOmitEndTagForTFoot(HtmlElement tag, HtmlElement nextsibling, bool whileParsing)
         {
             return nextsibling == null ||
                    nextsibling.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool CanOmitIfFollowedByCommentOrSpace(HtmlElement parent, HtmlElement nextSibling)
+        static bool CanOmitIfFollowedByCommentOrSpace(HtmlElement parent, HtmlElement nextSibling)
         {
             return !(parent.FirstChild is HtmlComment || (parent.FirstChild is HtmlText && ((HtmlText)parent.FirstChild).Slice.StartsBySpace()));
         }
 
-        private static bool THeadTBodyTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool THeadTBodyTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase) 
                 || nextSibling.Name.Equals("tfoot", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool TableRowEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool TableRowEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || nextSibling.Name.Equals("tr", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool TDTHTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool TDTHTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("td", StringComparison.OrdinalIgnoreCase) 
                 || nextSibling.Name.Equals("th", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("tr", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool OptGroupEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool OptGroupEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || nextSibling.Name.Equals("optgroup", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool OptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool OptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("optgroup", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("option", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool MenuItemTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool MenuItemTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return nextSibling == null || (nextSibling.Name.Equals("menuitem", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("hr", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("menu", StringComparison.OrdinalIgnoreCase));
         }
 
-        private static bool HtmlStartAndEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool HtmlStartAndEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             return (!whileParsing || nextSibling == null) && !(parent.NextSibling is HtmlComment);
         }
 
-        private static bool HeadStartTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool HeadStartTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             // A head element’s start tag may be omitted if the element is empty, or if the first thing inside the head element is an element. 
             return (!whileParsing || nextSibling == null) && (parent.FirstChild == null || parent.FirstChild is HtmlElement);
         }
 
-        private static bool HeadEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool HeadEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             // A head element’s end tag may be omitted if the head element is not immediately followed by a space character or a comment.
             return (!whileParsing || nextSibling == null) && (parent.NextSibling == null || (parent.FirstChild is HtmlText && !((HtmlText)parent.FirstChild).Slice.IsEmptyOrWhiteSpace()) || !(parent.NextSibling is HtmlComment));
         }
 
-        private static bool BodyStartTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool BodyStartTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             // A body element’s start tag may be omitted if:
             // - the element is empty, 
@@ -374,7 +374,7 @@ namespace NUglify.Html
         }
 
 
-        private static bool BodyEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
+        static bool BodyEndTagOmission(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
             // A body element’s end tag may be omitted if the body element is not immediately followed by a comment.
             return (!whileParsing || nextSibling == null) && !(parent.NextSibling is HtmlComment);

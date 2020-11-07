@@ -14,23 +14,23 @@ namespace NUglify.Html
     /// </summary>
     public class HtmlParser
     {
-        private readonly string text;
-        private readonly StringBuilder tempBuilder;
+	    readonly string text;
+	    readonly StringBuilder tempBuilder;
 
-        private readonly List<HtmlElement> stack;
-        private char c;
-        private int position;
-        private int line;
-        private int column;
-        private bool nextLine;
-        private bool isEof;
-        private readonly string sourceFileName;
-        private SourceLocation startTagLocation;
-        private readonly HtmlSettings settings;
-        private HtmlElement htmlElement;
-        private HtmlElement headElement;
-        private HtmlElement bodyElement;
-        private HtmlDocument rootDocument;
+	    readonly List<HtmlElement> stack;
+	    char c;
+	    int position;
+	    int line;
+	    int column;
+	    bool nextLine;
+	    bool isEof;
+	    readonly string sourceFileName;
+	    SourceLocation startTagLocation;
+	    readonly HtmlSettings settings;
+	    HtmlElement htmlElement;
+	    HtmlElement headElement;
+	    HtmlElement bodyElement;
+	    HtmlDocument rootDocument;
 
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace NUglify.Html
 
         public List<UglifyError> Errors { get; }
 
-        private HtmlElement CurrentParent => stack[stack.Count - 1];
+        HtmlElement CurrentParent => stack[stack.Count - 1];
 
         public HtmlDocument Parse()
         {
@@ -96,7 +96,7 @@ namespace NUglify.Html
             return (HtmlDocument) stack[0];
         }
 
-        private void CheckElements()
+        void CheckElements()
         {
             // Check that html element contains no more than 1 head and 1 body
 
@@ -135,7 +135,7 @@ namespace NUglify.Html
             }
         }
 
-        private void CheckNonEmptyText(HtmlElement element)
+        void CheckNonEmptyText(HtmlElement element)
         {
             foreach (var child in element.Children)
             {
@@ -146,7 +146,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TryProcessTag()
+        void TryProcessTag()
         {
             // Save start tag position
             startTagLocation = GetSourceLocation();
@@ -199,7 +199,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TryProcessDoctype()
+        void TryProcessDoctype()
         {
             // We are noy fully parsing a DOCTYPE so we just expect that 
             // there won't be any ">" inside a double quote string
@@ -242,7 +242,7 @@ namespace NUglify.Html
             AppendText(startTagLocation, position - 1);
         }
 
-        private void TryProcessCDATA()
+        void TryProcessCDATA()
         {
             tempBuilder.Clear();
             if (TryParse("[CDATA[", true, tempBuilder))
@@ -293,7 +293,7 @@ namespace NUglify.Html
             GetTextNode(startTagLocation).Append(text, startTagLocation.Position, position - 1);
         }
 
-        private void TryProcessStartTag()
+        void TryProcessStartTag()
         {
             // https://www.w3.org/TR/html-markup/syntax.html#syntax-elements
             // start tags consist of the following parts, in exactly the following order:
@@ -638,7 +638,7 @@ namespace NUglify.Html
             }
         }
 
-        private bool TryCreateOptionalStart(ref HtmlElement parent, HtmlElement tag)
+        bool TryCreateOptionalStart(ref HtmlElement parent, HtmlElement tag)
         {
             if (settings.IsFragmentOnly)
             {
@@ -733,7 +733,7 @@ namespace NUglify.Html
             return hasNewParent;
         }
 
-        private HtmlElement GetHtmlElement(string tagName)
+        HtmlElement GetHtmlElement(string tagName)
         {
             var descriptor = HtmlTagDescriptor.Find(tagName);
             var tag = new HtmlElement(descriptor?.Name ?? tagName)
@@ -745,7 +745,7 @@ namespace NUglify.Html
             return tag;
         }
 
-        private HtmlElement PushStack(HtmlElement element)
+        HtmlElement PushStack(HtmlElement element)
         {
             if (element == null) throw new ArgumentNullException(nameof(element));
             stack.Add(element);
@@ -766,7 +766,7 @@ namespace NUglify.Html
             return element;
         }
 
-        private void PopStack()
+        void PopStack()
         {
             if (stack.Count == 1)
             {
@@ -834,7 +834,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TryProcessEndTag()
+        void TryProcessEndTag()
         {
             tempBuilder.Clear();
 
@@ -925,7 +925,7 @@ namespace NUglify.Html
             tempBuilder.Clear();
         }
 
-        private void CloseTags(int indexOfOpenTag, SourceLocation span, string parentTag)
+        void CloseTags(int indexOfOpenTag, SourceLocation span, string parentTag)
         {
             // Else we will close all intermediate tag
             for (int i = stack.Count - 1; i >= indexOfOpenTag; i--)
@@ -987,18 +987,18 @@ namespace NUglify.Html
             }
         }
 
-        private void AppendText(char character)
+        void AppendText(char character)
         {
             var textNode = GetTextNode(GetSourceLocation());
             textNode.Append(text, position, character);
         }
 
-        private void AppendText(SourceLocation from, int to)
+        void AppendText(SourceLocation from, int to)
         {
             GetTextNode(from).Append(text, from.Position, to);
         }
 
-        private bool TryParse(string text, bool isCaseSensitive, StringBuilder builderArg)
+        bool TryParse(string text, bool isCaseSensitive, StringBuilder builderArg)
         {
             for (int i = 0; i < text.Length; i++)
             {
@@ -1022,7 +1022,7 @@ namespace NUglify.Html
             return true;
         }
 
-        private HtmlText GetTextNode(SourceLocation from)
+        HtmlText GetTextNode(SourceLocation from)
         {
             var textNode = CurrentParent.LastChild as HtmlText;
             if (textNode == null)
@@ -1033,17 +1033,17 @@ namespace NUglify.Html
             return textNode;
         }
 
-        private SourceLocation GetSourceLocation()
+        SourceLocation GetSourceLocation()
         {
             return new SourceLocation() {Line = line + 1, Column = column + 1, Position = position};
         }
 
-        private void Error(string message)
+        void Error(string message)
         {
             Error(GetSourceLocation(), message);
         }
 
-        private void Error(SourceLocation location, string message)
+        void Error(SourceLocation location, string message)
         {
             Errors.Add(new UglifyError()
             {
@@ -1058,12 +1058,12 @@ namespace NUglify.Html
             HasErrors = true;
         }
 
-        private void Warning(string message)
+        void Warning(string message)
         {
             Warning(GetSourceLocation(), message);
         }
 
-        private void Warning(SourceLocation location, string message)
+        void Warning(SourceLocation location, string message)
         {
             Errors.Add(new UglifyError()
             {
@@ -1077,7 +1077,7 @@ namespace NUglify.Html
             });
         }
 
-        private char NextChar()
+        char NextChar()
         {
             if (isEof)
             {

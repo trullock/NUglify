@@ -66,7 +66,7 @@ namespace NUglify.Html
             }
         }
 
-        private void ProcessNode(HtmlNode node)
+        void ProcessNode(HtmlNode node)
         {
             var element = node as HtmlElement;
             bool isInXml = element?.Descriptor != null && (element.Descriptor.Category & ContentKind.Xml) != 0;
@@ -107,7 +107,7 @@ namespace NUglify.Html
             }
         }
 
-        private void ProcessChildren(HtmlNode node)
+        void ProcessChildren(HtmlNode node)
         {
             foreach (var subNode in node.Children)
             {
@@ -115,7 +115,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimNodeOnStart(HtmlNode node)
+        void TrimNodeOnStart(HtmlNode node)
         {
             var textNode = node as HtmlText;
             if (textNode != null)
@@ -158,7 +158,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimNodeOnEnd(HtmlNode node)
+        void TrimNodeOnEnd(HtmlNode node)
         {
             if (node is HtmlElement)
             {
@@ -166,7 +166,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimNodeOnStart(HtmlText textNode)
+        void TrimNodeOnStart(HtmlText textNode)
         {
             // If we need to decode entities
             if (settings.DecodeEntityCharacters)
@@ -202,7 +202,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimNodeOnEnd(HtmlElement element)
+        void TrimNodeOnEnd(HtmlElement element)
         {
             // If the element is a valid HTML descriptor, we can safely turn-it all lowercase
             if (xmlNamespaceCount == 0)
@@ -256,7 +256,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimPendingTextNodes()
+        void TrimPendingTextNodes()
         {
             if (pendingTagNonCollapsibleWithSpaces == 0)
             {
@@ -500,7 +500,7 @@ namespace NUglify.Html
             return false;
         }
 
-        private static bool IsJavaScript(HtmlElement element)
+        static bool IsJavaScript(HtmlElement element)
         {
             if (!element.Name.Equals("script", StringComparison.OrdinalIgnoreCase))
             {
@@ -509,7 +509,7 @@ namespace NUglify.Html
             return IsAttributeValueJs(element.FindAttribute("type")?.Value);
         }
 
-        private static bool IsCssStyle(HtmlElement element)
+        static bool IsCssStyle(HtmlElement element)
         {
             if (!element.Name.Equals("style", StringComparison.OrdinalIgnoreCase))
             {
@@ -518,12 +518,12 @@ namespace NUglify.Html
             return IsAttributeValueCss(element.FindAttribute("type")?.Value);
         }
 
-        private static bool IsAttributeValueCss(string value)
+        static bool IsAttributeValueCss(string value)
         {
             return string.IsNullOrEmpty(value) || value.Equals("text/css", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool IsUriTypeAttribute(string tag, string attr)
+        static bool IsUriTypeAttribute(string tag, string attr)
         {
             // Code from https://github.com/kangax/html-minifier/blob/gh-pages/src/htmlminifier.js
             return ((tag == "a" || tag == "area" || tag == "base") && attr == "href") ||
@@ -539,7 +539,7 @@ namespace NUglify.Html
                    (tag == "script" && (attr == "src" || attr == "for"));
         }
 
-        private static bool IsAttributeValueJs(string value)
+        static bool IsAttributeValueJs(string value)
         {
             if (string.IsNullOrEmpty(value))
             {

@@ -23,9 +23,9 @@ namespace NUglify.JavaScript.Visitors
     /// </summary>
     public class MatchPropertiesVisitor : IVisitor
     {
-        private string[] m_parts;
-        private bool m_isMatch;
-        private int m_index;
+	    string[] m_parts;
+	    bool m_isMatch;
+	    int m_index;
 
         public MatchPropertiesVisitor()
         {

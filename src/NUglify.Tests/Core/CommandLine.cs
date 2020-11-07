@@ -17,7 +17,7 @@ namespace NUglify.Tests.Core
         {
         }
 
-        private TestContext testContextInstance;
+        TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -191,7 +191,7 @@ namespace NUglify.Tests.Core
             }
         }
 
-        private bool CheckSettings(object actual, object expected)
+        bool CheckSettings(object actual, object expected)
         {
             var success = true;
             var type = actual.GetType();
@@ -244,13 +244,13 @@ namespace NUglify.Tests.Core
             return success;
         }
 
-        private class ArgumentsData
+        class ArgumentsData
         {
             public string CommandLine { get; set; }
             public string[] Arguments { get; set; }
         }
 
-        private class ArgumentsSettings
+        class ArgumentsSettings
         {
             public string CommandLine { get; set; }
             public CodeSettings JSSettings { get; set; }

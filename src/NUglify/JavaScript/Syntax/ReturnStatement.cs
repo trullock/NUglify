@@ -21,7 +21,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class ReturnStatement : Statement
     {
-        private AstNode m_operand;
+	    AstNode m_operand;
         public AstNode Operand
         {
             get { return m_operand; }

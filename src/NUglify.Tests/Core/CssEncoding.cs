@@ -15,11 +15,11 @@ namespace NUglify.Tests.Core
     {
         #region private fields
 
-        private static string s_inputFolder;
+        static string s_inputFolder;
 
-        private static string s_outputFolder;
+        static string s_outputFolder;
 
-        private static string s_expectedFolder;
+        static string s_expectedFolder;
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace NUglify.Tests.Core
         {
         }
 
-        private TestContext testContextInstance;
+        TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -102,7 +102,7 @@ namespace NUglify.Tests.Core
             Assert.AreEqual(0, errors.Count);
         }
 
-        private bool ParseFile(string fileName, Encoding encoding, params CssErrorCode[] expectedErrors)
+        bool ParseFile(string fileName, Encoding encoding, params CssErrorCode[] expectedErrors)
         {
             var failed = false;
             Trace.WriteLine("File: " + fileName);
@@ -199,7 +199,7 @@ namespace NUglify.Tests.Core
             return failed;
         }
 
-        private string ReadFileAsAscii(string path, Encoding encoding)
+        string ReadFileAsAscii(string path, Encoding encoding)
         {
             using (var reader = new StreamReader(path, encoding, false))
             {

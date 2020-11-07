@@ -24,7 +24,7 @@ namespace NUglify.JavaScript.Syntax
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public sealed class AstNodeList : AstNode, IEnumerable<AstNode>
     {
-        private List<AstNode> m_list;
+	    List<AstNode> m_list;
 
         public override SourceContext TerminatingContext
         {

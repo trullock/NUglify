@@ -27,8 +27,8 @@ namespace NUglify.JavaScript.Syntax
     {
         #region private fields
 
-        private bool m_useStrict;//= false;
-        private bool m_isKnownAtCompileTime;
+        bool m_useStrict;//= false;
+        bool m_isKnownAtCompileTime;
 
         #endregion
 
@@ -321,7 +321,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private void DefineField(INameDeclaration nameDecl, AstNode fieldValue)
+        void DefineField(INameDeclaration nameDecl, AstNode fieldValue)
         {
             var field = this[nameDecl.Name];
             if (nameDecl.IsParameter)
@@ -449,7 +449,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private void AnalyzeNonGlobalScope()
+        void AnalyzeNonGlobalScope()
         {
             foreach (var variableField in NameTable.Values)
             {
@@ -478,7 +478,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private void UnreferencedVariableField(JSVariableField variableField)
+        void UnreferencedVariableField(JSVariableField variableField)
         {
             // see if the value is a function
             var functionObject = variableField.FieldValue as FunctionObject;
@@ -492,7 +492,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private void UnreferencedFunction(JSVariableField variableField, FunctionObject functionObject)
+        void UnreferencedFunction(JSVariableField variableField, FunctionObject functionObject)
         {
             // if there is no name, then ignore this declaration because it's malformed.
             // (won't be a function expression because those are automatically referenced).
@@ -534,7 +534,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private void UnreferencedVariable(JSVariableField variableField)
+        void UnreferencedVariable(JSVariableField variableField)
         {
             var throwWarning = true;
 
@@ -608,7 +608,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private static void SingleReferenceVariableField(JSVariableField variableField)
+        static void SingleReferenceVariableField(JSVariableField variableField)
         {
             // local fields that only have one declaration
             if (variableField.Declarations.Count == 1)
@@ -667,7 +667,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private static bool IsIterativeReference(AstNode initializer, INameReference reference)
+        static bool IsIterativeReference(AstNode initializer, INameReference reference)
         {
             // we only care about array and regular expressions with the global switch at this point.
             // if it's not one of those types, then go ahead and assume iterative reference doesn't matter.
@@ -722,7 +722,7 @@ namespace NUglify.JavaScript.Syntax
         /// </summary>
         /// <param name="node">initial node</param>
         /// <returns>first block node in the node tree</returns>
-        private static BlockStatement GetParentBlock(AstNode node)
+        static BlockStatement GetParentBlock(AstNode node)
         {
             while(node != null)
             {
@@ -845,7 +845,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private bool GenerateAvoidList(HashSet<string> table, string name)
+        bool GenerateAvoidList(HashSet<string> table, string name)
         {
             // our reference flag is based on what was passed to us
             bool isReferenced = false;

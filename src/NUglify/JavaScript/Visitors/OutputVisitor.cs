@@ -28,42 +28,42 @@ namespace NUglify.JavaScript.Visitors
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
     public class OutputVisitor : IVisitor
     {
-        private TextWriter m_outputStream;
+	    TextWriter m_outputStream;
 
-        private char m_lastCharacter;
-        private bool m_lastCountOdd;
-        private bool m_onNewLine;
-        private bool m_startOfStatement;
-        private bool m_outputCCOn;
-        private bool m_doneWithGlobalDirectives;
-        private bool m_needsStrictDirective;
-        private bool m_noLineBreaks;
+	    char m_lastCharacter;
+	    bool m_lastCountOdd;
+	    bool m_onNewLine;
+	    bool m_startOfStatement;
+	    bool m_outputCCOn;
+	    bool m_doneWithGlobalDirectives;
+	    bool m_needsStrictDirective;
+	    bool m_noLineBreaks;
 
-        private int m_indentLevel;
-        private int m_lineLength;
-        private int m_lineCount;
+	    int m_indentLevel;
+	    int m_lineLength;
+	    int m_lineCount;
 
         // needed when generating map files
-        private Stack<string> m_functionStack = new Stack<string>();
-        private int m_segmentStartLine;
-        private int m_segmentStartColumn;
+        Stack<string> m_functionStack = new Stack<string>();
+        int m_segmentStartLine;
+        int m_segmentStartColumn;
 
         // if this function is set, before outputting a character will pass it to this
         // function and insert a space if it returns true. Then we reset the function.
-        private Func<char, bool> m_addSpaceIfTrue;
+        Func<char, bool> m_addSpaceIfTrue;
 
         // normally false; gets set to true if we are in a no-in scenario
         // (in-operator not directly allowed)
-        private bool m_noIn;
+        bool m_noIn;
 
         // shortcut so we don't have to keep checking the count
-        private bool m_hasReplacementTokens;
+        bool m_hasReplacementTokens;
 
-        private CodeSettings m_settings;
+        CodeSettings m_settings;
 
-        private RequiresSeparatorVisitor m_requiresSeparator;
+        RequiresSeparatorVisitor m_requiresSeparator;
 
-        private static string[] s_exponents = { 
+        static string[] s_exponents = { 
             null, 
             null, 
             null, 
@@ -98,10 +98,10 @@ namespace NUglify.JavaScript.Visitors
             "e29"
         };
 
-        private static char[] DecimalOrExponentChars = { '.', 'e', 'E' };
-        private static char[] LineFeedCharacters = { '\n', '\r', '\u2028', '\u2029' };
+        static char[] DecimalOrExponentChars = { '.', 'e', 'E' };
+        static char[] LineFeedCharacters = { '\n', '\r', '\u2028', '\u2029' };
 
-        private OutputVisitor(TextWriter writer, CodeSettings settings)
+        OutputVisitor(TextWriter writer, CodeSettings settings)
         {
             m_outputStream = writer;
             m_settings = settings ?? new CodeSettings();
@@ -1304,7 +1304,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private string ReplaceTokens(string text)
+        string ReplaceTokens(string text)
         {
             // if we have any replacement tokens that we are looking for,
             // then do the replace operation on the string with the function that
@@ -1318,7 +1318,7 @@ namespace NUglify.JavaScript.Visitors
             return text;
         }
 
-        private string GetReplacementToken(Match match)
+        string GetReplacementToken(Match match)
         {
             // see if there's a match for the token
             string replacement;
@@ -1335,7 +1335,7 @@ namespace NUglify.JavaScript.Visitors
             return replacement ?? string.Empty;
         }
 
-        private string GetSyntacticReplacementToken(Match match)
+        string GetSyntacticReplacementToken(Match match)
         {
             // see if there's a match for the token
             string replacement;
@@ -1782,7 +1782,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void OutputFunctionPrefix(FunctionObject node, string functionName)
+        void OutputFunctionPrefix(FunctionObject node, string functionName)
         {
             if (node.FunctionType == FunctionType.Method)
             {
@@ -3030,7 +3030,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void OutputTryBranch(TryStatement node)
+        void OutputTryBranch(TryStatement node)
         {
             Output("try");
             MarkSegment(node, null, node.Context);
@@ -3061,7 +3061,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void OutputCatchBranch(TryStatement node)
+        void OutputCatchBranch(TryStatement node)
         {
             NewLine();
             Output("catch(");
@@ -3094,7 +3094,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void OutputFinallyBranch(TryStatement node)
+        void OutputFinallyBranch(TryStatement node)
         {
             NewLine();
             Output("finally");
@@ -3370,7 +3370,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region output methods
 
-        private void Output(string text)
+        void Output(string text)
         {
             if (!string.IsNullOrEmpty(text))
             {
@@ -3394,7 +3394,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void Output(char ch)
+        void Output(char ch)
         {
             // insert a space if needed, then the character
             InsertSpaceIfNeeded(ch);
@@ -3413,7 +3413,7 @@ namespace NUglify.JavaScript.Visitors
             SetLastCharState(ch);
         }
 
-        private void OutputSpaceOrLineBreak()
+        void OutputSpaceOrLineBreak()
         {
             if (m_noLineBreaks)
             {
@@ -3429,7 +3429,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void InsertSpaceIfNeeded(char ch)
+        void InsertSpaceIfNeeded(char ch)
         {
             // shortcut a space character -- we never need a space before a space!
             if (ch != ' ')
@@ -3464,7 +3464,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void InsertSpaceIfNeeded(string text)
+        void InsertSpaceIfNeeded(string text)
         {
             // if the current character is a + or - and the last character was the same....
             var ch = text[0];
@@ -3498,7 +3498,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void SetLastCharState(char ch)
+        void SetLastCharState(char ch)
         {
             // if it's a + or a -, we need to adjust the odd state
             if (ch == '+' || ch == '-')
@@ -3526,7 +3526,7 @@ namespace NUglify.JavaScript.Visitors
             m_lastCharacter = ch;
         }
 
-        private void SetLastCharState(char lastChar, string text)
+        void SetLastCharState(char lastChar, string text)
         {
             if (lastChar == '+' || lastChar == '-')
             {
@@ -3571,17 +3571,17 @@ namespace NUglify.JavaScript.Visitors
             m_lastCharacter = lastChar;
         }
 
-        private void Indent()
+        void Indent()
         {
             ++m_indentLevel;
         }
 
-        private void Unindent()
+        void Unindent()
         {
             --m_indentLevel;
         }
 
-        private void OutputPossibleLineBreak(char ch)
+        void OutputPossibleLineBreak(char ch)
         {
             if (ch == ' ')
             {
@@ -3614,7 +3614,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private bool ReplaceableSemicolon()
+        bool ReplaceableSemicolon()
         {
             var outputSemicolon = false;
 
@@ -3641,7 +3641,7 @@ namespace NUglify.JavaScript.Visitors
             return outputSemicolon;
         }
 
-        private void BreakLine(bool forceBreak)
+        void BreakLine(bool forceBreak)
         {
             if (!m_onNewLine && (forceBreak || m_lineLength >= m_settings.LineBreakThreshold))
             {
@@ -3665,7 +3665,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void NewLine()
+        void NewLine()
         {
             if (m_settings.OutputMode == OutputMode.MultipleLines && !m_onNewLine)
             {
@@ -3702,7 +3702,7 @@ namespace NUglify.JavaScript.Visitors
         // write a text string to the output stream, optionally expanding any single characters
         // to \uXXXX format if outside the ASCII range. Return the actual number of characters written
         // after any expansion.
-        private int WriteToStream(string text)
+        int WriteToStream(string text)
         {
             // if we always want to encode non-ascii characters, then we need
             // to look at each one and see if we need to encode anything!
@@ -3763,7 +3763,7 @@ namespace NUglify.JavaScript.Visitors
 
         // write a single character to the stream, optionally expanding it to a \uXXXX sequence
         // if needed. Return the number of characters sent to the stream (1 or 6)
-        private int WriteToStream(char ch)
+        int WriteToStream(char ch)
         {
             if (m_settings.AlwaysEscapeNonAscii && ch > '\u007f')
             {
@@ -3849,7 +3849,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region Helper methods
 
-        private void AcceptNodeWithParens(AstNode node, bool needsParens)
+        void AcceptNodeWithParens(AstNode node, bool needsParens)
         {
             // if we need parentheses, add the opening
             if (needsParens)
@@ -3876,7 +3876,7 @@ namespace NUglify.JavaScript.Visitors
             m_startOfStatement = false;
         }
 
-        private static bool shouldWrapArgumentListInParens(FunctionObject node)
+        static bool shouldWrapArgumentListInParens(FunctionObject node)
         {
             // we need to wrap the parens for all function object other than arrow functions,
             // and for arrow functions where there are zero or more than one parameter.
@@ -3901,7 +3901,7 @@ namespace NUglify.JavaScript.Visitors
         /// </summary>
         /// <param name="node"></param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private void OutputFunctionArgsAndBody(FunctionObject node)
+        void OutputFunctionArgsAndBody(FunctionObject node)
         {
             if (node != null)
             {
@@ -4025,7 +4025,7 @@ namespace NUglify.JavaScript.Visitors
         /// and recurses to the Block visitor for mutiple-statement blocks
         /// </summary>
         /// <param name="block">block to output</param>
-        private void OutputBlock(BlockStatement block)
+        void OutputBlock(BlockStatement block)
         {
             if (block != null && block.ForceBraces)
             {
@@ -4064,7 +4064,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void OutputBlockWithBraces(BlockStatement block)
+        void OutputBlockWithBraces(BlockStatement block)
         {
             if (m_settings.BlocksStartOnSameLine == BlockStart.NewLine
                 || (m_settings.BlocksStartOnSameLine == BlockStart.UseSource && block.BraceOnNewLine))
@@ -4079,7 +4079,7 @@ namespace NUglify.JavaScript.Visitors
             block.Accept(this);
         }
 
-        private string InlineSafeString(string text)
+        string InlineSafeString(string text)
         {
             if (m_settings.InlineSafeStrings)
             {
@@ -4226,7 +4226,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static string GetSmallestRep(string number)
+        static string GetSmallestRep(string number)
         {
             var len = number.Length;
 
@@ -4258,7 +4258,7 @@ namespace NUglify.JavaScript.Visitors
             return GetSmallestRepReg(number);
         }
 
-        private static string GetSmallestRepReg(string number)
+        static string GetSmallestRepReg(string number)
         {
             var match = CommonData.DecimalFormat.Match(number);
             if (match.Success)
@@ -4326,7 +4326,7 @@ namespace NUglify.JavaScript.Visitors
             return number;
         }
 
-        private static string NormalOrHexIfSmaller(double doubleValue, string normal)
+        static string NormalOrHexIfSmaller(double doubleValue, string normal)
         {
             // keep track of the maximum number of characters we can have in our
             // hexadecimal number before it'd be longer than the normal version.
@@ -4593,7 +4593,7 @@ namespace NUglify.JavaScript.Visitors
         /// </summary>
         /// <param name="text">string to test</param>
         /// <returns>less than zero use single-quotes, zero or more, use double-quotes</returns>
-        private static int QuoteFactor(string text)
+        static int QuoteFactor(string text)
         {
             // determine the delimiter to use based on the quote factor.
             // a value less than zero means there are more double-quotes than single-quotes,
@@ -4623,7 +4623,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region Map file methods
 
-        private object StartSymbol(AstNode node)
+        object StartSymbol(AstNode node)
         {
             if (m_settings.SymbolsMap != null)
             {
@@ -4633,7 +4633,7 @@ namespace NUglify.JavaScript.Visitors
             return null;
         }
 
-        private void MarkSegment(AstNode node, string name, SourceContext context)
+        void MarkSegment(AstNode node, string name, SourceContext context)
         {
             if (m_settings.SymbolsMap != null && node != null)
             {
@@ -4641,7 +4641,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void EndSymbol(object symbol)
+        void EndSymbol(object symbol)
         {
             if (m_settings.SymbolsMap != null && symbol != null)
             {
@@ -4659,7 +4659,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region context output position methods
 
-        private void SetContextOutputPosition(SourceContext context)
+        void SetContextOutputPosition(SourceContext context)
         {
             if (context != null)
             {
@@ -4669,7 +4669,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void SetContextOutputPosition(SourceContext context, SourceContext fromContext)
+        static void SetContextOutputPosition(SourceContext context, SourceContext fromContext)
         {
             if (context != null && fromContext != null)
             {

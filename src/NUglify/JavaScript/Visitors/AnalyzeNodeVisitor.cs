@@ -27,20 +27,20 @@ using SwitchStatement = NUglify.JavaScript.Syntax.SwitchStatement;
 namespace NUglify.JavaScript.Visitors
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
-    internal class AnalyzeNodeVisitor : TreeVisitor
+    class AnalyzeNodeVisitor : TreeVisitor
     {
-        private JSParser m_parser;
-        private bool m_encounteredCCOn;// = false;
-        private MatchPropertiesVisitor m_matchVisitor;// == null;
-        private Stack<ActivationObject> m_scopeStack;
-        private JSError m_strictNameError = JSError.StrictModeVariableName;
-        private HashSet<string> m_noRename;
-        private bool m_stripDebug;
-        private bool m_lookForDebugNamespaces;
-        private bool m_possibleDebugNamespace;
-        private int m_possibleDebugNamespaceIndex;
-        private List<string[]> m_possibleDebugMatches;
-        private string[][] m_debugNamespaceParts;
+	    JSParser m_parser;
+	    bool m_encounteredCCOn;// = false;
+	    MatchPropertiesVisitor m_matchVisitor;// == null;
+	    Stack<ActivationObject> m_scopeStack;
+	    JSError m_strictNameError = JSError.StrictModeVariableName;
+	    HashSet<string> m_noRename;
+	    bool m_stripDebug;
+	    bool m_lookForDebugNamespaces;
+	    bool m_possibleDebugNamespace;
+	    int m_possibleDebugNamespaceIndex;
+	    List<string[]> m_possibleDebugMatches;
+	    string[][] m_debugNamespaceParts;
 
         public AnalyzeNodeVisitor(JSParser parser)
         {
@@ -220,7 +220,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void CombineExpressions(BlockStatement node)
+        void CombineExpressions(BlockStatement node)
         {
             // walk backwards because we'll be removing items as we go along.
             // and don't bother looking at the first element, because we'll be attempting to combine
@@ -256,7 +256,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void CombineWithPreviousExpression(BlockStatement node, int ndx)
+        void CombineWithPreviousExpression(BlockStatement node, int ndx)
         {
             IfStatement ifNode;
             ForStatement forStatement;
@@ -299,7 +299,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void CombineTwoExpressions(BlockStatement node, int ndx)
+        static void CombineTwoExpressions(BlockStatement node, int ndx)
         {
             var prevBinary = node[ndx - 1] as BinaryExpression;
             var curBinary = node[ndx] as BinaryExpression;
@@ -360,7 +360,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void CombineReturnWithExpression(BlockStatement node, int ndx, ReturnStatement returnNode)
+        static void CombineReturnWithExpression(BlockStatement node, int ndx, ReturnStatement returnNode)
         {
             // see if the return node has an expression operand
             if (returnNode.Operand != null && returnNode.Operand.IsExpression)
@@ -502,7 +502,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void CombineForNodeWithExpression(BlockStatement node, int ndx, ForStatement forStatement)
+        void CombineForNodeWithExpression(BlockStatement node, int ndx, ForStatement forStatement)
         {
             // if we aren't allowing in-operators to be moved into for-statements, then
             // first check to see if that previous expression statement is free of in-operators
@@ -529,7 +529,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void CombineWithPreviousVar(BlockStatement node, int ndx, VarDeclaration previousVar)
+        static void CombineWithPreviousVar(BlockStatement node, int ndx, VarDeclaration previousVar)
         {
             if (previousVar.Count == 0)
             {
@@ -604,7 +604,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static AstNode FindLastStatement(BlockStatement node)
+        static AstNode FindLastStatement(BlockStatement node)
         {
             // start with the last statement in the block and back up over any function declarations
             // or important comments until we get the last statement
@@ -1506,7 +1506,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static bool LabelMatchesParent(string label, AstNode parentNode)
+        static bool LabelMatchesParent(string label, AstNode parentNode)
         {
             var isMatch = false;
 
@@ -1528,7 +1528,7 @@ namespace NUglify.JavaScript.Visitors
             return isMatch;
         }
 
-        private static IfStatement IsIfReturnExpr(AstNode node, out AstNode condition, ref AstNode matchExpression)
+        static IfStatement IsIfReturnExpr(AstNode node, out AstNode condition, ref AstNode matchExpression)
         {
             // set the condition to null initially
             condition = null;
@@ -1560,7 +1560,7 @@ namespace NUglify.JavaScript.Visitors
             return condition != null && matchExpression != null ? ifNode : null;
         }
 
-        private static int PreviousStatementIndex(BlockStatement node, AstNode child)
+        static int PreviousStatementIndex(BlockStatement node, AstNode child)
         {
             // get the index of the statement before the last return
             // (skip over function decls and importand comments)
@@ -2024,7 +2024,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static string ClassElementKeyName(FunctionType funcType, string name)
+        static string ClassElementKeyName(FunctionType funcType, string name)
         {
             switch (funcType)
             {
@@ -2066,7 +2066,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void Optimize(Conditional node)
+        void Optimize(Conditional node)
         {
             // if the condition is debug-only, then replace the condition with the false branch
             if (node.Condition != null && node.Condition.IsDebugOnly)
@@ -2157,7 +2157,7 @@ namespace NUglify.JavaScript.Visitors
             m_encounteredCCOn = true;
         }
 
-        private static bool StringSourceIsNotInlineSafe(string source)
+        static bool StringSourceIsNotInlineSafe(string source)
         {
             var isNotSafe = false;
             if (!string.IsNullOrEmpty(source))
@@ -2656,7 +2656,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static bool CheckParametersAreReferenced(AstNode binding, bool removeIfUnreferenced, bool foundLastReference)
+        static bool CheckParametersAreReferenced(AstNode binding, bool removeIfUnreferenced, bool foundLastReference)
         {
             var isUnreferenced = false;
 
@@ -2712,7 +2712,7 @@ namespace NUglify.JavaScript.Visitors
             return isUnreferenced;
         }
 
-        private static void TrimTrailingElisionsFromArrayBindings(AstNode binding)
+        static void TrimTrailingElisionsFromArrayBindings(AstNode binding)
         {
             ObjectLiteral objectLiteral;
             var arrayBinding = binding as ArrayLiteral;
@@ -2966,7 +2966,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void IfConditionExpressionToExpression(IfStatement ifNode, AstNode expression)
+        void IfConditionExpressionToExpression(IfStatement ifNode, AstNode expression)
         {
             // but first -- which operator to use? if(a)b --> a&&b, and if(!a)b --> a||b
             // so determine which one is smaller: a or !a
@@ -3274,7 +3274,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private bool InitialDebugNameSpaceMatches(string name, bool parentIsMember)
+        bool InitialDebugNameSpaceMatches(string name, bool parentIsMember)
         {
             foreach (var parts in m_debugNamespaceParts)
             {
@@ -3409,7 +3409,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static bool FieldCanBeRenamed(AstNode node)
+        static bool FieldCanBeRenamed(AstNode node)
         {
             var canBeRenamed = false;
             if (node != null)
@@ -3457,7 +3457,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static string GetPropertyType(FunctionObject funcObj)
+        static string GetPropertyType(FunctionObject funcObj)
         {
             // should never be a function declaration....
             switch(funcObj.IfNotNull(f => f.FunctionType))
@@ -3807,7 +3807,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void DoCatchBlock(TryStatement node)
+        void DoCatchBlock(TryStatement node)
         {
             node.CatchBlock.IfNotNull(b => b.Accept(this));
             if (node.CatchParameter != null)
@@ -4241,7 +4241,7 @@ namespace NUglify.JavaScript.Visitors
 
         #endregion
 
-        private static AstNode ClearDebugExpression(AstNode node)
+        static AstNode ClearDebugExpression(AstNode node)
         {
             if (node == null || node is ObjectLiteral || node is ConstantWrapper)
             {
@@ -4254,7 +4254,7 @@ namespace NUglify.JavaScript.Visitors
                 };
         }
 
-        private static string GuessAtName(AstNode node)
+        static string GuessAtName(AstNode node)
         {
             string guess = string.Empty;
             var parent = node.Parent;
@@ -4281,7 +4281,7 @@ namespace NUglify.JavaScript.Visitors
             return guess;
         }
 
-        private static bool AreAssignmentsInVar(BinaryExpression binaryOp, VarDeclaration varStatement)
+        static bool AreAssignmentsInVar(BinaryExpression binaryOp, VarDeclaration varStatement)
         {
             bool areAssignmentsInVar = false;
 
@@ -4312,7 +4312,7 @@ namespace NUglify.JavaScript.Visitors
             return areAssignmentsInVar;
         }
 
-        private static void ConvertAssignmentsToVarDecls(BinaryExpression binaryOp, Declaration declaration, JSParser parser)
+        static void ConvertAssignmentsToVarDecls(BinaryExpression binaryOp, Declaration declaration, JSParser parser)
         {
             // we've already checked that the tree only contains simple assignments separate by commas,
             // but just in case we'll check for null anyway
@@ -4350,7 +4350,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static bool VarDeclExists(VarDeclaration node, int ndx, string name)
+        static bool VarDeclExists(VarDeclaration node, int ndx, string name)
         {
             // only need to look forward from the index passed
             for (; ndx < node.Count; ++ndx)
@@ -4370,7 +4370,7 @@ namespace NUglify.JavaScript.Visitors
             return false;
         }
 
-        private static void DeleteNoInits(VarDeclaration node, int min, string name)
+        static void DeleteNoInits(VarDeclaration node, int min, string name)
         {
             // walk backwards from the end of the list down to (and including) the minimum index
             for (int ndx = node.Count - 1; ndx >= min; --ndx)
@@ -4390,7 +4390,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static UnaryExpression CreateVoidNode(SourceContext context)
+        static UnaryExpression CreateVoidNode(SourceContext context)
         {
             return new UnaryExpression(context.FlattenToStart())
                 {
@@ -4399,7 +4399,7 @@ namespace NUglify.JavaScript.Visitors
                 };
         }
 
-        private static void ValidateIdentifier(bool isStrict, string identifier, SourceContext context, JSError error)
+        static void ValidateIdentifier(bool isStrict, string identifier, SourceContext context, JSError error)
         {
             // check the name of the variable for reserved words that aren't allowed
             if (JSScanner.IsKeyword(identifier, isStrict))
@@ -4415,7 +4415,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static bool IsInsideLoop(AstNode node, bool orSwitch)
+        static bool IsInsideLoop(AstNode node, bool orSwitch)
         {
             // assume we are not
             var insideLoop = false;
@@ -4444,7 +4444,7 @@ namespace NUglify.JavaScript.Visitors
             return insideLoop;
         }
 
-        private static bool IsInsideLabel(AstNode node, string label)
+        static bool IsInsideLabel(AstNode node, string label)
         {
             // assume we are not
             var insideLabel = false;
@@ -4466,7 +4466,7 @@ namespace NUglify.JavaScript.Visitors
             return insideLabel;
         }
 
-        private static AstNode ReplaceCultureValue(ConstantWrapper node)
+        static AstNode ReplaceCultureValue(ConstantWrapper node)
         {
             // get the name of the token.
             var tokenName = node.Value.ToString().Trim('%');
@@ -4539,7 +4539,7 @@ namespace NUglify.JavaScript.Visitors
             return node;
         }
 
-        private static AstNode CreateNodeFromObject(SourceContext context, object item)
+        static AstNode CreateNodeFromObject(SourceContext context, object item)
         {
             if (item == null)
             {

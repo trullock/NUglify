@@ -21,7 +21,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public class ModuleScope : ActivationObject
     {
-        private Dictionary<string, JSVariableField> m_knownExports;
+	    Dictionary<string, JSVariableField> m_knownExports;
 
         /// <summary>
         /// Gets or sets a flag to indicate whether this module exports a default expression

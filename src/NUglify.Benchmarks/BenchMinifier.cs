@@ -13,7 +13,7 @@ namespace NUglify.Benchmarks
 {
     public class BenchMinifier
     {
-        private readonly string html;
+	    readonly string html;
 
         public BenchMinifier()
         {

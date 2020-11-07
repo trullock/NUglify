@@ -26,28 +26,28 @@ namespace NUglify
     {
         #region constants
 
-        private const string ArgumentsElementName = "arguments";
-        private const string OutputElementName = "output";
-        private const string ResourceElementName = "resource";
-        private const string InputElementName = "input";
-        private const string SymbolMapElementName = "symbolMap";
-        private const string RenameElementName = "rename";
-        private const string NoRenameElementName = "norename";
+        const string ArgumentsElementName = "arguments";
+        const string OutputElementName = "output";
+        const string ResourceElementName = "resource";
+        const string InputElementName = "input";
+        const string SymbolMapElementName = "symbolMap";
+        const string RenameElementName = "rename";
+        const string NoRenameElementName = "norename";
 
-        private const string PathAttributeName = "path";
-        private const string EncodingAttributeName = "encoding";
-        private const string EncodingAttributeShortName = "enc";
-        private const string TypeAttributeName = "type";
-        private const string OriginAttributeName = "origin";
-        private const string MapPathAttributeName = "mappath";
-        private const string SourceRootAttributeName = "sourceRoot";
-        private const string SafeAttributeName = "safe";
-        private const string NameAttributeName = "name";
-        private const string OptionalAttributeName = "optional";
-        private const string ConfigAttributeName = "config";
-        private const string FromAttributeName = "from";
-        private const string ToAttributeName = "to";
-        private const string IdentifierAttributeName = "id";
+        const string PathAttributeName = "path";
+        const string EncodingAttributeName = "encoding";
+        const string EncodingAttributeShortName = "enc";
+        const string TypeAttributeName = "type";
+        const string OriginAttributeName = "origin";
+        const string MapPathAttributeName = "mappath";
+        const string SourceRootAttributeName = "sourceRoot";
+        const string SafeAttributeName = "safe";
+        const string NameAttributeName = "name";
+        const string OptionalAttributeName = "optional";
+        const string ConfigAttributeName = "config";
+        const string FromAttributeName = "from";
+        const string ToAttributeName = "to";
+        const string IdentifierAttributeName = "id";
 
         #endregion
 
@@ -96,7 +96,7 @@ namespace NUglify
         #region private read methods
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private static OutputGroup ReadOutputElement(XmlReader reader)
+        static OutputGroup ReadOutputElement(XmlReader reader)
         {
             var outputNode = new OutputGroup();
             while (reader.Read())
@@ -183,7 +183,7 @@ namespace NUglify
             return outputNode;
         }
 
-        private static void ReadRenameElement(XmlReader reader, IDictionary<string, string> renameIdentifiers)
+        static void ReadRenameElement(XmlReader reader, IDictionary<string, string> renameIdentifiers)
         {
             string fromIdentifier = null;
             string toIdentifier = null;
@@ -214,7 +214,7 @@ namespace NUglify
             ((IDisposable)reader).Dispose();
         }
 
-        private static void ReadNoRenameElement(XmlReader reader, ICollection<string> noRenameIdentifiers)
+        static void ReadNoRenameElement(XmlReader reader, ICollection<string> noRenameIdentifiers)
         {
             string identifier = null;
 
@@ -243,7 +243,7 @@ namespace NUglify
             ((IDisposable)reader).Dispose();
         }
 
-        private static SymbolMap ReadSymbolMapElement(XmlReader reader)
+        static SymbolMap ReadSymbolMapElement(XmlReader reader)
         {
             bool flag;
             var symbolMapNode = new SymbolMap();
@@ -286,7 +286,7 @@ namespace NUglify
             return symbolMapNode;
         }
 
-        private static Resource ReadResourceElement(XmlReader reader)
+        static Resource ReadResourceElement(XmlReader reader)
         {
             bool optional;
             var resourceNode = new Resource();
@@ -325,7 +325,7 @@ namespace NUglify
             return resourceNode;
         }
 
-        private static InputFile ReadInputElement(XmlReader reader)
+        static InputFile ReadInputElement(XmlReader reader)
         {
             bool optional;
             var inputNode = new InputFile();
@@ -372,7 +372,7 @@ namespace NUglify
             return inputNode;
         }
 
-        private static void ReadArgumentsElement(XmlReader reader, IDictionary<string, string> configDictionary)
+        static void ReadArgumentsElement(XmlReader reader, IDictionary<string, string> configDictionary)
         {
             while (reader.Read())
             {

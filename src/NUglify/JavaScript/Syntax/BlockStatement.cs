@@ -26,7 +26,7 @@ namespace NUglify.JavaScript.Syntax
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public sealed class BlockStatement : Statement, IEnumerable<AstNode>
     {
-        private List<AstNode> m_list;
+	    List<AstNode> m_list;
 
         /// <summary>
         /// Gets a particular statement in the list of statements making up this block
@@ -363,7 +363,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private void Unconcise()
+        void Unconcise()
         {
             // Instead of implicitly returning the one expression, we're
             // going to need to turn this into a non-concise block and explicitly return

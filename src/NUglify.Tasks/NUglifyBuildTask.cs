@@ -41,22 +41,22 @@ namespace NUglify
         /// <summary>
         /// regular expression used to determine if a source file ends in a semicolon (optionally followed by whitespace)
         /// </summary>
-        private static Regex s_endsInSemicolon = new Regex(@";\s*$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        static Regex s_endsInSemicolon = new Regex(@";\s*$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         /// <summary>
         /// NUglify command-line switch parser
         /// </summary>
-        private UglifyCommandParser uglifyCommandParser;
+        UglifyCommandParser uglifyCommandParser;
 
         /// <summary>
         /// An optional file mapping implementation name
         /// </summary>
-        private string m_symbolsMapName;
+        string m_symbolsMapName;
 
         /// <summary>
         /// A collection of other input files we will use, as specified by swithc parameters
         /// </summary>
-        private ICollection<string> m_otherInputFiles;
+        ICollection<string> m_otherInputFiles;
 
         #endregion
 
@@ -93,10 +93,11 @@ namespace NUglify
                 }
             }
         }
-        private string m_switches = null;
+
+        string m_switches = null;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
-        private void OnUnknownParameter(object sender, UnknownParameterEventArgs ea)
+        void OnUnknownParameter(object sender, UnknownParameterEventArgs ea)
         {
             // we only care about rename, res, and r -- ignore all other switches.
             switch (ea.SwitchPart)
@@ -745,7 +746,7 @@ namespace NUglify
         /// <summary>
         /// Minifies JS files provided by the caller of the build task.
         /// </summary>
-        private void MinifyJavaScript()
+        void MinifyJavaScript()
         {
             // find the most-recent other input file (if any)
             var mostRecentOtherInput = DateTime.MinValue;
@@ -887,7 +888,7 @@ namespace NUglify
         /// <param name="sourceName">name of the source</param>
         /// <param name="outputPath">destination path for resulting minified code</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "disposes in the finally block")]
-        private void MinifyJavaScript(string sourceCode, string sourceName, string outputPath, string mapFilePath)
+        void MinifyJavaScript(string sourceCode, string sourceName, string outputPath, string mapFilePath)
         {
             TextWriter mapWriter = null;
             ISourceMap sourceMap = null;
@@ -989,7 +990,7 @@ namespace NUglify
             }
         }
 
-        private void ConcatenateAndMinifyJavaScript(string mapFilePath)
+        void ConcatenateAndMinifyJavaScript(string mapFilePath)
         {
             // concatenate all the input files together, with each one prefaced by the
             // special #SOURCE comment so the errors and warnings turn out right.
@@ -1025,7 +1026,7 @@ namespace NUglify
         /// <summary>
         /// Minifies CSS files provided by the caller of the build task.
         /// </summary>
-        private void MinifyStyleSheets()
+        void MinifyStyleSheets()
         {
             // find the most-recent other input file (if any)
             var mostRecentOtherInput = DateTime.MinValue;
@@ -1134,7 +1135,7 @@ namespace NUglify
         /// <param name="sourceCode">CSS source to minify</param>
         /// <param name="sourceName">name of hte source entity</param>
         /// <param name="outputPath">output path for the minified results</param>
-        private void MinifyStyleSheet(string sourceCode, string sourceName, string outputPath)
+        void MinifyStyleSheet(string sourceCode, string sourceName, string outputPath)
         {
             try
             {
@@ -1171,7 +1172,7 @@ namespace NUglify
             }
         }
 
-        private void ConcatenateAndMinifyStyleSheet()
+        void ConcatenateAndMinifyStyleSheet()
         {
             // concatenate all the input files together, with each one prefaced by the
             // special #SOURCE comment so the errors and warnings turn out right.
@@ -1195,7 +1196,7 @@ namespace NUglify
         /// <param name="path">path of the input source file</param>
         /// <param name="messageIdentifier">String resource identifier</param>
         /// <param name="messageArguments">any optional formatting arguments</param>
-        private void LogFileError(string path, string message, params object[] messageArguments)
+        void LogFileError(string path, string message, params object[] messageArguments)
         {
             Log.LogError(
                 null,
@@ -1214,7 +1215,7 @@ namespace NUglify
         /// Call this method to log an error using a ContextError object
         /// </summary>
         /// <param name="error">Error to log</param>
-        private void LogContextError(UglifyError error)
+        void LogContextError(UglifyError error)
         {
             // log it either as an error or a warning
             if(TreatWarningsAsErrors || error.Severity < 2)
@@ -1257,7 +1258,7 @@ namespace NUglify
         /// </summary>
         /// <param name="outputPath">output JS file path</param>
         /// <returns>output symbol map path, if the implementation name is valid. Otherwise returns empty string.</returns>
-        private string GetMapFilePath(string outputPath)
+        string GetMapFilePath(string outputPath)
         {
             var symbolMapPath = string.Empty;
             if (!string.IsNullOrWhiteSpace(m_symbolsMapName))
@@ -1287,7 +1288,7 @@ namespace NUglify
         /// </summary>
         /// <param name="path">file path to be written</param>
         /// <returns>true if the file is writable</returns>
-        private bool FileIsWritable(string path)
+        bool FileIsWritable(string path)
         {
             // the file is writable if it doesn't exist, or is NOT marked readonly
             var fileInfo = new FileInfo(path);
@@ -1314,7 +1315,7 @@ namespace NUglify
         /// <typeparam name="T">Type of the enum.</typeparam>
         /// <param name="strValue">Value of the parameter in the string form.</param>
         /// <returns>Parsed enum value</returns>
-        private T ParseEnumValue<T>(string strValue) where T: struct
+        T ParseEnumValue<T>(string strValue) where T: struct
         {
             if (!string.IsNullOrWhiteSpace(strValue))
             {
@@ -1332,7 +1333,7 @@ namespace NUglify
             return default(T);
         }
 
-        private Encoding GetEncoding(string encodingName, EncoderFallback fallbackEncoder)
+        Encoding GetEncoding(string encodingName, EncoderFallback fallbackEncoder)
         {
             try
             {

@@ -21,8 +21,8 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class SwitchStatement : Statement
     {
-        private AstNode m_expression;
-        private AstNodeList m_cases;
+	    AstNode m_expression;
+	    AstNodeList m_cases;
 
         public AstNode Expression
         {

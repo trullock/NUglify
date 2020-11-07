@@ -23,8 +23,8 @@ namespace NUglify.JavaScript.Syntax
 
     public class BinaryExpression : Expression
     {
-        private AstNode m_operand1;
-        private AstNode m_operand2;
+	    AstNode m_operand1;
+	    AstNode m_operand2;
 
         public AstNode Operand1 
         {

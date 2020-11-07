@@ -21,7 +21,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public class ConditionalCompilationComment : AstNode
     {
-        private BlockStatement m_statements;
+	    BlockStatement m_statements;
         public BlockStatement Statements
         {
             get { return m_statements; }

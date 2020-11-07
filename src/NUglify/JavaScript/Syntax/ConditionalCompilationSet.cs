@@ -21,7 +21,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public class ConditionalCompilationSet : ConditionalCompilationStatement
     {
-        private AstNode m_value;
+	    AstNode m_value;
 
         public AstNode Value
         {

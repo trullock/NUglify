@@ -94,7 +94,7 @@ namespace NUglify
 
         #region code processing methods
 
-        private void ProcessJavaScript(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, SymbolMap symbolMap, Encoding outputEncoding)
+        void ProcessJavaScript(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, SymbolMap symbolMap, Encoding outputEncoding)
         {
             var settings = uglifyCommandParser.JSSettings;
             TextWriter mapWriter = null;
@@ -266,7 +266,7 @@ namespace NUglify
             }
         }
 
-        private void ProcessStylesheet(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding encoding)
+        void ProcessStylesheet(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, string outputPath, Encoding encoding)
         {
             var outputBuilder = new StringBuilder(8192);
             foreach (var inputGroup in inputGroups)
@@ -322,7 +322,7 @@ namespace NUglify
         /// Call this method to log an error using a ContextError object
         /// </summary>
         /// <param name="error">Error to log</param>
-        private void LogContextError(UglifyError error)
+        void LogContextError(UglifyError error)
         {
             // log it either as an error or a warning
             if (TreatWarningsAsErrors || error.Severity < 2)

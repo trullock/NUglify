@@ -22,7 +22,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public class UnaryExpression : Expression
     {
-        private AstNode m_operand;
+	    AstNode m_operand;
 
         public AstNode Operand
         {

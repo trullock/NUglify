@@ -24,14 +24,13 @@ namespace NUglify.Helpers
     /// </summary>
     public static class StringBuilderPool
     {
-        [ThreadStatic]
-        private static StringBuilder[] ts_cachedArray;
+        [ThreadStatic] static StringBuilder[] ts_cachedArray;
 
-        private const int CountPerThread = 5;
+        const int CountPerThread = 5;
 
-        private static int s_BuilderCapacity = 8192;
+        static int s_BuilderCapacity = 8192;
 
-        private static StringBuilder[] GetList()
+        static StringBuilder[] GetList()
         {
             var list = ts_cachedArray;
             if (list == null)

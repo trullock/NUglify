@@ -26,8 +26,8 @@ namespace NUglify.JavaScript.Visitors
     /// </summary>
     public class JsonOutputVisitor : IVisitor
     {
-        private TextWriter m_writer;
-        private CodeSettings m_settings;
+	    TextWriter m_writer;
+	    CodeSettings m_settings;
 
         public bool IsValid
         {
@@ -35,7 +35,7 @@ namespace NUglify.JavaScript.Visitors
             private set;
         }
 
-        private JsonOutputVisitor(TextWriter writer, CodeSettings settings)
+        JsonOutputVisitor(TextWriter writer, CodeSettings settings)
         {
             m_writer = writer;
             m_settings = settings;
@@ -695,7 +695,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region string formatting method
 
-        private void OutputString(string text)
+        void OutputString(string text)
         {
             // must be double-quote delimited
             m_writer.Write('"');
@@ -791,7 +791,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static string GetSmallestRep(string number)
+        static string GetSmallestRep(string number)
         {
             var match = CommonData.DecimalFormat.Match(number);
             if (match.Success)
@@ -864,7 +864,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region other helper methods
 
-        private static bool NotJustPrimitives(AstNodeList nodeList)
+        static bool NotJustPrimitives(AstNodeList nodeList)
         {
             // if any node in the list isn't a constant wrapper (boolean, number, string)
             // or a unary (presumably a negative number), then we've got something other than
@@ -884,7 +884,7 @@ namespace NUglify.JavaScript.Visitors
         /// <summary>
         ///  output a new line and setup the proper indent level
         /// </summary>
-        private void NewLine()
+        void NewLine()
         {
             m_writer.WriteLine();
             m_writer.Write(m_settings.GetIndent());

@@ -39,16 +39,16 @@ namespace NUglify
         #region common fields
 
         // default resource object name if not specified
-        private const string c_defaultResourceObjectName = "Strings";
+        const string c_defaultResourceObjectName = "Strings";
 
         // prefix for usage messages that tell that method to not create an error string
         // from the message, but the output it directly, as-is
-        private const string c_rawMessagePrefix = "RAWUSAGE";
+        const string c_rawMessagePrefix = "RAWUSAGE";
 
         /// <summary>
         /// whether to output the results of the timer to the console
         /// </summary>
-        private bool m_outputTimer;
+        bool m_outputTimer;
 
         /// <summary>
         /// This field is initially false, and it set to true if any errors were
@@ -56,23 +56,23 @@ namespace NUglify
         /// will be set to non-zero if this flag is true.
         /// Use the -W argument to limit the severity of errors caught by this flag.
         /// </summary>
-        private bool m_errorsFound;// = false;
+        bool m_errorsFound;// = false;
 
         /// <summary>
         /// Set to true when header is written
         /// </summary>
-        private bool m_headerWritten;
+        bool m_headerWritten;
 
         /// <summary>
         /// configuration mode
         /// </summary>
-        private string m_configuration;
+        string m_configuration;
 
         /// <summary>whether to suppress output of the parsed code</summary>
-        private bool m_noOutput;
+        bool m_noOutput;
 
         /// <summary>Whether to skip the size-comparison output</summary>
-        private bool m_skipSizeComparisons;
+        bool m_skipSizeComparisons;
 
         #endregion
 
@@ -81,7 +81,7 @@ namespace NUglify
         /// <summary>
         /// Output mode
         /// </summary>
-        private static bool s_silentMode;
+        static bool s_silentMode;
 
         #endregion
 
@@ -90,43 +90,43 @@ namespace NUglify
         /// <summary>
         /// object to turn the command-line into settings object
         /// </summary>
-        private UglifyCommandParser uglifyCommandParser;
+        UglifyCommandParser uglifyCommandParser;
 
         // simply echo the input code, not the crunched code
-        private bool m_echoInput;// = false;
+        bool m_echoInput;// = false;
 
         /// <summary>
         /// MAnifest file built from input XML or from command-line input/output file(s)
         /// </summary>
-        private Manifest m_manifest;
+        Manifest m_manifest;
 
         /// <summary>
         /// SymbolMap settings stored from command-line
         /// </summary>
-        private SymbolMap m_symbolMap;// = null;
+        SymbolMap m_symbolMap;// = null;
 
         /// <summary>
         /// Input type hint from the switches: possibly JS or CSS
         /// </summary>
-        private CodeType m_inputTypeHint = CodeType.Unknown;
+        CodeType m_inputTypeHint = CodeType.Unknown;
 
         /// <summary>
         /// Whether or not we are outputting the crunched code to one or more files (false) or to stdout (true)
         /// </summary>
-        private bool m_outputToStandardOut;// = false;
+        bool m_outputToStandardOut;// = false;
 
         /// <summary>
         /// Optional file name of the destination file. 
         /// An empty destination outputs to STDOUT. A folder path can be used with
         /// an XML manifest to specify the root output folder for relative output paths.
         /// </summary>
-        private string m_outputFile = string.Empty;
+        string m_outputFile = string.Empty;
 
         /// <summary>
         /// Optionally specify an XML file that indicates the input and output file(s)
         /// instead of specifying a single output and the input file(s) on the command line.
         /// </summary>
-        private string m_xmlInputFile;// = null;
+        string m_xmlInputFile;// = null;
 
         #endregion
 
@@ -136,7 +136,7 @@ namespace NUglify
         /// Gets the one output group for the implicit manifest created from command-line parameters.
         /// Create the implicit manifest if one hasn't been created yet.
         /// </summary>
-        private OutputGroup ImplicitManifestOutputGroup
+        OutputGroup ImplicitManifestOutputGroup
         {
             get
             {
@@ -191,7 +191,7 @@ namespace NUglify
 
         #region Constructor
 
-        private MainClass(string[] args)
+        MainClass(string[] args)
         {
             // process the arguments
             ProcessArgs(args);
@@ -201,7 +201,7 @@ namespace NUglify
 
         #region ProcessArgs method
 
-        private void ProcessArgs(string[] args)
+        void ProcessArgs(string[] args)
         {
             if (args.Length == 1 && string.Compare(args[0], "HELP", StringComparison.OrdinalIgnoreCase) == 0)
             {
@@ -318,7 +318,7 @@ namespace NUglify
             }
         }
 
-        private void OnUnknownParameter(object sender, UnknownParameterEventArgs ea)
+        void OnUnknownParameter(object sender, UnknownParameterEventArgs ea)
         {
             bool flag;
             if (ea.SwitchPart != null)
@@ -648,7 +648,7 @@ namespace NUglify
             }
         }
 
-        private void InputTypeHint(CodeType inputTypeHint)
+        void InputTypeHint(CodeType inputTypeHint)
         {
             switch (m_inputTypeHint)
             {
@@ -673,7 +673,7 @@ namespace NUglify
             }
         }
 
-        private static void EnsureInputFileExists(string fileName)
+        static void EnsureInputFileExists(string fileName)
         {
             // make sure it exists
             if (!File.Exists(fileName))
@@ -696,7 +696,7 @@ namespace NUglify
 
         #region Usage method
 
-        private static void Usage(NotSupportedException e)
+        static void Usage(NotSupportedException e)
         {
             string fileName = Path.GetFileName(
               Assembly.GetExecutingAssembly().Location
@@ -742,7 +742,7 @@ namespace NUglify
 
         #region Run method
 
-        private int Run()
+        int Run()
         {
             int retVal = 0;
             if (m_xmlInputFile.IsNullOrWhiteSpace())
@@ -821,7 +821,7 @@ namespace NUglify
             return retVal;
         }
 
-        private int ProcessOutputGroups(IList<OutputGroup> outputGroups)
+        int ProcessOutputGroups(IList<OutputGroup> outputGroups)
         {
             var retVal = 0;
             var ndxGroup = 0;
@@ -952,7 +952,7 @@ namespace NUglify
 
         #region ProcessCrunchGroup method
 
-        private int ProcessOutputGroup(OutputGroup outputGroup, UglifyCommandParser uglifyCommandParser)
+        int ProcessOutputGroup(OutputGroup outputGroup, UglifyCommandParser uglifyCommandParser)
         {
             int retVal = 0;
 
@@ -1198,7 +1198,7 @@ namespace NUglify
             return retVal;
         }
 
-        private int ClobberFileAndExecuteOperation(string filePath, Action<string> operation)
+        int ClobberFileAndExecuteOperation(string filePath, Action<string> operation)
         {
             int retVal = 0;
 
@@ -1290,7 +1290,7 @@ namespace NUglify
 
         #region ProcessXmlFile method
 
-        private static Manifest ProcessXmlFile(string xmlPath, string outputFolder)
+        static Manifest ProcessXmlFile(string xmlPath, string outputFolder)
         {
             Manifest manifest = null;
             try
@@ -1318,7 +1318,7 @@ namespace NUglify
 
         #region resource processing
 
-        private ResourceStrings ProcessResourceFile(string resourceFileName)
+        ResourceStrings ProcessResourceFile(string resourceFileName)
         {
             WriteProgress(
                 NUglify.ReadingResourceFile.FormatInvariant(Path.GetFileName(resourceFileName))
@@ -1342,7 +1342,7 @@ namespace NUglify
             }
         }
 
-        private static ResourceStrings ProcessResources(string resourceFileName)
+        static ResourceStrings ProcessResources(string resourceFileName)
         {
             // default return object is null, meaning we are outputting the JS code directly
             // and don't want to replace any referenced resources in the sources
@@ -1358,7 +1358,7 @@ namespace NUglify
             return resourceStrings.Count == 0 ? null : resourceStrings;
         }
 
-        private static ResourceStrings ProcessResXResources(string resourceFileName)
+        static ResourceStrings ProcessResXResources(string resourceFileName)
         {
             // default return object is null, meaning we are outputting the JS code directly
             // and don't want to replace any referenced resources in the sources
@@ -1381,7 +1381,7 @@ namespace NUglify
         /// <summary>
         /// Write an empty progress line
         /// </summary>
-        private void WriteProgress()
+        void WriteProgress()
         {
             WriteProgress(string.Empty);
         }
@@ -1392,7 +1392,7 @@ namespace NUglify
         /// </summary>
         /// <param name="format">format string</param>
         /// <param name="args">optional arguments</param>
-        private void WriteProgress(string format, params object[] args)
+        void WriteProgress(string format, params object[] args)
         {
             if (!s_silentMode)
             {
@@ -1440,7 +1440,7 @@ namespace NUglify
         /// Always write the string to stderr, even in silent mode
         /// </summary>
         /// <param name="message">text to write</param>
-        private void WriteError(string message)
+        void WriteError(string message)
         {
             // don't output the header if in silent mode
             if (!s_silentMode && !m_headerWritten)
@@ -1462,7 +1462,7 @@ namespace NUglify
         /// <param name="subcategory">optional subcategory</param>
         /// <param name="code">non-localized error code</param>
         /// <param name="message">localized error message</param>
-        private void WriteError(string location, string subcategory, string code, string message)
+        void WriteError(string location, string subcategory, string code, string message)
         {
             // output the formatted error message
             WriteError(CreateBuildError(location, subcategory, code, message));
@@ -1474,7 +1474,7 @@ namespace NUglify
         /// </summary>
         /// <param name="code">non-localized error code</param>
         /// <param name="message">localized error message</param>
-        private void WriteError(string code, string message)
+        void WriteError(string code, string message)
         {
             // output the formatted error message, passing null for location and subcategory
             WriteError(null, null, code, message);
@@ -1490,7 +1490,7 @@ namespace NUglify
         /// <param name="code">non-localizable code indicating the error -- cannot contain spaces</param>
         /// <param name="format">localized text for error, can contain format placeholders</param>
         /// <param name="args">optional arguments for the format string</param>
-        private static string CreateBuildError(string location, string subcategory, string code, string message)
+        static string CreateBuildError(string location, string subcategory, string code, string message)
         {
             // if we didn't specify a location string, just use the name of this tool
             if (string.IsNullOrEmpty(location))
@@ -1533,7 +1533,7 @@ namespace NUglify
                 );
         }
 
-        private static string GetHeaderString()
+        static string GetHeaderString()
         {
             var description = string.Empty;
             var copyright = string.Empty;
@@ -1576,7 +1576,7 @@ namespace NUglify
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification="incorrect; gzipstream constructor does not close outer stream when third parameter is true")]
-        private static long CalculateGzipSize(byte[] bytes)
+        static long CalculateGzipSize(byte[] bytes)
         {
             using(var memoryStream = new MemoryStream())
             {

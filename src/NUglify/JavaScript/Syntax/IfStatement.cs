@@ -23,9 +23,9 @@ namespace NUglify.JavaScript.Syntax
 
     public sealed class IfStatement : Statement
     {
-        private AstNode m_condition;
-        private BlockStatement m_trueBlock;
-        private BlockStatement m_falseBlock;
+	    AstNode m_condition;
+	    BlockStatement m_trueBlock;
+	    BlockStatement m_falseBlock;
 
         public AstNode Condition
         {

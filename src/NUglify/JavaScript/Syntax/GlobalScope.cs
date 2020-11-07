@@ -28,12 +28,12 @@ namespace NUglify.JavaScript.Syntax
         // look for a few common prefixes, and the pattern: prefix + Pascal-case identifier.
         // this will allow us to catch things like msRequestAutomationFrame, msmsGetWeakWinRTProperty, mozPaintCount, etc.
         // and will also pick up the dozens of DOM element names like HTMLAnchorElement and HTMLTableColElement.
-        private static Regex s_blanketPrefixes = new Regex(@"^(?:ms|MS|o|webkit|moz|Gecko|HTML)(?:[A-Z][a-z0-9]*)+$", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        static Regex s_blanketPrefixes = new Regex(@"^(?:ms|MS|o|webkit|moz|Gecko|HTML)(?:[A-Z][a-z0-9]*)+$", RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-        private HashSet<string> m_globalProperties;
-        private HashSet<string> m_globalFunctions;
-        private HashSet<string> m_assumedGlobals;
-        private HashSet<UndefinedReference> m_undefined;
+        HashSet<string> m_globalProperties;
+        HashSet<string> m_globalFunctions;
+        HashSet<string> m_assumedGlobals;
+        HashSet<UndefinedReference> m_undefined;
 
         public ICollection<UndefinedReference> UndefinedReferences { get { return m_undefined; } }
 
@@ -217,7 +217,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private JSVariableField ResolveFromCollection(string name, HashSet<string> collection, FieldType fieldType, bool isFunction)
+        JSVariableField ResolveFromCollection(string name, HashSet<string> collection, FieldType fieldType, bool isFunction)
         {
             if (collection.Contains(name))
             {

@@ -32,7 +32,7 @@ namespace NUglify
     {
         #region file processing
 
-        private int ProcessJSFile(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, StringBuilder outputBuilder)
+        int ProcessJSFile(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, StringBuilder outputBuilder)
         {
             var returnCode = 0;
             var settings = uglifyCommandParser.JSSettings;
@@ -160,7 +160,7 @@ namespace NUglify
             return returnCode;
         }
 
-        private void OutputTimingPoints(JSParser parser, int groupIndex, int groupCount)
+        void OutputTimingPoints(JSParser parser, int groupIndex, int groupCount)
         {
             // frequency is ticks per second, so if we divide by 1000.0, then we will have a
             // double-precision value indicating the ticks per millisecond. Divide this into the
@@ -214,7 +214,7 @@ namespace NUglify
 
         #region CreateJSFromResourceStrings method
 
-        private static string CreateJSFromResourceStrings(ResourceStrings resourceStrings)
+        static string CreateJSFromResourceStrings(ResourceStrings resourceStrings)
         {
             var sb = StringBuilderPool.Acquire();
             try
@@ -292,7 +292,7 @@ namespace NUglify
         #region Variable Renaming method
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
-        private void ProcessRenamingFile(string filePath)
+        void ProcessRenamingFile(string filePath)
         {
             using (var fileReader = new StreamReader(filePath))
             {
@@ -329,7 +329,7 @@ namespace NUglify
         
         #region reporting methods
 
-        private void CreateReport(GlobalScope globalScope, UglifyCommandParser uglifyCommandParser)
+        void CreateReport(GlobalScope globalScope, UglifyCommandParser uglifyCommandParser)
         {
             string reportText;
             using (var writer = new StringWriter(CultureInfo.InvariantCulture))
@@ -362,7 +362,7 @@ namespace NUglify
             }
         }
 
-        private static IScopeReport CreateScopeReport(UglifyCommandParser uglifyCommandParser)
+        static IScopeReport CreateScopeReport(UglifyCommandParser uglifyCommandParser)
         {
             // check the switch parser for a report format.
             // At this time we only have two: XML or DEFAULT. If it's XML, use
@@ -380,7 +380,7 @@ namespace NUglify
 
         #region Error-handling Members
 
-        private void OnUndefinedReference(object sender, UndefinedReferenceEventArgs e)
+        void OnUndefinedReference(object sender, UndefinedReferenceEventArgs e)
         {
             var parser = sender as JSParser;
             if (parser != null)

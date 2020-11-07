@@ -22,8 +22,8 @@ namespace NUglify.JavaScript.Syntax
 {
     public class TemplateLiteral : Expression
     {
-        private LookupExpression m_function;
-        private AstNodeList m_expressions;
+	    LookupExpression m_function;
+	    AstNodeList m_expressions;
 
         public LookupExpression Function
         {

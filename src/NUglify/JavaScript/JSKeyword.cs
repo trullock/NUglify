@@ -16,20 +16,19 @@
 
 namespace NUglify.JavaScript
 {
-
-    internal sealed class JSKeyword
+	sealed class JSKeyword
     {
-        private JSKeyword m_next;
-        private JSToken m_token;
-        private string m_name;
-        private int m_length;
+	    JSKeyword m_next;
+	    JSToken m_token;
+	    string m_name;
+	    int m_length;
 
-        private JSKeyword(JSToken token, string name)
+	    JSKeyword(JSToken token, string name)
             : this(token, name, null)
         {
         }
 
-        private JSKeyword(JSToken token, string name, JSKeyword next)
+	    JSKeyword(JSToken token, string name, JSKeyword next)
         {
             m_name = name;
             m_token = token;

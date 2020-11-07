@@ -15,16 +15,16 @@ namespace NUglify.Tests.Core
     [TestFixture]
     public class SourceDirective
     {
-        private const string OutputFolder = @"TestData\Core\Output";
-        private const string ExpectedFolder = @"TestData\Core\Expected";
-        private const string InputFolder = @"TestData\Core\Input";
+	    const string OutputFolder = @"TestData\Core\Output";
+	    const string ExpectedFolder = @"TestData\Core\Expected";
+	    const string InputFolder = @"TestData\Core\Input";
 
         public SourceDirective()
         {
             Environment.CurrentDirectory = Path.GetDirectoryName(typeof (SourceDirective).Assembly.Location);
         }
 
-        private TestContext testContextInstance;
+        TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides

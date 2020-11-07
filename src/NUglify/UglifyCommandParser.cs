@@ -70,8 +70,8 @@ namespace NUglify
     {
         #region private fields
 
-        private bool m_isMono;
-        private bool m_noPretty;
+        bool m_isMono;
+        bool m_noPretty;
 
         #endregion
 
@@ -2022,7 +2022,7 @@ namespace NUglify
 
         #region helper methods
 
-        private static void AlignDebugDefine(bool stripDebugStatements, IDictionary<string, string> defines)
+        static void AlignDebugDefine(bool stripDebugStatements, IDictionary<string, string> defines)
         {
             // if we are setting the debug switch on, then make sure we 
             // add the DEBUG value to the defines
@@ -2085,7 +2085,7 @@ namespace NUglify
             return isValid;
         }
 
-        private void ResetRenamingKill(bool killSpecified)
+        void ResetRenamingKill(bool killSpecified)
         {
             // Reset the LocalRenaming kill bit IF the kill switch hadn't been specified
             // and it's also not zero. If that's the case, that's because we set it to something

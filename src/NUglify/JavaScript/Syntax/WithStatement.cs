@@ -22,8 +22,8 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class WithStatement : Statement
     {
-        private AstNode m_withObject;
-        private BlockStatement m_body;
+	    AstNode m_withObject;
+	    BlockStatement m_body;
 
         public AstNode WithObject
         {

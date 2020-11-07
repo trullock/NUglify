@@ -28,46 +28,46 @@ namespace NUglify.JavaScript
     /// </summary>
     public sealed class V3SourceMap : ISourceMap
     {
-        #region private fields 
+        #region private fields
 
-        private string m_minifiedPath;
+        string m_minifiedPath;
 
-        private string m_mapPath;
+        string m_mapPath;
 
-        private TextWriter m_writer;
+        TextWriter m_writer;
 
-        private int m_maxMinifiedLine;
+        int m_maxMinifiedLine;
 
         /// <summary>whether we have output a property yet</summary>
-        private bool m_hasProperty;
+        bool m_hasProperty;
 
-        private HashSet<string> m_sourceFiles;
+        HashSet<string> m_sourceFiles;
 
-        private List<string> m_sourceFileList;
+        List<string> m_sourceFileList;
 
-        private HashSet<string> m_names;
+        HashSet<string> m_names;
 
-        private List<string> m_nameList;
+        List<string> m_nameList;
 
-        private List<Segment> m_segments;
+        List<Segment> m_segments;
 
-        private int m_lastDestinationLine;
+        int m_lastDestinationLine;
 
-        private int m_lastDestinationColumn;
+        int m_lastDestinationColumn;
 
-        private int m_lastSourceLine;
+        int m_lastSourceLine;
 
-        private int m_lastSourceColumn;
+        int m_lastSourceColumn;
 
-        private int m_lastFileIndex;
+        int m_lastFileIndex;
 
-        private int m_lastNameIndex;
+        int m_lastNameIndex;
 
-        private int m_lineOffset;
+        int m_lineOffset;
 
-        private int m_columnOffset;
+        int m_columnOffset;
 
-        private static string s_base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        static string s_base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
         #endregion
 
@@ -289,7 +289,7 @@ namespace NUglify.JavaScript
 
         #region GenerateMappings method
 
-        private Segment CreateSegment(int destinationLine, int destinationColumn, int sourceLine, int sourceColumn, string fileName, string symbolName)
+        Segment CreateSegment(int destinationLine, int destinationColumn, int sourceLine, int sourceColumn, string fileName, string symbolName)
         {
             // create the segment with relative offsets for the destination column, source line, and source column.
             // destination line should be absolute. Destination column resets to absolute whenever the destination line advances.
@@ -317,7 +317,7 @@ namespace NUglify.JavaScript
             return segment;
         }
 
-        private string GenerateMappings(IList<string> fileList, IList<string> nameList)
+        string GenerateMappings(IList<string> fileList, IList<string> nameList)
         {
             var sb = StringBuilderPool.Acquire();
             try
@@ -353,7 +353,7 @@ namespace NUglify.JavaScript
             }
         }
 
-        private void EncodeNumbers(StringBuilder sb, Segment segment, IList<string> files, IList<string> names)
+        void EncodeNumbers(StringBuilder sb, Segment segment, IList<string> files, IList<string> names)
         {
             // there should always be a destination column
             EncodeNumber(sb, segment.DestinationColumn);
@@ -382,7 +382,7 @@ namespace NUglify.JavaScript
             }
         }
 
-        private static void EncodeNumber(StringBuilder sb, int value)
+        static void EncodeNumber(StringBuilder sb, int value)
         {
             // first get the signed vlq value. it uses bit0 as the sign.
             // if the value is negative, shift the positive version over left one and OR a 1.
@@ -416,7 +416,7 @@ namespace NUglify.JavaScript
 
         #region private helper methods
 
-        private string MakeRelative(string path, string relativeFrom)
+        string MakeRelative(string path, string relativeFrom)
         {
             // If we've disabled relative path conversion, abort
             if (!MakePathsRelative)
@@ -442,24 +442,24 @@ namespace NUglify.JavaScript
             return path;
         }
 
-        private static string Normalize(string path)
+        static string Normalize(string path)
         {
             return Path.IsPathRooted(path) ? path : Path.Combine(Directory.GetCurrentDirectory(), path);
         }
 
-        private void WriteProperty(string name, int number)
+        void WriteProperty(string name, int number)
         {
             WritePropertyStart(name);
             m_writer.Write(number.ToStringInvariant());
         }
 
-        private void WriteProperty(string name, string text)
+        void WriteProperty(string name, string text)
         {
             WritePropertyStart(name);
             OutputEscapedString(text ?? string.Empty);
         }
 
-        private void WriteProperty(string name, ICollection<string> collection)
+        void WriteProperty(string name, ICollection<string> collection)
         {
             WritePropertyStart(name);
             m_writer.Write('[');
@@ -482,7 +482,7 @@ namespace NUglify.JavaScript
             m_writer.Write(']');
         }
 
-        private void WritePropertyStart(string name)
+        void WritePropertyStart(string name)
         {
             if (m_hasProperty)
             {
@@ -494,7 +494,7 @@ namespace NUglify.JavaScript
             m_hasProperty = true;
         }
 
-        private void OutputEscapedString(string text)
+        void OutputEscapedString(string text)
         {
             m_writer.Write('"');
             for (var ndx = 0; ndx < text.Length; ++ndx)
@@ -546,7 +546,7 @@ namespace NUglify.JavaScript
 
         #endregion
 
-        private class Segment
+        class Segment
         {
             public int DestinationLine { get; set; }
             public int DestinationColumn { get; set; }

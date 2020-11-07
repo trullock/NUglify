@@ -22,7 +22,7 @@ namespace NUglify.JavaScript.Syntax
 
     public sealed class MemberExpression : Expression
     {
-        private AstNode m_root;
+	    AstNode m_root;
 
         public AstNode Root
         {

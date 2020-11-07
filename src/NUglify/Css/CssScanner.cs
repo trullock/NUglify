@@ -25,44 +25,44 @@ namespace NUglify.Css
     /// <summary>
     /// Scanner takes input stream and breaks it into Tokens
     /// </summary>
-    internal class CssScanner
+    class CssScanner
     {
         #region Constant strings
 
         // these strings are NOT to be localized -- they are CSS language features!
-        private const string c_scanIncludes = "~=";
-        private const string c_dashMatch = "|=";
-        private const string c_prefixMatch = "^=";
-        private const string c_suffixMatch = "$=";
-        private const string c_substringMatch = "*=";
-        private const string c_commentStart = "<!--";
-        private const string c_commentEnd = "-->";
+        const string c_scanIncludes = "~=";
+        const string c_dashMatch = "|=";
+        const string c_prefixMatch = "^=";
+        const string c_suffixMatch = "$=";
+        const string c_substringMatch = "*=";
+        const string c_commentStart = "<!--";
+        const string c_commentEnd = "-->";
 
         #endregion
 
-        private TextReader m_reader;
-        private string m_readAhead;
+        TextReader m_reader;
+        string m_readAhead;
 
         // one string builder that can be used in scan methods
-        private StringBuilder m_scanBuilder = new StringBuilder(512);
+        StringBuilder m_scanBuilder = new StringBuilder(512);
 
         // one string builder that can be used for scanning string and number literals, and identifiers
-        private StringBuilder m_literalBuilder = new StringBuilder(128);
+        StringBuilder m_literalBuilder = new StringBuilder(128);
 
-        private char m_currentChar;
+        char m_currentChar;
 
-        private string m_rawNumber;
+        string m_rawNumber;
         public string RawNumber { get { return m_rawNumber; } }
 
-        private CssContext m_context;
+        CssContext m_context;
 
-        private static Regex s_leadingZeros = new Regex("^0*([0-9]+?)$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        static Regex s_leadingZeros = new Regex("^0*([0-9]+?)$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-        private static Regex s_trailingZeros = new Regex("^([0-9]+?)0*$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        static Regex s_trailingZeros = new Regex("^([0-9]+?)0*$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-        private static Regex s_sourceDirective = new Regex(@"#SOURCE\s+(?<line>\d+)\s+(?<col>\d+)\s+(?<path>[^*\n\r\f]+)(\s*$|([\n\r\f][^*]*)?\s*\*/$)", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        static Regex s_sourceDirective = new Regex(@"#SOURCE\s+(?<line>\d+)\s+(?<col>\d+)\s+(?<path>[^*\n\r\f]+)(\s*$|([\n\r\f][^*]*)?\s*\*/$)", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        private static Regex s_sassSourceDirective = new Regex(@"^/\*\s+line\s+(?<line>\d+),\s+(?<path>[^*]+)\s+\*/$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        static Regex s_sassSourceDirective = new Regex(@"^/\*\s+line\s+(?<line>\d+),\s+(?<path>[^*]+)\s+\*/$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
         public bool AllowEmbeddedAspNetBlocks { get; set; }
 
@@ -72,9 +72,9 @@ namespace NUglify.Css
 
         public bool DecodeEscapes { get; set; }
 
-        private bool addNewLine;
+        bool addNewLine;
 
-        private bool m_isAtEOF;// = false;
+        bool m_isAtEOF;// = false;
         public bool EndOfFile
         {
             get { return m_isAtEOF; }
@@ -254,7 +254,7 @@ namespace NUglify.Css
             return token;
         }
 
-        private static TokenType GetVendorSpecificFunctionType(string name)
+        static TokenType GetVendorSpecificFunctionType(string name)
         {
             // the true first hyphen was stripped off, so the first hyphen in the
             // string passed to us will be the hyphen between the vendor prefix and the
@@ -282,7 +282,7 @@ namespace NUglify.Css
 
         #region Scan... methods
 
-        private CssToken ScanWhiteSpace()
+        CssToken ScanWhiteSpace()
         {
             m_scanBuilder.Length = 0;
             while (IsSpace(m_currentChar))
@@ -300,7 +300,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private CssToken ScanComment()
+        CssToken ScanComment()
         {
             CssToken token = null;
             NextChar();
@@ -431,7 +431,7 @@ namespace NUglify.Css
         /// If the current character is a linebreak, eat it without advancing
         /// our position.
         /// </summary>
-        private void EatOneLineBreak()
+        void EatOneLineBreak()
         {
             switch (m_currentChar)
             {
@@ -455,7 +455,7 @@ namespace NUglify.Css
         /// </summary>
         /// <param name="comment">comment text</param>
         /// <returns>true if this is one of our preprocessing directives; false otherwise</returns>
-        private bool PreprocessingDirective(string comment)
+        bool PreprocessingDirective(string comment)
         {
             if (string.Compare(comment, 4, "SOURCE", 0, 6, StringComparison.OrdinalIgnoreCase) == 0)
             {
@@ -486,7 +486,7 @@ namespace NUglify.Css
             return false;
         }
 
-        private CssToken ScanAspNetBlock()
+        CssToken ScanAspNetBlock()
         {
             m_scanBuilder.Length = 0;
             char prev = ' ';
@@ -509,7 +509,7 @@ namespace NUglify.Css
             return new CssToken(TokenType.AspNetBlock, m_scanBuilder.ToString(), m_context);
         }
 
-        private CssToken ScanCDO()
+        CssToken ScanCDO()
         {
             CssToken token = null;
             NextChar(); // points to !?
@@ -536,7 +536,7 @@ namespace NUglify.Css
             return (token != null ? token : token = new CssToken(TokenType.Character, '<', m_context));
         }
 
-        private CssToken ScanCDC()
+        CssToken ScanCDC()
         {
             CssToken token = null;
             NextChar(); // points to second hyphen?
@@ -552,7 +552,7 @@ namespace NUglify.Css
             return token;
         }
 
-        private CssToken ScanIncludes()
+        CssToken ScanIncludes()
         {
             CssToken token = null;
             NextChar();
@@ -564,7 +564,7 @@ namespace NUglify.Css
             return (token != null ? token : new CssToken(TokenType.Character, '~', m_context));
         }
 
-        private CssToken ScanDashMatch()
+        CssToken ScanDashMatch()
         {
             CssToken token = null;
             // if the next character is an equals sign, then we have a dash-match
@@ -590,7 +590,7 @@ namespace NUglify.Css
             return token;
         }
 
-        private CssToken ScanPrefixMatch()
+        CssToken ScanPrefixMatch()
         {
             CssToken token = null;
             NextChar();
@@ -602,7 +602,7 @@ namespace NUglify.Css
             return (token != null ? token : new CssToken(TokenType.Character, '^', m_context));
         }
 
-        private CssToken ScanSuffixMatch()
+        CssToken ScanSuffixMatch()
         {
             CssToken token = null;
             NextChar();
@@ -614,7 +614,7 @@ namespace NUglify.Css
             return (token != null ? token : new CssToken(TokenType.Character, '$', m_context));
         }
 
-        private CssToken ScanSubstringMatch()
+        CssToken ScanSubstringMatch()
         {
             CssToken token = null;
             if (PeekChar() == '=')
@@ -638,7 +638,7 @@ namespace NUglify.Css
             return token;
         }
 
-        private CssToken ScanString()
+        CssToken ScanString()
         {
             // get the string literal
             string stringLiteral = GetString();
@@ -656,7 +656,7 @@ namespace NUglify.Css
               );
         }
 
-        private CssToken ScanHash()
+        CssToken ScanHash()
         {
             // skip the hash character
             NextChar();
@@ -675,7 +675,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private CssToken ScanAtKeyword()
+        CssToken ScanAtKeyword()
         {
             NextChar();
 
@@ -829,7 +829,7 @@ namespace NUglify.Css
             return new CssToken(tokenType, '@' + (ident ?? string.Empty), m_context);
         }
 
-        private CssToken ScanImportant()
+        CssToken ScanImportant()
         {
             CssToken token = null;
             NextChar();
@@ -856,7 +856,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private CssToken ScanUnicodeRange()
+        CssToken ScanUnicodeRange()
         {
             // when called, the current character is the character *after* U+
             CssToken token = null;
@@ -997,7 +997,7 @@ namespace NUglify.Css
             return token;
         }
 
-        private CssToken ScanUrl()
+        CssToken ScanUrl()
         {
             CssToken token = null;
             if (PeekChar() == '+')
@@ -1039,7 +1039,7 @@ namespace NUglify.Css
             return (token != null ? token : ScanIdent());
         }
 
-        private CssToken ScanNum(bool reduceZeros)
+        CssToken ScanNum(bool reduceZeros)
         {
             CssToken token = null;
             string num = GetNum();
@@ -1170,7 +1170,7 @@ namespace NUglify.Css
             return token;
         }
 
-        private CssToken ScanIdent()
+        CssToken ScanIdent()
         {
             CssToken token = null;
 
@@ -1221,7 +1221,7 @@ namespace NUglify.Css
             return token;
         }
 
-        private CssToken ScanProgId()
+        CssToken ScanProgId()
         {
             CssToken token = null;
             m_scanBuilder.Length = 0;
@@ -1255,7 +1255,7 @@ namespace NUglify.Css
 
         #region Is... methods
 
-        private static bool IsSpace(char ch)
+        static bool IsSpace(char ch)
         {
             switch (ch)
             {
@@ -1271,7 +1271,7 @@ namespace NUglify.Css
             }
         }
 
-        private static int HValue(char ch)
+        static int HValue(char ch)
         {
             if ('0' <= ch && ch <= '9')
             {
@@ -1297,12 +1297,12 @@ namespace NUglify.Css
               );
         }
 
-        private static bool IsD(char ch)
+        static bool IsD(char ch)
         {
             return ('0' <= ch && ch <= '9');
         }
 
-        private static bool IsNonAscii(char ch)
+        static bool IsNonAscii(char ch)
         {
             return (128 <= ch && ch <= 65535);
         }
@@ -1396,7 +1396,7 @@ namespace NUglify.Css
         /// <param name="advancePastDelimiter">if true, the current char is the delimiter and needs to be advanced; 
         /// false means we are already at the next character and shouldn't advance</param>
         /// <returns>valid token text, or null</returns>
-        private string GetReplacementToken(bool advancePastDelimiter)
+        string GetReplacementToken(bool advancePastDelimiter)
         {
             var sb = StringBuilderPool.Acquire();
             try
@@ -1475,7 +1475,7 @@ namespace NUglify.Css
         /// returns the VALUE of a unicode number, up to six hex digits
         /// </summary>
         /// <returns>int value representing up to 6 hex digits</returns>
-        private int GetUnicodeEncodingValue(out bool follwedByWhitespace)
+        int GetUnicodeEncodingValue(out bool follwedByWhitespace)
         {
             int unicodeValue = 0;
 
@@ -1498,7 +1498,7 @@ namespace NUglify.Css
             return unicodeValue;
         }
 
-        private string GetUnicode()
+        string GetUnicode()
         {
             string unicode = null;
             if (m_currentChar == '\\')
@@ -1581,12 +1581,12 @@ namespace NUglify.Css
             return unicode;
         }
 
-        private static string ConvertUtf32ToUtf16(int unicodeValue)
+        static string ConvertUtf32ToUtf16(int unicodeValue)
         {
             return char.ConvertFromUtf32(unicodeValue);
         }
 
-        private string GetEscape()
+        string GetEscape()
         {
             string escape = GetUnicode();
             if (escape == null && m_currentChar == '\\')
@@ -1603,7 +1603,7 @@ namespace NUglify.Css
             return escape;
         }
 
-        private string GetNmStart()
+        string GetNmStart()
         {
             string nmStart = GetEscape();
             if (nmStart == null)
@@ -1631,7 +1631,7 @@ namespace NUglify.Css
             return nmStart;
         }
 
-        private string GetNmChar()
+        string GetNmChar()
         {
             string nmChar = GetEscape();
             if (nmChar == null)
@@ -1655,7 +1655,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private string GetString()
+        string GetString()
         {
             string str = null;
             if (m_currentChar == '\'' || m_currentChar == '"')
@@ -1778,7 +1778,7 @@ namespace NUglify.Css
             return str;
         }
 
-        private void SkipAspNetBlock()
+        void SkipAspNetBlock()
         {
             // add the current character (should be the % character from the <% opening)
             m_literalBuilder.Append(m_currentChar);
@@ -1813,7 +1813,7 @@ namespace NUglify.Css
             }
         }
 
-        private string GetIdent()
+        string GetIdent()
         {
             string ident = GetNmStart();
             if (ident != null)
@@ -1829,7 +1829,7 @@ namespace NUglify.Css
             return ident;
         }
 
-        private string GetName()
+        string GetName()
         {
             string name = GetNmChar();
             if (name != null)
@@ -1845,7 +1845,7 @@ namespace NUglify.Css
             return name;
         }
 
-        private string GetNum()
+        string GetNum()
         {
             string num = null;
             string units = null;
@@ -1955,7 +1955,7 @@ namespace NUglify.Css
             return num;
         }
 
-        private string GetUrl()
+        string GetUrl()
         {
             m_literalBuilder.Length = 0;
             while (m_currentChar != '\0')
@@ -1984,7 +1984,7 @@ namespace NUglify.Css
             return m_literalBuilder.ToString();
         }
 
-        private string GetW()
+        string GetW()
         {
             string w = string.Empty;
             if (IsSpace(m_currentChar))
@@ -1999,7 +1999,7 @@ namespace NUglify.Css
             return w;
         }
 
-        private string GetNewline()
+        string GetNewline()
         {
             string nl = null;
             switch (m_currentChar)
@@ -2037,7 +2037,7 @@ namespace NUglify.Css
 
         #region NextChar, Peek..., Push...
 
-        private void NextChar()
+        void NextChar()
         {
             if (m_readAhead != null)
             {
@@ -2112,7 +2112,7 @@ namespace NUglify.Css
         }
 
         // case-INsensitive string at the current location in the input stream
-        private bool ReadString(string str)
+        bool ReadString(string str)
         {
             // if the first character doesn't match, then we
             // know we're not the string, and we don't have to
@@ -2165,7 +2165,7 @@ namespace NUglify.Css
             }
         }
 
-        private void PushChar(char ch)
+        void PushChar(char ch)
         {
             if (m_readAhead == null)
             {
@@ -2181,7 +2181,7 @@ namespace NUglify.Css
             m_context.End.PreviousChar();
         }
 
-        private void PushString(string str)
+        void PushString(string str)
         {
             if (str.Length > 0)
             {
@@ -2207,7 +2207,7 @@ namespace NUglify.Css
 
         #region Error handling
 
-        private void ReportError(int severity, CssErrorCode error, params object[] args)
+        void ReportError(int severity, CssErrorCode error, params object[] args)
         {
             // guide: 0 == syntax error
             //        1 == the programmer probably did not intend to do this
@@ -2257,7 +2257,7 @@ namespace NUglify.Css
         #endregion
     }
 
-    internal class CssScannerContextChangeEventArgs : EventArgs
+    class CssScannerContextChangeEventArgs : EventArgs
     {
         public string FileContext {get; private set;}
         //public int Line {get; private set;}

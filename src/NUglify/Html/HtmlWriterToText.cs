@@ -12,8 +12,8 @@ namespace NUglify.Html
     /// </summary>
     public class HtmlWriterToText : HtmlWriterBase
     {
-        private bool outputEnabled;
-        private readonly HtmlToTextOptions options;
+	    bool outputEnabled;
+	    readonly HtmlToTextOptions options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlWriterToText"/> class.
@@ -30,11 +30,11 @@ namespace NUglify.Html
 
         public TextWriter Writer { get; }
 
-        private bool ShouldKeepStructure => (options & HtmlToTextOptions.KeepStructure) != 0;
+        bool ShouldKeepStructure => (options & HtmlToTextOptions.KeepStructure) != 0;
 
-        private bool ShouldKeepFormatting => (options & HtmlToTextOptions.KeepFormatting) != 0;
+        bool ShouldKeepFormatting => (options & HtmlToTextOptions.KeepFormatting) != 0;
 
-        private bool ShouldKeepHtmlEscape => (options & HtmlToTextOptions.KeepHtmlEscape) != 0;
+        bool ShouldKeepHtmlEscape => (options & HtmlToTextOptions.KeepHtmlEscape) != 0;
 
         protected override void Write(string text)
         {

@@ -26,13 +26,13 @@ namespace NUglify.JavaScript
 {
     public sealed class ScriptSharpSourceMap : ISourceMap
     {
-        private readonly XmlWriter m_writer;
-        private string m_currentPackagePath;
-        private string m_mapPath;
-        private Dictionary<string, int> m_sourceFileIndexMap = new Dictionary<string, int>();
-        private int currentIndex;
-        private int m_lineOffset;
-        private int m_columnOffset;
+	    readonly XmlWriter m_writer;
+	    string m_currentPackagePath;
+	    string m_mapPath;
+	    Dictionary<string, int> m_sourceFileIndexMap = new Dictionary<string, int>();
+	    int currentIndex;
+	    int m_lineOffset;
+	    int m_columnOffset;
 
         /// <summary>
         /// Gets or sets an optional source root URI that will be added to the map object as the sourceRoot property if set
@@ -232,7 +232,7 @@ namespace NUglify.JavaScript
             ((IDisposable)m_writer).Dispose();
         }
 
-        private int GetSourceFileIndex(string fileName)
+        int GetSourceFileIndex(string fileName)
         {
             int index;
             if (!m_sourceFileIndexMap.TryGetValue(fileName, out index))
@@ -244,7 +244,7 @@ namespace NUglify.JavaScript
             return index;
         }
 
-        private static string MakeRelative(string path, string relativeFrom)
+        static string MakeRelative(string path, string relativeFrom)
         {
             // if either one is null or blank, just return the original path
             if (!path.IsNullOrWhiteSpace() && !relativeFrom.IsNullOrWhiteSpace())
@@ -266,26 +266,26 @@ namespace NUglify.JavaScript
             return path;
         }
 
-        private static string Normalize(string path)
+        static string Normalize(string path)
         {
             return Path.IsPathRooted(path) ? path : Path.Combine(Directory.GetCurrentDirectory(), path);
         }
 
         #region internal symbol object class
 
-        private class JavaScriptSymbol
+        class JavaScriptSymbol
         {
-            private const string SymbolDataFormat = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}";
-            private int m_startLine;
-            private int m_endLine;
-            private int m_startColumn;
-            private int m_endColumn;
-            private SourceContext m_sourceContext;
-            private int m_sourceFileId;
-            private string m_symbolType;
-            private string m_parentFunction;
+	        const string SymbolDataFormat = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}";
+	        int m_startLine;
+	        int m_endLine;
+	        int m_startColumn;
+	        int m_endColumn;
+	        SourceContext m_sourceContext;
+	        int m_sourceFileId;
+	        string m_symbolType;
+	        string m_parentFunction;
 
-            private JavaScriptSymbol() { }
+	        JavaScriptSymbol() { }
 
             public static JavaScriptSymbol StartNew(AstNode node, int startLine, int startColumn, int sourceFileId)
             {

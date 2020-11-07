@@ -12,13 +12,13 @@ namespace NUglify.Tests.Core
     [TestFixture]
     public class ArrowConcise
     {
-        private const string source = "var arrow = (a, b, c) => a * ( b + c);";
-        private const string appendDebugger = "var arrow=(n,t,i)=>{return n*(t+i);debugger}";
-        private const string insertDebugger = "var arrow=(n,t,i)=>{debugger;return n*(t+i)}";
-        private const string insertTwo = "var arrow=(n,t,i)=>{n;debugger;return n*(t+i)}";
-        private const string emptyBody = "var arrow=(n,t,i)=>{}";
-        private const string justDebugger = "var arrow=(n,t,i)=>{debugger}";
-        private const string justLookup = "var arrow=(n,t,i)=>n";
+	    const string source = "var arrow = (a, b, c) => a * ( b + c);";
+	    const string appendDebugger = "var arrow=(n,t,i)=>{return n*(t+i);debugger}";
+	    const string insertDebugger = "var arrow=(n,t,i)=>{debugger;return n*(t+i)}";
+	    const string insertTwo = "var arrow=(n,t,i)=>{n;debugger;return n*(t+i)}";
+	    const string emptyBody = "var arrow=(n,t,i)=>{}";
+	    const string justDebugger = "var arrow=(n,t,i)=>{debugger}";
+	    const string justLookup = "var arrow=(n,t,i)=>n";
 
         [Test]
         public void ConciseAppend()
@@ -203,13 +203,13 @@ namespace NUglify.Tests.Core
             Assert.AreEqual(justLookup, minified);
         }
 
-        private BlockStatement GetParsedArrowFunctionCode(CodeSettings settings)
+        BlockStatement GetParsedArrowFunctionCode(CodeSettings settings)
         {
             var parser = new JSParser();
             return parser.Parse(source, settings);
         }
 
-        private BlockStatement GetArrowFunctionBody(BlockStatement block)
+        BlockStatement GetArrowFunctionBody(BlockStatement block)
         {
             // there should be a block, containing a var, containing a vardecl, which has an initializer that's a FunctionObject,
             // that is an arrow funtion with a body that is concise.
@@ -224,7 +224,7 @@ namespace NUglify.Tests.Core
             return arrowFunction.Body;
         }
 
-        private LookupExpression GetLookupToFirstParameter(FunctionObject function)
+        LookupExpression GetLookupToFirstParameter(FunctionObject function)
         {
             var firstParameter = function.ParameterDeclarations[0] as ParameterDeclaration;
             var bindingIdentifier = firstParameter.Binding as BindingIdentifier;
