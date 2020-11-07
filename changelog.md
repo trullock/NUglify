@@ -1,7 +1,8 @@
 # Changelog
 
 ## vNext (unpublished)
-- Nothing yet
+- Re-adds long lost support for Minify JS Attributes within HTML
+- Fixes bugs with Attriute CSS Settings when minifying HTML
 
 ## v1.9.11 (7 November 2020)
 - Made contents of `<script>` and `<style>` elements fully indented when outputting pretty HTML

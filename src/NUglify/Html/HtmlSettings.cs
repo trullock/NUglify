@@ -174,7 +174,7 @@ namespace NUglify.Html
         public bool MinifyJs { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether minify js inside JS attributes.
+        /// Gets or sets a value indicating whether minify js inside JS event attributes (e.g. onclick, onfocus).
         /// Default is <c>true</c> using <see cref = "Uglify.Js(string, CodeSettings)" />
         /// </summary>
         public bool MinifyJsAttributes { get; set; }
