@@ -43,14 +43,14 @@ namespace NUglify.Css
         bool m_insideCalc;
         bool m_parsingZeroReducibleProperty;
 
-        int m_lineLength;
+        int lineLength;
         bool m_noColorAbbreviation;
         bool m_encounteredNewLine;
         Stack<StringBuilder> m_builders;
 
         // this is used to make sure we don't output two newlines in a row.
         // start it as true so we don't start off with a blank line
-        bool m_outputNewLine = true;
+        bool lastOutputWasNewLine = true;
 
         // set this to true to force a newline before any other output
         bool m_forceNewLine = false;
@@ -1088,10 +1088,8 @@ namespace NUglify.Css
                 {
                     // if this is an identifier, then we need to make sure we output a space
                     // character so the identifier doesn't get attached to the previous @-rule
-                    if (CurrentTokenType == TokenType.Identifier || Settings.OutputMode == OutputMode.MultipleLines)
-                    {
-                        Append(' ');
-                    }
+                    if (CurrentTokenType == TokenType.Identifier || Settings.OutputDeclarationWhitespace)
+	                    Append(' ');
 
                     AppendCurrent();
                     SkipSpace();
@@ -1104,12 +1102,11 @@ namespace NUglify.Css
                 // followed by keyframe blocks surrounded with curly-braces
                 if (CurrentTokenType == TokenType.Character && CurrentTokenText == "{")
                 {
-                    if (Settings.BlocksStartOnSameLine == BlockStart.NewLine
-                        || Settings.BlocksStartOnSameLine == BlockStart.UseSource && m_encounteredNewLine)
+                    if (Settings.BlocksStartOnSameLine == BlockStart.NewLine || Settings.BlocksStartOnSameLine == BlockStart.UseSource && m_encounteredNewLine)
                     {
                         NewLine();
                     }
-                    else if (Settings.OutputMode == OutputMode.MultipleLines)
+                    else if (Settings.OutputDeclarationWhitespace)
                     {
                         Append(' ');
                     }
@@ -1190,10 +1187,9 @@ namespace NUglify.Css
             {
                 // append the comma, and if this is multiline mode, follow it with a space for readability
                 AppendCurrent();
-                if (Settings.OutputMode == OutputMode.MultipleLines)
-                {
-                    Append(' ');
-                }
+                if (Settings.OutputDeclarationWhitespace)
+	                Append(' ');
+
                 SkipSpace();
 
                 // needs to be either a percentage or "from" or "to"
@@ -1241,7 +1237,7 @@ namespace NUglify.Css
                 {
                     // only need a space if this is a Uri -- a string starts with a quote delimiter
                     // and won't get parsed as teh end of the @import token
-                    if (CurrentTokenType == TokenType.Uri || Settings.OutputMode == OutputMode.MultipleLines)
+                    if (CurrentTokenType == TokenType.Uri || Settings.OutputDeclarationWhitespace)
                     {
                         Append(' ');
                     }
@@ -1294,12 +1290,11 @@ namespace NUglify.Css
                 {
                     if (CurrentTokenType == TokenType.Character && CurrentTokenText == "{")
                     {
-                        if (Settings.BlocksStartOnSameLine == BlockStart.NewLine
-                            || Settings.BlocksStartOnSameLine == BlockStart.UseSource && m_encounteredNewLine)
+                        if (Settings.BlocksStartOnSameLine == BlockStart.NewLine || Settings.BlocksStartOnSameLine == BlockStart.UseSource && m_encounteredNewLine)
                         {
                             NewLine();
                         }
-                        else if (Settings.OutputMode == OutputMode.MultipleLines)
+                        else if (Settings.OutputDeclarationWhitespace)
                         {
                             Append(' ');
                         }
@@ -1416,7 +1411,7 @@ namespace NUglify.Css
                 // if this is the first query, the last thing we output was @media, which will need a separator.
                 // if it's not the first, the last thing was a comma, so no space is needed.
                 // but if we're expanding the output, we always want a space
-                if (firstQuery || Settings.OutputMode == OutputMode.MultipleLines)
+                if (firstQuery || Settings.OutputDeclarationWhitespace)
                 {
                     Append(' ');
                 }
@@ -1434,10 +1429,8 @@ namespace NUglify.Css
             {
                 // media type
                 // if we might need a space, output it now
-                if (mightNeedSpace || Settings.OutputMode == OutputMode.MultipleLines)
-                {
-                    Append(' ');
-                }
+                if (mightNeedSpace || Settings.OutputDeclarationWhitespace)
+	                Append(' ');
 
                 // output the media type
                 AppendCurrent();
@@ -1483,10 +1476,8 @@ namespace NUglify.Css
                 && string.Compare(CurrentTokenText, "AND(", StringComparison.OrdinalIgnoreCase) == 0))
             {
                 // if we might need a space, output it now
-                if (mightNeedSpace || Settings.OutputMode == OutputMode.MultipleLines)
-                {
-                    Append(' ');
-                }
+                if (mightNeedSpace || Settings.OutputDeclarationWhitespace)
+	                Append(' ');
 
                 // output the AND text.
                 // MIGHT be AND( if it was a function, so first set a flag so we will know
@@ -1560,7 +1551,7 @@ namespace NUglify.Css
                     SkipSpace();
 
                     // if we are expanding the output, we want a space after the colon
-                    if (Settings.OutputMode == OutputMode.MultipleLines)
+                    if (Settings.OutputDeclarationWhitespace)
                     {
                         Append(' ');
                     }
@@ -1614,12 +1605,11 @@ namespace NUglify.Css
             }
             else
             {
-                if (Settings.BlocksStartOnSameLine == BlockStart.NewLine
-                    || Settings.BlocksStartOnSameLine == BlockStart.UseSource && m_encounteredNewLine)
+                if (Settings.BlocksStartOnSameLine == BlockStart.NewLine || Settings.BlocksStartOnSameLine == BlockStart.UseSource && m_encounteredNewLine)
                 {
                     NewLine();
                 }
-                else if (Settings.OutputMode == OutputMode.MultipleLines)
+                else if (Settings.OutputDeclarationWhitespace)
                 {
                     Append(' ');
                 }
@@ -1678,16 +1668,12 @@ namespace NUglify.Css
             while (!m_scanner.EndOfFile)
             {
                 // check the line length before each new declaration -- if we're past the threshold, start a new line
-                if (m_lineLength >= Settings.LineBreakThreshold)
-                {
-                    AddNewLine();
-                }
+                if (lineLength >= Settings.LineBreakThreshold)
+	                AddNewLine();
 
                 Parsed parsedDecl = ParseDeclaration();
                 if (parsed == Parsed.Empty && parsedDecl != Parsed.Empty)
-                {
-                    parsed = parsedDecl;
-                }
+	                parsed = parsedDecl;
 
                 // if we are allowed to have margin at-keywords in this block, and
                 // we didn't find a declaration, check to see if it's a margin
@@ -1773,8 +1759,8 @@ namespace NUglify.Css
 
                                 // and comments always end on a new line
                                 Append(comments);
-                                m_outputNewLine = true;
-                                m_lineLength = 0;
+                                lastOutputWasNewLine = true;
+                                lineLength = 0;
                             }
                             break;
                         }
@@ -1796,8 +1782,8 @@ namespace NUglify.Css
                             Append(comments);
 
                             // and comments always end on a new line
-                            m_outputNewLine = true;
-                            m_lineLength = 0;
+                            lastOutputWasNewLine = true;
+                            lineLength = 0;
                         }
                     }
                 }
@@ -1981,10 +1967,8 @@ namespace NUglify.Css
             PushWaypoint();
 
             // check the line length before each new declaration -- if we're past the threshold, start a new line
-            if (m_lineLength >= Settings.LineBreakThreshold)
-            {
-                AddNewLine();
-            }
+            if (lineLength >= Settings.LineBreakThreshold)
+	            AddNewLine();
 
             m_forceNewLine = true;
             Parsed parsed = ParseSelector();
@@ -2037,14 +2021,10 @@ namespace NUglify.Css
                     Append(',');
 
                     // check the line length before each new declaration -- if we're past the threshold, start a new line
-                    if (m_lineLength >= Settings.LineBreakThreshold)
-                    {
-                        AddNewLine();
-                    }
-                    else if (Settings.OutputMode == OutputMode.MultipleLines)
-                    {
-                        Append(' ');
-                    }
+                    if (lineLength >= Settings.LineBreakThreshold)
+	                    AddNewLine();
+                    else if (Settings.OutputDeclarationWhitespace)
+	                    Append(' ');
 
                     SkipSpace();
 
@@ -2615,11 +2595,12 @@ namespace NUglify.Css
                     SkipToEndOfDeclaration();
                     return Parsed.True;
                 }
+
                 Append(':');
-                if (Settings.OutputMode == OutputMode.MultipleLines)
-                {
-                    Append(' ');
-                }
+
+                if (Settings.OutputDeclarationWhitespace)
+	                Append(' ');
+
                 SkipSpace();
 
                 if (m_valueReplacement != null)
@@ -2692,10 +2673,8 @@ namespace NUglify.Css
                 // another common IE7-and-below hack is to use an identifier OTHER than "important". All other browsers will see this
                 // as an error, but IE7 and below will keep on processing. A common thing is to put !ie at the end to mark
                 // the declaration as only for IE.
-                if (Settings.OutputMode == OutputMode.MultipleLines)
-                {
-                    Append(' ');
-                }
+                if (Settings.OutputDeclarationWhitespace)
+	                Append(' ');
 
                 AppendCurrent();
                 NextToken();
@@ -3615,16 +3594,12 @@ namespace NUglify.Css
                     {
                         // multiplication and dicision operators don't need spaces around them
                         // UNLESS we are outputting multi-line mode
-                        if (Settings.OutputMode == OutputMode.MultipleLines)
-                        {
-                            Append(' ');
-                        }
+                        if (Settings.OutputDeclarationWhitespace)
+	                        Append(' ');
 
                         AppendCurrent();
-                        if (Settings.OutputMode == OutputMode.MultipleLines)
-                        {
-                            Append(' ');
-                        }
+                        if (Settings.OutputDeclarationWhitespace)
+	                        Append(' ');
                     }
                     else
                     {
@@ -4545,7 +4520,7 @@ namespace NUglify.Css
                             // the only time that should happen is if we put a line-feed in front.
                             // if the string builder is empty, or if the LAST character is a \r or \n,
                             // then trim off everything before that opening slash
-                            if (m_outputNewLine)
+                            if (lastOutputWasNewLine)
                             {
                                 // trim off everything before it
                                 text = text.Substring(indexSlash);
@@ -4684,7 +4659,7 @@ namespace NUglify.Css
                 if (m_mightNeedSpace
                     && (CssScanner.IsH(text[0]) || text[0] == ' '))
                 {
-                    if (m_lineLength >= Settings.LineBreakThreshold)
+                    if (lineLength >= Settings.LineBreakThreshold)
                     {
                         // we want to add whitespace, but we're over the line-length threshold, so
                         // output a line break instead
@@ -4694,7 +4669,7 @@ namespace NUglify.Css
                     {
                         // output a space on the same line
                         parsed.Append(' ');
-                        ++m_lineLength;
+                        ++lineLength;
                     }
                 }
 
@@ -4710,7 +4685,7 @@ namespace NUglify.Css
                 {
                     // we are asking to output a space character. At this point, if we are
                     // over the line-length threshold, we can substitute a line break for a space.
-                    if (m_lineLength >= Settings.LineBreakThreshold)
+                    if (lineLength >= Settings.LineBreakThreshold)
                     {
                         AddNewLine();
                     }
@@ -4718,7 +4693,7 @@ namespace NUglify.Css
                     {
                         // just output a space, and don't change the newline flag
                         parsed.Append(' ');
-                        ++m_lineLength;
+                        ++lineLength;
                     }
                 }
                 else
@@ -4729,27 +4704,25 @@ namespace NUglify.Css
                     {
                         // only output a newline if we aren't already on a new line
                         // AND we are in multiple-line mode
-                        if (!m_outputNewLine && Settings.OutputMode == OutputMode.MultipleLines)
-                        {
-                            AddNewLine();
-                        }
-                        
+                        if (!lastOutputWasNewLine && Settings.OutputMode == OutputMode.MultipleLines)
+	                        AddNewLine();
+
                         // reset the flag
                         m_forceNewLine = false;
                     }
 
                     parsed.Append(text);
-                    m_outputNewLine = false;
+                    lastOutputWasNewLine = false;
 
                     if (tokenType == TokenType.Comment && isImportant)
                     {
                         AddNewLine();
-                        m_lineLength = 0;
-                        m_outputNewLine = true;
+                        lineLength = 0;
+                        lastOutputWasNewLine = true;
                     }
                     else
                     {
-                        m_lineLength += text.Length;
+                        lineLength += text.Length;
                     }
                 }
 
@@ -4803,12 +4776,19 @@ namespace NUglify.Css
 
         void NewLine()
         {
+	        if (lastOutputWasNewLine)
+		        return;
+
             // if we've output something other than a newline, output one now
-            if (Settings.OutputMode == OutputMode.MultipleLines && !m_outputNewLine)
+            if (Settings.OutputMode == OutputMode.MultipleLines)
             {
                 AddNewLine();
-                m_lineLength = 0;
-                m_outputNewLine = true;
+                lineLength = 0;
+                lastOutputWasNewLine = true;
+            } 
+            else if (Settings.OutputDeclarationWhitespace)
+            {
+	            Append(' ');
             }
         }
 
@@ -4818,26 +4798,23 @@ namespace NUglify.Css
         /// <param name="sb"></param>
         void AddNewLine()
         {
-            if (!m_outputNewLine)
+            if (!lastOutputWasNewLine)
             {
                 var parsed = m_builders.Peek();
                 parsed.Append(Settings.LineTerminator);
                 if (Settings.OutputMode == OutputMode.MultipleLines)
                 {
-
                     var indentSpaces = Settings.GetIndent();
-                    m_lineLength = indentSpaces.Length;
-                    if (m_lineLength > 0)
-                    {
-                        parsed.Append(indentSpaces);
-                    }
+                    lineLength = indentSpaces.Length;
+                    if (lineLength > 0)
+	                    parsed.Append(indentSpaces);
                 }
                 else
                 {
-                    m_lineLength = 0;
+                    lineLength = 0;
                 }
 
-                m_outputNewLine = true;
+                lastOutputWasNewLine = true;
             }
         }
 
@@ -5043,9 +5020,8 @@ namespace NUglify.Css
 
             // if this is single-line mode, make sure CRLF-pairs are all converted to just CR
             if (Settings.OutputMode == OutputMode.SingleLine)
-            {
-                source = source.Replace("\r\n", "\n");
-            }
+	            source = source.Replace("\r\n", "\n");
+
             return source;
         }
         #endregion
