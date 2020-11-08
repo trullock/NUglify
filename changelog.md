@@ -10,6 +10,7 @@
 - Performance improvements to HtmlMinification
 - Fixes leading whitespace with Prettifying HTML
 - Fixes bug with style attributes spanning multiple lines
+- Adds support for custom indent character when prettifying CSS and JS, use `CommonSettings.Indent` instead of `CommonSettings.IndentSize`
 
 ## v1.9.11 (7 November 2020)
 - Made contents of `<script>` and `<style>` elements fully indented when outputting pretty HTML
