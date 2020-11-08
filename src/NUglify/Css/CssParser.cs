@@ -52,6 +52,8 @@ namespace NUglify.Css
         // start it as true so we don't start off with a blank line
         bool lastOutputWasNewLine = true;
 
+        int indentLevel;
+
         // set this to true to force a newline before any other output
         bool m_forceNewLine = false;
 
@@ -67,26 +69,23 @@ namespace NUglify.Css
 
         public string FileContext { get; set; }
 
-        CodeSettings m_jsSettings;
+        CodeSettings jsSettings;
         public CodeSettings JSSettings
         {
-            get
-            {
-                return m_jsSettings;
-            }
+            get => jsSettings;
             set
             {
                 if (value != null)
                 {
                     // clone the settings
-                    m_jsSettings = value.Clone();
+                    jsSettings = value.Clone();
 
                     // and then make SURE the source format is Expression
-                    m_jsSettings.SourceMode = JavaScriptSourceMode.Expression;
+                    jsSettings.SourceMode = JavaScriptSourceMode.Expression;
                 }
                 else
                 {
-                    m_jsSettings = new CodeSettings()
+                    jsSettings = new CodeSettings()
                         {
                             KillSwitch = (long)TreeModifications.MinifyStringLiterals,
                             SourceMode = JavaScriptSourceMode.Expression
@@ -112,10 +111,10 @@ namespace NUglify.Css
 
         #region Comment-related fields
 
-        /// <summary>
-        /// regular expression for matching css comments
-        /// Format: /*(anything or nothing inside)*/
-        /// </summary>
+        // / <summary>
+        // / regular expression for matching css comments
+        // / Format: /*(anything or nothing inside)*/
+        // / </summary>
         ////private static Regex s_regexComments = new Regex(
         ////    @"/\*([^*]|(\*+[^*/]))*\*+/",
         ////    RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
@@ -257,25 +256,8 @@ namespace NUglify.Css
 
         #region token-related properties
 
-        TokenType CurrentTokenType
-        {
-            get
-            {
-                return m_currentToken != null
-                    ? m_currentToken.TokenType
-                    : TokenType.None;
-            }
-        }
-
-        string CurrentTokenText
-        {
-            get
-            {
-                return m_currentToken != null
-                    ? m_currentToken.Text
-                    : string.Empty;
-            }
-        }
+        TokenType CurrentTokenType => m_currentToken?.TokenType ?? TokenType.None;
+        string CurrentTokenText => m_currentToken != null ? m_currentToken.Text : string.Empty;
 
         #endregion
 
@@ -295,6 +277,7 @@ namespace NUglify.Css
 
             // default is true
             m_parsingZeroReducibleProperty = true;
+            this.indentLevel = 0;
         }
 
         public string Parse(string source)
@@ -3416,7 +3399,7 @@ namespace NUglify.Css
                     };
 
                     // parse the source as an expression using our common JS settings
-                    var block = jsParser.Parse(new DocumentContext(expressionCode) { FileContext = this.FileContext }, m_jsSettings);
+                    var block = jsParser.Parse(new DocumentContext(expressionCode) { FileContext = this.FileContext }, jsSettings);
 
                     // if we got back a parsed block and there were no errors, output the minified code.
                     // if we didn't get back the block, or if there were any errors at all, just output
@@ -4804,10 +4787,9 @@ namespace NUglify.Css
                 parsed.Append(Settings.LineTerminator);
                 if (Settings.OutputMode == OutputMode.MultipleLines)
                 {
-                    var indentSpaces = Settings.GetIndent();
-                    lineLength = indentSpaces.Length;
-                    if (lineLength > 0)
-	                    parsed.Append(indentSpaces);
+                    lineLength = this.indentLevel * this.Settings.Indent.Length;
+                    for(var i = 0; i < this.indentLevel; i++)
+	                    parsed.Append(this.Settings.Indent);
                 }
                 else
                 {
@@ -4820,14 +4802,13 @@ namespace NUglify.Css
 
         void Indent()
         {
-            // increase the indent level by one
-            Settings.Indent();
+	        this.indentLevel++;
         }
 
         void Unindent()
         {
-            // only decrease the indent level by one IF it's greater than zero
-            Settings.Unindent();
+	        if (this.indentLevel > 0)
+		        this.indentLevel--;
         }
 
         #endregion

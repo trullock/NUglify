@@ -20,84 +20,7 @@ using NUglify.Helpers;
 
 namespace NUglify.JavaScript
 {
-    /// <summary>
-    /// Settings for how local variables and functions can be renamed
-    /// </summary>
-    public enum LocalRenaming
-    {
-        /// <summary>
-        /// Keep all names; don't rename anything
-        /// </summary>
-        KeepAll,
-
-        /// <summary>
-        /// Rename all local variables and functions that do not begin with "L_"
-        /// </summary>
-        KeepLocalizationVars,
-
-        /// <summary>
-        /// Rename all local variables and functions. (default)
-        /// </summary>
-        CrunchAll
-    }
-
-    /// <summary>
-    /// Settings for how to treat eval statements
-    /// </summary>
-    public enum EvalTreatment
-    {
-        /// <summary>
-        /// Ignore all eval statements (default). This assumes that code that is eval'd will not attempt
-        /// to access any local variables or functions, as those variables and function may be renamed.
-        /// </summary>
-        Ignore = 0,
-
-        /// <summary>
-        /// Assume any code that is eval'd will attempt to access local variables and functions declared
-        /// in the same scope as the eval statement. This will turn off local variable and function renaming
-        /// in any scope that contains an eval statement.
-        /// </summary>
-        MakeImmediateSafe,
-
-        /// <summary>
-        /// Assume that any local variable or function in any accessible scope chain may be referenced by 
-        /// code that is eval'd. This will turn off local variable and function renaming for all scopes that
-        /// contain an eval statement, and all their parent scopes up the chain to the global scope.
-        /// </summary>
-        MakeAllSafe
-    }
-
-    /// <summary>
-    /// Enum describing the type of input expected
-    /// </summary>
-    public enum JavaScriptSourceMode
-    {
-        /// <summary>Default input mode: a program, a block of top-level global statements</summary>
-        Program = 0,
-
-        /// <summary>Input is a single JavaScript Expression</summary>
-        Expression,
-
-        /// <summary>Input is an implicit function block, as in the value of an HTML onclick attribute</summary>
-        EventHandler,
-
-        /// <summary>Input is an implicit module block, as referenced by an import statement</summary>
-        Module,
-    }
-
-    /// <summary>
-    /// Enum describing how to treat the output JavaScript
-    /// </summary>
-    public enum JavaScriptFormat
-    {
-        /// <summary>normal JavaScript code</summary>
-        Normal = 0,
-
-        /// <summary>JSON code</summary>
-        JSON
-    }
-
-    /// <summary>
+	/// <summary>
     /// Object used to store code settings for JavaScript parsing, minification, and output
     /// </summary>
     public class CodeSettings : CommonSettings
@@ -149,7 +72,7 @@ namespace NUglify.JavaScript
         public CodeSettings Clone()
         {
             // create a new settings object and set all the properties using this settings object
-            var newSettings = new CodeSettings()
+            var newSettings = new CodeSettings
             {
                 // set the field, not the property. Setting the property will set a bunch of
                 // other properties, which may not represent their actual values.

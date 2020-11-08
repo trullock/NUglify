@@ -379,10 +379,21 @@ namespace NUglify
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Js")]
         public int JsIndentSize
         {
+#pragma warning disable 618
             get { return this.uglifyCommandParser.JSSettings.IndentSize; }
             set { this.uglifyCommandParser.JSSettings.IndentSize = value; }
+#pragma warning restore 618
         }
-        
+
+        /// <summary>
+        /// <see cref="CodeSettings.Indent"/> for more information.
+        /// </summary>
+        public string JsIndent
+        {
+	        get => this.uglifyCommandParser.JSSettings.Indent;
+	        set => this.uglifyCommandParser.JSSettings.Indent = value;
+        }
+
         /// <summary>
         /// <see cref="CodeSettings.InlineSafeStrings"/> for more information.
         /// </summary>
@@ -602,10 +613,21 @@ namespace NUglify
         /// </summary>
         public int CssIndentSpaces
         {
+#pragma warning disable 618
             get { return this.uglifyCommandParser.CssSettings.IndentSize; }
             set { this.uglifyCommandParser.CssSettings.IndentSize = value; }
+#pragma warning restore 618
         }
-        
+
+        /// <summary>
+        /// <see cref="CssSettings.Indent"/> for more information.
+        /// </summary>
+        public string CssIndent
+        {
+	        get => this.uglifyCommandParser.CssSettings.Indent;
+	        set => this.uglifyCommandParser.CssSettings.Indent = value;
+        }
+
         /// <summary>
         /// <see cref="CssSettings.TermSemicolons"/> for more information.
         /// </summary>

@@ -26,35 +26,29 @@ namespace NUglify.JavaScript.Visitors
     /// </summary>
     public class JsonOutputVisitor : IVisitor
     {
-	    TextWriter m_writer;
-	    CodeSettings m_settings;
+	    readonly TextWriter writer;
+	    readonly CodeSettings settings;
+	    int indentLevel;
 
-        public bool IsValid
-        {
-            get;
-            private set;
-        }
+        public bool IsValid { get; private set; }
 
         JsonOutputVisitor(TextWriter writer, CodeSettings settings)
         {
-            m_writer = writer;
-            m_settings = settings;
-            IsValid = true;
+            this.writer = writer;
+            this.settings = settings;
+            this.IsValid = true;
+            this.indentLevel = 0;
         }
 
         public static bool Apply(TextWriter writer, AstNode node, CodeSettings settings)
         {
-            if (node != null)
-            {
-                var visitor = new JsonOutputVisitor(writer, settings);
-                node.Accept(visitor);
-                return visitor.IsValid;
-            }
+	        if (node == null)
+		        return false;
 
-            return false;
+	        var visitor = new JsonOutputVisitor(writer, settings);
+            node.Accept(visitor);
+            return visitor.IsValid;
         }
-
-        #region supported nodes
 
         public void Visit(ArrayLiteral node)
         {
@@ -63,7 +57,7 @@ namespace NUglify.JavaScript.Visitors
                 // if this is multi-line output, we're going to want to run some checks first
                 // to see if we want to put the array all on one line or put elements on separate lines.
                 var multiLine = false;
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     if (node.Elements.Count > 5 || NotJustPrimitives(node.Elements))
                     {
@@ -71,13 +65,13 @@ namespace NUglify.JavaScript.Visitors
                     }
                 }
 
-                m_writer.Write('[');
+                writer.Write('[');
                 if (node.Elements != null)
                 {
                     if (multiLine)
                     {
                         // multiline -- let's pretty it up a bit
-                        m_settings.Indent();
+                        Indent();
                         try
                         {
                             var first = true;
@@ -89,7 +83,7 @@ namespace NUglify.JavaScript.Visitors
                                 }
                                 else
                                 {
-                                    m_writer.Write(',');
+                                    writer.Write(',');
                                 }
 
                                 NewLine();
@@ -98,7 +92,7 @@ namespace NUglify.JavaScript.Visitors
                         }
                         finally
                         {
-                            m_settings.Unindent();
+                            Unindent();
                         }
 
                         NewLine();
@@ -110,7 +104,7 @@ namespace NUglify.JavaScript.Visitors
                     }
                 }
 
-                m_writer.Write(']');
+                writer.Write(']');
             }
         }
 
@@ -121,7 +115,7 @@ namespace NUglify.JavaScript.Visitors
                 // if this is multi-line output, we're going to want to run some checks first
                 // to see if we want to put the array all on one line or put elements on separate lines.
                 var multiLine = false;
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     if (node.ArrayNode.Elements.Count > 5 || NotJustPrimitives(node.ArrayNode.Elements))
                     {
@@ -129,13 +123,13 @@ namespace NUglify.JavaScript.Visitors
                     }
                 }
 
-                m_writer.Write('[');
+                writer.Write('[');
                 if (node.ArrayNode.Elements != null)
                 {
                     if (multiLine)
                     {
                         // multiline -- let's pretty it up a bit
-                        m_settings.Indent();
+                        Indent();
                         try
                         {
                             var first = true;
@@ -147,7 +141,7 @@ namespace NUglify.JavaScript.Visitors
                                 }
                                 else
                                 {
-                                    m_writer.Write(',');
+                                    writer.Write(',');
                                 }
 
                                 NewLine();
@@ -156,7 +150,7 @@ namespace NUglify.JavaScript.Visitors
                         }
                         finally
                         {
-                            m_settings.Unindent();
+                            Unindent();
                         }
 
                         NewLine();
@@ -168,7 +162,7 @@ namespace NUglify.JavaScript.Visitors
                     }
                 }
 
-                m_writer.Write(']');
+                writer.Write(']');
             }
         }
 
@@ -180,10 +174,10 @@ namespace NUglify.JavaScript.Visitors
                 {
                     if (ndx > 0)
                     {
-                        m_writer.Write(',');
-                        if (m_settings.OutputMode == OutputMode.MultipleLines)
+                        writer.Write(',');
+                        if (settings.OutputMode == OutputMode.MultipleLines)
                         {
-                            m_writer.Write(' ');
+                            writer.Write(' ');
                         }
                     }
 
@@ -212,11 +206,11 @@ namespace NUglify.JavaScript.Visitors
                 switch (node.PrimitiveType)
                 {
                     case PrimitiveType.Boolean:
-                        m_writer.Write((bool)node.Value ? "true" : "false");
+                        writer.Write((bool)node.Value ? "true" : "false");
                         break;
 
                     case PrimitiveType.Null:
-                        m_writer.Write("null");
+                        writer.Write("null");
                         break;
 
                     case PrimitiveType.Number:
@@ -249,7 +243,7 @@ namespace NUglify.JavaScript.Visitors
                 // if it has already been integrated into the numeric value yet.
                 if (node.OperatorToken == JSToken.Minus)
                 {
-                    m_writer.Write('-');
+                    writer.Write('-');
                     if (node.Operand != null)
                     {
                         node.Operand.Accept(this);
@@ -267,13 +261,13 @@ namespace NUglify.JavaScript.Visitors
         {
             if (node != null)
             {
-                m_writer.Write('{');
+                writer.Write('{');
                 if (node.Properties != null)
                 {
                     // if this is multi-line output, we're going to want to run some checks first
                     // to see if we want to put the array all on one line or put elements on separate lines.
                     var multiLine = false;
-                    if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    if (settings.OutputMode == OutputMode.MultipleLines)
                     {
                         if (node.Properties.Count > 5 || NotJustPrimitives(node.Properties))
                         {
@@ -284,7 +278,7 @@ namespace NUglify.JavaScript.Visitors
                     if (multiLine)
                     {
                         // multiline -- let's pretty it up a bit
-                        m_settings.Indent();
+                        Indent();
                         try
                         {
                             var first = true;
@@ -296,7 +290,7 @@ namespace NUglify.JavaScript.Visitors
                                 }
                                 else
                                 {
-                                    m_writer.Write(',');
+                                    writer.Write(',');
                                 }
 
                                 NewLine();
@@ -305,7 +299,7 @@ namespace NUglify.JavaScript.Visitors
                         }
                         finally
                         {
-                            m_settings.Unindent();
+                            Unindent();
                         }
 
                         NewLine();
@@ -316,7 +310,7 @@ namespace NUglify.JavaScript.Visitors
                     }
                 }
 
-                m_writer.Write('}');
+                writer.Write('}');
             }
         }
 
@@ -333,9 +327,9 @@ namespace NUglify.JavaScript.Visitors
                 {
                     // really the property names can only be strings, so this 
                     // branch means the input was invalid.
-                    m_writer.Write('"');
+                    writer.Write('"');
                     Visit(node as ConstantWrapper);
-                    m_writer.Write('"');
+                    writer.Write('"');
                 }
             }
         }
@@ -349,7 +343,7 @@ namespace NUglify.JavaScript.Visitors
                     node.Name.Accept(this);
                 }
 
-                m_writer.Write(':');
+                writer.Write(':');
 
                 if (node.Value != null)
                 {
@@ -358,10 +352,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        #endregion 
-
-        #region unsupported nodes
-
+        
         public void Visit(AspNetBlockNode node)
         {
             // invalid! ignore
@@ -691,64 +682,56 @@ namespace NUglify.JavaScript.Visitors
             IsValid = false;
         }
 
-        #endregion
-
-        #region string formatting method
-
         void OutputString(string text)
         {
             // must be double-quote delimited
-            m_writer.Write('"');
+            writer.Write('"');
             for (var ndx = 0; ndx < text.Length; ++ndx)
             {
                 var ch = text[ndx];
                 switch (ch)
                 {
                     case '\"':
-                        m_writer.Write("\\\"");
+                        writer.Write("\\\"");
                         break;
 
                     case '\b':
-                        m_writer.Write("\\b");
+                        writer.Write("\\b");
                         break;
 
                     case '\f':
-                        m_writer.Write("\\f");
+                        writer.Write("\\f");
                         break;
 
                     case '\n':
-                        m_writer.Write("\\n");
+                        writer.Write("\\n");
                         break;
 
                     case '\r':
-                        m_writer.Write("\\r");
+                        writer.Write("\\r");
                         break;
 
                     case '\t':
-                        m_writer.Write("\\t");
+                        writer.Write("\\t");
                         break;
 
                     default:
                         if (ch < ' ')
                         {
                             // other control characters must be escaped as \uXXXX
-                            m_writer.Write("\\u{0:x4}", (int)ch);
+                            writer.Write("\\u{0:x4}", (int)ch);
                         }
                         else
                         {
                             // just append it. The output encoding will take care of the rest
-                            m_writer.Write(ch);
+                            writer.Write(ch);
                         }
                         break;
                 }
             }
 
-            m_writer.Write('"');
+            writer.Write('"');
         }
-
-        #endregion
-
-        #region numeric formatting methods
 
         public void OutputNumber(double numericValue, SourceContext originalContext)
         {
@@ -759,7 +742,7 @@ namespace NUglify.JavaScript.Visitors
                 if (originalContext != null && !string.IsNullOrEmpty(originalContext.Code)
                     && !originalContext.Document.IsGenerated)
                 {
-                    m_writer.Write(originalContext.Code);
+                    writer.Write(originalContext.Code);
                     return;
                 }
 
@@ -775,19 +758,19 @@ namespace NUglify.JavaScript.Visitors
 
                 // we're good to go -- just return the name because it will resolve to the
                 // global properties (make a special case for negative infinity)
-                m_writer.Write(double.IsNegativeInfinity(numericValue) ? "-Infinity" : objectName);
+                writer.Write(double.IsNegativeInfinity(numericValue) ? "-Infinity" : objectName);
             }
             else if (numericValue == 0)
             {
                 // special case zero because we don't need to go through all those
                 // gyrations to get a "0" -- and because negative zero is different
                 // than a positive zero
-                m_writer.Write(1 / numericValue < 0 ? "-0" : "0");
+                writer.Write(1 / numericValue < 0 ? "-0" : "0");
             }
             else
             {
                 // normal string representations
-                m_writer.Write(GetSmallestRep(numericValue.ToString("R", CultureInfo.InvariantCulture)));
+                writer.Write(GetSmallestRep(numericValue.ToString("R", CultureInfo.InvariantCulture)));
             }
         }
 
@@ -860,9 +843,6 @@ namespace NUglify.JavaScript.Visitors
             return number;
         }
 
-        #endregion
-
-        #region other helper methods
 
         static bool NotJustPrimitives(AstNodeList nodeList)
         {
@@ -886,10 +866,20 @@ namespace NUglify.JavaScript.Visitors
         /// </summary>
         void NewLine()
         {
-            m_writer.WriteLine();
-            m_writer.Write(m_settings.GetIndent());
+            writer.WriteLine();
+            for(var i = 0; i < this.indentLevel; i++)
+				writer.Write(settings.Indent);
         }
 
-        #endregion
+        void Unindent()
+        {
+	        if (this.indentLevel > 0)
+		        this.indentLevel--;
+        }
+
+        void Indent()
+        {
+	        this.indentLevel++;
+        }
     }
 }
