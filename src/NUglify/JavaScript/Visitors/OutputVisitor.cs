@@ -4620,10 +4620,8 @@ namespace NUglify.JavaScript.Visitors
 
         void MarkSegment(AstNode node, string name, SourceContext context)
         {
-            if (m_settings.SymbolsMap != null && node != null)
-            {
-                m_settings.SymbolsMap.MarkSegment(node, m_segmentStartLine, m_segmentStartColumn, name, context);
-            }
+            if (node != null)
+	            m_settings.SymbolsMap?.MarkSegment(node, m_segmentStartLine, m_segmentStartColumn, name, context);
         }
 
         void EndSymbol(object symbol)

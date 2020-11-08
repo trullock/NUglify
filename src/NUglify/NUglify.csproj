@@ -12,7 +12,7 @@
     <PackageId>NUglify</PackageId>
     <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
     <PackageReleaseNotes>https://github.com/trullock/NUglify/blob/master/changelog.md</PackageReleaseNotes>
-    <PackageIcon>https://raw.githubusercontent.com/trullock/NUglify/master/images/nuglify.png</PackageIcon>
+    <PackageIcon>nuglify.png</PackageIcon>
     <PackageProjectUrl>https://github.com/trullock/NUglify</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/trullock/NUglify</RepositoryUrl>
