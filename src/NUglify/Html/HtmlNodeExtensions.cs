@@ -19,5 +19,13 @@ namespace NUglify.Html
         {
             return node is HtmlText text && !text.Slice.IsEmptyOrWhiteSpace();
         }
+
+        public static bool IsFirstChild(this HtmlNode node)
+        {
+	        if (node.Parent == null)
+		        return false;
+
+	        return node.Parent.FirstChild == node;
+        }
     }
 }

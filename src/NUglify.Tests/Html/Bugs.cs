@@ -140,5 +140,34 @@ test
 	test
 </div>");
 		}
+
+		[Test]
+		public void Bug184()
+		{
+			input = @"<div>
+	<a>(Show)</a>
+	<a>(Hide)</a>
+</div>
+<div>
+	Inline text
+	<a>(Show)</a>
+	Between As
+	<a>(Hide)</a>
+</div>";
+			var htmlSettings = HtmlSettings.Pretty();
+			htmlSettings.RemoveOptionalTags = false;
+			htmlSettings.Indent = "\t";
+			htmlSettings.IsFragmentOnly = true;
+			htmlSettings.OutputTextNodesOnNewLine = false;
+
+			var htmlToText = Uglify.Html(input, htmlSettings);
+			equal(htmlToText.Code, @"<div>
+	<a>(Show)</a>
+	<a>(Hide)</a>
+</div>
+<div>
+	Inline text <a>(Show)</a> between As <a>(Hide)</a>
+</div>");
+		}
 	}
 }

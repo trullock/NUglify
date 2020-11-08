@@ -89,7 +89,7 @@ namespace NUglify.Html
                 "textarea",
             }.ToDictionaryBool(false);
 
-            KeepCommentsRegex = new List<Regex>()
+            KeepCommentsRegex = new List<Regex>
             {
                 new Regex(@"^!"), // Keep conditional comments
                 new Regex(@"^/?ko(?:[\s\-]|$)") // Keep knockout comments

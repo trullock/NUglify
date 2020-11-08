@@ -187,12 +187,19 @@ namespace NUglify.Html
         protected override void Write(HtmlText node)
         {
 	        var descriptorName = node.Parent.Descriptor?.Name;
-	        if (ShouldPretty(node.Parent) && settings.OutputTextNodesOnNewLine && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)))
+
+	        var isOnlyChild = node.Parent.FirstChild == node.Parent.LastChild && node.IsFirstChild();
+            
+	        var newlineForText = !isOnlyChild || settings.OutputTextNodesOnNewLine;
+	        var previousNodeIsNonBreaking = node.PreviousSibling is HtmlElement e ? settings.InlineTagsPreservingSpacesAround.ContainsKey(e.Descriptor.Name) : false;
+
+	        if (ShouldPretty(node.Parent) && newlineForText && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)) && !previousNodeIsNonBreaking)
 	        {
 		        writer.WriteLine();
 		        this.WriteIndent();
+                node.Slice.TrimStart();
             }
-
+            
             base.Write(node);
         }
 
@@ -215,7 +222,18 @@ namespace NUglify.Html
 
         protected virtual bool ShouldPretty(HtmlElement node)
         {
-	        return !this.isFirstWrite && settings.PrettyPrint && (node.Descriptor == null || !settings.InlineTagsPreservingSpacesAround.ContainsKey(node.Descriptor.Name));
+	        if (isFirstWrite)
+		        return false;
+
+	        if (!settings.PrettyPrint)
+		        return false;
+
+	        var isFirstChild = node.Parent != null && node.Parent.FirstChild == node;
+            
+            if (!isFirstChild && node.Descriptor != null && settings.InlineTagsPreservingSpacesAround.ContainsKey(node.Descriptor.Name))
+		        return false;
+            
+	        return true;
         }
     }
 }
