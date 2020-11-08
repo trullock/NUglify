@@ -191,7 +191,7 @@ namespace NUglify.Html
 	        var isOnlyChild = node.Parent.FirstChild == node.Parent.LastChild && node.IsFirstChild();
             
 	        var newlineForText = !isOnlyChild || settings.OutputTextNodesOnNewLine;
-	        var previousNodeIsNonBreaking = node.PreviousSibling is HtmlElement e ? settings.InlineTagsPreservingSpacesAround.ContainsKey(e.Descriptor.Name) : false;
+	        var previousNodeIsNonBreaking = node.PreviousSibling is HtmlElement e && settings.InlineTagsPreservingSpacesAround.ContainsKey(e.Descriptor?.Name ?? "null");
 
 	        if (ShouldPretty(node.Parent) && newlineForText && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)) && !previousNodeIsNonBreaking)
 	        {

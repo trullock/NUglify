@@ -162,11 +162,10 @@ test
 
 			var htmlToText = Uglify.Html(input, htmlSettings);
 			equal(htmlToText.Code, @"<div>
-	<a>(Show)</a>
-	<a>(Hide)</a>
+	<a>(Show)</a> <a>(Hide)</a>
 </div>
 <div>
-	Inline text <a>(Show)</a> between As <a>(Hide)</a>
+	Inline text <a>(Show)</a> Between As <a>(Hide)</a>
 </div>");
 		}
 	}
