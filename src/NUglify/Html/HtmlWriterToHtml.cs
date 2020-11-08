@@ -83,8 +83,11 @@ namespace NUglify.Html
 	        var descriptorName = node.Descriptor?.Name;
 	        if (ShouldPretty(node.Parent) && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)))
             {
-                writer.WriteLine();
-                this.WriteIndent();
+	            if (!node.Children.All(n => n is HtmlText) || settings.OutputTextNodesOnNewLine)
+	            {
+		            writer.WriteLine();
+		            this.WriteIndent();
+                }
             }
 
             base.WriteEndTag(node);
@@ -184,7 +187,7 @@ namespace NUglify.Html
         protected override void Write(HtmlText node)
         {
 	        var descriptorName = node.Parent.Descriptor?.Name;
-	        if (ShouldPretty(node.Parent) && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)))
+	        if (ShouldPretty(node.Parent) && settings.OutputTextNodesOnNewLine && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)))
 	        {
 		        writer.WriteLine();
 		        this.WriteIndent();
@@ -204,7 +207,7 @@ namespace NUglify.Html
                     writer.WriteLine();
                     WriteIndent();
 	                Write(lines[i]);
-                }
+				}
             }
             else
 				base.Write(node);

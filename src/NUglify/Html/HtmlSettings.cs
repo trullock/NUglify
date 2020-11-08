@@ -37,6 +37,7 @@ namespace NUglify.Html
             MinifyCssAttributes = true;
             CssSettings = new CssSettings();
             Indent = "  ";
+            OutputTextNodesOnNewLine = true;
 
             InlineTagsPreservingSpacesAround = new[]
             {
@@ -206,6 +207,12 @@ namespace NUglify.Html
         /// Default is <c>false</c>
         /// </summary>
         public bool PrettyPrint { get; set; }
+
+        /// <summary>
+        /// When PrettyPrint is true, should text nodes be outputted on their own line, or within their parent element
+        /// /// Default is <c>true</c>
+        /// </summary>
+        public bool OutputTextNodesOnNewLine { get; set; }
 
         /// <summary>
         /// The string used for one level of indent (e.g. a tab or 4 spaces)

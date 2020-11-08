@@ -49,6 +49,20 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void Bug170()
+        {
+	        input = "<html><head><title>Please indent me properly</title></head></html>";
+	        var htmlSettings = HtmlSettings.Pretty();
+	        htmlSettings.Indent = "\t";
+	        htmlSettings.OutputTextNodesOnNewLine = false;
+	        var htmlToText = Uglify.Html(input, htmlSettings);
+	        equal(htmlToText.Code, @"<html>
+	<head>
+		<title>Please indent me properly</title>
+	</head>
+</html>");
+        }
+		[Test]
         public void Bug171()
         {
 	        input = @"
