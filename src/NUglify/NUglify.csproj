@@ -69,4 +69,8 @@
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\images\nuglify.png" Link="nuglify.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
 </Project>
