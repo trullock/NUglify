@@ -123,6 +123,22 @@ let y = function() { foo() }</script>
 		</style>
 	</head>
 </html>");
-        }
-    }
+		}
+
+		[Test]
+		public void Bug182()
+		{
+			input = @"
+<div class=defaultHeader style=""text-align: center; background-color: #00bfff"">
+test
+</div>";
+			var htmlSettings = HtmlSettings.Pretty();
+			htmlSettings.Indent = "\t";
+			htmlSettings.IsFragmentOnly = true;
+			var htmlToText = Uglify.Html(input, htmlSettings);
+			equal(htmlToText.Code, @"<div class=""defaultHeader"" style=""text-align: center; background-color: #00bfff"">
+	test
+</div>");
+		}
+	}
 }

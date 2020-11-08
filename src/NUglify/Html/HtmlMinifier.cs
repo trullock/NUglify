@@ -361,6 +361,9 @@ namespace NUglify.Html
         {
 	        var attributeCssSettings = this.settings.CssSettings.Clone();
 	        attributeCssSettings.CssType = CssType.DeclarationList;
+	        attributeCssSettings.OutputMode = OutputMode.SingleLine;
+	        attributeCssSettings.OutputDeclarationWhitespace = this.settings.PrettyPrint;
+
             var result = Uglify.Css(text, "inner_css", attributeCssSettings);
             if (result.Errors != null)
                 Errors.AddRange(result.Errors);
