@@ -27,7 +27,7 @@ namespace NUglify
     {
         #region ProcessCssFile method
 
-        private int ProcessCssFile(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, StringBuilder outputBuilder)
+        int ProcessCssFile(IList<InputGroup> inputGroups, UglifyCommandParser uglifyCommandParser, StringBuilder outputBuilder)
         {
             var retVal = 0;
 

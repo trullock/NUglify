@@ -527,7 +527,7 @@ namespace NUglify.Tests.Html
             TestHtmlFolder(inputFolder);
         }
 
-        private void TestHtmlFolder(DirectoryInfo folder)
+        void TestHtmlFolder(DirectoryInfo folder)
         {
             int count = 0;
             foreach (var file in folder.EnumerateFiles("*.html"))
@@ -547,7 +547,7 @@ namespace NUglify.Tests.Html
         }
 
 
-        private List<string> DumpDom(string input)
+        List<string> DumpDom(string input)
         {
             var parser = new HtmlParser(input);
             var doc = parser.Parse();
@@ -590,7 +590,7 @@ namespace NUglify.Tests.Html
             return output;
         }
 
-        private void AssertHtml(string input, params string[] expected)
+        void AssertHtml(string input, params string[] expected)
         {
             var output = DumpDom(input);
 

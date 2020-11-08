@@ -22,7 +22,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class FunctionScope : ActivationObject
     {
-        private HashSet<ActivationObject> m_refScopes;
+	    HashSet<ActivationObject> m_refScopes;
 
         internal FunctionScope(ActivationObject parent, bool isExpression, CodeSettings settings, FunctionObject funcObj)
             : base(parent, settings)
@@ -71,7 +71,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private void DefineFunctionExpressionName()
+        void DefineFunctionExpressionName()
         {
             var functionObject = (FunctionObject)Owner;
 
@@ -85,7 +85,7 @@ namespace NUglify.JavaScript.Syntax
             this.AddField(functionField);
         }
 
-        private void DefineParameters()
+        void DefineParameters()
         {
             var functionObject = (FunctionObject)Owner;
             if (functionObject.ParameterDeclarations != null)
@@ -119,7 +119,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private void DefineArgumentsObject()
+        void DefineArgumentsObject()
         {
             // this one is easy: if it's not already defined, define it now
             const string name = "arguments";

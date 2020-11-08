@@ -31,9 +31,9 @@ namespace NUglify.JavaScript.Syntax
     /// </summary>
     public class ClassNode : AstNode
     {
-        private AstNode m_binding;
-        private AstNode m_heritage;
-        private AstNodeList m_elements;
+	    AstNode m_binding;
+	    AstNode m_heritage;
+	    AstNodeList m_elements;
 
         public SourceContext ClassContext { get; set; }
 

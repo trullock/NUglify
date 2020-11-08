@@ -22,7 +22,7 @@ namespace NUglify.JavaScript.Syntax
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public abstract class ImportExportStatement : Statement, IEnumerable<AstNode>, IModuleReference
     {
-        private List<AstNode> m_list;
+	    List<AstNode> m_list;
 
         public SourceContext KeywordContext { get; set; }
 

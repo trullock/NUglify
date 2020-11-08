@@ -20,9 +20,9 @@ using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript.Visitors
 {
-    internal class EvaluateLiteralVisitor : TreeVisitor
+	class EvaluateLiteralVisitor : TreeVisitor
     {
-        private JSParser m_parser;
+	    JSParser m_parser;
 
         public EvaluateLiteralVisitor(JSParser parser) 
         {
@@ -38,7 +38,7 @@ namespace NUglify.JavaScript.Visitors
         /// </summary>
         /// <param name="newLiteral">newLiteral we intend to replace this binaryop node with</param>
         /// <returns>true if we replaced the parent callnode with a member-dot operation</returns>
-        private bool ReplaceMemberBracketWithDot(BinaryExpression node, ConstantWrapper newLiteral)
+        bool ReplaceMemberBracketWithDot(BinaryExpression node, ConstantWrapper newLiteral)
         {
             if (newLiteral.IsStringLiteral)
             {
@@ -119,7 +119,7 @@ namespace NUglify.JavaScript.Visitors
         /// </summary>
         /// <param name="node">node to replace</param>
         /// <param name="newLiteral">literal to replace the node with</param>
-        private static void ReplaceNodeWithLiteral(AstNode node, ConstantWrapper newLiteral)
+        static void ReplaceNodeWithLiteral(AstNode node, ConstantWrapper newLiteral)
         {
             var grouping = node.Parent as GroupingOperator;
             if (grouping != null)
@@ -135,7 +135,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void ReplaceNodeCheckParens(AstNode oldNode, AstNode newNode)
+        static void ReplaceNodeCheckParens(AstNode oldNode, AstNode newNode)
         {
             var grouping = oldNode.Parent as GroupingOperator;
             if (grouping != null)
@@ -186,7 +186,7 @@ namespace NUglify.JavaScript.Visitors
         /// <param name="left">left-side operand</param>
         /// <param name="right">right-side operand</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private void EvalThisOperator(BinaryExpression node, ConstantWrapper left, ConstantWrapper right)
+        void EvalThisOperator(BinaryExpression node, ConstantWrapper left, ConstantWrapper right)
         {
             // we can evaluate these operators if we know both operands are literal
             // number, boolean, string or null
@@ -327,7 +327,7 @@ namespace NUglify.JavaScript.Visitors
         /// </summary>
         /// <param name="binaryOp">the binary operator that is our left-hand operand</param>
         /// <param name="newLiteral">the newly-combined literal</param>
-        private void RotateFromLeft(BinaryExpression node, BinaryExpression binaryOp, ConstantWrapper newLiteral)
+        void RotateFromLeft(BinaryExpression node, BinaryExpression binaryOp, ConstantWrapper newLiteral)
         {
             // replace our node with the binary operator
             binaryOp.Operand2 = newLiteral;
@@ -351,7 +351,7 @@ namespace NUglify.JavaScript.Visitors
         /// </summary>
         /// <param name="binaryOp">the binary operator that is our right-hand operand</param>
         /// <param name="newLiteral">the newly-combined literal</param>
-        private void RotateFromRight(BinaryExpression node, BinaryExpression binaryOp, ConstantWrapper newLiteral)
+        void RotateFromRight(BinaryExpression node, BinaryExpression binaryOp, ConstantWrapper newLiteral)
         {
             // replace our node with the binary operator
             binaryOp.Operand1 = newLiteral;
@@ -373,7 +373,7 @@ namespace NUglify.JavaScript.Visitors
         /// <param name="right">right operand</param>
         /// <param name="result">result</param>
         /// <returns>true if result not overflow or underflow; false if it is</returns>
-        private static bool NoMultiplicativeOverOrUnderFlow(ConstantWrapper left, ConstantWrapper right, ConstantWrapper result)
+        static bool NoMultiplicativeOverOrUnderFlow(ConstantWrapper left, ConstantWrapper right, ConstantWrapper result)
         {
             // check for overflow
             bool okayToProceed = !result.IsInfinity;
@@ -394,7 +394,7 @@ namespace NUglify.JavaScript.Visitors
         /// </summary>
         /// <param name="result">result constant</param>
         /// <returns>true is not an overflow; false if it is</returns>
-        private static bool NoOverflow(ConstantWrapper result)
+        static bool NoOverflow(ConstantWrapper result)
         {
             return !result.IsInfinity;
         }
@@ -406,7 +406,7 @@ namespace NUglify.JavaScript.Visitors
         /// <param name="otherConstant">first constant</param>
         /// <param name="leftExpression">first operator</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private void EvalToTheLeft(BinaryExpression node, ConstantWrapper thisConstant, ConstantWrapper otherConstant, BinaryExpression leftExpression)
+        void EvalToTheLeft(BinaryExpression node, ConstantWrapper thisConstant, ConstantWrapper otherConstant, BinaryExpression leftExpression)
         {
             if (leftExpression.OperatorToken == JSToken.Plus && node.OperatorToken == JSToken.Plus)
             {
@@ -562,7 +562,7 @@ namespace NUglify.JavaScript.Visitors
         /// <param name="otherConstant">first constant</param>
         /// <param name="leftExpression">first operator</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private void EvalFarToTheLeft(BinaryExpression node, ConstantWrapper thisConstant, ConstantWrapper otherConstant, BinaryExpression leftExpression)
+        void EvalFarToTheLeft(BinaryExpression node, ConstantWrapper thisConstant, ConstantWrapper otherConstant, BinaryExpression leftExpression)
         {
             if (leftExpression.OperatorToken == JSToken.Minus)
             {
@@ -653,7 +653,7 @@ namespace NUglify.JavaScript.Visitors
         /// <param name="otherConstant">second constant</param>
         /// <param name="leftOperator">second operator</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private void EvalToTheRight(BinaryExpression node, ConstantWrapper thisConstant, ConstantWrapper otherConstant, BinaryExpression rightExpression)
+        void EvalToTheRight(BinaryExpression node, ConstantWrapper thisConstant, ConstantWrapper otherConstant, BinaryExpression rightExpression)
         {
             if (node.OperatorToken == JSToken.Plus)
             {
@@ -780,7 +780,7 @@ namespace NUglify.JavaScript.Visitors
         /// <param name="otherConstant">second constant</param>
         /// <param name="rightExpression">second operator</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private void EvalFarToTheRight(BinaryExpression node, ConstantWrapper thisConstant, ConstantWrapper otherConstant, BinaryExpression rightExpression)
+        void EvalFarToTheRight(BinaryExpression node, ConstantWrapper thisConstant, ConstantWrapper otherConstant, BinaryExpression rightExpression)
         {
             if (rightExpression.OperatorToken == JSToken.Minus)
             {
@@ -889,7 +889,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region Constant operation methods
 
-        private ConstantWrapper Multiply(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper Multiply(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -928,7 +928,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper Divide(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper Divide(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -967,7 +967,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper Modulo(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper Modulo(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1006,7 +1006,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper Plus(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper Plus(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1023,7 +1023,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper NumericAddition(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper NumericAddition(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1062,7 +1062,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper StringConcat(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper StringConcat(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1092,7 +1092,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper Minus(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper Minus(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1131,7 +1131,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper LeftShift(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper LeftShift(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1158,7 +1158,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper RightShift(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper RightShift(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1186,7 +1186,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper UnsignedRightShift(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper UnsignedRightShift(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1214,7 +1214,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper LessThan(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper LessThan(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1248,7 +1248,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper LessThanOrEqual(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper LessThanOrEqual(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1283,7 +1283,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper GreaterThan(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper GreaterThan(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1318,7 +1318,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper GreaterThanOrEqual(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper GreaterThanOrEqual(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1353,7 +1353,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper Equal(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper Equal(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1422,7 +1422,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper NotEqual(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper NotEqual(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1491,7 +1491,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper StrictEqual(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper StrictEqual(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1550,7 +1550,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper StrictNotEqual(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper StrictNotEqual(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1609,7 +1609,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper BitwiseAnd(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper BitwiseAnd(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1631,7 +1631,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper BitwiseOr(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper BitwiseOr(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1653,7 +1653,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper BitwiseXor(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper BitwiseXor(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1675,7 +1675,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper LogicalAnd(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper LogicalAnd(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
@@ -1695,7 +1695,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper LogicalOr(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper LogicalOr(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
@@ -1715,7 +1715,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private ConstantWrapper NullCoalesce(ConstantWrapper left, ConstantWrapper right)
+        ConstantWrapper NullCoalesce(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
@@ -1733,8 +1733,8 @@ namespace NUglify.JavaScript.Visitors
 
             return newLiteral;
         }
-		
-        private ConstantWrapper Exponent(ConstantWrapper left, ConstantWrapper right)
+
+        ConstantWrapper Exponent(ConstantWrapper left, ConstantWrapper right)
         {
             ConstantWrapper newLiteral = null;
 
@@ -1773,7 +1773,7 @@ namespace NUglify.JavaScript.Visitors
             return newLiteral;
         }
 
-        private static bool OnlyHasConstantItems(ArrayLiteral arrayLiteral)
+        static bool OnlyHasConstantItems(ArrayLiteral arrayLiteral)
         {
             var elementCount = arrayLiteral.Elements.Count;
             for (var ndx = 0; ndx < elementCount; ++ndx)
@@ -1790,7 +1790,7 @@ namespace NUglify.JavaScript.Visitors
             return true;
         }
 
-        private static string ComputeJoin(ArrayLiteral arrayLiteral, ConstantWrapper separatorNode)
+        static string ComputeJoin(ArrayLiteral arrayLiteral, ConstantWrapper separatorNode)
         {
             // if the separator node is null, then the separator is a single comma character.
             // otherwise it's just the string value of the separator.
@@ -1823,7 +1823,7 @@ namespace NUglify.JavaScript.Visitors
 
         #endregion
 
-        private int NodeLength(AstNode node)
+        int NodeLength(AstNode node)
         {
             var code = OutputVisitor.Apply(node, m_parser.Settings);
             return code.IfNotNull(c => c.Length);
@@ -1881,7 +1881,7 @@ namespace NUglify.JavaScript.Visitors
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private void DoBinaryOperator(BinaryExpression node)
+        void DoBinaryOperator(BinaryExpression node)
         {
             if (m_parser.Settings.EvalLiteralExpressions)
             {
@@ -2090,7 +2090,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private bool IsEvalLookup(AstNode node)
+        bool IsEvalLookup(AstNode node)
         {
             var lookupExpression = node as LookupExpression;
             return lookupExpression != null && lookupExpression.Name == "eval";
@@ -2154,7 +2154,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void DoConditional(Conditional node)
+        void DoConditional(Conditional node)
         {
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
             {
@@ -2188,7 +2188,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void DoConditionalCompilationElseIf(ConditionalCompilationElseIf node)
+        void DoConditionalCompilationElseIf(ConditionalCompilationElseIf node)
         {
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
             {
@@ -2224,7 +2224,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void DoConditionalCompilationIf(ConditionalCompilationIf node)
+        void DoConditionalCompilationIf(ConditionalCompilationIf node)
         {
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
             {
@@ -2260,7 +2260,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void DoDoWhile(DoWhileStatement node)
+        void DoDoWhile(DoWhileStatement node)
         {
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
             {
@@ -2294,7 +2294,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void DoForNode(ForStatement node)
+        void DoForNode(ForStatement node)
         {
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
             {
@@ -2335,7 +2335,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void DoIfNode(IfStatement node)
+        void DoIfNode(IfStatement node)
         {
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
             {
@@ -2413,7 +2413,7 @@ namespace NUglify.JavaScript.Visitors
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private void DoUnaryNode(UnaryExpression node)
+        void DoUnaryNode(UnaryExpression node)
         {
             if (!node.OperatorInConditionalCompilationComment
                 && m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
@@ -2550,7 +2550,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void DoWhileNode(WhileStatement node)
+        void DoWhileNode(WhileStatement node)
         {
             // see if the condition is a constant
             if (m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))

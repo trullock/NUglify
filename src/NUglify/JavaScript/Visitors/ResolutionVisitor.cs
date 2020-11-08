@@ -33,32 +33,32 @@ namespace NUglify.JavaScript.Visitors
         #region private fields
 
         /// <summary>index to use for ordering the statements in this scope</summary>
-        private long m_orderIndex;
+        long m_orderIndex;
 
         /// <summary>flag indicating whether we've encountered some unreachable code</summary>
-        private bool m_isUnreachable;
+        bool m_isUnreachable;
 
         /// <summary>depth level of with-statements, needed so we can treat decls within with-scopes specially</summary>
-        private int m_withDepth;
+        int m_withDepth;
 
         /// <summary>stack to maintain the current lexical scope as we traverse the tree</summary>
-        private Stack<ActivationObject> m_lexicalStack;
+        Stack<ActivationObject> m_lexicalStack;
 
         /// <summary>stack to maintain the current variable scope as we traverse the tree</summary>
-        private Stack<ActivationObject> m_variableStack;
+        Stack<ActivationObject> m_variableStack;
 
         /// <summary>code setings</summary>
-        private CodeSettings m_settings;
+        CodeSettings m_settings;
 
         /// <summary>language version of the script</summary>
-        private ScriptVersion m_scriptVersion;
+        ScriptVersion m_scriptVersion;
 
         #endregion
 
         #region private properties
 
         /// <summary>Current lexical scope</summary>
-        private ActivationObject CurrentLexicalScope
+        ActivationObject CurrentLexicalScope
         {
             get
             {
@@ -67,7 +67,7 @@ namespace NUglify.JavaScript.Visitors
         }
 
         /// <summary>current variable scope</summary>
-        private ActivationObject CurrentVariableScope
+        ActivationObject CurrentVariableScope
         {
             get
             {
@@ -76,7 +76,7 @@ namespace NUglify.JavaScript.Visitors
         }
 
         /// <summary>retrieve the next order index</summary>
-        private long NextOrderIndex
+        long NextOrderIndex
         {
             get
             {
@@ -88,7 +88,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region private constructor
 
-        private ResolutionVisitor(ActivationObject rootScope, JSParser parser)
+        ResolutionVisitor(ActivationObject rootScope, JSParser parser)
         {
             // create the lexical and variable scope stacks and push the root scope onto them
             m_lexicalStack = new Stack<ActivationObject>();
@@ -130,7 +130,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region private static methods
 
-        private static void CollapseBlockScope(ActivationObject blockScope)
+        static void CollapseBlockScope(ActivationObject blockScope)
         {
             // copy over the stuff we want to carry over to the parent
             blockScope.ScopeLookups.CopyItemsTo(blockScope.Parent.ScopeLookups);
@@ -143,7 +143,7 @@ namespace NUglify.JavaScript.Visitors
             blockScope.Parent.ChildScopes.Remove(blockScope);
         }
 
-        private static void CreateFields(ActivationObject scope)
+        static void CreateFields(ActivationObject scope)
         {
             // declare this scope
             scope.DeclareScope();
@@ -155,7 +155,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void ResolveLookups(ActivationObject scope, CodeSettings settings)
+        static void ResolveLookups(ActivationObject scope, CodeSettings settings)
         {
             // resolve each lookup this scope contains
             foreach (var lookup in scope.ScopeLookups)
@@ -190,7 +190,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void MakeExpectedGlobal(JSVariableField varField)
+        static void MakeExpectedGlobal(JSVariableField varField)
         {
             // to make this an expected global, we're going to change the type of this field, 
             // then just keep walking up the outer field references doing the same
@@ -202,7 +202,7 @@ namespace NUglify.JavaScript.Visitors
             while (varField != null);
         }
 
-        private static void ResolveLookup(ActivationObject scope, LookupExpression lookup, CodeSettings settings)
+        static void ResolveLookup(ActivationObject scope, LookupExpression lookup, CodeSettings settings)
         {
             // resolve lookup via the lexical scope
             lookup.VariableField = scope.FindReference(lookup.Name);
@@ -233,7 +233,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void ResolvePredefinedGlobal(LookupExpression lookup, ActivationObject scope, CodeSettings settings)
+        static void ResolvePredefinedGlobal(LookupExpression lookup, ActivationObject scope, CodeSettings settings)
         {
             if (lookup.Name.Length == 6 && string.CompareOrdinal(lookup.Name, "window") == 0)
             {
@@ -280,7 +280,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void ResolveUndefinedGlobal(LookupExpression lookup)
+        static void ResolveUndefinedGlobal(LookupExpression lookup)
         {
             // if the lookup isn't generated and isn't the object of a typeof operator,
             // then we want to throw an error.
@@ -332,7 +332,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void AddGhostedFields(ActivationObject scope)
+        static void AddGhostedFields(ActivationObject scope)
         {
             foreach (var catchBinding in scope.GhostedCatchParameters)
             {
@@ -351,7 +351,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void ResolveGhostedCatchParameter(ActivationObject scope, BindingIdentifier catchBinding)
+        static void ResolveGhostedCatchParameter(ActivationObject scope, BindingIdentifier catchBinding)
         {
             // if the catch parameter isn't a simple binding identifier, then we have an ES6 syntax and
             // we don't need to worry about this. Only a problem with older IE browsers not following the
@@ -413,7 +413,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static void ResolveGhostedFunctions(ActivationObject scope, FunctionObject funcObject)
+        static void ResolveGhostedFunctions(ActivationObject scope, FunctionObject funcObject)
         {
             var binding = funcObject.Binding;
             var functionField = binding.VariableField;
@@ -500,7 +500,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static bool IsBindingIdentifierWithName(VariableDeclaration varDecl, string name)
+        static bool IsBindingIdentifierWithName(VariableDeclaration varDecl, string name)
         {
             var bindingIdentifier = varDecl == null ? null : varDecl.Binding as BindingIdentifier;
             return bindingIdentifier != null 
@@ -508,7 +508,7 @@ namespace NUglify.JavaScript.Visitors
                 && string.CompareOrdinal(bindingIdentifier.Name, name) == 0;
         }
 
-        private static void AddDeclaredNames(AstNode node, ICollection<INameDeclaration> collection)
+        static void AddDeclaredNames(AstNode node, ICollection<INameDeclaration> collection)
         {
             var nameDeclaration = node as INameDeclaration;
             if (nameDeclaration != null)
@@ -524,7 +524,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static ModuleScope GetModuleScope(AstNode node)
+        static ModuleScope GetModuleScope(AstNode node)
         {
             // the enclosing scope of an export statement BETTER be a module scope, since
             // export statements should ONLY be at the top level of a module. 

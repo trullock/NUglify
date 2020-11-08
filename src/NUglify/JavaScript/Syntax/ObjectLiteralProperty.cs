@@ -22,8 +22,8 @@ namespace NUglify.JavaScript.Syntax
 {
     public class ObjectLiteralProperty : AstNode
     {
-        private ObjectLiteralField m_propertyName;
-        private AstNode m_propertyValue;
+	    ObjectLiteralField m_propertyName;
+	    AstNode m_propertyValue;
 
         public ObjectLiteralField Name
         {

@@ -22,8 +22,8 @@ namespace NUglify.JavaScript.Syntax
 {
     public class ModuleDeclaration : AstNode, IModuleReference
     {
-        private BindingIdentifier m_binding;
-        private BlockStatement m_body;
+	    BindingIdentifier m_binding;
+	    BlockStatement m_body;
 
         /// <summary>
         /// Gets or sets the identifier used when binding all of an external modules exports as properties on a local object

@@ -20,7 +20,7 @@ namespace NUglify.JavaScript
     public sealed class Missing
     {
       // singleton implementation
-      private static readonly Missing s_instance = new Missing();
+      static readonly Missing s_instance = new Missing();
       public static Missing Value
       {
         get
@@ -28,8 +28,8 @@ namespace NUglify.JavaScript
           return s_instance;
         }
       }
-    
-      private Missing(){}
+
+      Missing(){}
 
       public override string ToString()
       {

@@ -21,10 +21,10 @@ namespace NUglify.JavaScript.Visitors
     /// <summary>
     /// Determines whether or not a node needs parentheses around it within a new operator
     /// </summary>
-    internal class NewParensVisitor : IVisitor
+    class NewParensVisitor : IVisitor
     {
-        private bool m_needsParens;// = false;
-        private bool m_outerHasNoArguments;
+	    bool m_needsParens;// = false;
+	    bool m_outerHasNoArguments;
 
         public static bool NeedsParens(AstNode expression, bool outerHasNoArguments)
         {
@@ -33,7 +33,7 @@ namespace NUglify.JavaScript.Visitors
             return visitor.m_needsParens;
         }
 
-        private NewParensVisitor(bool outerHasNoArguments)
+        NewParensVisitor(bool outerHasNoArguments)
         {
             // save whether or not the outer new-operator has any arguments itself
             m_outerHasNoArguments = outerHasNoArguments;

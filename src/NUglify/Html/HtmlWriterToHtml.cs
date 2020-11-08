@@ -1,8 +1,4 @@
-﻿// Copyright (c) Alexandre Mutel. All rights reserved.
-// This file is licensed under the BSD-Clause 2 license. 
-// See the license.txt file in the project root for more information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,68 +7,49 @@ namespace NUglify.Html
 {
     public class HtmlWriterToHtml : HtmlWriterBase
     {
-        private readonly HtmlSettings settings;
-
-        private bool lastNewLine = false;
-
-        private bool allowIndent = true;
-
-        private static readonly char[] AttributeCharsForcingQuote = new[]
-        {' ', '\t', '\n', '\f', '\r', '"', '\'', '`', '=', '<', '>'};
+	    protected static readonly char[] AttributeCharsForcingQuote = {' ', '\t', '\n', '\f', '\r', '"', '\'', '`', '=', '<', '>'};
+	    protected readonly HtmlSettings settings;
+	    protected readonly TextWriter writer;
+	    protected bool isFirstWrite;
 
         public HtmlWriterToHtml(TextWriter writer, HtmlSettings settings = null)
         {
-            if (writer == null) throw new ArgumentNullException(nameof(writer));
-            Writer = writer;
-            writer.NewLine = "\n";
+	        this.writer = writer ?? throw new ArgumentNullException(nameof(writer));
+            this.writer.NewLine = "\n";
             this.settings = settings;
+            this.isFirstWrite = true;
         }
-
-
-        public TextWriter Writer { get; }
-
-        void WriteIndent()
+        
+        protected virtual void WriteIndent()
         {
-	        for (int i = 0; i < Depth; i++)
-		        Writer.Write(settings.Indent);
+	        for (var i = 0; i < Depth; i++)
+		        writer.Write(settings.Indent);
         }
 
         protected override void Write(string text)
         {
-            if (settings.PrettyPrint && lastNewLine && allowIndent)
-            {
-                this.WriteIndent();
-                lastNewLine = false;
-            }
-
-            Writer.Write(text);
+            writer.Write(text);
+            this.isFirstWrite = false;
         }
 
         protected override void Write(char c)
         {
-            if (settings.PrettyPrint && lastNewLine && allowIndent)
-            {
-	            this.WriteIndent();
-                lastNewLine = false;
-            }
-
-            Writer.Write(c);
+            writer.Write(c);
+            this.isFirstWrite = false;
         }
 
         protected override void WriteStartTag(HtmlElement node)
         {
-            var shouldPretty = ShouldPretty(node);
-            allowIndent = (settings.PrettyPrint && !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(node.Name));
-            if (shouldPretty && !lastNewLine)
+            if (ShouldPretty(node))
             {
-                Writer.WriteLine();
-                lastNewLine = true;
+                writer.WriteLine();
+                this.WriteIndent();
             }
 
-            Write("<");
+            Write('<');
             var isProcessing = (node.Kind & ElementKind.ProcessingInstruction) != 0;
             if (isProcessing) 
-	            Write("?");
+	            Write('?');
 
             Write(node.Name);
 
@@ -87,50 +64,30 @@ namespace NUglify.Html
                 var i = 0;
                 foreach (var attribute in attributes)
                 {
-                    Write(" ");
+                    Write(' ');
                     WriteAttribute(node, attribute, i++ == count);
                 }
             }
 
             if (isProcessing) 
-	            Write("?");
+	            Write('?');
 
             if ((node.Kind & ElementKind.SelfClosing) != 0 && (XmlNamespaceLevel > 0 || !settings.RemoveOptionalTags)) 
 	            Write(" /");
 
-            Write(">");
-
-            if (shouldPretty)
-            {
-                Writer.WriteLine();
-                lastNewLine = true;
-            }
+            Write('>');
         }
 
         protected override void WriteEndTag(HtmlElement node)
         {
-            var shouldPretty = ShouldPretty(node);
-
-            if (shouldPretty && !lastNewLine)
+	        var descriptorName = node.Descriptor?.Name;
+	        if (ShouldPretty(node.Parent) && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)))
             {
-                Writer.WriteLine();
-                lastNewLine = true;
+                writer.WriteLine();
+                this.WriteIndent();
             }
 
             base.WriteEndTag(node);
-
-            allowIndent = true;
-
-            if (shouldPretty)
-            {
-                Writer.WriteLine();
-                lastNewLine = true;
-            }
-        }
-
-        bool ShouldPretty(HtmlElement node)
-        {
-            return settings.PrettyPrint && (node.Descriptor == null || !settings.InlineTagsPreservingSpacesAround.ContainsKey(node.Descriptor.Name));
         }
 
         protected override void WriteAttributeValue(HtmlElement element, HtmlAttribute attribute, bool isLast)
@@ -219,28 +176,43 @@ namespace NUglify.Html
 
                 if (emitSpace)
                 {
-                    Write(" ");
+                    Write(' ');
                 }
             }
+        }
+
+        protected override void Write(HtmlText node)
+        {
+	        var descriptorName = node.Parent.Descriptor?.Name;
+	        if (ShouldPretty(node.Parent) && (descriptorName == null || !settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(descriptorName)))
+	        {
+		        writer.WriteLine();
+		        this.WriteIndent();
+            }
+
+            base.Write(node);
         }
 
         protected override void Write(HtmlRaw node)
         {
 	        if (ShouldPretty(node.Parent) && (node.Parent?.Name == "script" || node.Parent?.Name == "style"))
 	        {
-		        var lines = node.Slice.ToString().Split(new [] { Writer.NewLine }, StringSplitOptions.None);
-		        // we're already indented for the first line
-		        Write(lines[0]);
-
-                for (var i = 1; i < lines.Length; i++)
+                var lines = node.Slice.ToString().Split(new [] { writer.NewLine }, StringSplitOptions.None);
+		        
+                for (var i = 0; i < lines.Length; i++)
                 {
-	                Write(Writer.NewLine);
+                    writer.WriteLine();
                     WriteIndent();
 	                Write(lines[i]);
                 }
             }
             else
 				base.Write(node);
+        }
+
+        protected virtual bool ShouldPretty(HtmlElement node)
+        {
+	        return !this.isFirstWrite && settings.PrettyPrint && (node.Descriptor == null || !settings.InlineTagsPreservingSpacesAround.ContainsKey(node.Descriptor.Name));
         }
     }
 }

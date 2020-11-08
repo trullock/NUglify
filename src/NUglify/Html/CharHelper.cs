@@ -13,9 +13,7 @@ namespace NUglify.Html
         public static string CollapseWhitespaces(string text)
         {
             if (text == null)
-            {
-                return null;
-            }
+	            return null;
 
             StringBuilder sb = null;
 
@@ -87,8 +85,7 @@ namespace NUglify.Html
             // the control characters, 
             // and any characters that are not defined by Unicode. 
 
-            return !c.IsSpace() && c != 0 && c != '"' && c != '\'' && c != '>' && c != '/' && c != '=' &&
-                   !char.IsControl(c);
+            return !c.IsSpace() && c != 0 && c != '"' && c != '\'' && c != '>' && c != '/' && c != '=' && !char.IsControl(c);
         }
 
         [MethodImpl((MethodImplOptions)256)]
@@ -106,7 +103,7 @@ namespace NUglify.Html
         [MethodImpl((MethodImplOptions)256)]
         public static bool IsAlphaUpper(this char c)
         {
-            return (c >= 'A' && c <= 'Z');
+            return c >= 'A' && c <= 'Z';
         }
 
         [MethodImpl((MethodImplOptions)256)]

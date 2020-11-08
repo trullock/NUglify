@@ -52,7 +52,7 @@ namespace NUglify.Tests.Core
         /// <param name="source">JavaScript source code to minify</param>
         /// <param name="codeSettings">Code settings to use for minification</param>
         /// <returns>minified results</returns>
-        private static string ProcessCode(string source, CodeSettings codeSettings)
+        static string ProcessCode(string source, CodeSettings codeSettings)
         {
             var minified = Uglify.Js(source, codeSettings);
 

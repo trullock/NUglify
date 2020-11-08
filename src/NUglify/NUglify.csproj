@@ -12,13 +12,14 @@
     <PackageId>NUglify</PackageId>
     <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
     <PackageReleaseNotes>https://github.com/trullock/NUglify/blob/master/changelog.md</PackageReleaseNotes>
-    <PackageIcon>https://raw.githubusercontent.com/xoofx/NUglify/master/images/nuglify.png</PackageIcon>
+    <PackageIcon>nuglify.png</PackageIcon>
     <PackageProjectUrl>https://github.com/trullock/NUglify</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/trullock/NUglify</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
     <Version>1.9.11</Version>
     <PackageLicenseExpression></PackageLicenseExpression>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -66,6 +67,10 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
     <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\images\nuglify.png" Link="nuglify.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>

@@ -141,7 +141,7 @@ namespace NUglify
         #region Indent methods
 
         // this is the indent level and size for the pretty-print
-        private int m_indentLevel;// = 0;
+        int m_indentLevel;// = 0;
 
         internal void Indent()
         {

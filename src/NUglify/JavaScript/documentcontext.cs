@@ -21,7 +21,7 @@ namespace NUglify.JavaScript
 {
     public class DocumentContext
     {
-        private Dictionary<string, string> m_reportedVariables;
+	    Dictionary<string, string> m_reportedVariables;
 
         public string Source { get; private set; }
         public string FileContext { get; set; }

@@ -9,8 +9,8 @@ namespace NUglify.Html
 {
     public class HtmlWriterToDOM : HtmlWriterBase
     {
-        private readonly StringBuilder builder;
-        private int level;
+	    readonly StringBuilder builder;
+	    int level;
 
         public HtmlWriterToDOM()
         {

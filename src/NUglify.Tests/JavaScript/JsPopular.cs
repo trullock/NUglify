@@ -54,7 +54,7 @@ namespace NUglify.Tests.JavaScript
             AssertCompile($"http://builds.emberjs.com/tags/v2.4.4/ember.prod.js", file);
         }
 
-        private static void AssertCompile(string url, string file)
+        static void AssertCompile(string url, string file)
         {
             // https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js
             var client = new WebClient();

@@ -9,15 +9,14 @@ namespace NUglify.Html
     /// </summary>
     public class HtmlAttribute
     {
+	    public string Name { get; set; }
+        public string Value { get; set; }
+
         public HtmlAttribute(string name, string value)
         {
-            Name = name;
-            Value = value;
+	        Name = name;
+	        Value = value;
         }
-
-        public string Name { get; set; }
-
-        public string Value { get; set; }
 
         public override string ToString()
         {

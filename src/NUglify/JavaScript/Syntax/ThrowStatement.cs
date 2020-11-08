@@ -21,7 +21,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class ThrowStatement : Statement
     {
-        private AstNode m_operand;
+	    AstNode m_operand;
 
         public AstNode Operand
         {

@@ -68,13 +68,13 @@ namespace NUglify
     /// <summary>
     /// fallback buffer for encoding unknown characters into JS Unicode escapes
     /// </summary>
-    internal sealed class JSEncoderFallbackBuffer : EncoderFallbackBuffer
+    sealed class JSEncoderFallbackBuffer : EncoderFallbackBuffer
     {
         // encoded output string
-        private string m_fallbackString;
+        string m_fallbackString;
 
         // the position of the next character to return
-        private int m_position;
+        int m_position;
 
         /// <summary>
         /// Number of characters remaining in the buffer
@@ -99,7 +99,7 @@ namespace NUglify
         /// </summary>
         /// <param name="unknownChar">character to encode</param>
         /// <returns>encoded string</returns>
-        private static string GetEncoding(int charValue)
+        static string GetEncoding(int charValue)
         {
             // format: \uXXXX
             return "\\u{0:x4}".FormatInvariant(charValue);

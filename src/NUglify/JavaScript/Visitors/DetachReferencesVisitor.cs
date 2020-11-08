@@ -21,9 +21,9 @@ namespace NUglify.JavaScript.Visitors
     public class DetachReferencesVisitor : TreeVisitor
     {
         // singleton
-        private static readonly DetachReferencesVisitor s_instance = new DetachReferencesVisitor();
+        static readonly DetachReferencesVisitor s_instance = new DetachReferencesVisitor();
 
-        private DetachReferencesVisitor()
+        DetachReferencesVisitor()
         {
         }
 

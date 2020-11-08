@@ -59,7 +59,7 @@ namespace NUglify.Benchmarks
             }
         }
 
-        private static void DumpGC(int gc0, int gc1, int gc2)
+        static void DumpGC(int gc0, int gc1, int gc2)
         {
             Console.WriteLine($"gc0: {GC.CollectionCount(0) - gc0}");
             Console.WriteLine($"gc1: {GC.CollectionCount(1) - gc1}");

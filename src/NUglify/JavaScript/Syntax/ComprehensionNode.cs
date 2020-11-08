@@ -28,8 +28,8 @@ namespace NUglify.JavaScript.Syntax
 
     public class ComprehensionNode : Expression
     {
-        private AstNode m_expression;
-        private AstNodeList m_clauses;
+	    AstNode m_expression;
+	    AstNodeList m_clauses;
 
         public ComprehensionType ComprehensionType { get; set; }
 

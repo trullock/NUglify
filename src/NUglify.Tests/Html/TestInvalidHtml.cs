@@ -19,8 +19,10 @@ namespace NUglify.Tests.Html
 			settings.MinifyCss = false;
 			settings.MinifyCssAttributes = false;
 			settings.MinifyJs = false;
+			settings.MinifyJsAttributes = false;
 			settings.RemoveJavaScript = true;
-			equal(minify(input, settings), "\n<p>\n  this should be\n  <parsed>\n     this should> appear this text &lt;should appear\n  </parsed>\n</p>\n", "(1,19): warning : Unbalanced tag [parsed] within tag [p] requiring a closing tag. Force closing it");
+			var result = minify(input, settings);
+			equal(result, "<p>\n  this should be\n  <parsed>\n     this should> appear this text &lt;should appear\n  </parsed>\n</p>", "(1,19): warning : Unbalanced tag [parsed] within tag [p] requiring a closing tag. Force closing it");
 		}
 	}
 }

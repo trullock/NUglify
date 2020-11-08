@@ -22,34 +22,34 @@ using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript.Visitors
 {
-    internal class ReorderScopeVisitor : TreeVisitor
+	class ReorderScopeVisitor : TreeVisitor
     {
         // list of all function declarations found in this scope
-        private List<FunctionObject> m_functionDeclarations;
+        List<FunctionObject> m_functionDeclarations;
 
         // list of all other functions found in this scope
-        private List<FunctionObject> m_functionExpressions;
+        List<FunctionObject> m_functionExpressions;
 
         // list of all modules found in this scope
-        private List<ModuleDeclaration> m_moduleDeclarations;
+        List<ModuleDeclaration> m_moduleDeclarations;
 
         // all directive prologues we found BEYOND the initial grouping.
         // if we find any, it was probably because they were directive prologues
         // for modules that were batched together and no longer at the top, so
         // we will need to promote them to get them to the proper place.
-        private List<DirectivePrologue> m_moduleDirectives;
+        List<DirectivePrologue> m_moduleDirectives;
 
         // list of all var statements found in this scope
-        private List<VarDeclaration> m_varStatements;
+        List<VarDeclaration> m_varStatements;
 
         // whether we want to move var statements
-        private bool m_moveVarStatements;
+        bool m_moveVarStatements;
 
         // whether we want to move function declarations
-        private bool m_moveFunctionDecls;
+        bool m_moveFunctionDecls;
 
         // whether we want to combine adjacent var statements
-        private bool m_combineAdjacentVars;
+        bool m_combineAdjacentVars;
 
         // whether we are renaming locals
         //private bool m_localRenaming;
@@ -59,12 +59,12 @@ namespace NUglify.JavaScript.Visitors
         // are inside that construct (between @if and @end or inside a single
         // conditional comment).
         // encountering @if or /*@ increments it; *@/ or @end decrements it.
-        private int m_conditionalCommentLevel;
+        int m_conditionalCommentLevel;
 
         // global scope
-        private GlobalScope m_globalScope;
+        GlobalScope m_globalScope;
 
-        private ReorderScopeVisitor(JSParser parser)
+        ReorderScopeVisitor(JSParser parser)
         {
             // save the mods we care about
             var settings = parser.Settings;
@@ -156,7 +156,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static int RelocateDirectivePrologue(BlockStatement block, int insertAt, DirectivePrologue directivePrologue)
+        static int RelocateDirectivePrologue(BlockStatement block, int insertAt, DirectivePrologue directivePrologue)
         {
             // skip over any important comments
             while (insertAt < block.Count && (block[insertAt] is ImportantComment))
@@ -176,7 +176,7 @@ namespace NUglify.JavaScript.Visitors
             return ++insertAt;
         }
 
-        private static int RelocateFunction(BlockStatement block, int insertAt, AstNode funcDecl)
+        static int RelocateFunction(BlockStatement block, int insertAt, AstNode funcDecl)
         {
             // if this function declaration is being exported, then we need to work with the export
             // statement, not the function declaration.
@@ -216,7 +216,7 @@ namespace NUglify.JavaScript.Visitors
             return insertAt;
         }
 
-        private static int RelocateVar(BlockStatement block, int insertAt, VarDeclaration varStatement)
+        static int RelocateVar(BlockStatement block, int insertAt, VarDeclaration varStatement)
         {
             var forInParent = varStatement.Parent as ForInStatement;
             if (forInParent != null)
@@ -398,7 +398,7 @@ namespace NUglify.JavaScript.Visitors
             return insertAt;
         }
 
-        private static int RelocateForInVar(BlockStatement block, int insertAt, VarDeclaration varStatement, ForInStatement forIn)
+        static int RelocateForInVar(BlockStatement block, int insertAt, VarDeclaration varStatement, ForInStatement forIn)
         {
             // there should only be one decl in the for-in var statement. There should not be any initializer.
             // If not, then ignore it
@@ -470,7 +470,7 @@ namespace NUglify.JavaScript.Visitors
         }
 
         // unnest any child blocks
-        private static void UnnestBlocks(BlockStatement node)
+        static void UnnestBlocks(BlockStatement node)
         {
             // walk the list of items backwards -- if we come
             // to any blocks, unnest the block recursively. 
@@ -668,7 +668,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static JSToken DeclarationType(AstNode node)
+        static JSToken DeclarationType(AstNode node)
         {
             var declaration = node as Declaration;
             if (declaration != null)
@@ -703,7 +703,7 @@ namespace NUglify.JavaScript.Visitors
         //        };
         //}
 
-        private static ExportStatement IfTargetExport(AstNode node)
+        static ExportStatement IfTargetExport(AstNode node)
         {
             var exportNode = node as ExportStatement;
             return (exportNode != null
@@ -963,7 +963,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private bool IsMinificationHint(ConstantWrapper node)
+        bool IsMinificationHint(ConstantWrapper node)
         {
             var isHint = false;
             if (node.PrimitiveType == PrimitiveType.String)

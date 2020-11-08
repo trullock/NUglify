@@ -14,12 +14,4 @@ namespace NUglify.Html
     {
         public StringSlice Slice;
     }
-
-    /// <summary>
-    /// HTML raw content.
-    /// </summary>
-    /// <seealso cref="NUglify.Html.HtmlNode" />
-    public class HtmlRaw : HtmlTextBase
-    {
-    }
 }

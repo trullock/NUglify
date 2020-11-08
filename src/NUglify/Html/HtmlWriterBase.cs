@@ -1,18 +1,10 @@
-﻿// Copyright (c) Alexandre Mutel. All rights reserved.
-// This file is licensed under the BSD-Clause 2 license. 
-// See the license.txt file in the project root for more information.
-
-using System;
+﻿using System;
 
 namespace NUglify.Html
 {
     public abstract class HtmlWriterBase
     {
         protected int XmlNamespaceLevel { get; private set; }
-
-        protected HtmlWriterBase()
-        {
-        }
         protected int Depth { get; private set; }
 
         public void Write(HtmlNode node)
@@ -24,13 +16,9 @@ namespace NUglify.Html
             else if (node is HtmlElement)
             {
                 if (node is HtmlDocument)
-                {
                     WriteChildren(node);
-                }
                 else
-                {
                     Write((HtmlElement) node);
-                }
             }
             else if (node is HtmlRaw)
             {
@@ -50,7 +38,7 @@ namespace NUglify.Html
             }
             else
             {
-                throw new InvalidOperationException($"Unsupported tag node [{node?.GetType()}]");
+                throw new NotSupportedException($"Unsupported node type [{node?.GetType()}]");
             }
         }
 
@@ -85,43 +73,38 @@ namespace NUglify.Html
 
         protected virtual void WriteStartTag(HtmlElement node)
         {
-            Write("<");
+            Write('<');
             var isProcessing = (node.Kind & ElementKind.ProcessingInstruction) != 0;
             if (isProcessing)
-            {
-                Write("?");
-            }
+                Write('?');
+
             Write(node.Name);
 
             if (node.Attributes != null)
             {
                 var count = node.Attributes.Count;
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     var attribute = node.Attributes[i];
-                    Write(" ");
+                    Write(' ');
                     WriteAttribute(node, attribute, i + 1 == count);
                 }
             }
 
             if (isProcessing)
-            {
-                Write("?");
-            }
+                Write('?');
 
             if ((node.Kind & ElementKind.SelfClosing) != 0 && XmlNamespaceLevel > 0)
-            {
                 Write(" /");
-            }
 
-            Write(">");
+            Write('>');
         }
 
         protected virtual void WriteEndTag(HtmlElement node)
         {
             Write("</");
             Write(node.Name);
-            Write(">");
+            Write('>');
         }
 
         protected virtual void WriteAttribute(HtmlElement element, HtmlAttribute attribute, bool isLast)
@@ -129,16 +112,16 @@ namespace NUglify.Html
             Write(attribute.Name);
             if (attribute.Value != null)
             {
-                Write("=");
+                Write('=');
                 WriteAttributeValue(element, attribute, isLast);
             }
         }
 
         protected virtual void WriteAttributeValue(HtmlElement element, HtmlAttribute attribute, bool isLast)
         {
-            Write("\"");
+            Write('"');
             Write(attribute.Value);
-            Write("\"");
+            Write('"');
         }
 
         protected virtual void Write(HtmlText node)

@@ -21,7 +21,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public class ImportExportSpecifier : AstNode, INameDeclaration
     {
-        private AstNode m_localIdentifier;
+	    AstNode m_localIdentifier;
 
         public SourceContext NameContext { get; set; }
 

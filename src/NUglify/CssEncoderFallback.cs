@@ -66,16 +66,16 @@ namespace NUglify
     /// <summary>
     /// fallback buffer for encoding unknown characters into CSS Unicode escapes
     /// </summary>
-    internal sealed class CssEncoderFallbackBuffer : EncoderFallbackBuffer
+    sealed class CssEncoderFallbackBuffer : EncoderFallbackBuffer
     {
         // encoded output string
-        private string m_fallbackString;
+        string m_fallbackString;
 
         // the position of the next character to return
-        private int m_position;
+        int m_position;
 
         // use this string to encode a character that we just don't know what to do with
-        private static readonly string s_giveUpString = CssStrings.UnknownCharacterEncoding;
+        static readonly string s_giveUpString = CssStrings.UnknownCharacterEncoding;
 
         /// <summary>
         /// Number of characters remaining in the buffer
@@ -100,7 +100,7 @@ namespace NUglify
         /// </summary>
         /// <param name="unknownChar">character to encode</param>
         /// <returns>encoded string</returns>
-        private static string GetEncoding(int charValue)
+        static string GetEncoding(int charValue)
         {
             // first see how many characters the numeric value turns out to be
             string hexValue = "{0:x}".FormatInvariant(charValue);

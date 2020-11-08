@@ -33,11 +33,11 @@ namespace NUglify
     /// </summary>
     public sealed class Uglify
     {
-        private static readonly HtmlSettings DefaultSettings = new HtmlSettings();
+	    static readonly HtmlSettings DefaultSettings = new HtmlSettings();
 
         // Don't use static class, as we don't expect to using static as the method names are already short (Js, Css)
 
-        private Uglify()
+        Uglify()
         {
         }
 
@@ -68,7 +68,6 @@ namespace NUglify
                 var writer = new StringWriter();
                 var htmlWriter = new HtmlWriterToHtml(writer, settings);
                 htmlWriter.Write(document);
-
                 text = writer.ToString();
             }
 
@@ -202,12 +201,7 @@ namespace NUglify
                             // just use the normal output visitor
                             OutputVisitor.Apply(stringWriter, scriptBlock, codeSettings);
 
-                            // if we are asking for a symbols map, give it a chance to output a little something
-                            // to the minified file.
-                            if (codeSettings.SymbolsMap != null)
-                            {
-                                codeSettings.SymbolsMap.EndFile(stringWriter, codeSettings.LineTerminator);
-                            }
+                            codeSettings.SymbolsMap?.EndFile(stringWriter, codeSettings.LineTerminator);
                         }
                     }
                 }

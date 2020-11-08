@@ -41,7 +41,7 @@ namespace NUglify.Html
     /// <summary>
     /// Helper class to decode an entity.
     /// </summary>
-    internal static class EntityHelper
+    static class EntityHelper
     {
         /// <summary>
         /// Destructively unescape a string: remove HTML entity symbols except for &amp; &gt; &lt;
@@ -128,7 +128,7 @@ namespace NUglify.Html
             return result;
         }
 
-        private static string Escape(string decoded)
+        static string Escape(string decoded)
         {
             if (decoded == "<") return "&lt;";
             else if (decoded == "&") return "&amp;";
@@ -289,7 +289,7 @@ namespace NUglify.Html
         /// <summary>
         /// Source: http://www.w3.org/html/wg/drafts/html/master/syntax.html#named-character-references
         /// </summary>
-        private static readonly Dictionary<string, string> EntityMap = new Dictionary<string, string>(2125, StringComparer.Ordinal)
+        static readonly Dictionary<string, string> EntityMap = new Dictionary<string, string>(2125, StringComparer.Ordinal)
         {
             { "Aacute", "\u00C1" },
             { "aacute", "\u00E1" },

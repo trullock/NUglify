@@ -21,7 +21,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class ObjectLiteral : Expression
     {
-        private AstNodeList m_properties;
+	    AstNodeList m_properties;
 
         public AstNodeList Properties
         {

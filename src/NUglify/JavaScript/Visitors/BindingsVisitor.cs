@@ -22,10 +22,10 @@ namespace NUglify.JavaScript.Visitors
 {
     public class BindingsVisitor : IVisitor
     {
-        private IList<BindingIdentifier> m_bindings;
-        private IList<LookupExpression> m_lookups;
+	    IList<BindingIdentifier> m_bindings;
+	    IList<LookupExpression> m_lookups;
 
-        private BindingsVisitor()
+	    BindingsVisitor()
         {
             m_bindings = new List<BindingIdentifier>();
             m_lookups = new List<LookupExpression>();
@@ -240,7 +240,7 @@ namespace NUglify.JavaScript.Visitors
 
         #region IVisitor methods that are bad binding syntax
 
-        private static void ReportError(AstNode node)
+        static void ReportError(AstNode node)
         {
             node.IfNotNull(n => n.Context.IfNotNull(c => c.HandleError(JSError.BadBindingSyntax, true)));
         }

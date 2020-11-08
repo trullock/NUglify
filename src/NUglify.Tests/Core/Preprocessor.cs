@@ -10,9 +10,9 @@ namespace NUglify.Tests.Core
     [TestFixture]
     public class Preprocessor
     {
-        private static string s_inputFolder;
-        private static string s_outputFolder;
-        private static string s_expectedFolder;
+	    static string s_inputFolder;
+	    static string s_outputFolder;
+	    static string s_expectedFolder;
 
         [SetUp]
         public void Setup()

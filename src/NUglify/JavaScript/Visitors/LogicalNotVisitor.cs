@@ -21,9 +21,9 @@ namespace NUglify.JavaScript.Visitors
 {
     public class LogicalNotVisitor : TreeVisitor
     {
-        private AstNode m_expression;
-        private bool m_measure;
-        private int m_delta;
+	    AstNode m_expression;
+	    bool m_measure;
+	    int m_delta;
 
         public bool MinifyBooleans { get; set; }
 
@@ -64,7 +64,7 @@ namespace NUglify.JavaScript.Visitors
             logicalNot.Apply();
         }
 
-        private static void WrapWithLogicalNot(AstNode operand)
+        static void WrapWithLogicalNot(AstNode operand)
         {
             operand.Parent.ReplaceChild(
                 operand,
@@ -75,7 +75,7 @@ namespace NUglify.JavaScript.Visitors
                     });
         }
 
-        private void TypicalHandler(AstNode node)
+        void TypicalHandler(AstNode node)
         {
             if (node != null)
             {
@@ -129,7 +129,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void MeasureBinaryOperator(BinaryExpression node)
+        void MeasureBinaryOperator(BinaryExpression node)
         {
             // depending on the operator, calculate the potential difference in length
             switch (node.OperatorToken)
@@ -235,7 +235,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void ConvertBinaryOperator(BinaryExpression node)
+        void ConvertBinaryOperator(BinaryExpression node)
         {
             // depending on the operator, perform whatever we need to do to apply a logical
             // not to the operation

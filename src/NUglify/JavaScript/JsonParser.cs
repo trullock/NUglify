@@ -26,11 +26,11 @@ namespace NUglify.JavaScript
     /// </summary>
     public class JsonParser
     {
-        private string m_jsonText;
-        private int m_currentIndex;
-        private StringBuilder m_builder;
+	    string m_jsonText;
+	    int m_currentIndex;
+	    StringBuilder m_builder;
 
-        private bool IsAtEnd
+	    bool IsAtEnd
         {
             get
             {
@@ -38,7 +38,7 @@ namespace NUglify.JavaScript
             }
         }
 
-        private char Current
+	    char Current
         {
             get
             {
@@ -46,7 +46,7 @@ namespace NUglify.JavaScript
             }
         }
 
-        private string Minified
+	    string Minified
         {
             get
             {
@@ -54,7 +54,7 @@ namespace NUglify.JavaScript
             }
         }
 
-        private JsonParser(string jsonText)
+	    JsonParser(string jsonText)
         {
             m_jsonText = jsonText;
             m_currentIndex = 0;
@@ -72,7 +72,7 @@ namespace NUglify.JavaScript
             return jsonValidator.IsValidValue() && jsonValidator.IsAtEnd ? jsonValidator.Minified : null;
         }
 
-        private bool IsValidValue()
+        bool IsValidValue()
         {
             var isValid = false;
             switch (SkipSpace())
@@ -119,7 +119,7 @@ namespace NUglify.JavaScript
             return isValid;
         }
 
-        private bool IsFollowedBy(string text)
+        bool IsFollowedBy(string text)
         {
             for (var ndx = 0; ndx < text.Length; ++ndx)
             {
@@ -140,7 +140,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool IsValidNumber()
+        bool IsValidNumber()
         {
             var isValid = false;
 
@@ -217,7 +217,7 @@ namespace NUglify.JavaScript
             return isValid;
         }
 
-        private bool IsValidString()
+        bool IsValidString()
         {
             // skip past opening delimiter
             var start = m_currentIndex;
@@ -270,7 +270,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool IsValidArray()
+        bool IsValidArray()
         {
             // skip past the opening delimiter
             Next();
@@ -306,7 +306,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool IsValidObject()
+        bool IsValidObject()
         {
             // skip past opening delimiter
             Next();
@@ -341,7 +341,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        private bool IsValidProperty()
+        bool IsValidProperty()
         {
             // property name is always a string
             if (!IsValidString())
@@ -369,18 +369,18 @@ namespace NUglify.JavaScript
 
         #region character methods
 
-        private char Peek(int offset = 0)
+        char Peek(int offset = 0)
         {
             var index = m_currentIndex + offset;
             return index < m_jsonText.Length ? m_jsonText[m_currentIndex + offset] : '\0';
         }
 
-        private char Next()
+        char Next()
         {
             return ++m_currentIndex < m_jsonText.Length ? m_jsonText[m_currentIndex] : '\0';
         }
 
-        private char SkipSpace()
+        char SkipSpace()
         {
             var ch = Current;
             while (ch == '\t' || ch == '\n' || ch == '\r' || ch == ' ')

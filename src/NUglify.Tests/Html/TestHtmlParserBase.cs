@@ -13,10 +13,10 @@ namespace NUglify.Tests.Html
 {
     public abstract class TestHtmlParserBase
     {
-        private string currentHtml;
+	    string currentHtml;
         protected string input;
         protected string output;
-        private List<UglifyError> messages;
+        List<UglifyError> messages;
 
         protected void equal(string result, string expected, params string[] expectedMessages)
         {

@@ -29,7 +29,7 @@ namespace NUglify.JavaScript.Syntax
 
     public sealed class LabeledStatement : Statement
     {
-        private AstNode m_statement;
+	    AstNode m_statement;
 
         public AstNode Statement
         {

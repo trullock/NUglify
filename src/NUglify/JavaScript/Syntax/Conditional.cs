@@ -22,9 +22,9 @@ namespace NUglify.JavaScript.Syntax
 
     public sealed class Conditional : Expression
     {
-        private AstNode m_condition;
-        private AstNode m_trueExpression;
-        private AstNode m_falseExpression;
+	    AstNode m_condition;
+	    AstNode m_trueExpression;
+	    AstNode m_falseExpression;
 
         public AstNode Condition
         {

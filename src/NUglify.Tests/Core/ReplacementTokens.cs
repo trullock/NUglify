@@ -15,11 +15,11 @@ namespace NUglify.Tests.Core
     {
         #region private fields
 
-        private static string s_inputFolder;
+        static string s_inputFolder;
 
-        private static string s_outputFolder;
+        static string s_outputFolder;
 
-        private static string s_expectedFolder;
+        static string s_expectedFolder;
 
         #endregion
 
@@ -170,7 +170,7 @@ namespace NUglify.Tests.Core
             Assert.AreEqual(expected, actual.Code);
         }
 
-        private string ReadFile(string folder, string fileName)
+        string ReadFile(string folder, string fileName)
         {
             var inputPath = Path.Combine(folder, fileName);
             using (var reader = new StreamReader(inputPath))
@@ -179,7 +179,7 @@ namespace NUglify.Tests.Core
             }
         }
 
-        private string Parse(JSParser parser, CodeSettings settings, string source)
+        string Parse(JSParser parser, CodeSettings settings, string source)
         {
             var block = parser.Parse(source, settings);
             return OutputVisitor.Apply(block, settings);

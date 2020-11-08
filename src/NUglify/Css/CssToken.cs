@@ -19,15 +19,15 @@ namespace NUglify.Css
     /// <summary>
     /// Token class represents a parsed token of information consumed by the parser
     /// </summary>
-    internal class CssToken
+    class CssToken
     {
-        private TokenType m_tokenType;
+	    TokenType m_tokenType;
         public TokenType TokenType { get { return m_tokenType; } }
 
-        private string m_text;
+        string m_text;
         public string Text { get { return m_text; } }
 
-        private CssContext m_context;
+        CssContext m_context;
         public CssContext Context { get { return m_context; } }
 
         public CssToken(TokenType tokenType, string text, CssContext context)
@@ -43,19 +43,21 @@ namespace NUglify.Css
         }
     }
 
-    internal class CssContext
+    class CssContext
     {
         public Position Start
         {
             get { return m_start; }
         }
-        private Position m_start;
+
+        Position m_start;
 
         public Position End
         {
             get { return m_end; }
         }
-        private Position m_end;
+
+        Position m_end;
 
         internal CssContext()
         {
@@ -89,19 +91,21 @@ namespace NUglify.Css
         }
     }
 
-    internal class Position
+    class Position
     {
         public int Line
         {
             get { return m_line; }
         }
-        private int m_line;
+
+        int m_line;
 
         public int Char
         {
             get { return m_char; }
         }
-        private int m_char;
+
+        int m_char;
 
         public Position()
         {
@@ -137,7 +141,7 @@ namespace NUglify.Css
         }
     }
 
-    internal enum TokenType
+    enum TokenType
     {
         None = 0,
         Space,

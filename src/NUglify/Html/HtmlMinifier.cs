@@ -20,42 +20,25 @@ namespace NUglify.Html
 
         static readonly Dictionary<string, bool> AttributesRemovedIfEmpty = new[]
         {
-            "class",
-            "id",
-            "style",
-            "title",
-            "lang",
-            "dir",
-            "onfocus",
-            "onblur",
-            "onchange",
-            "onclick",
-            "ondblclick",
-            "onmousedown",
-            "onmouseup",
-            "onmouseover",
-            "onmousemove",
-            "onmouseout",
-            "onkeypress",
-            "onkeydown",
-            "onkeyup",
+            "class", "id", "style", "title", "lang", "dir",
+            "onafterprint", "onbeforeprint", "onbeforeunload", "onerror", "onhashchange", "onload", "onmessage", "onoffline", "ononline", "onpagehide", "onpageshow", "onpopstate", "onresize", "onstorage", "onunload", "onblur", "onchange", "oncontextmenu", "onfocus", "oninput", "oninvalid", "onreset", "onsearch", "onselect", "onsubmit", "onkeydown", "onkeypress", "onkeyup", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", "onmousewheel", "onwheel", "ondrag", "ondragend", "ondragenter", "ondragleave", "ondragover", "ondragstart", "ondrop", "onscroll", "oncopy", "oncut", "onpaste", "onabort", "oncanplay", "oncanplaythrough", "oncuechange", "ondurationchange", "onemptied", "onended", "onerror", "onloadeddata", "onloadedmetadata", "onloadstart", "onpause", "onplay", "onplaying", "onprogress", "onratechange", "onseeked", "onseeking", "onstalled", "onsuspend", "ontimeupdate", "onvolumechange", "onwaiting", "ontoggle"
         }.ToDictionaryBool(false);
 
         static readonly Dictionary<string, bool> ScriptAttributes = new [] { "onafterprint", "onbeforeprint", "onbeforeunload", "onerror", "onhashchange", "onload", "onmessage", "onoffline", "ononline", "onpagehide", "onpageshow", "onpopstate", "onresize", "onstorage", "onunload", "onblur", "onchange", "oncontextmenu", "onfocus", "oninput", "oninvalid", "onreset", "onsearch", "onselect", "onsubmit", "onkeydown", "onkeypress", "onkeyup", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", "onmousewheel", "onwheel", "ondrag", "ondragend", "ondragenter", "ondragleave", "ondragover", "ondragstart", "ondrop", "onscroll", "oncopy", "oncut", "onpaste", "onabort", "oncanplay", "oncanplaythrough", "oncuechange", "ondurationchange", "onemptied", "onended", "onerror", "onloadeddata", "onloadedmetadata", "onloadstart", "onpause", "onplay", "onplaying", "onprogress", "onratechange", "onseeked", "onseeking", "onstalled", "onsuspend", "ontimeupdate", "onvolumechange", "onwaiting", "ontoggle"}.ToDictionaryBool(false);
+
+        public bool HasErrors { get; private set; }
+
+        public List<UglifyError> Errors { get; private set; }
 
         public HtmlMinifier(HtmlDocument html, HtmlSettings settings = null)
         {
 	        this.html = html ?? throw new ArgumentNullException(nameof(html));
 
-            this.settings = settings ?? new HtmlSettings();
+	        this.settings = settings ?? new HtmlSettings();
             
-            pendingTexts = new List<HtmlText>();
-            Errors = new List<UglifyError>();
+	        pendingTexts = new List<HtmlText>();
+	        Errors = new List<UglifyError>();
         }
-
-        public bool HasErrors { get; private set; }
-
-        public List<UglifyError> Errors { get; private set; }
 
         public void Minify()
         {
@@ -66,14 +49,12 @@ namespace NUglify.Html
             }
         }
 
-        private void ProcessNode(HtmlNode node)
+        void ProcessNode(HtmlNode node)
         {
             var element = node as HtmlElement;
             bool isInXml = element?.Descriptor != null && (element.Descriptor.Category & ContentKind.Xml) != 0;
             if (isInXml)
-            {
-                xmlNamespaceCount++;
-            }
+	            xmlNamespaceCount++;
 
             // If we have a rogue closing tag, just remove it and pretend we never encountered it
             if (settings.RemoveInvalidClosingTags && element?.Kind == ElementKind.Closing)
@@ -96,32 +77,24 @@ namespace NUglify.Html
                 TrimNodeOnEnd(node);
 
                 if (isContentNonCollapsible)
-                {
-                    pendingTagNonCollapsibleWithSpaces--;
-                }
+	                pendingTagNonCollapsibleWithSpaces--;
             }
 
             if (isInXml)
-            {
-                xmlNamespaceCount--;
-            }
+	            xmlNamespaceCount--;
         }
 
-        private void ProcessChildren(HtmlNode node)
+        void ProcessChildren(HtmlNode node)
         {
             foreach (var subNode in node.Children)
-            {
-                ProcessNode(subNode);
-            }
+	            ProcessNode(subNode);
         }
 
-        private void TrimNodeOnStart(HtmlNode node)
+        void TrimNodeOnStart(HtmlNode node)
         {
             var textNode = node as HtmlText;
             if (textNode != null)
-            {
-                TrimNodeOnStart(textNode);
-            }
+	            TrimNodeOnStart(textNode);
 
             if (node is HtmlComment && settings.RemoveComments)
             {
@@ -139,34 +112,26 @@ namespace NUglify.Html
 
                 // Don't remove special ignoring comments
                 if (!keepComment)
-                {
-                    node.Remove();
-                }
+	                node.Remove();
             }
 
             // Remove HTML script
             if (settings.RemoveJavaScript && node is HtmlElement && ((HtmlElement) node).Descriptor?.Name == "script")
-            {
-                node.Remove();
-            }
+	            node.Remove();
 
             // If current node requires preserving formatting inside it we need to trim all pending text node that we collected before
             var nodeName = node is HtmlElement ? ((HtmlElement) node).Name : null;
             if (settings.CollapseWhitespaces && !string.IsNullOrEmpty(nodeName) && settings.TagsWithNonCollapsibleWhitespaces.ContainsKey(nodeName))
-            {
-                TrimPendingTextNodes();
-            }
+	            TrimPendingTextNodes();
         }
 
-        private void TrimNodeOnEnd(HtmlNode node)
+        void TrimNodeOnEnd(HtmlNode node)
         {
             if (node is HtmlElement)
-            {
-                TrimNodeOnEnd((HtmlElement)node);
-            }
+	            TrimNodeOnEnd((HtmlElement) node);
         }
 
-        private void TrimNodeOnStart(HtmlText textNode)
+        void TrimNodeOnStart(HtmlText textNode)
         {
             // If we need to decode entities
             if (settings.DecodeEntityCharacters)
@@ -180,14 +145,11 @@ namespace NUglify.Html
 
             // If we don't do anything for TextNode, we can early exit
             if (!settings.CollapseWhitespaces)
-            {
-                return;
-            }
+	            return;
 
             // Find the first non-transparent parent
             var parent = textNode.Parent;
-            while (parent != null &&
-                   (parent.Descriptor == null || parent.Descriptor.Category == ContentKind.Transparent))
+            while (parent != null && (parent.Descriptor == null || parent.Descriptor.Category == ContentKind.Transparent))
             {
                 parent = parent.Parent;
             }
@@ -202,7 +164,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimNodeOnEnd(HtmlElement element)
+        void TrimNodeOnEnd(HtmlElement element)
         {
             // If the element is a valid HTML descriptor, we can safely turn-it all lowercase
             if (xmlNamespaceCount == 0)
@@ -256,7 +218,7 @@ namespace NUglify.Html
             }
         }
 
-        private void TrimPendingTextNodes()
+        void TrimPendingTextNodes()
         {
             if (pendingTagNonCollapsibleWithSpaces == 0)
             {
@@ -500,7 +462,7 @@ namespace NUglify.Html
             return false;
         }
 
-        private static bool IsJavaScript(HtmlElement element)
+        static bool IsJavaScript(HtmlElement element)
         {
             if (!element.Name.Equals("script", StringComparison.OrdinalIgnoreCase))
             {
@@ -509,7 +471,7 @@ namespace NUglify.Html
             return IsAttributeValueJs(element.FindAttribute("type")?.Value);
         }
 
-        private static bool IsCssStyle(HtmlElement element)
+        static bool IsCssStyle(HtmlElement element)
         {
             if (!element.Name.Equals("style", StringComparison.OrdinalIgnoreCase))
             {
@@ -518,12 +480,12 @@ namespace NUglify.Html
             return IsAttributeValueCss(element.FindAttribute("type")?.Value);
         }
 
-        private static bool IsAttributeValueCss(string value)
+        static bool IsAttributeValueCss(string value)
         {
             return string.IsNullOrEmpty(value) || value.Equals("text/css", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool IsUriTypeAttribute(string tag, string attr)
+        static bool IsUriTypeAttribute(string tag, string attr)
         {
             // Code from https://github.com/kangax/html-minifier/blob/gh-pages/src/htmlminifier.js
             return ((tag == "a" || tag == "area" || tag == "base") && attr == "href") ||
@@ -539,7 +501,7 @@ namespace NUglify.Html
                    (tag == "script" && (attr == "src" || attr == "for"));
         }
 
-        private static bool IsAttributeValueJs(string value)
+        static bool IsAttributeValueJs(string value)
         {
             if (string.IsNullOrEmpty(value))
             {

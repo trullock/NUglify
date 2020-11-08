@@ -22,10 +22,10 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class TryStatement : Statement
     {
-        private BlockStatement m_tryBlock;
-        private BlockStatement m_catchBlock;
-        private BlockStatement m_finallyBlock;
-        private ParameterDeclaration m_catchParameter;
+	    BlockStatement m_tryBlock;
+	    BlockStatement m_catchBlock;
+	    BlockStatement m_finallyBlock;
+	    ParameterDeclaration m_catchParameter;
 
         public BlockStatement TryBlock
         {

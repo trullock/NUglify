@@ -41,14 +41,14 @@ namespace NUglify.JavaScript
 
     public class JSVariableField
     {
-        private ActivationObject m_owningScope; 
-        private HashSet<INameReference> m_referenceTable;
-        private HashSet<INameDeclaration> m_declarationTable;
+	    ActivationObject m_owningScope;
+	    HashSet<INameReference> m_referenceTable;
+	    HashSet<INameDeclaration> m_declarationTable;
 
-        private bool m_canCrunch;// = false;
-        private bool m_isDeclared; //= false;
-        private bool m_isGenerated;
-        private string m_crunchedName;// = null;
+	    bool m_canCrunch;// = false;
+	    bool m_isDeclared; //= false;
+	    bool m_isGenerated;
+	    string m_crunchedName;// = null;
 
         public SourceContext OriginalContext { get; set; }
         public string Name { get; private set; }
@@ -341,7 +341,7 @@ namespace NUglify.JavaScript
             SetFieldsBasedOnType(fieldType);
         }
 
-        private void SetFieldsBasedOnType(FieldType fieldType)
+        void SetFieldsBasedOnType(FieldType fieldType)
         {
             FieldType = fieldType;
             switch (FieldType)

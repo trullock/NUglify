@@ -22,9 +22,9 @@ namespace NUglify.JavaScript.Syntax
 {
     public class FunctionObject : AstNode
     {
-        private BindingIdentifier m_binding;
-        private AstNodeList m_parameters;
-        private BlockStatement m_body;
+	    BindingIdentifier m_binding;
+	    AstNodeList m_parameters;
+	    BlockStatement m_body;
 
         public bool IsStatic { get; set; }
 
@@ -133,7 +133,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private bool SafeIsReferenced(HashSet<FunctionObject> visited)
+        bool SafeIsReferenced(HashSet<FunctionObject> visited)
         {
             // if we've already been here, don't go in a circle
             if (!visited.Contains(this))

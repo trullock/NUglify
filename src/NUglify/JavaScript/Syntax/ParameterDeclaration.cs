@@ -22,8 +22,8 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class ParameterDeclaration : AstNode
     {
-        private AstNode m_binding;
-        private AstNode m_initializer;
+        AstNode binding;
+        AstNode initializer;
 
         /// <summary>
         /// Gets or sets parameter order position, zero-based
@@ -41,15 +41,12 @@ namespace NUglify.JavaScript.Syntax
         public SourceContext RestContext { get; set; }
 
         /// <summary>
-        // Gets or sets the binding node
+        /// Gets or sets the binding node
         /// </summary>
         public AstNode Binding 
         {
-            get { return m_binding; }
-            set
-            {
-                ReplaceNode(ref m_binding, value);
-            }
+            get => binding;
+            set => ReplaceNode(ref binding, value);
         }
 
         /// <summary>
@@ -62,12 +59,11 @@ namespace NUglify.JavaScript.Syntax
         /// </summary>
         public AstNode Initializer 
         {
-            get { return m_initializer; }
-            set
-            {
-                ReplaceNode(ref m_initializer, value);
-            }
+            get => initializer;
+            set => ReplaceNode(ref initializer, value);
         }
+
+        public override IEnumerable<AstNode> Children => EnumerateNonNullNodes(Binding, Initializer);
 
         public bool IsReferenced
         {
@@ -80,9 +76,7 @@ namespace NUglify.JavaScript.Syntax
                     // if there is no variable field (although there SHOULD be), then let's
                     // just assume it's referenced.
                     if (nameDecl.VariableField == null || nameDecl.VariableField.IsReferenced)
-                    {
                         return true;
-                    }
                 }
 
                 // if we get here, none are referenced, so this parameter is not referenced
@@ -97,23 +91,12 @@ namespace NUglify.JavaScript.Syntax
 
         public override void Accept(IVisitor visitor)
         {
-            if (visitor != null)
-            {
-                visitor.Visit(this);
-            }
+	        visitor?.Visit(this);
         }
 
         internal override string GetFunctionGuess(AstNode target)
         {
             return Binding.IfNotNull(b => b.GetFunctionGuess(target));
-        }
-
-        public override IEnumerable<AstNode> Children
-        {
-            get
-            {
-                return EnumerateNonNullNodes(Binding, Initializer);
-            }
         }
 
         public override bool ReplaceChild(AstNode oldNode, AstNode newNode)
@@ -123,11 +106,13 @@ namespace NUglify.JavaScript.Syntax
                 Binding = newNode;
                 return true;
             }
-            else if (Initializer == oldNode)
+
+            if (Initializer == oldNode)
             {
-                Initializer = newNode;
-                return true;
+	            Initializer = newNode;
+	            return true;
             }
+
             return false;
         }
     }

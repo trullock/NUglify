@@ -17,7 +17,7 @@ namespace NUglify.Html
 
         public static bool IsNonEmptyText(this HtmlNode node)
         {
-            return node is HtmlText && !((HtmlText) node).Slice.IsEmptyOrWhiteSpace();
+            return node is HtmlText text && !text.Slice.IsEmptyOrWhiteSpace();
         }
     }
 }

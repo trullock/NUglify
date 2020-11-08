@@ -50,7 +50,7 @@ namespace NUglify.JavaScript.Syntax
 
         #region from binding methods
 
-        private static AstNode ConvertFromBinding(AstNode node)
+        static AstNode ConvertFromBinding(AstNode node)
         {
             ArrayLiteral arrayLiteral;
             ObjectLiteral objectLiteral;
@@ -78,7 +78,7 @@ namespace NUglify.JavaScript.Syntax
             return null;
         }
 
-        private static LookupExpression ConvertFromBindingIdentifier(BindingIdentifier bindingIdentifier)
+        static LookupExpression ConvertFromBindingIdentifier(BindingIdentifier bindingIdentifier)
         {
             LookupExpression lookup = null;
             if (bindingIdentifier != null)
@@ -96,7 +96,7 @@ namespace NUglify.JavaScript.Syntax
             return lookup;
         }
 
-        private static ArrayLiteral ConvertFromBindingArrayLiteral(ArrayLiteral bindingLiteral)
+        static ArrayLiteral ConvertFromBindingArrayLiteral(ArrayLiteral bindingLiteral)
         {
             ArrayLiteral arrayLiteral = null;
             if (bindingLiteral != null)
@@ -118,7 +118,7 @@ namespace NUglify.JavaScript.Syntax
             return arrayLiteral;
         }
 
-        private static ObjectLiteral ConvertFromBindingObjectLiteral(ObjectLiteral bindingLiteral)
+        static ObjectLiteral ConvertFromBindingObjectLiteral(ObjectLiteral bindingLiteral)
         {
             ObjectLiteral objectLiteral = null;
             if (bindingLiteral != null)
@@ -141,7 +141,7 @@ namespace NUglify.JavaScript.Syntax
             return objectLiteral;
         }
 
-        private static ObjectLiteralProperty ConvertFromBindingObjectProperty(ObjectLiteralProperty bindingLiteral)
+        static ObjectLiteralProperty ConvertFromBindingObjectProperty(ObjectLiteralProperty bindingLiteral)
         {
             ObjectLiteralProperty prop = null;
             if (bindingLiteral != null)
@@ -157,7 +157,7 @@ namespace NUglify.JavaScript.Syntax
             return prop;
         }
 
-        private static ObjectLiteralField ConvertFromBindingObjectName(ObjectLiteralField bindingLiteral)
+        static ObjectLiteralField ConvertFromBindingObjectName(ObjectLiteralField bindingLiteral)
         {
             ObjectLiteralField name = null;
             if (bindingLiteral != null)
@@ -178,7 +178,7 @@ namespace NUglify.JavaScript.Syntax
 
         #region to binding methods
 
-        private static AstNode ConvertToBinding(AstNode node)
+        static AstNode ConvertToBinding(AstNode node)
         {
             ArrayLiteral arrayLiteral;
             ObjectLiteral objectLiteral;
@@ -219,7 +219,7 @@ namespace NUglify.JavaScript.Syntax
             return null;
         }
 
-        private static BindingIdentifier ConvertToBindingIdentifier(LookupExpression lookup)
+        static BindingIdentifier ConvertToBindingIdentifier(LookupExpression lookup)
         {
             BindingIdentifier bindingIdentifier = null;
             if (lookup != null)
@@ -241,7 +241,7 @@ namespace NUglify.JavaScript.Syntax
             return bindingIdentifier;
         }
 
-        private static ArrayLiteral ConvertToBindingArrayLiteral(ArrayLiteral arrayLiteral)
+        static ArrayLiteral ConvertToBindingArrayLiteral(ArrayLiteral arrayLiteral)
         {
             ArrayLiteral bindingLiteral = null;
             if (arrayLiteral != null)
@@ -263,7 +263,7 @@ namespace NUglify.JavaScript.Syntax
             return bindingLiteral;
         }
 
-        private static ObjectLiteral ConvertToBindingObjectLiteral(ObjectLiteral objectLiteral)
+        static ObjectLiteral ConvertToBindingObjectLiteral(ObjectLiteral objectLiteral)
         {
             ObjectLiteral bindingLiteral = null;
             if (objectLiteral != null)
@@ -287,7 +287,7 @@ namespace NUglify.JavaScript.Syntax
             return bindingLiteral;
         }
 
-        private static ObjectLiteralProperty ConvertToBindingObjectProperty(ObjectLiteralProperty objectProperty)
+        static ObjectLiteralProperty ConvertToBindingObjectProperty(ObjectLiteralProperty objectProperty)
         {
             ObjectLiteralProperty newProperty = null;
             if (objectProperty != null)
@@ -303,7 +303,7 @@ namespace NUglify.JavaScript.Syntax
             return newProperty;
         }
 
-        private static ObjectLiteralField ConvertToBindingObjectName(ObjectLiteralField objectName)
+        static ObjectLiteralField ConvertToBindingObjectName(ObjectLiteralField objectName)
         {
             ObjectLiteralField newName = null;
             if (objectName != null)
@@ -320,7 +320,7 @@ namespace NUglify.JavaScript.Syntax
             return newName;
         }
 
-        private static ImportExportSpecifier ConvertToBindingSpecifier(ImportExportSpecifier specifier)
+        static ImportExportSpecifier ConvertToBindingSpecifier(ImportExportSpecifier specifier)
         {
             // if there's a local identifier, we need to convert it to a binding.
             if (specifier != null && specifier.LocalIdentifier != null)
@@ -335,7 +335,7 @@ namespace NUglify.JavaScript.Syntax
 
         #region to parameter list
 
-        private static void RecurseParameters(AstNodeList parameterList, AstNode node)
+        static void RecurseParameters(AstNodeList parameterList, AstNode node)
         {
             if (node != null)
             {
@@ -371,7 +371,7 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
-        private static ParameterDeclaration ConvertToParameter(AstNode node, int position)
+        static ParameterDeclaration ConvertToParameter(AstNode node, int position)
         {
             var paramDecl = new ParameterDeclaration(node.Context)
                 {

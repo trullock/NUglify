@@ -18,7 +18,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public abstract class IterationStatement : Statement
     {
-        private BlockStatement m_body;
+	    BlockStatement m_body;
 
         public BlockStatement Body
         {

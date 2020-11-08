@@ -28,14 +28,14 @@ namespace NUglify.Css
         #region private field
 
         // array of all the color-name objects
-        private ColorName[] _colorArray;
+        ColorName[] _colorArray;
 
         #endregion
 
         #region constructor
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1809:AvoidExcessiveLocals", Justification="there are a lot of colors")]
-        private ColorSlice()
+        ColorSlice()
         {
             _colorArray = new[] {
                 new ColorName {Strict=false,Name="aliceblue",Hex="#f0f8ff"},
@@ -236,7 +236,7 @@ namespace NUglify.Css
 
         #region private colorname class
 
-        private class ColorName
+        class ColorName
         {
             public bool Strict { get; set; }
             public string Name { get; set; }
@@ -247,16 +247,16 @@ namespace NUglify.Css
 
         #region private nested classes
 
-        private static class NestedFactory
+        static class NestedFactory
         {
             public readonly static ColorSlice Instance = new ColorSlice();
         }
 
-        private static class NestedNameShorterThanHex
+        static class NestedNameShorterThanHex
         {
             public readonly static Dictionary<string, string> Data = Create(NestedFactory.Instance);
 
-            private static Dictionary<string, string> Create(ColorSlice singleton)
+            static Dictionary<string, string> Create(ColorSlice singleton)
             {
                 return (from colorName in singleton._colorArray
                         where colorName.Hex.Length > colorName.Name.Length
@@ -264,11 +264,11 @@ namespace NUglify.Css
             }
         }
 
-        private static class NestedStrictNameShorterThanHex
+        static class NestedStrictNameShorterThanHex
         {
             public readonly static Dictionary<string, string> Data = Create(NestedFactory.Instance);
 
-            private static Dictionary<string, string> Create(ColorSlice singleton)
+            static Dictionary<string, string> Create(ColorSlice singleton)
             {
                 return (from colorName in singleton._colorArray
                         where colorName.Strict == true && colorName.Hex.Length > colorName.Name.Length
@@ -276,11 +276,11 @@ namespace NUglify.Css
             }
         }
 
-        private static class NestedHexShorterThanName
+        static class NestedHexShorterThanName
         {
             public readonly static Dictionary<string, string> Data = Create(NestedFactory.Instance);
 
-            private static Dictionary<string, string> Create(ColorSlice singleton)
+            static Dictionary<string, string> Create(ColorSlice singleton)
             {
                 return (from colorName in singleton._colorArray
                         where colorName.Name.Length > colorName.Hex.Length
@@ -288,11 +288,11 @@ namespace NUglify.Css
             }
         }
 
-        private static class NestedStrictHexShorterThanNameAndAllNonStrict
+        static class NestedStrictHexShorterThanNameAndAllNonStrict
         {
             public readonly static Dictionary<string, string> Data = Create(NestedFactory.Instance);
 
-            private static Dictionary<string, string> Create(ColorSlice singleton)
+            static Dictionary<string, string> Create(ColorSlice singleton)
             {
                 return (from colorName in singleton._colorArray
                         where (colorName.Strict == true && colorName.Name.Length > colorName.Hex.Length) || colorName.Strict == false
@@ -300,11 +300,11 @@ namespace NUglify.Css
             }
         }
 
-        private static class NestedAllColorNames
+        static class NestedAllColorNames
         {
             public readonly static Dictionary<string, string> Data = Create(NestedFactory.Instance);
 
-            private static Dictionary<string, string> Create(ColorSlice singleton)
+            static Dictionary<string, string> Create(ColorSlice singleton)
             {
                 return (from colorName in singleton._colorArray
                         select colorName).DistinctBy(c => c.Name).ToDictionary(p => p.Name, p => p.Hex);

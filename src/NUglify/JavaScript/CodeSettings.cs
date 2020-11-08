@@ -104,8 +104,8 @@ namespace NUglify.JavaScript
     {
         #region private fields
 
-        private bool m_minify;
-        private bool m_amdSupport;
+        bool m_minify;
+        bool m_amdSupport;
 
         #endregion
 
@@ -217,7 +217,7 @@ namespace NUglify.JavaScript
         /// <summary>
         /// dictionary of identifiers we want to manually rename
         /// </summary>
-        private Dictionary<string, string> m_identifierReplacementMap;
+        Dictionary<string, string> m_identifierReplacementMap;
 
         /// <summary>
         /// Add a rename pair to the identifier rename map
@@ -341,7 +341,7 @@ namespace NUglify.JavaScript
 
         #region No automatic rename
 
-        private HashSet<string> m_noRenameSet;
+        HashSet<string> m_noRenameSet;
 
         public IEnumerable<string> NoAutoRenameCollection { get { return m_noRenameSet; } }
 
@@ -421,7 +421,7 @@ namespace NUglify.JavaScript
 
         #region known globals
 
-        private HashSet<string> m_knownGlobals;
+        HashSet<string> m_knownGlobals;
 
         /// <summary>
         /// Gets the known global name collection
@@ -509,7 +509,7 @@ namespace NUglify.JavaScript
 
         #region Debug lookups
 
-        private HashSet<string> m_debugLookups;
+        HashSet<string> m_debugLookups;
 
         /// <summary>
         /// Gets the set of debug lookups

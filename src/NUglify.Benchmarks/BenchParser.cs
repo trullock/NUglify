@@ -12,7 +12,7 @@ namespace NUglify.Benchmarks
 {
     public class BenchParser
     {
-        private readonly string html;
+	    readonly string html;
 
         public BenchParser()
         {

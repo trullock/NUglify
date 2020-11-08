@@ -23,7 +23,7 @@ namespace NUglify.JavaScript.Visitors
 {
     public class RequiresSeparatorVisitor : IVisitor
     {
-        private CodeSettings m_settings;
+	    CodeSettings m_settings;
 
         public bool DoesRequire { get; private set; }
 

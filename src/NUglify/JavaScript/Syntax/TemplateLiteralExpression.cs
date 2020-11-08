@@ -21,7 +21,7 @@ namespace NUglify.JavaScript.Syntax
 {
     public class TemplateLiteralExpression : AstNode
     {
-        private AstNode m_expression;
+	    AstNode m_expression;
 
         public AstNode Expression
         {

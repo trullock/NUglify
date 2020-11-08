@@ -22,22 +22,22 @@ namespace NUglify.JavaScript
 {
     public class CrunchEnumerator
     {
-        private HashSet<string> m_skipNames;
-        private int m_currentName = -1;
+	    HashSet<string> m_skipNames;
+	    int m_currentName = -1;
 
         // this first set of characters is broken out from the second set because the allowed first-characters
         // in JS variable names is smaller than allowed subseqent characters. These two strings don't HAVE to
         // be the same. For instance, names can't start with numbers, but they can contain numbers after the first char.
         // we're actually going to tune these two sets rather than just have the max allowed because we want to 
         // make the final g-zipped results smaller.
-        private static string s_varFirstLetters = "ntirufeoshclavypwbkdg";//"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$";
+        static string s_varFirstLetters = "ntirufeoshclavypwbkdg";//"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$";
         public static string FirstLetters { get { return s_varFirstLetters; } set { s_varFirstLetters = value; } }
 
-        private static string s_varPartLetters  = "tirufeoshclavypwbkdgn";//"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$";
+        static string s_varPartLetters  = "tirufeoshclavypwbkdgn";//"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$";
         public static string PartLetters { get { return s_varPartLetters ?? s_varFirstLetters; } set { s_varPartLetters = value; } }
 
-        private const int PrecalculateLength = 32;
-        private static string[] s_smallNames = PrecalculateFrequentNames();
+        const int PrecalculateLength = 32;
+        static string[] s_smallNames = PrecalculateFrequentNames();
 
         internal CrunchEnumerator(HashSet<string> avoidNames)
         {
@@ -60,7 +60,7 @@ namespace NUglify.JavaScript
             return name;
         }
 
-        private string CurrentName
+        string CurrentName
         {
             get
             {
@@ -68,7 +68,7 @@ namespace NUglify.JavaScript
             }
         }
 
-        private static string[] PrecalculateFrequentNames()
+        static string[] PrecalculateFrequentNames()
         {
             var small = new string[PrecalculateLength];
             for (var i = 0; i < PrecalculateLength; i++)
@@ -167,12 +167,12 @@ namespace NUglify.JavaScript
     /// Among fields with the same reference count, the longest fields get priority.
     /// Lastly, alphabetize.
     /// </summary>
-    internal class ReferenceComparer : IComparer<JSVariableField>
+    class ReferenceComparer : IComparer<JSVariableField>
     {
         // singleton instance
         public static readonly IComparer<JSVariableField> Instance = new ReferenceComparer();
         // never instantiate outside this class
-        private ReferenceComparer() { }
+        ReferenceComparer() { }
 
         #region IComparer<JSVariableField> Members
 
@@ -262,7 +262,7 @@ namespace NUglify.JavaScript
             return delta;
         }
 
-        private static int CompareContext(SourceContext left, SourceContext right)
+        static int CompareContext(SourceContext left, SourceContext right)
         {
             // same number of refcounts. Check the line number where they were declared
             var delta = 0;

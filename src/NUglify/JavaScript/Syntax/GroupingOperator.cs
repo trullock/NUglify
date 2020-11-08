@@ -25,7 +25,7 @@ namespace NUglify.JavaScript.Syntax
     /// </summary>
     public class GroupingOperator : Expression
     {
-        private AstNode m_operand;
+	    AstNode m_operand;
 
         public AstNode Operand
         {

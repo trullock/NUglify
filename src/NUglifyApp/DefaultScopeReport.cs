@@ -28,8 +28,8 @@ namespace NUglify
     {
         #region fields
 
-        private TextWriter m_writer;
-        private bool m_useReferenceCounts;
+        TextWriter m_writer;
+        bool m_useReferenceCounts;
 
         #endregion
 
@@ -83,7 +83,7 @@ namespace NUglify
 
         #region private methods
 
-        private ActivationObject[] GetAllFunctionScopes(GlobalScope globalScope)
+        ActivationObject[] GetAllFunctionScopes(GlobalScope globalScope)
         {
             // create a list to hold all the scopes
             List<ActivationObject> scopes = new List<ActivationObject>();
@@ -98,7 +98,7 @@ namespace NUglify
             return scopes.ToArray();
         }
 
-        private void AddScopes(List<ActivationObject> list, ActivationObject parentScope)
+        void AddScopes(List<ActivationObject> list, ActivationObject parentScope)
         {
             // for each child scope...
             foreach (ActivationObject scope in parentScope.ChildScopes)
@@ -114,7 +114,7 @@ namespace NUglify
             }
         }
 
-        private void WriteScopeReport(ActivationObject scope)
+        void WriteScopeReport(ActivationObject scope)
         {
             // output the function header
             if (scope is GlobalScope)
@@ -186,7 +186,7 @@ namespace NUglify
             }
         }
 
-        private void WriteModuleHeader(ModuleScope moduleScope)
+        void WriteModuleHeader(ModuleScope moduleScope)
         {
             var blockType = NUglify.BlockTypeModule.FormatInvariant(moduleScope.ScopeName.IfNullOrWhiteSpace(NUglify.ModuleNameImplicit));
             string scopeFlags = null;
@@ -232,7 +232,7 @@ namespace NUglify
             }
         }
 
-        private void WriteBlockHeader(BlockScope blockScope, string blockType)
+        void WriteBlockHeader(BlockScope blockScope, string blockType)
         {
             string scopeFlags = null;
             var sb = StringBuilderPool.Acquire();
@@ -269,7 +269,7 @@ namespace NUglify
         //
         //TYPE: Function, Function getter, Function setter
         //STATUS: '', Unknown, Unreachable
-        private void WriteFunctionHeader(FunctionObject funcObj, bool isKnown, bool useStrict)
+        void WriteFunctionHeader(FunctionObject funcObj, bool isKnown, bool useStrict)
         {
             // get the crunched value (if any)
             string crunched = string.Empty;
@@ -399,7 +399,7 @@ namespace NUglify
         //
         // SCOPE: global, local, outer, ''
         // TYPE: var, function, argument, arguments array, possibly undefined
-        private void WriteMemberReport(JSVariableField variableField)
+        void WriteMemberReport(JSVariableField variableField)
         {
             // don't report arguments fields that aren't referenced because
             // we add those fields to the function scopes automatically
@@ -476,7 +476,7 @@ namespace NUglify
             }
         }
 
-        private static SourceContext GetFirstDeclaration(JSVariableField variableField)
+        static SourceContext GetFirstDeclaration(JSVariableField variableField)
         {
             // only local fields that actually correspond to a declaration get the declaration
             // added to the declarations collection -- inner references don't get the declaration,
@@ -501,7 +501,7 @@ namespace NUglify
             return null;
         }
 
-        private static void GetFieldScopeType(JSVariableField variableField, out string scope, out string type)
+        static void GetFieldScopeType(JSVariableField variableField, out string scope, out string type)
         {
             // default scope is blank
             scope = string.Empty;
@@ -631,7 +631,7 @@ namespace NUglify
             }
         }
 
-        private void WriteUnrefedReport(GlobalScope globalScope)
+        void WriteUnrefedReport(GlobalScope globalScope)
         {
             if (globalScope.UndefinedReferences != null && globalScope.UndefinedReferences.Count > 0)
             {
@@ -691,12 +691,12 @@ namespace NUglify
 
         #region output methods
 
-        private void WriteProgress()
+        void WriteProgress()
         {
             WriteProgress(string.Empty);
         }
 
-        private void WriteProgress(string format, params object[] args)
+        void WriteProgress(string format, params object[] args)
         {
             try
             {
@@ -712,13 +712,13 @@ namespace NUglify
 
         #region Comparer classes
 
-        private class ScopeComparer : IComparer<ActivationObject>
+        class ScopeComparer : IComparer<ActivationObject>
         {
             // singleton instance
             public static readonly IComparer<ActivationObject> Instance = new ScopeComparer();
 
             // private constructor -- use singleton
-            private ScopeComparer() { }
+            ScopeComparer() { }
 
             #region IComparer<ActivationObject> Members
 
@@ -764,7 +764,7 @@ namespace NUglify
                 return comparison;
             }
 
-            private static bool IsFunctionExpressionName(ActivationObject scope)
+            static bool IsFunctionExpressionName(ActivationObject scope)
             {
                 // for this to be a function expression name scope:
                 // 1. the owner must not be null (well, it shouldn't ever be null)
@@ -773,7 +773,7 @@ namespace NUglify
                 return scope.Owner.IfNotNull(o => o.HasOwnScope && o.EnclosingScope != scope);
             }
 
-            private static SourceContext GetContext(ActivationObject obj)
+            static SourceContext GetContext(ActivationObject obj)
             {
                 // return the owner context, or null
                 return obj.IfNotNull(s => s.Owner.Context);
@@ -782,13 +782,13 @@ namespace NUglify
             #endregion
         }
 
-        private class FieldComparer : IComparer<JSVariableField>
+        class FieldComparer : IComparer<JSVariableField>
         {
             // singleton instance
             public static readonly IComparer<JSVariableField> Instance = new FieldComparer();
 
             // private constructor -- use singleton
-            private FieldComparer() { }
+            FieldComparer() { }
 
             #region IComparer<JSVariableField> Members
 
@@ -829,7 +829,7 @@ namespace NUglify
 
             #endregion
 
-            private static FieldOrder GetOrderIndex(JSVariableField obj)
+            static FieldOrder GetOrderIndex(JSVariableField obj)
             {
                 if (obj.FieldType == FieldType.Argument || obj.FieldType == FieldType.CatchError)
                 {
@@ -883,7 +883,7 @@ namespace NUglify
                     : FieldOrder.LocalFieldDefined;
             }
 
-            private enum FieldOrder : int
+            enum FieldOrder : int
             {
                 LocalArgument = 0,
                 LocalArgumentsObject,

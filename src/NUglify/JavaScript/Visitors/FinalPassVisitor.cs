@@ -19,12 +19,12 @@ using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript.Visitors
 {
-    internal class FinalPassVisitor : TreeVisitor
+	class FinalPassVisitor : TreeVisitor
     {
-        private CodeSettings m_settings;
-        private StatementStartVisitor m_statementStart;
+	    CodeSettings m_settings;
+	    StatementStartVisitor m_statementStart;
 
-        private FinalPassVisitor(CodeSettings codeSettings)
+	    FinalPassVisitor(CodeSettings codeSettings)
         {
             m_settings = codeSettings;
             m_statementStart = new StatementStartVisitor();
@@ -68,7 +68,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void PossiblyBreakExpressionStatement(BinaryExpression node, BlockStatement parentBlock)
+        void PossiblyBreakExpressionStatement(BinaryExpression node, BlockStatement parentBlock)
         {
             var nodeList = node.Operand2 as AstNodeList;
             if (nodeList != null)
@@ -94,7 +94,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private void PossiblyBreakExpressionList(BinaryExpression node, BlockStatement parentBlock, AstNodeList nodeList)
+        void PossiblyBreakExpressionList(BinaryExpression node, BlockStatement parentBlock, AstNodeList nodeList)
         {
             // if the first item can be broken, then we an break it and be done.
             // otherwise we're going to have to walk until we find a breaking place
@@ -151,7 +151,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private static AstNode CreateSplitNodeFromEnd(AstNodeList nodeList, int ndx)
+        static AstNode CreateSplitNodeFromEnd(AstNodeList nodeList, int ndx)
         {
             AstNode newNode;
             if (ndx == nodeList.Count - 1)
@@ -213,7 +213,7 @@ namespace NUglify.JavaScript.Visitors
             return newNode;
         }
 
-        private static void RotateOpeator(BinaryExpression node, AstNodeList rightSide)
+        static void RotateOpeator(BinaryExpression node, AstNodeList rightSide)
         {
             if (rightSide.Count == 0)
             {
@@ -242,7 +242,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        private bool CanBeBroken(AstNode node)
+        bool CanBeBroken(AstNode node)
         {
             AstNodeList nodeList;
             if (!m_statementStart.IsSafe(node))

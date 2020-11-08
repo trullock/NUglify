@@ -33,27 +33,27 @@ namespace NUglify.Css
     {
         #region state fields
 
-        private CssScanner m_scanner;
-        private CssToken m_currentToken;
-        private bool m_noOutput;
-        private string m_lastOutputString;
-        private bool m_mightNeedSpace;
-        private bool m_skippedSpace;
-        
-        private bool m_insideCalc;
-        private bool m_parsingZeroReducibleProperty;
+        CssScanner m_scanner;
+        CssToken m_currentToken;
+        bool m_noOutput;
+        string m_lastOutputString;
+        bool m_mightNeedSpace;
+        bool m_skippedSpace;
 
-        private int m_lineLength;
-        private bool m_noColorAbbreviation;
-        private bool m_encounteredNewLine;
-        private Stack<StringBuilder> m_builders;
+        bool m_insideCalc;
+        bool m_parsingZeroReducibleProperty;
+
+        int m_lineLength;
+        bool m_noColorAbbreviation;
+        bool m_encounteredNewLine;
+        Stack<StringBuilder> m_builders;
 
         // this is used to make sure we don't output two newlines in a row.
         // start it as true so we don't start off with a blank line
-        private bool m_outputNewLine = true;
+        bool m_outputNewLine = true;
 
         // set this to true to force a newline before any other output
-        private bool m_forceNewLine = false;
+        bool m_forceNewLine = false;
 
         public CssSettings Settings
         {
@@ -63,11 +63,11 @@ namespace NUglify.Css
         // sets a text writer that gets raw tokens written to it
         public TextWriter EchoWriter { get; set; }
 
-        private readonly HashSet<string> m_namespaces;
+        readonly HashSet<string> m_namespaces;
 
         public string FileContext { get; set; }
 
-        private CodeSettings m_jsSettings;
+        CodeSettings m_jsSettings;
         public CodeSettings JSSettings
         {
             get
@@ -97,7 +97,7 @@ namespace NUglify.Css
 
         #endregion
 
-        private static Regex s_vendorSpecific = new Regex(
+        static Regex s_vendorSpecific = new Regex(
             @"^(\-(?<vendor>[^\-]+)\-)?(?<root>.+)$",
             RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -106,7 +106,7 @@ namespace NUglify.Css
         // which is bad for the server. So we want to automatically fix this for developers: if ANY URL
         // ends in .EOT without a querystring parameters, just add a question mark in the appropriate 
         // location. This fixes the IE8 issue.
-        private static Regex s_eotIE8Fix = new Regex(
+        static Regex s_eotIE8Fix = new Regex(
             @"\.eot([^?\\/\w])",
             RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
@@ -124,7 +124,7 @@ namespace NUglify.Css
         /// regular expression for matching first comment hack
         /// This is the MacIE ignore bug: /*(anything or nothing inside)\*/.../*(anything or nothing inside)*/
         /// </summary>
-        private static Regex s_regexHack1 = new Regex(
+        static Regex s_regexHack1 = new Regex(
             @"/\*([^*]|(\*+[^*/]))*\**\\\*/(?<inner>.*?)/\*([^*]|(\*+[^*/]))*\*+/",
             RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -133,7 +133,7 @@ namespace NUglify.Css
         /// Hide from everything EXCEPT Netscape 4 and Opera 5
         /// Format: /*/*//*/.../*(anything or nothing inside)*/
         /// </summary>
-        private static Regex s_regexHack2 = new Regex(
+        static Regex s_regexHack2 = new Regex(
             @"/\*/\*//\*/(?<inner>.*?)/\*([^*]|(\*+[^*/]))*\*+/",
             RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -142,7 +142,7 @@ namespace NUglify.Css
         /// Hide from Netscape 4
         /// Format: /*/*/.../*(anything or nothing inside)*/
         /// </summary>
-        private static Regex s_regexHack3 = new Regex(
+        static Regex s_regexHack3 = new Regex(
             @"/\*/\*/(?<inner>.*?)/\*([^*]|(\*+[^*/]))*\*+/",
             RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -155,7 +155,7 @@ namespace NUglify.Css
         /// by a simple comment, followed by optional space, followed by a colon.
         /// Does not match the simple word, the space or the colon (just the comment) 
         /// </summary>
-        private static Regex s_regexHack4 = new Regex(
+        static Regex s_regexHack4 = new Regex(
             @"(?<=\w\s+)/\*([^*]|(\*+[^*/]))*\*+/\s*(?=:)",
             RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -168,7 +168,7 @@ namespace NUglify.Css
         /// by a colon, followed by optional whitespace, followed by a simple comment.
         /// Does not match initial word or the colon, just the comment.
         /// </summary>
-        private static Regex s_regexHack5 = new Regex(
+        static Regex s_regexHack5 = new Regex(
             @"(?<=[\w/]\s*:)\s*/\*([^*]|(\*+[^*/]))*\*+/",
             RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -183,7 +183,7 @@ namespace NUglify.Css
         /// word character followed by a simple comment, followed by optional space, followed by a colon.
         /// Does not match the simple word or the colon (just initial whitespace and comment) 
         /// </summary>
-        private static Regex s_regexHack6 = new Regex(
+        static Regex s_regexHack6 = new Regex(
             @"(?<=\w)/\*([^*]|(\*+[^*/]))*\*+/\s*(?=:)",
             RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -194,7 +194,7 @@ namespace NUglify.Css
         /// an attempted comment hack.
         /// Format: /**/ or /* */ (single space)
         /// </summary>
-        private static Regex s_regexHack7 = new Regex(
+        static Regex s_regexHack7 = new Regex(
             @"/\*(\s?)\*/",
             RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -208,13 +208,13 @@ namespace NUglify.Css
         /// values are not necessarily the same). Used to identify #rrggbb values
         /// that can be collapsed to #rgb
         /// </summary>
-        private static Regex s_rrggbb = new Regex(
+        static Regex s_rrggbb = new Regex(
             @"^\#(?<r>[0-9a-fA-F])\k<r>(?<g>[0-9a-fA-F])\k<g>(?<b>[0-9a-fA-F])\k<b>$",
             RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         // whether we are currently parsing the value for a property that might
         // use color names
-        private bool m_parsingColorValue;
+        bool m_parsingColorValue;
 
         #endregion
 
@@ -225,15 +225,15 @@ namespace NUglify.Css
         /// for value-replacement matching
         /// Format: /* [id] */
         /// </summary>
-        private static Regex s_valueReplacement = new Regex(
+        static Regex s_valueReplacement = new Regex(
             @"/\*\s*\[(?<id>\w+)\]\s*\*/",
             RegexOptions.CultureInvariant | RegexOptions.Singleline | RegexOptions.Compiled);
 
         // this variable will be set whenever we encounter a value-replacement comment
         // and have a string to replace it with
-        private string m_valueReplacement;// = null;
+        string m_valueReplacement;// = null;
 
-        private static bool IsZeroReducibleProperty(string propertyName)
+        static bool IsZeroReducibleProperty(string propertyName)
         {
             // Are there other delcarations which shouldn't have 0px->0 within them?
             return !propertyName.Equals("flex", StringComparison.OrdinalIgnoreCase);
@@ -249,7 +249,7 @@ namespace NUglify.Css
         ///     where id is one of: ReplaceColor, ReplaceFont, or RecolorImage
         ///     and parameters is anything other than a close square-bracket
         /// </summary>
-        private static Regex s_sharepointReplacement = new Regex(
+        static Regex s_sharepointReplacement = new Regex(
             @"/\*\s*\[(ReplaceBGImage|((ReplaceColor|ReplaceFont|RecolorImage)\([^\]]*))\]\s*\*/",
             RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
@@ -257,7 +257,7 @@ namespace NUglify.Css
 
         #region token-related properties
 
-        private TokenType CurrentTokenType
+        TokenType CurrentTokenType
         {
             get
             {
@@ -267,7 +267,7 @@ namespace NUglify.Css
             }
         }
 
-        private string CurrentTokenText
+        string CurrentTokenText
         {
             get
             {
@@ -421,7 +421,7 @@ namespace NUglify.Css
         /// <summary>
         /// Push a new string builder onto the builders stack
         /// </summary>
-        private void PushWaypoint()
+        void PushWaypoint()
         {
             m_builders.Push(StringBuilderPool.Acquire());
         }
@@ -432,7 +432,7 @@ namespace NUglify.Css
         /// </summary>
         /// <param name="keepText">true if push the text of the popped waypoint onto the new top waypoint; false to discard</param>
         /// <returns>true if the popped builder has any text within it</returns>
-        private bool PopWaypoint(bool keepText)
+        bool PopWaypoint(bool keepText)
         {
             var topBuilder = m_builders.Pop();
             if (keepText || !Settings.RemoveEmptyBlocks)
@@ -450,7 +450,7 @@ namespace NUglify.Css
         /// on the stack, unwinding the stack until it's empty
         /// </summary>
         /// <returns>string representation of all parsed text</returns>
-        private string UnwindStackCompletely()
+        string UnwindStackCompletely()
         {
             if (m_builders == null || m_builders.Count == 0)
             {
@@ -490,7 +490,7 @@ namespace NUglify.Css
 
         #region Character set rule handling
 
-        private string HandleCharset(string source)
+        string HandleCharset(string source)
         {
             // normally we let the encoding switch decode the input file for us, so every character in
             // the source string has already been decoded into the proper UNICODE character point.
@@ -587,7 +587,7 @@ namespace NUglify.Css
         /// </summary>
         /// <param name="propertyName">The property name</param>
         /// <returns>true if excluded; false otherwise</returns>
-        private bool IsExcludedVendorPrefix(string propertyName)
+        bool IsExcludedVendorPrefix(string propertyName)
         {
             bool isExcluded = false;
             var match = s_vendorSpecific.Match(propertyName);
@@ -603,7 +603,7 @@ namespace NUglify.Css
 
         #region Parse... methods
 
-        private Parsed ParseStylesheet()
+        Parsed ParseStylesheet()
         {
             Parsed parsed = Parsed.False;
 
@@ -682,7 +682,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseCharset()
+        Parsed ParseCharset()
         {
             AppendCurrent();
             SkipSpace();
@@ -716,7 +716,7 @@ namespace NUglify.Css
             return Parsed.True;
         }
 
-        private void ParseSCDOCDCComments()
+        void ParseSCDOCDCComments()
         {
             while (CurrentTokenType == TokenType.Space
               || CurrentTokenType == TokenType.Comment
@@ -777,7 +777,7 @@ namespace NUglify.Css
         }
         */
 
-        private Parsed ParseAtKeyword()
+        Parsed ParseAtKeyword()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.AtKeyword)
@@ -811,7 +811,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseSupportsCondition(bool notOperatorAllowed, bool andOrOperatorsNeeded)
+        Parsed ParseSupportsCondition(bool notOperatorAllowed, bool andOrOperatorsNeeded)
         {
             bool foundSupportsCondition = false;
             //more operators? no let parent finish ')'
@@ -870,8 +870,8 @@ namespace NUglify.Css
             }
             return foundSupportsCondition ? Parsed.True : Parsed.False;
         }
-        
-        private Parsed ParseSupportsOperator(bool notOperatorAllowed, bool andOrOperatorsNeeded)
+
+        Parsed ParseSupportsOperator(bool notOperatorAllowed, bool andOrOperatorsNeeded)
         {
             var parsed = Parsed.False;
             if (notOperatorAllowed)
@@ -903,8 +903,8 @@ namespace NUglify.Css
             }
             return parsed;
         }
-        
-        private Parsed ParseSupports()
+
+        Parsed ParseSupports()
         {
             bool notOperatorAllowed = false;
             bool andOrOperatorsNeeded = false;
@@ -987,7 +987,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseAspNetBlock()
+        Parsed ParseAspNetBlock()
         {
             Parsed parsed = Parsed.False;
             if (Settings.AllowEmbeddedAspNetBlocks &&
@@ -1000,7 +1000,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseNamespace()
+        Parsed ParseNamespace()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.NamespaceSymbol)
@@ -1059,7 +1059,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private void ValidateNamespace(string namespaceIdent)
+        void ValidateNamespace(string namespaceIdent)
         {
             // check it against list of all declared @namespace names
             if (!string.IsNullOrEmpty(namespaceIdent)
@@ -1070,7 +1070,7 @@ namespace NUglify.Css
             }
         }
 
-        private Parsed ParseKeyFrames()
+        Parsed ParseKeyFrames()
         {
             // '@keyframes' IDENT '{' keyframes-blocks '}'
             Parsed parsed = Parsed.False;
@@ -1145,7 +1145,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private void ParseKeyFrameBlocks()
+        void ParseKeyFrameBlocks()
         {
             // [ keyframe-selectors block ]*
             while (ParseKeyFrameSelectors() == Parsed.True)
@@ -1161,7 +1161,7 @@ namespace NUglify.Css
             m_forceNewLine = false;
         }
 
-        private Parsed ParseKeyFrameSelectors()
+        Parsed ParseKeyFrameSelectors()
         {
             // [ 'from' | 'to' | PERCENTAGE ] [ ',' [ 'from' | 'to' | PERCENTAGE ] ]*
             Parsed parsed = Parsed.False;
@@ -1221,7 +1221,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseImport()
+        Parsed ParseImport()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.ImportSymbol)
@@ -1273,7 +1273,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseMedia()
+        Parsed ParseMedia()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.MediaSymbol)
@@ -1381,7 +1381,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseMediaQueryList(bool mightNeedSpace)
+        Parsed ParseMediaQueryList(bool mightNeedSpace)
         {
             // see if we have a media query
             Parsed parsed = ParseMediaQuery(mightNeedSpace);
@@ -1403,7 +1403,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseMediaQuery(bool firstQuery)
+        Parsed ParseMediaQuery(bool firstQuery)
         {
             var parsed = Parsed.False;
             var mightNeedSpace = firstQuery;
@@ -1534,7 +1534,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private void ParseMediaQueryExpression()
+        void ParseMediaQueryExpression()
         {
             // expect current token to be the opening paren when calling
             if (CurrentTokenType == TokenType.Character && CurrentTokenText == "(")
@@ -1600,7 +1600,7 @@ namespace NUglify.Css
             }
         }
 
-        private Parsed ParseDeclarationBlock(bool allowMargins)
+        Parsed ParseDeclarationBlock(bool allowMargins)
         {
             var parsed = Parsed.True;
 
@@ -1672,7 +1672,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private Parsed ParseDeclarationList(bool allowMargins)
+        Parsed ParseDeclarationList(bool allowMargins)
         {
             var parsed = Parsed.Empty;
             while (!m_scanner.EndOfFile)
@@ -1806,7 +1806,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParsePage()
+        Parsed ParsePage()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.PageSymbol)
@@ -1856,7 +1856,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParsePseudoPage()
+        Parsed ParsePseudoPage()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.Character && CurrentTokenText == ":")
@@ -1876,7 +1876,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseMargin()
+        Parsed ParseMargin()
         {
             var parsed = Parsed.Empty;
             var keepDirective = true;
@@ -1923,7 +1923,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseFontFace()
+        Parsed ParseFontFace()
         {
             var parsed = Parsed.False;
             if (CurrentTokenType == TokenType.FontFaceSymbol)
@@ -1949,7 +1949,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseOperator()
+        Parsed ParseOperator()
         {
             Parsed parsed = Parsed.Empty;
             if (CurrentTokenType == TokenType.Character
@@ -1962,7 +1962,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseCombinator()
+        Parsed ParseCombinator()
         {
             Parsed parsed = Parsed.Empty;
             if (CurrentTokenType == TokenType.Character
@@ -1975,7 +1975,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseRule()
+        Parsed ParseRule()
         {
             var keepRule = true;
             PushWaypoint();
@@ -2075,7 +2075,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseSelectorList()
+        Parsed ParseSelectorList()
         {
             var parsed = ParseSelector();
             while (CurrentTokenType == TokenType.Character && CurrentTokenText == ",")
@@ -2100,7 +2100,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseSelector()
+        Parsed ParseSelector()
         {
             // should start with a selector
             Parsed parsed = ParseSimpleSelector();
@@ -2158,7 +2158,7 @@ namespace NUglify.Css
         }
 
         // does NOT skip whitespace after the selector
-        private Parsed ParseSimpleSelector()
+        Parsed ParseSimpleSelector()
         {
             // the element name is optional
             Parsed parsed = ParseElementName();
@@ -2190,7 +2190,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseClass()
+        Parsed ParseClass()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.Character
@@ -2258,7 +2258,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseElementName()
+        Parsed ParseElementName()
         {
             Parsed parsed = Parsed.False;
             bool foundNamespace = false;
@@ -2323,7 +2323,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private Parsed ParseAttrib()
+        Parsed ParseAttrib()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.Character
@@ -2432,7 +2432,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParsePseudo()
+        Parsed ParsePseudo()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.Character
@@ -2520,7 +2520,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseExpression()
+        Parsed ParseExpression()
         {
             Parsed parsed = Parsed.Empty;
             while(true)
@@ -2563,7 +2563,7 @@ namespace NUglify.Css
             }
         }
 
-        private Parsed ParseDeclaration()
+        Parsed ParseDeclaration()
         {
             Parsed parsed = Parsed.Empty;
 
@@ -2663,7 +2663,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParsePrio()
+        Parsed ParsePrio()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.ImportantSymbol)
@@ -2716,7 +2716,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseExpr()
+        Parsed ParseExpr()
         {
             Parsed parsed = ParseTerm(false);
             if (parsed == Parsed.True)
@@ -2736,7 +2736,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseFunctionParameters()
+        Parsed ParseFunctionParameters()
         {
             Parsed parsed = ParseTerm(false);
             if (parsed == Parsed.True)
@@ -2772,7 +2772,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        private Parsed ParseTerm(bool wasEmpty)
+        Parsed ParseTerm(bool wasEmpty)
         {
             Parsed parsed = Parsed.False;
             bool hasUnary = false;
@@ -3013,7 +3013,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseProgId()
+        Parsed ParseProgId()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.ProgId)
@@ -3083,7 +3083,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private static string GetRoot(string text)
+        static string GetRoot(string text)
         {
             if (text.StartsWith("-", StringComparison.Ordinal))
             {
@@ -3097,7 +3097,7 @@ namespace NUglify.Css
             return text;
         }
 
-        private Parsed ParseFunction()
+        Parsed ParseFunction()
         {
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.Function)
@@ -3150,7 +3150,7 @@ namespace NUglify.Css
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification = "we want lower-case output")]
-        private Parsed ParseRgb()
+        Parsed ParseRgb()
         {
             var parsed = Parsed.False;
             if (CurrentTokenType == TokenType.Function
@@ -3358,7 +3358,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification = "we want lower-case output")]
-        private Parsed ParseExpressionFunction()
+        Parsed ParseExpressionFunction()
         {
             var parsed = Parsed.False;
             if (CurrentTokenType == TokenType.Function
@@ -3473,7 +3473,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseHexcolor()
+        Parsed ParseHexcolor()
         {
             Parsed parsed = Parsed.False;
 
@@ -3513,7 +3513,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseUnit()
+        Parsed ParseUnit()
         {
             var parsed = Parsed.Empty;
 
@@ -3600,7 +3600,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseProduct()
+        Parsed ParseProduct()
         {
             // there needs to be at least one unit here
             var parsed = ParseUnit();
@@ -3657,7 +3657,7 @@ namespace NUglify.Css
             return parsed;
         }
 
-        private Parsed ParseSum()
+        Parsed ParseSum()
         {
             // there needs to be at least one product here
             var parsed = ParseProduct();
@@ -3696,7 +3696,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification="we want lower-case output")]
-        private Parsed ParseMinMax()
+        Parsed ParseMinMax()
         {
             // return false if the function isn't min or max
             Parsed parsed = Parsed.False;
@@ -3740,7 +3740,7 @@ namespace NUglify.Css
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification = "we want lower-case output")]
-        private Parsed ParseCalc()
+        Parsed ParseCalc()
         {
             var parsed = Parsed.False;
             if (CurrentTokenType == TokenType.Function
@@ -3778,7 +3778,7 @@ namespace NUglify.Css
         #region Next... methods
 
         // skip to the next token, but output any comments we may find as we go along
-        private TokenType NextToken()
+        TokenType NextToken()
         {
             m_currentToken = m_scanner.NextToken(!m_insideCalc && m_parsingZeroReducibleProperty);
             if (EchoWriter != null)
@@ -3807,7 +3807,7 @@ namespace NUglify.Css
         }
 
         // just skip to the next token; don't skip over comments
-        private TokenType NextRawToken()
+        TokenType NextRawToken()
         {
             m_currentToken = m_scanner.NextToken(!m_insideCalc);
             if (EchoWriter != null)
@@ -3819,7 +3819,7 @@ namespace NUglify.Css
             return CurrentTokenType;
         }
 
-        private string NextSignificantToken()
+        string NextSignificantToken()
         {
             // MOST of the time we won't need to save anything,
             // so don't bother allocating a string builder unless we need it
@@ -3937,7 +3937,7 @@ namespace NUglify.Css
             return text;
         }
 
-        private void UpdateIfReplacementToken()
+        void UpdateIfReplacementToken()
         {
             m_currentToken = m_scanner.ScanReplacementToken() ?? m_currentToken;
         }
@@ -3950,7 +3950,7 @@ namespace NUglify.Css
         /// This method advances to the next token FIRST -- effectively skipping the current one -- 
         /// and then skips any space tokens that FOLLOW it.
         /// </summary>
-        private void SkipSpace()
+        void SkipSpace()
         {
             // reset the skipped-space flag
             m_skippedSpace = false;
@@ -3972,7 +3972,7 @@ namespace NUglify.Css
             m_encounteredNewLine = encounteredNewLine;
         }
 
-        private void SkipSpaceComment()
+        void SkipSpaceComment()
         {
             // reset the skipped-space flag
             m_skippedSpace = false;
@@ -4030,7 +4030,7 @@ namespace NUglify.Css
         /// This method only skips the space that is already the current token.
         /// </summary>
         /// <returns>true if space was skipped; false if the current token is not space</returns>
-        private bool SkipIfSpace()
+        bool SkipIfSpace()
         {
             // reset the skipped-space flag
             m_skippedSpace = false;
@@ -4049,7 +4049,7 @@ namespace NUglify.Css
             return tokenIsSpace;
         }
 
-        private void SkipToEndOfStatement()
+        void SkipToEndOfStatement()
         {
             bool possibleSpace = false;
             // skip to next semicolon or next block
@@ -4091,7 +4091,7 @@ namespace NUglify.Css
             }
         }
 
-        private void SkipToEndOfDeclaration()
+        void SkipToEndOfDeclaration()
         {
             bool possibleSpace = false;
             // skip to end of declaration: ; or }
@@ -4141,7 +4141,7 @@ namespace NUglify.Css
             m_noOutput = false;
         }
 
-        private void SkipToClose()
+        void SkipToClose()
         {
             bool possibleSpace = false;
             string closingText;
@@ -4213,7 +4213,7 @@ namespace NUglify.Css
             }
         }
 
-        private void SkipSemicolons()
+        void SkipSemicolons()
         {
             while (CurrentTokenType == TokenType.Character && CurrentTokenText == ";")
             {
@@ -4221,12 +4221,12 @@ namespace NUglify.Css
             }
         }
 
-        private static bool NeedsSpaceBefore(string text)
+        static bool NeedsSpaceBefore(string text)
         {
             return text == null ? false : !("{}()[],;".Contains(text));
         }
 
-        private static bool NeedsSpaceAfter(string text)
+        static bool NeedsSpaceAfter(string text)
         {
             return text == null ? false : !("{}()[],;:".Contains(text));
         }
@@ -4235,7 +4235,7 @@ namespace NUglify.Css
 
         #region output methods
 
-        private bool AppendCurrent()
+        bool AppendCurrent()
         {
             return Append(
                 CurrentTokenText, 
@@ -4245,7 +4245,7 @@ namespace NUglify.Css
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity"),
          System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode"),
          System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
-        private bool Append(object obj, TokenType tokenType)
+        bool Append(object obj, TokenType tokenType)
         {
             bool outputText = false;
             bool textEndsInEscapeSequence = false;
@@ -4764,7 +4764,7 @@ namespace NUglify.Css
             return outputText;
         }
 
-        private string GetReplacementValue(Match match)
+        string GetReplacementValue(Match match)
         {
             string tokenValue = null;
             var tokenName = match.Result("${token}");
@@ -4785,7 +4785,7 @@ namespace NUglify.Css
             return tokenValue.IfNullOrWhiteSpace(string.Empty);
         }
 
-        private static bool EscapeCharacter(StringBuilder sb, char character)
+        static bool EscapeCharacter(StringBuilder sb, char character)
         {
             // output the hex value of the escaped character. If it's less than seven digits
             // (the slash followed by six hex digits), we might
@@ -4796,12 +4796,12 @@ namespace NUglify.Css
             return hex.Length < 7;
         }
 
-        private bool Append(object obj)
+        bool Append(object obj)
         {
             return Append(obj, TokenType.None);
         }
 
-        private void NewLine()
+        void NewLine()
         {
             // if we've output something other than a newline, output one now
             if (Settings.OutputMode == OutputMode.MultipleLines && !m_outputNewLine)
@@ -4816,7 +4816,7 @@ namespace NUglify.Css
         /// Always add new line to the stream
         /// </summary>
         /// <param name="sb"></param>
-        private void AddNewLine()
+        void AddNewLine()
         {
             if (!m_outputNewLine)
             {
@@ -4841,13 +4841,13 @@ namespace NUglify.Css
             }
         }
 
-        private void Indent()
+        void Indent()
         {
             // increase the indent level by one
             Settings.Indent();
         }
 
-        private void Unindent()
+        void Unindent()
         {
             // only decrease the indent level by one IF it's greater than zero
             Settings.Unindent();
@@ -4858,7 +4858,7 @@ namespace NUglify.Css
         #region color methods
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
-        private static string CrunchHexColor(string hexColor, CssColor colorNames, bool noAbbr)
+        static string CrunchHexColor(string hexColor, CssColor colorNames, bool noAbbr)
         {
             if (!noAbbr)
             {
@@ -4902,7 +4902,7 @@ namespace NUglify.Css
             return hexColor;
         }
 
-        private static bool MightContainColorNames(string propertyName)
+        static bool MightContainColorNames(string propertyName)
         {
             bool hasColor = (propertyName.EndsWith("color", StringComparison.Ordinal));
             if (!hasColor)
@@ -4932,7 +4932,7 @@ namespace NUglify.Css
             return CssStrings.ResourceManager.GetString(errorCode.ToString(), CssStrings.Culture);
         }
 
-        private void ReportError(int severity, CssErrorCode errorNumber, CssContext context, params object[] arguments)
+        void ReportError(int severity, CssErrorCode errorNumber, CssContext context, params object[] arguments)
         {
             // guide: 0 == syntax error
             //        1 == the programmer probably did not intend to do this
@@ -4964,7 +4964,7 @@ namespace NUglify.Css
         }
 
         // just use the current context for the error
-        private void ReportError(int severity, CssErrorCode errorNumber, params object[] arguments)
+        void ReportError(int severity, CssErrorCode errorNumber, params object[] arguments)
         {
             ReportError(severity, errorNumber, m_currentToken != null ? m_currentToken.Context : null, arguments);
         }
@@ -5052,7 +5052,7 @@ namespace NUglify.Css
 
         #region private enums
 
-        private enum Parsed
+        enum Parsed
         {
             True,
             False,

@@ -21,8 +21,8 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class SwitchCase : AstNode
     {
-        private AstNode m_caseValue;
-        private BlockStatement m_statements;
+	    AstNode m_caseValue;
+	    BlockStatement m_statements;
 
         public AstNode CaseValue
         {
