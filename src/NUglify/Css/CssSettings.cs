@@ -50,7 +50,7 @@ namespace NUglify.Css
 				FixIE8Fonts = FixIE8Fonts,
 				IgnoreAllErrors = IgnoreAllErrors,
 				IgnoreErrorList = IgnoreErrorList,
-				IndentSize = IndentSize,
+				Indent = Indent,
 				KillSwitch = KillSwitch,
 				LineBreakThreshold = LineBreakThreshold,
 				MinifyExpressions = MinifyExpressions,

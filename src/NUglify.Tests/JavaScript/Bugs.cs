@@ -153,5 +153,12 @@ namespace NUglify.Tests.JavaScript
         {
 	        TestHelper.Instance.RunTest();
         }
+
+        [Test]
+        public void Bug181()
+        {
+	        var uglifyResult = Uglify.Js("function foo() { return 1; }", new CodeSettings { Indent = "   ", OutputMode = OutputMode.MultipleLines});
+	        Assert.AreEqual("function foo()\n{\n   return 1\n}", uglifyResult.Code);
+        }
     }
 }

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using NUglify.Css;
 using NUglify.Tests.Css.Common;
 using NUnit.Framework;
 
@@ -41,6 +42,13 @@ namespace NUglify.Tests.Css
         public void Bug74()
         {
             TestHelper.Instance.RunTest();
+        }
+
+        [Test]
+        public void Bug181()
+        {
+	        var uglifyResult = Uglify.Css("p { color: red; }", new CssSettings { Indent = "   ", OutputMode = OutputMode.MultipleLines });
+	        Assert.AreEqual("p\n{\n   color: #f00\n}", uglifyResult.Code);
         }
     }
 }

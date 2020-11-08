@@ -28,20 +28,20 @@ namespace NUglify.JavaScript.Visitors
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
     public class OutputVisitor : IVisitor
     {
-	    TextWriter m_outputStream;
+	    TextWriter outputStream;
 
-	    char m_lastCharacter;
+	    char lastCharacter;
 	    bool m_lastCountOdd;
-	    bool m_onNewLine;
+	    bool onNewLine;
 	    bool m_startOfStatement;
 	    bool m_outputCCOn;
 	    bool m_doneWithGlobalDirectives;
 	    bool m_needsStrictDirective;
 	    bool m_noLineBreaks;
 
-	    int m_indentLevel;
-	    int m_lineLength;
-	    int m_lineCount;
+	    int indentLevel;
+	    int lineLength;
+	    int lineCount;
 
         // needed when generating map files
         Stack<string> m_functionStack = new Stack<string>();
@@ -59,7 +59,7 @@ namespace NUglify.JavaScript.Visitors
         // shortcut so we don't have to keep checking the count
         bool m_hasReplacementTokens;
 
-        CodeSettings m_settings;
+        CodeSettings settings;
 
         RequiresSeparatorVisitor m_requiresSeparator;
 
@@ -103,10 +103,10 @@ namespace NUglify.JavaScript.Visitors
 
         OutputVisitor(TextWriter writer, CodeSettings settings)
         {
-            m_outputStream = writer;
-            m_settings = settings ?? new CodeSettings();
-            m_onNewLine = true;
-            m_requiresSeparator = new RequiresSeparatorVisitor(m_settings);
+            outputStream = writer;
+            this.settings = settings ?? new CodeSettings();
+            onNewLine = true;
+            m_requiresSeparator = new RequiresSeparatorVisitor(this.settings);
             m_hasReplacementTokens = settings.ReplacementTokens.Count > 0;
             writer.NewLine = settings.LineTerminator;
         }
@@ -126,7 +126,7 @@ namespace NUglify.JavaScript.Visitors
 
                 // if there is a symbol map that we are tracking, tell it that we have ended an output run
                 // and pass it offsets to the last line and column positions.
-                settings.IfNotNull(s => s.SymbolsMap.IfNotNull(m => m.EndOutputRun(outputVisitor.m_lineCount, outputVisitor.m_lineLength)));
+                settings.IfNotNull(s => s.SymbolsMap.IfNotNull(m => m.EndOutputRun(outputVisitor.lineCount, outputVisitor.lineLength)));
             }
         }
 
@@ -179,7 +179,7 @@ namespace NUglify.JavaScript.Visitors
                             OutputPossibleLineBreak(',');
                             MarkSegment(node, null, element.IfNotNull(e => e.TerminatingContext));
 
-                            if (m_settings.OutputMode == OutputMode.MultipleLines)
+                            if (settings.OutputMode == OutputMode.MultipleLines)
                             {
                                 OutputPossibleLineBreak(' ');
                             }
@@ -233,7 +233,7 @@ namespace NUglify.JavaScript.Visitors
                             OutputPossibleLineBreak(',');
                             MarkSegment(node, null, element.IfNotNull(e => e.TerminatingContext));
 
-                            if (m_settings.OutputMode == OutputMode.MultipleLines)
+                            if (settings.OutputMode == OutputMode.MultipleLines)
                             {
                                 OutputPossibleLineBreak(' ');
                             }
@@ -284,7 +284,7 @@ namespace NUglify.JavaScript.Visitors
                 // to read in multi-line mode
                 var addNewLines = node.Parent is CommaExpression
                     && node.Parent.Parent is BlockStatement
-                    && m_settings.OutputMode == OutputMode.MultipleLines;
+                    && settings.OutputMode == OutputMode.MultipleLines;
 
                 // output as comma-separated expressions starting with the first one
                 node[0].Accept(this);
@@ -311,7 +311,7 @@ namespace NUglify.JavaScript.Visitors
                     {
                         NewLine();
                     }
-                    else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    else if (settings.OutputMode == OutputMode.MultipleLines)
                     {
                         OutputPossibleLineBreak(' ');
                     }
@@ -358,7 +358,7 @@ namespace NUglify.JavaScript.Visitors
                             {
                                 NewLine();
                             }
-                            else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                            else if (settings.OutputMode == OutputMode.MultipleLines)
                             {
                                 OutputPossibleLineBreak(' ');
                             }
@@ -399,7 +399,7 @@ namespace NUglify.JavaScript.Visitors
 
                     m_startOfStatement = false;
 
-                    if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    if (settings.OutputMode == OutputMode.MultipleLines)
                     {
                         // treat the comma-operator special, since we combine expression statements
                         // with it very often
@@ -413,7 +413,7 @@ namespace NUglify.JavaScript.Visitors
                         MarkSegment(node, null, node.OperatorContext);
 
                         BreakLine(false);
-                        if (!m_onNewLine)
+                        if (!onNewLine)
                         {
                             OutputPossibleLineBreak(' ');
                         }
@@ -636,7 +636,7 @@ namespace NUglify.JavaScript.Visitors
                     OutputPossibleLineBreak('}');
                     MarkSegment(node, null, node.Context);
                 }
-                else if (prevStatement != null && m_requiresSeparator.Query(prevStatement) && m_settings.TermSemicolons)
+                else if (prevStatement != null && m_requiresSeparator.Query(prevStatement) && settings.TermSemicolons)
                 {
                     // this is the root block (parent is null) and we want to make sure we end
                     // with a terminating semicolon, so don't replace it
@@ -763,7 +763,7 @@ namespace NUglify.JavaScript.Visitors
                             OutputPossibleLineBreak(',');
                             MarkSegment(node.Arguments, null, argument.IfNotNull(a => a.TerminatingContext) ?? node.Arguments.Context);
 
-                            if (m_settings.OutputMode == OutputMode.MultipleLines)
+                            if (settings.OutputMode == OutputMode.MultipleLines)
                             {
                                 OutputPossibleLineBreak(' ');
                             }
@@ -814,7 +814,7 @@ namespace NUglify.JavaScript.Visitors
                         // hide it.
                         if (node.ClassType != ClassType.Expression
                             || bindingIdentifier.VariableField.IsReferenced
-                            || !m_settings.RemoveFunctionExpressionNames)
+                            || !settings.RemoveFunctionExpressionNames)
                         {
                             node.Binding.Accept(this);
                         }
@@ -966,7 +966,7 @@ namespace NUglify.JavaScript.Visitors
                 // if we have already output a cc_on and we don't want to keep any dupes, let's
                 // skip over any @cc_on statements at the beginning now
                 var ndx = 0;
-                if (m_outputCCOn && m_settings.IsModificationAllowed(TreeModifications.RemoveUnnecessaryCCOnStatements))
+                if (m_outputCCOn && settings.IsModificationAllowed(TreeModifications.RemoveUnnecessaryCCOnStatements))
                 {
                     while (ndx < node.Statements.Count
                         && node.Statements[ndx] is ConditionalCompilationOn)
@@ -1104,7 +1104,7 @@ namespace NUglify.JavaScript.Visitors
             {
                 var symbol = StartSymbol(node);
                 if (!m_outputCCOn
-                    || !m_settings.IsModificationAllowed(TreeModifications.RemoveUnnecessaryCCOnStatements))
+                    || !settings.IsModificationAllowed(TreeModifications.RemoveUnnecessaryCCOnStatements))
                 {
                     m_outputCCOn = true;
                     Output("@cc_on");
@@ -1161,13 +1161,13 @@ namespace NUglify.JavaScript.Visitors
                     SetContextOutputPosition(node.Context);
                 }
 
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                     OutputPossibleLineBreak('?');
                     MarkSegment(node, null, node.QuestionContext ?? node.Context);
                     BreakLine(false);
-                    if (!m_onNewLine)
+                    if (!onNewLine)
                     {
                         OutputPossibleLineBreak(' ');
                     }
@@ -1185,13 +1185,13 @@ namespace NUglify.JavaScript.Visitors
                     AcceptNodeWithParens(node.TrueExpression, node.TrueExpression.Precedence < OperatorPrecedence.Assignment);
                 }
 
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                     OutputPossibleLineBreak(':');
                     MarkSegment(node, null, node.ColonContext ?? node.Context);
                     BreakLine(false);
-                    if (!m_onNewLine)
+                    if (!onNewLine)
                     {
                         OutputPossibleLineBreak(' ');
                     }
@@ -1235,7 +1235,7 @@ namespace NUglify.JavaScript.Visitors
 
                     case PrimitiveType.Number:
                         if (node.Context == null || !node.Context.HasCode
-                            || (!node.MayHaveIssues && m_settings.IsModificationAllowed(TreeModifications.MinifyNumericLiterals)))
+                            || (!node.MayHaveIssues && settings.IsModificationAllowed(TreeModifications.MinifyNumericLiterals)))
                         {
                             // apply minification to the literal to get it as small as possible
                             Output(NormalizeNumber(node.ToNumber(), node.Context));
@@ -1274,13 +1274,13 @@ namespace NUglify.JavaScript.Visitors
                             // to show anyways
                             Output(InlineSafeString(EscapeString(ReplaceTokens(node.Value.ToString()))));
                         }
-                        else if (!m_settings.IsModificationAllowed(TreeModifications.MinifyStringLiterals))
+                        else if (!settings.IsModificationAllowed(TreeModifications.MinifyStringLiterals))
                         {
                             // we don't want to modify the strings at all!
                             Output(ReplaceTokens(node.Context.Code));
                         }
                         else if (node.MayHaveIssues
-                            || (m_settings.AllowEmbeddedAspNetBlocks && node.StringContainsAspNetReplacement))
+                            || (settings.AllowEmbeddedAspNetBlocks && node.StringContainsAspNetReplacement))
                         {
                             // we'd rather show the raw string, but make sure it's safe for inlining
                             Output(InlineSafeString(ReplaceTokens(node.Context.Code)));
@@ -1322,13 +1322,13 @@ namespace NUglify.JavaScript.Visitors
         {
             // see if there's a match for the token
             string replacement;
-            if (!m_settings.ReplacementTokens.TryGetValue(match.Result("${token}"), out replacement))
+            if (!settings.ReplacementTokens.TryGetValue(match.Result("${token}"), out replacement))
             {
                 // no match. Check the fallback, if any.
                 var fallbackClass = match.Result("${fallback}");
                 if (!fallbackClass.IsNullOrWhiteSpace())
                 {
-                    m_settings.ReplacementFallbacks.TryGetValue(fallbackClass, out replacement);
+                    settings.ReplacementFallbacks.TryGetValue(fallbackClass, out replacement);
                 }
             }
 
@@ -1339,7 +1339,7 @@ namespace NUglify.JavaScript.Visitors
         {
             // see if there's a match for the token
             string replacement;
-            if (m_settings.ReplacementTokens.TryGetValue(match.Result("${token}"), out replacement))
+            if (settings.ReplacementTokens.TryGetValue(match.Result("${token}"), out replacement))
             {
                 // we have a match.
                 // if the string is valid JSON, the just output it as-is (well, with a little minification)
@@ -1362,7 +1362,7 @@ namespace NUglify.JavaScript.Visitors
                 var fallbackClass = match.Result("${fallback}");
                 if (!fallbackClass.IsNullOrWhiteSpace())
                 {
-                    m_settings.ReplacementFallbacks.TryGetValue(fallbackClass, out replacement);
+                    settings.ReplacementFallbacks.TryGetValue(fallbackClass, out replacement);
                 }
             }
 
@@ -1552,19 +1552,19 @@ namespace NUglify.JavaScript.Visitors
                 }
                 else
                 {
-                    if (m_settings.BlocksStartOnSameLine == BlockStart.NewLine
-                        || (m_settings.BlocksStartOnSameLine == BlockStart.UseSource && node.Body.BraceOnNewLine))
+                    if (settings.BlocksStartOnSameLine == BlockStart.NewLine
+                        || (settings.BlocksStartOnSameLine == BlockStart.UseSource && node.Body.BraceOnNewLine))
                     {
                         NewLine();
                     }
-                    else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    else if (settings.OutputMode == OutputMode.MultipleLines)
                     {
                         OutputPossibleLineBreak(' ');
                     }
                     
                     node.Body.Accept(this);
 
-                    if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    if (settings.OutputMode == OutputMode.MultipleLines)
                     {
                         OutputPossibleLineBreak(' ');
                     }
@@ -1572,7 +1572,7 @@ namespace NUglify.JavaScript.Visitors
 
                 Output("while");
                 MarkSegment(node, null, node.WhileContext);
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -1690,13 +1690,13 @@ namespace NUglify.JavaScript.Visitors
 
                 if (node.IsAwait)
                 {
-                    if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    if (settings.OutputMode == OutputMode.MultipleLines)
                         OutputPossibleLineBreak(' ');
                     Output("await");
                     MarkSegment(node, null, node.Context);
                 }
 
-                if (m_settings.OutputMode == OutputMode.MultipleLines) 
+                if (settings.OutputMode == OutputMode.MultipleLines) 
                     OutputPossibleLineBreak(' ');
 
                 OutputPossibleLineBreak('(');
@@ -1745,7 +1745,7 @@ namespace NUglify.JavaScript.Visitors
                 MarkSegment(node, null, node.Context);
                 SetContextOutputPosition(node.Context);
                 
-                if (m_settings.OutputMode == OutputMode.MultipleLines) 
+                if (settings.OutputMode == OutputMode.MultipleLines) 
                     OutputPossibleLineBreak(' ');
 
                 OutputPossibleLineBreak('(');
@@ -1761,7 +1761,7 @@ namespace NUglify.JavaScript.Visitors
                 // NEVER do without these semicolons
                 OutputPossibleLineBreak(';');
                 MarkSegment(node, null, node.Separator1Context ?? node.Context); 
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                     OutputPossibleLineBreak(' ');
                 
 
@@ -1769,7 +1769,7 @@ namespace NUglify.JavaScript.Visitors
 
                 OutputPossibleLineBreak(';');
                 MarkSegment(node, null, node.Separator2Context ?? node.Context);
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                     OutputPossibleLineBreak(' ');
                 
                 node.Incrementer?.Accept(this);
@@ -1842,7 +1842,7 @@ namespace NUglify.JavaScript.Visitors
                     if (node.IsAsync)
 	                    Output("async");
 
-                    if (m_settings.SymbolsMap != null)
+                    if (settings.SymbolsMap != null)
 	                    m_functionStack.Push("(anonymous)");
 
                     // arrow functions are simple...
@@ -1864,8 +1864,8 @@ namespace NUglify.JavaScript.Visitors
                     var hasName = (node.Binding != null && !node.Binding.Name.IsNullOrWhiteSpace())
                             && (node.FunctionType != FunctionType.Expression
                                 || node.Binding.VariableField.RefCount > 0
-                                || !m_settings.RemoveFunctionExpressionNames
-                                || !m_settings.IsModificationAllowed(TreeModifications.RemoveFunctionExpressionNames));
+                                || !settings.RemoveFunctionExpressionNames
+                                || !settings.IsModificationAllowed(TreeModifications.RemoveFunctionExpressionNames));
                     var fullFunctionName = hasName
                             ? node.Binding.Name
                             : node.NameGuess;
@@ -1885,7 +1885,7 @@ namespace NUglify.JavaScript.Visitors
                             ? node.Binding.VariableField.ToString()
                             : node.Binding.Name;
 
-                        if (m_settings.SymbolsMap != null)
+                        if (settings.SymbolsMap != null)
 	                        m_functionStack.Push(minFunctionName);
 
                         if (hasName)
@@ -1894,7 +1894,7 @@ namespace NUglify.JavaScript.Visitors
                             // identifier character. That might not always be the case, like when
                             // we consider an ASP.NET block to output the start of an identifier.
                             // so let's FORCE the insert-space logic here.
-                            if (JSScanner.IsValidIdentifierPart(m_lastCharacter))
+                            if (JSScanner.IsValidIdentifierPart(lastCharacter))
                             {
                                 Output(' ');
                             }
@@ -1905,7 +1905,7 @@ namespace NUglify.JavaScript.Visitors
                         }
                     }
 
-                    if (m_settings.SymbolsMap != null && isAnonymous)
+                    if (settings.SymbolsMap != null && isAnonymous)
                     {
 	                    if (node.Parent is BinaryExpression binaryExpression && binaryExpression.Operand1 is LookupExpression)
                         {
@@ -1927,7 +1927,7 @@ namespace NUglify.JavaScript.Visitors
 
                 m_noIn = isNoIn;
                 EndSymbol(symbol);
-                if (m_settings.SymbolsMap != null)
+                if (settings.SymbolsMap != null)
 	                m_functionStack.Pop();
             }
         }
@@ -1980,7 +1980,7 @@ namespace NUglify.JavaScript.Visitors
                 MarkSegment(node, null, node.Context);
                 SetContextOutputPosition(node.Context);
 
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -2005,7 +2005,7 @@ namespace NUglify.JavaScript.Visitors
                 }
                 else if (node.TrueBlock.Count == 1
                     && (node.FalseBlock == null || (!node.TrueBlock.EncloseBlock(EncloseBlockType.IfWithoutElse) && !node.TrueBlock.EncloseBlock(EncloseBlockType.SingleDoWhile)))
-                    && (!m_settings.MacSafariQuirks || !(node.TrueBlock[0] is FunctionObject)))
+                    && (!settings.MacSafariQuirks || !(node.TrueBlock[0] is FunctionObject)))
                 {
                     // we only have a single statement in the true-branch; normally
                     // we wouldn't wrap that statement in braces. However, if there 
@@ -2095,7 +2095,7 @@ namespace NUglify.JavaScript.Visitors
                 // should also be on a new line.
                 BreakLine(true);
 
-                node.Context.OutputLine = m_lineCount;
+                node.Context.OutputLine = lineCount;
 
                 // the output method assumes any text we send it's way doesn't contain any line feed
                 // characters. The important comment, however, may contain some. We don't want to count
@@ -2340,7 +2340,7 @@ namespace NUglify.JavaScript.Visitors
                             {
                                 NewLine();
                             }
-                            else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                            else if (settings.OutputMode == OutputMode.MultipleLines)
                             {
                                 OutputPossibleLineBreak(' ');
                             }
@@ -2367,7 +2367,7 @@ namespace NUglify.JavaScript.Visitors
                 // identifier character. That might not always be the case, like when
                 // we consider an ASP.NET block to output the start of an identifier.
                 // so let's FORCE the insert-space logic here.
-                if (JSScanner.IsValidIdentifierPart(m_lastCharacter))
+                if (JSScanner.IsValidIdentifierPart(lastCharacter))
                 {
                     OutputSpaceOrLineBreak();
                 }
@@ -2405,7 +2405,7 @@ namespace NUglify.JavaScript.Visitors
                         string numericText;
                         if (constantWrapper.Context == null
                             || !constantWrapper.Context.HasCode
-                            || (m_settings.IsModificationAllowed(TreeModifications.MinifyNumericLiterals) && !constantWrapper.MayHaveIssues))
+                            || (settings.IsModificationAllowed(TreeModifications.MinifyNumericLiterals) && !constantWrapper.MayHaveIssues))
                         {
                             // apply minification to the literal to get it as small as possible
                             numericText = NormalizeNumber(constantWrapper.ToNumber(), constantWrapper.Context);
@@ -2618,7 +2618,7 @@ namespace NUglify.JavaScript.Visitors
             {
                 var symbol = StartSymbol(node);
 
-                if (m_settings.QuoteObjectLiteralProperties)
+                if (settings.QuoteObjectLiteralProperties)
                 {
                     // we always want to quote object literal property names, no matter whether
                     // they are valid JS identifiers, numbers, or whatever. Typically this is done
@@ -2662,7 +2662,7 @@ namespace NUglify.JavaScript.Visitors
 
                 OutputPossibleLineBreak(':');
                 MarkSegment(node, null, node.ColonContext);
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -2709,15 +2709,13 @@ namespace NUglify.JavaScript.Visitors
                 // optional initializer
                 if (node.Initializer != null)
                 {
-                    if (m_settings.OutputMode == OutputMode.MultipleLines && m_settings.IndentSize > 0)
+                    if (settings.OutputMode == OutputMode.MultipleLines && settings.Indent.Length > 0)
                     {
                         OutputPossibleLineBreak(' ');
                         OutputPossibleLineBreak('=');
                         BreakLine(false);
-                        if (!m_onNewLine)
-                        {
-                            OutputPossibleLineBreak(' ');
-                        }
+                        if (!onNewLine)
+	                        OutputPossibleLineBreak(' ');
                     }
                     else
                     {
@@ -2765,7 +2763,7 @@ namespace NUglify.JavaScript.Visitors
                 m_startOfStatement = false;
                 if (node.Operand != null)
                 {
-                    if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    if (settings.OutputMode == OutputMode.MultipleLines)
                     {
                         Output(' ');
                     }
@@ -2790,7 +2788,7 @@ namespace NUglify.JavaScript.Visitors
                 Output("switch");
                 MarkSegment(node, null, node.Context);
                 SetContextOutputPosition(node.Context);
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -2802,12 +2800,12 @@ namespace NUglify.JavaScript.Visitors
                     node.Expression.Accept(this);
                 }
                 OutputPossibleLineBreak(')');
-                if (m_settings.BlocksStartOnSameLine == BlockStart.NewLine
-                    || (m_settings.BlocksStartOnSameLine == BlockStart.UseSource && node.BraceOnNewLine))
+                if (settings.BlocksStartOnSameLine == BlockStart.NewLine
+                    || (settings.BlocksStartOnSameLine == BlockStart.UseSource && node.BraceOnNewLine))
                 {
                     NewLine();
                 }
-                else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                else if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -2915,7 +2913,7 @@ namespace NUglify.JavaScript.Visitors
                 // get the text string to output. If we don't want to minify string literals,
                 // then we should also not minify template literals (since they're just special strings)
                 var text = node.Text;
-                if (node.TextContext != null && !m_settings.IsModificationAllowed(TreeModifications.MinifyStringLiterals))
+                if (node.TextContext != null && !settings.IsModificationAllowed(TreeModifications.MinifyStringLiterals))
                 {
                     // use the raw version of the text source
                     text = node.TextContext.Code;
@@ -2986,7 +2984,7 @@ namespace NUglify.JavaScript.Visitors
                     node.Operand.Accept(this);
                 }
 
-                if (m_settings.MacSafariQuirks)
+                if (settings.MacSafariQuirks)
                 {
                     // force the statement ending with a semicolon
                     OutputPossibleLineBreak(';');
@@ -3027,7 +3025,7 @@ namespace NUglify.JavaScript.Visitors
             SetContextOutputPosition(node.Context);
             if (node.TryBlock == null || node.TryBlock.Count == 0)
             {
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -3037,12 +3035,12 @@ namespace NUglify.JavaScript.Visitors
             }
             else
             {
-                if (m_settings.BlocksStartOnSameLine == BlockStart.NewLine
-                    || (m_settings.BlocksStartOnSameLine == BlockStart.UseSource && node.TryBlock.BraceOnNewLine))
+                if (settings.BlocksStartOnSameLine == BlockStart.NewLine
+                    || (settings.BlocksStartOnSameLine == BlockStart.UseSource && node.TryBlock.BraceOnNewLine))
                 {
                     NewLine();
                 }
-                else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                else if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -3060,7 +3058,7 @@ namespace NUglify.JavaScript.Visitors
 
             if (node.CatchBlock == null || node.CatchBlock.Count == 0)
             {
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -3070,12 +3068,12 @@ namespace NUglify.JavaScript.Visitors
             }
             else
             {
-                if (m_settings.BlocksStartOnSameLine == BlockStart.NewLine
-                    || (m_settings.BlocksStartOnSameLine == BlockStart.UseSource && node.CatchBlock.BraceOnNewLine))
+                if (settings.BlocksStartOnSameLine == BlockStart.NewLine
+                    || (settings.BlocksStartOnSameLine == BlockStart.UseSource && node.CatchBlock.BraceOnNewLine))
                 {
                     NewLine();
                 }
-                else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                else if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -3091,7 +3089,7 @@ namespace NUglify.JavaScript.Visitors
             MarkSegment(node, null, node.FinallyContext);
             if (node.FinallyBlock == null || node.FinallyBlock.Count == 0)
             {
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -3101,12 +3099,12 @@ namespace NUglify.JavaScript.Visitors
             }
             else
             {
-                if (m_settings.BlocksStartOnSameLine == BlockStart.NewLine
-                    || (m_settings.BlocksStartOnSameLine == BlockStart.UseSource && node.FinallyBlock.BraceOnNewLine))
+                if (settings.BlocksStartOnSameLine == BlockStart.NewLine
+                    || (settings.BlocksStartOnSameLine == BlockStart.UseSource && node.FinallyBlock.BraceOnNewLine))
                 {
                     NewLine();
                 }
-                else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                else if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -3143,7 +3141,7 @@ namespace NUglify.JavaScript.Visitors
                             {
                                 NewLine();
                             }
-                            else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                            else if (settings.OutputMode == OutputMode.MultipleLines)
                             {
                                 OutputPossibleLineBreak(' ');
                             }
@@ -3182,8 +3180,7 @@ namespace NUglify.JavaScript.Visitors
                         // we haven't output a cc_on yet -- output it now.
                         // if we have, we really only need to output one if we had one to begin with AND
                         // we are NOT removing unnecessary ones
-                        if (!m_outputCCOn
-                            || (node.UseCCOn && !m_settings.IsModificationAllowed(TreeModifications.RemoveUnnecessaryCCOnStatements)))
+                        if (!m_outputCCOn || (node.UseCCOn && !settings.IsModificationAllowed(TreeModifications.RemoveUnnecessaryCCOnStatements)))
                         {
                             Output("/*@cc_on=");
                             m_outputCCOn = true;
@@ -3195,15 +3192,13 @@ namespace NUglify.JavaScript.Visitors
                     }
                     else
                     {
-                        if (m_settings.OutputMode == OutputMode.MultipleLines && m_settings.IndentSize > 0)
+                        if (settings.OutputMode == OutputMode.MultipleLines && settings.Indent.Length > 0)
                         {
                             OutputPossibleLineBreak(' ');
                             OutputPossibleLineBreak('=');
                             BreakLine(false);
-                            if (!m_onNewLine)
-                            {
-                                OutputPossibleLineBreak(' ');
-                            }
+                            if (!onNewLine)
+	                            OutputPossibleLineBreak(' ');
                         }
                         else
                         {
@@ -3263,7 +3258,7 @@ namespace NUglify.JavaScript.Visitors
                         // sources had one. Otherwise, we only only want to output one if we had one and we aren't
                         // removing unneccesary ones.
                         if (!m_outputCCOn
-                            || (node.ConditionalCommentContainsOn && !m_settings.IsModificationAllowed(TreeModifications.RemoveUnnecessaryCCOnStatements)))
+                            || (node.ConditionalCommentContainsOn && !settings.IsModificationAllowed(TreeModifications.RemoveUnnecessaryCCOnStatements)))
                         {
                             // output it now and set the flag that we have output them
                             Output("/*@cc_on");
@@ -3312,7 +3307,7 @@ namespace NUglify.JavaScript.Visitors
 
                 Output("while");
                 SetContextOutputPosition(node.Context);
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -3338,7 +3333,7 @@ namespace NUglify.JavaScript.Visitors
                 var symbol = StartSymbol(node);
                 Output("with");
                 SetContextOutputPosition(node.Context);
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     OutputPossibleLineBreak(' ');
                 }
@@ -3368,16 +3363,16 @@ namespace NUglify.JavaScript.Visitors
                 InsertSpaceIfNeeded(text);
 
                 // save the start of this segment
-                m_segmentStartLine = m_lineCount;
-                m_segmentStartColumn = m_lineLength;
+                m_segmentStartLine = lineCount;
+                m_segmentStartColumn = lineLength;
 
-                m_lineLength += WriteToStream(text);
+                lineLength += WriteToStream(text);
                 m_noLineBreaks = false;
 
                 // if it ends in a newline, we're still on a newline
                 var lastChar = text[text.Length - 1];
 
-                m_onNewLine = (lastChar == '\n' || lastChar == '\r'); ;
+                onNewLine = (lastChar == '\n' || lastChar == '\r'); ;
 
                 // now set the "last character" state
                 SetLastCharState(lastChar, text);
@@ -3390,14 +3385,14 @@ namespace NUglify.JavaScript.Visitors
             InsertSpaceIfNeeded(ch);
 
             // save the start of this segment
-            m_segmentStartLine = m_lineCount;
-            m_segmentStartColumn = m_lineLength;
+            m_segmentStartLine = lineCount;
+            m_segmentStartColumn = lineLength;
 
-            m_lineLength += WriteToStream(ch);
+            lineLength += WriteToStream(ch);
             m_noLineBreaks = false;
 
             // determine if this was a newline character
-            m_onNewLine = (ch == '\n' || ch == '\r');
+            onNewLine = (ch == '\n' || ch == '\r');
 
             // now set the "last character" state
             SetLastCharState(ch);
@@ -3409,9 +3404,9 @@ namespace NUglify.JavaScript.Visitors
             {
                 // don't bother going through the WriteToStream method, since
                 // we KNOW a space won't be expanded to \u0020.
-                m_outputStream.Write(' ');
-                ++m_lineLength;
-                m_lastCharacter = ' ';
+                outputStream.Write(' ');
+                ++lineLength;
+                lastCharacter = ' ';
             }
             else
             {
@@ -3434,7 +3429,7 @@ namespace NUglify.JavaScript.Visitors
                     // reset the function
                     m_addSpaceIfTrue = null;
                 }
-                else if ((ch == '+' || ch == '-') && m_lastCharacter == ch)
+                else if ((ch == '+' || ch == '-') && lastCharacter == ch)
                 {
                     // if the current character is a + or - and the last character was the same.
                     // if the previous character was an ODD number of the same character, 
@@ -3444,7 +3439,7 @@ namespace NUglify.JavaScript.Visitors
                         OutputSpaceOrLineBreak();
                     }
                 }
-                else if ((m_lastCharacter == '@' || JSScanner.IsValidIdentifierPart(m_lastCharacter)) && JSScanner.IsValidIdentifierPart(ch))
+                else if ((lastCharacter == '@' || JSScanner.IsValidIdentifierPart(lastCharacter)) && JSScanner.IsValidIdentifierPart(ch))
                 {
                     // either the last character is a valid part of an identifier and the current character is, too;
                     // OR the last part was numeric and the current character is a .
@@ -3468,7 +3463,7 @@ namespace NUglify.JavaScript.Visitors
                 // reset the function
                 m_addSpaceIfTrue = null;
             }
-            else if ((ch == '+' || ch == '-') && m_lastCharacter == ch)
+            else if ((ch == '+' || ch == '-') && lastCharacter == ch)
             {
                 // if we want to put a + or a - in the stream, and the previous character was
                 // an odd number of the same, then we need to add a space so it doesn't
@@ -3478,7 +3473,7 @@ namespace NUglify.JavaScript.Visitors
                     OutputSpaceOrLineBreak();
                 }
             }
-            else if ((m_lastCharacter == '@' || JSScanner.IsValidIdentifierPart(m_lastCharacter)) 
+            else if ((lastCharacter == '@' || JSScanner.IsValidIdentifierPart(lastCharacter)) 
                 && (text[0] == '\\' || JSScanner.StartsWithValidIdentifierPart(text)))
             {
                 // either the last character is a valid part of an identifier and the current character is, too;
@@ -3493,7 +3488,7 @@ namespace NUglify.JavaScript.Visitors
             // if it's a + or a -, we need to adjust the odd state
             if (ch == '+' || ch == '-')
             {
-                if (ch == m_lastCharacter)
+                if (ch == lastCharacter)
                 {
                     // same as the last string -- so we're adding one to it.
                     // if it was odd before, it's now even; if it was even before,
@@ -3513,7 +3508,7 @@ namespace NUglify.JavaScript.Visitors
                 m_lastCountOdd = false;
             }
 
-            m_lastCharacter = ch;
+            lastCharacter = ch;
         }
 
         void SetLastCharState(char lastChar, string text)
@@ -3532,7 +3527,7 @@ namespace NUglify.JavaScript.Visitors
 
                 // if the first diff index is less than zero, then the whole string is one of
                 // these two special characters
-                if (ndxDifferent < 0 && m_lastCharacter == lastChar)
+                if (ndxDifferent < 0 && lastCharacter == lastChar)
                 {
                     // the whole string is the same character, AND it's the same character 
                     // at the end of the last time we output stuff. We need to take into 
@@ -3558,17 +3553,17 @@ namespace NUglify.JavaScript.Visitors
             }
 
             // save the last character for next time
-            m_lastCharacter = lastChar;
+            lastCharacter = lastChar;
         }
 
         void Indent()
         {
-            ++m_indentLevel;
+            ++indentLevel;
         }
 
         void Unindent()
         {
-            --m_indentLevel;
+            --indentLevel;
         }
 
         void OutputPossibleLineBreak(char ch)
@@ -3579,10 +3574,10 @@ namespace NUglify.JavaScript.Visitors
                 BreakLine(false);
 
                 // if we aren't on a new line, then output our space character
-                if (!m_onNewLine)
+                if (!onNewLine)
                 {
-                    m_lineLength += WriteToStream(ch);
-                    m_lastCharacter = ch;
+                    lineLength += WriteToStream(ch);
+                    lastCharacter = ch;
                 }
             }
             else
@@ -3592,12 +3587,12 @@ namespace NUglify.JavaScript.Visitors
                 InsertSpaceIfNeeded(ch);
 
                 // save the start of this segment
-                m_segmentStartLine = m_lineCount;
-                m_segmentStartColumn = m_lineLength;
+                m_segmentStartLine = lineCount;
+                m_segmentStartColumn = lineLength;
                 
-                m_lineLength += WriteToStream(ch);
-                m_onNewLine = false;
-                m_lastCharacter = ch;
+                lineLength += WriteToStream(ch);
+                onNewLine = false;
+                lastCharacter = ch;
 
                 // break the line if it's too long, but don't force it
                 BreakLine(false);
@@ -3610,19 +3605,19 @@ namespace NUglify.JavaScript.Visitors
 
             // this is a terminating semicolon that might be replaced with a line-break
             // if needed. Semicolon-insertion would suffice to reconstitute it.
-            if (m_lineLength < m_settings.LineBreakThreshold)
+            if (lineLength < settings.LineBreakThreshold)
             {
                 // save the start of this segment
-                m_segmentStartLine = m_lineCount;
-                m_segmentStartColumn = m_lineLength;
+                m_segmentStartLine = lineCount;
+                m_segmentStartColumn = lineLength;
 
                 // output the semicolon
                 // don't bother going through the WriteToStream method, since we
                 // KNOW a semicolon won't be expanded to \u003b
-                m_outputStream.Write(';');
-                ++m_lineLength;
-                m_onNewLine = false;
-                m_lastCharacter = ';';
+                outputStream.Write(';');
+                ++lineLength;
+                onNewLine = false;
+                lastCharacter = ';';
                 outputSemicolon = true;
             }
 
@@ -3633,9 +3628,9 @@ namespace NUglify.JavaScript.Visitors
 
         void BreakLine(bool forceBreak)
         {
-            if (!m_onNewLine && (forceBreak || m_lineLength >= m_settings.LineBreakThreshold))
+            if (!onNewLine && (forceBreak || lineLength >= settings.LineBreakThreshold))
             {
-                if (m_settings.OutputMode == OutputMode.MultipleLines)
+                if (settings.OutputMode == OutputMode.MultipleLines)
                 {
                     NewLine();
                 }
@@ -3644,48 +3639,46 @@ namespace NUglify.JavaScript.Visitors
                     // terminate the line and start a new one
                     // don't bother going through the WriteToStream method, since we
                     // KNOW a \n character won't be expanded to \u000a
-                    m_outputStream.Write('\n');
-                    m_lineCount++;
+                    outputStream.Write('\n');
+                    lineCount++;
 
                     // set the appropriate newline state
-                    m_lineLength = 0;
-                    m_onNewLine = true;
-                    m_lastCharacter = ' ';
+                    lineLength = 0;
+                    onNewLine = true;
+                    lastCharacter = ' ';
                 }
             }
         }
 
         void NewLine()
         {
-            if (m_settings.OutputMode == OutputMode.MultipleLines && !m_onNewLine)
+            if (settings.OutputMode == OutputMode.MultipleLines && !onNewLine)
             {
                 // output the newline character -- don't go through WriteToStream
                 // since we KNOW it won't get expanded to \uXXXX formats.
-                m_outputStream.WriteLine();
-                m_lineCount++;
+                outputStream.WriteLine();
+                lineCount++;
 
                 // if the indent level is greater than zero, output the indent spaces
-                if (m_indentLevel > 0)
+                if (indentLevel > 0)
                 {
                     // the spaces won't get expanded to \u0020, so don't bother going
                     // through the WriteToStream method.
-                    var numSpaces = m_indentLevel * m_settings.IndentSize;
-                    m_lineLength = numSpaces;
-                    while (numSpaces-- > 0)
-                    {
-                        m_outputStream.Write(' ');
-                    }
+                    var indentLength = indentLevel * settings.Indent.Length;
+                    lineLength = indentLength;
+                    for(var i = 0; i < indentLevel; i++)
+                        outputStream.Write(settings.Indent);
                 }
                 else
                 {
-                    m_lineLength = 0;
+                    lineLength = 0;
                 }
 
                 // say our last character was a space
-                m_lastCharacter = ' ';
+                lastCharacter = ' ';
 
                 // we just output a newline
-                m_onNewLine = true;
+                onNewLine = true;
             }
         }
 
@@ -3696,7 +3689,7 @@ namespace NUglify.JavaScript.Visitors
         {
             // if we always want to encode non-ascii characters, then we need
             // to look at each one and see if we need to encode anything!
-            if (m_settings.AlwaysEscapeNonAscii)
+            if (settings.AlwaysEscapeNonAscii)
             {
                 StringBuilder sb = null;
                 try
@@ -3747,7 +3740,7 @@ namespace NUglify.JavaScript.Visitors
                 }
             }
 
-            m_outputStream.Write(text);
+            outputStream.Write(text);
             return text.Length;
         }
 
@@ -3755,15 +3748,15 @@ namespace NUglify.JavaScript.Visitors
         // if needed. Return the number of characters sent to the stream (1 or 6)
         int WriteToStream(char ch)
         {
-            if (m_settings.AlwaysEscapeNonAscii && ch > '\u007f')
+            if (settings.AlwaysEscapeNonAscii && ch > '\u007f')
             {
                 // expand it to the \uXXXX format, which is six characters
-                m_outputStream.Write("\\u{0:x4}", (int)ch);
+                outputStream.Write("\\u{0:x4}", (int)ch);
                 return 6;
             }
             else
             {
-                m_outputStream.Write(ch);
+                outputStream.Write(ch);
                 return 1;
             }
         }
@@ -3916,7 +3909,7 @@ namespace NUglify.JavaScript.Visitors
                             OutputPossibleLineBreak(',');
                             MarkSegment(node, null, paramDecl.IfNotNull(p => p.TerminatingContext) ?? node.ParameterDeclarations.Context);
 
-                            if (m_settings.OutputMode == OutputMode.MultipleLines)
+                            if (settings.OutputMode == OutputMode.MultipleLines)
                             {
                                 OutputPossibleLineBreak(' ');
                             }
@@ -3946,13 +3939,13 @@ namespace NUglify.JavaScript.Visitors
 
                 if (node.FunctionType == FunctionType.ArrowFunction)
                 {
-                    if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    if (settings.OutputMode == OutputMode.MultipleLines)
                     {
                         OutputPossibleLineBreak(' ');
                     }
 
                     Output(OperatorString(JSToken.ArrowFunction));
-                    if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    if (settings.OutputMode == OutputMode.MultipleLines)
                     {
                         OutputPossibleLineBreak(' ');
                     }
@@ -3990,12 +3983,12 @@ namespace NUglify.JavaScript.Visitors
                         Indent();
                     }
 
-                    if (m_settings.BlocksStartOnSameLine == BlockStart.NewLine
-                        || (m_settings.BlocksStartOnSameLine == BlockStart.UseSource && node.Body.BraceOnNewLine))
+                    if (settings.BlocksStartOnSameLine == BlockStart.NewLine
+                        || (settings.BlocksStartOnSameLine == BlockStart.UseSource && node.Body.BraceOnNewLine))
                     {
                         NewLine();
                     }
-                    else if (m_settings.OutputMode == OutputMode.MultipleLines)
+                    else if (settings.OutputMode == OutputMode.MultipleLines)
                     {
                         OutputPossibleLineBreak(' ');
                     }
@@ -4056,12 +4049,12 @@ namespace NUglify.JavaScript.Visitors
 
         void OutputBlockWithBraces(BlockStatement block)
         {
-            if (m_settings.BlocksStartOnSameLine == BlockStart.NewLine
-                || (m_settings.BlocksStartOnSameLine == BlockStart.UseSource && block.BraceOnNewLine))
+            if (settings.BlocksStartOnSameLine == BlockStart.NewLine
+                || (settings.BlocksStartOnSameLine == BlockStart.UseSource && block.BraceOnNewLine))
             {
                 NewLine();
             }
-            else if (m_settings.OutputMode == OutputMode.MultipleLines)
+            else if (settings.OutputMode == OutputMode.MultipleLines)
             {
                 OutputPossibleLineBreak(' ');
             }
@@ -4071,7 +4064,7 @@ namespace NUglify.JavaScript.Visitors
 
         string InlineSafeString(string text)
         {
-            if (m_settings.InlineSafeStrings)
+            if (settings.InlineSafeStrings)
             {
                 var limit = text.Length - 1;
 
@@ -4615,24 +4608,24 @@ namespace NUglify.JavaScript.Visitors
 
         object StartSymbol(AstNode node)
         {
-	        return m_settings.SymbolsMap?.StartSymbol(node, m_lineCount, m_lineLength);
+	        return settings.SymbolsMap?.StartSymbol(node, lineCount, lineLength);
         }
 
         void MarkSegment(AstNode node, string name, SourceContext context)
         {
             if (node != null)
-	            m_settings.SymbolsMap?.MarkSegment(node, m_segmentStartLine, m_segmentStartColumn, name, context);
+	            settings.SymbolsMap?.MarkSegment(node, m_segmentStartLine, m_segmentStartColumn, name, context);
         }
 
         void EndSymbol(object symbol)
         {
-            if (m_settings.SymbolsMap != null && symbol != null)
+            if (settings.SymbolsMap != null && symbol != null)
             {
                 string parentFunction = null;
                 if (m_functionStack.Count > 0)
 	                parentFunction = m_functionStack.Peek();
 
-                m_settings.SymbolsMap.EndSymbol(symbol, m_lineCount, m_lineLength, parentFunction);
+                settings.SymbolsMap.EndSymbol(symbol, lineCount, lineLength, parentFunction);
             }
         }
 
