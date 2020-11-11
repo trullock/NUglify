@@ -85,11 +85,11 @@ namespace NUglify
         public static UglifyResult HtmlToText(string source, HtmlToTextOptions options = HtmlToTextOptions.None, string sourceFileName = null)
         {
             // Use specific settings to extract text from html
-            var settings = new HtmlSettings()
+            var settings = new HtmlSettings
             {
                 RemoveOptionalTags = false,
                 RemoveEmptyAttributes = false,
-                RemoveQuotedAttributes = false,
+                RemoveAttributeQuotes = false,
                 DecodeEntityCharacters = true,
                 RemoveScriptStyleTypeAttribute = false,
                 ShortBooleanAttribute = false,

@@ -91,7 +91,7 @@ namespace NUglify.Tests.Html
             {
                 IsFragmentOnly = true,
                 RemoveOptionalTags = false,
-                RemoveQuotedAttributes = false
+                RemoveAttributeQuotes = false
             };
 
             input = "<link rel=\"stylesheet\" href=\"style.css\" />";
@@ -107,7 +107,7 @@ namespace NUglify.Tests.Html
             {
                 IsFragmentOnly = true,
                 RemoveOptionalTags = true,
-                RemoveQuotedAttributes = false
+                RemoveAttributeQuotes = false
             };
 
             input = "<link rel=\"stylesheet\" href=\"style.css\" />";

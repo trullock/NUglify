@@ -152,7 +152,7 @@ namespace NUglify.Html
                 attrValue = attrValue.Replace("'", "&#39;");
             }
 
-            var canRemoveQuotes = settings.RemoveQuotedAttributes && attrValue != string.Empty && attrValue.IndexOfAny(AttributeCharsForcingQuote) < 0;
+            var canRemoveQuotes = settings.RemoveAttributeQuotes && attrValue != string.Empty && attrValue.IndexOfAny(AttributeCharsForcingQuote) < 0;
 
             if (!canRemoveQuotes)
             {

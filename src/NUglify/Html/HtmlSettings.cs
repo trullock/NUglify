@@ -23,7 +23,7 @@ namespace NUglify.Html
             RemoveOptionalTags = true;
             RemoveInvalidClosingTags = true;
             RemoveEmptyAttributes = true;
-            RemoveQuotedAttributes = true;
+            RemoveAttributeQuotes = true;
             DecodeEntityCharacters = true;
             RemoveScriptStyleTypeAttribute = true;
             ShortBooleanAttribute = true;
@@ -133,10 +133,17 @@ namespace NUglify.Html
         public bool RemoveEmptyAttributes { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to remove quoted attributes when possible.
+        /// Gets or sets a value indicating whether to remove the quotes around attributes when possible.
         /// Default is <c>true</c>
         /// </summary>
-        public bool RemoveQuotedAttributes { get; set; }
+        public bool RemoveAttributeQuotes { get; set; }
+
+        [Obsolete("Use RemovedAttributeQuotes instead")]
+        public bool RemoveQuotedAttributes
+        {
+	        get => this.RemoveAttributeQuotes;
+	        set => this.RemoveAttributeQuotes = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether to decode entity characters to their shorter character equivalents.
@@ -285,7 +292,7 @@ namespace NUglify.Html
             {
                 RemoveComments = false,
                 RemoveOptionalTags = false,
-                RemoveQuotedAttributes = false,
+                RemoveAttributeQuotes = false,
                 MinifyJs = false,
                 MinifyCss = false,
                 PrettyPrint = true
