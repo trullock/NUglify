@@ -1,6 +1,9 @@
 # Changelog
 
 ## vNext (unpublished)
+- Nothing yet
+
+## v1.10.0 (11 November 2020)
 - Re-adds long lost support for Minify JS Attributes within HTML
 - Fixes bugs with Attriute CSS Settings when minifying HTML
 - Fixes bug with stripping Javascript attributes from HTML
