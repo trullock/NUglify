@@ -311,6 +311,10 @@ namespace NUglify.JavaScript.Visitors
             // not applicable; terminate
         }
 
+        public void Visit(StandardComment node)
+        {
+            // not applicable; terminate
+        }
         public void Visit(ImportantComment node)
         {
             // not applicable; terminate

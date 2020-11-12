@@ -1309,6 +1309,11 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
+        public void Visit(StandardComment node)
+        {
+            // nothing to do
+        }
+
         public void Visit(ImportantComment node)
         {
             // nothing to do
