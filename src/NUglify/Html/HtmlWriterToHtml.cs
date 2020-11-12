@@ -220,6 +220,17 @@ namespace NUglify.Html
 				base.Write(node);
         }
 
+        protected override void Write(HtmlAspDelimiter node)
+        {
+	        if (ShouldPretty(node.Parent))
+	        {
+		        writer.WriteLine();
+		        this.WriteIndent();
+	        }
+
+            base.Write(node);
+        }
+
         protected virtual bool ShouldPretty(HtmlElement node)
         {
 	        if (isFirstWrite)
