@@ -36,6 +36,10 @@ namespace NUglify.Html
             {
                 Write((HtmlDOCTYPE)node);
             }
+            else if (node is HtmlAspDelimiter)
+            {
+	            Write((HtmlAspDelimiter)node);
+            }
             else
             {
                 throw new NotSupportedException($"Unsupported node type [{node?.GetType()}]");
@@ -148,6 +152,13 @@ namespace NUglify.Html
             Write("-->");
         }
 
+        protected virtual void Write(HtmlAspDelimiter node)
+        {
+            Write("<%");
+            Write(node.Slice.ToString());
+            Write("%>");
+        }
+
         protected virtual void Write(HtmlDOCTYPE node)
         {
             // It is parsed as a raw type
@@ -161,9 +172,7 @@ namespace NUglify.Html
         protected virtual void WriteChildren(HtmlNode node)
         {
             foreach (var child in node.Children)
-            {
-                Write(child);
-            }
+	            Write(child);
         }
     }
 }

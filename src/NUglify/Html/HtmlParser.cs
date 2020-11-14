@@ -174,6 +174,10 @@ namespace NUglify.Html
                     AppendText(startTagLocation, position - 1);
                 }
             }
+            else if (c == '%')
+            {
+                TryProcessAspDelimiter();
+            }
             else if (c == '/')
             {
                 c = NextChar();
@@ -345,17 +349,14 @@ namespace NUglify.Html
                 }
                 else
                 {
-                    Error(startTagLocation,
-                        $"The HTML tag [{tagName}] cannot start with a processing instruction <?{tagName}...>");
+                    Error(startTagLocation, $"The HTML tag [{tagName}] cannot start with a processing instruction <?{tagName}...>");
                     isProcessingInstruction = false;
                 }
             }
 
             // If an element is selfclosing, setup it by default
             if (descriptor != null && descriptor.EndKind == TagEndKind.AutoSelfClosing)
-            {
-                tag.Kind = ElementKind.SelfClosing;
-            }
+	            tag.Kind = ElementKind.SelfClosing;
 
             tag.Descriptor = HtmlTagDescriptor.Find(tag.Name);
 
@@ -985,6 +986,40 @@ namespace NUglify.Html
                     return;
                 }
             }
+        }
+
+        void TryProcessAspDelimiter()
+        {
+	        var commentPosition = position + 1;
+	        var percentFound = false;
+
+	        while (true)
+	        {
+		        c = NextChar();
+
+		        if (percentFound && c == '>')
+		        {
+			        c = NextChar();
+
+			        var aspDelimiter = new HtmlAspDelimiter()
+			        {
+				        Location = startTagLocation,
+				        Slice = new StringSlice(text, commentPosition, position - 3)
+			        };
+			        CurrentParent.AppendChild(aspDelimiter);
+			        return;
+		        }
+
+		        percentFound = c == '%';
+
+		        if (c == '\0')
+		        {
+			        Error($"Invalid EOF found while parsing comment");
+
+			        AppendText(startTagLocation, position - 1);
+			        return;
+		        }
+	        }
         }
 
         void AppendText(char character)

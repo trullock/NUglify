@@ -168,5 +168,30 @@ test
 	Inline text <a>(Show)</a> Between As <a>(Hide)</a>
 </div>");
 		}
+
+		[Test]
+		public void Bug192()
+		{
+			var settings = HtmlSettings.Pretty();
+			settings.RemoveOptionalTags = false;
+			settings.Indent = "\t";
+			settings.IsFragmentOnly = true;
+			settings.OutputTextNodesOnNewLine = false;
+
+			input = @"<%@ Page Title=""Computadores"" Language=""C#"" MaintainScrollPositionOnPostback=""true"" %>
+<div>
+	<a>(Show)</a>
+</div>
+<%-- comment --%>
+<div>
+	text
+</div>";
+			equal(minify(input, settings), @"<%@ Page Title=""Computadores"" Language=""C#"" MaintainScrollPositionOnPostback=""true"" %>
+<div>
+	<a>(Show)</a>
+</div>
+<%-- comment --%>
+<div>text</div>");
+		}
 	}
 }
