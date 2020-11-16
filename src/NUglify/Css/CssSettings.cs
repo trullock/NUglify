@@ -38,6 +38,20 @@ namespace NUglify.Css
 			DecodeEscapes = true;
 		}
 
+		/// <summary>
+		/// Returns a CssSettings object configured to output "pretty" css, as opposed to minified
+		/// </summary>
+		/// <returns></returns>
+		public static CssSettings Pretty()
+		{
+			var settings = new CssSettings();
+			settings.CommentMode = CssComment.All;
+			settings.MinifyExpressions = false;
+			settings.OutputMode = OutputMode.MultipleLines;
+			settings.TermSemicolons = true;
+			return settings;
+		}
+
 		public CssSettings Clone()
 		{
 			// create the new settings object and copy all the properties from
