@@ -650,6 +650,7 @@ namespace NUglify.JavaScript.Syntax
 
                                 if (refNode.Parent is ObjectLiteralProperty olp)
                                 {
+                                    // This block may not be complete, does this cover all cases?
 	                                olp.Value = varDecl.Initializer;
 	                                if (olp.Name == null)
 		                                olp.Name = new ObjectLiteralField(variableField.Name, declaration.FindPrimitiveType(), olp.Context);
