@@ -647,7 +647,16 @@ namespace NUglify.JavaScript.Syntax
                                 // replace the reference with the constant
                                 variableField.References.Remove(reference);
                                 var refNode = reference as AstNode;
-                                refNode.Parent.IfNotNull(p => p.ReplaceChild(refNode, varDecl.Initializer));
+
+                                if (refNode.Parent is ObjectLiteralProperty olp)
+                                {
+	                                olp.Value = varDecl.Initializer;
+	                                if (olp.Name == null)
+		                                olp.Name = new ObjectLiteralField(variableField.Name, declaration.FindPrimitiveType(), olp.Context);
+                                }
+                                else
+	                                refNode.Parent?.ReplaceChild(refNode, varDecl.Initializer);
+
 
                                 // we're also going to remove the declaration itself
                                 variableField.Declarations.Remove(nameDeclaration);
