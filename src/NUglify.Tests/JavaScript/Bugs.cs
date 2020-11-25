@@ -160,5 +160,11 @@ namespace NUglify.Tests.JavaScript
 	        var uglifyResult = Uglify.Js("function foo() { return 1; }", new CodeSettings { Indent = "   ", OutputMode = OutputMode.MultipleLines});
 	        Assert.AreEqual("function foo()\n{\n   return 1\n}", uglifyResult.Code);
         }
+
+        [Test]
+        public void Bug200()
+        {
+	        TestHelper.Instance.RunTest("-rename:all");
+        }
     }
 }
