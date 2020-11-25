@@ -3,6 +3,9 @@
 ## vNext (unpublished)
 - Nothing yet
 
+## v1.11.1 (25 November 2020)
+- Fixes bug with object literal properties and singly referenced lexical declarations
+
 ## v1.11.0 (14 November 2020)
 - Adds support for `<% %>` ASP tags in HTML Parser
 
