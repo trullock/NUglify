@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Diagnostics;
+using System.Text;
 using NUglify.JavaScript;
 using NUglify.Tests.JavaScript.Common;
 using NUnit.Framework;
@@ -157,8 +158,51 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void Bug181()
         {
-	        var uglifyResult = Uglify.Js("function foo() { return 1; }", new CodeSettings { Indent = "   ", OutputMode = OutputMode.MultipleLines});
+	        var uglifyResult = Uglify.Js("function foo() { return 1; }",
+		        new CodeSettings {Indent = "   ", OutputMode = OutputMode.MultipleLines});
 	        Assert.AreEqual("function foo()\n{\n   return 1\n}", uglifyResult.Code);
+        }
+
+        [Test]
+        public void Bug199()
+        {
+	        UglifyResult result;
+
+	        string sFileContent = @"define(""moment"", [], function() { return (function(modules) { })
+({
+	/***/ ""./node_modules/moment/locale sync recursive ^\\.\\/.*$"":
+	/*! no static exports found */
+	/***/ (function(module, exports, __webpack_require__) { } ) } ) } )";
+
+	        var builder = new StringBuilder();
+	        using (TextWriter mapWriter = new StringWriter(builder))
+	        {
+		        using (var sourceMap = new V3SourceMap(mapWriter))
+		        {
+			        sourceMap.MakePathsRelative = false;
+
+			        var settings = new CodeSettings();
+			        settings.SymbolsMap = sourceMap;
+			        sourceMap.StartPackage(@"C:\some\long\path\to\js", @"C:\some\other\path\to\map");
+
+			        result = Uglify.Js(sFileContent, @"C:\some\path\to\output\js", settings);
+		        }
+	        }
+
+	        var expected = @"define(""moment"",[],function(){return function(){}({""./node_modules/moment/locale sync recursive ^\\.\\/.*$"":function(){}})})
+//# sourceMappingURL=C:\some\other\path\to\map
+";
+	        Assert.AreEqual(expected, result.Code);
+
+	        var actual = builder.ToString();
+	        Assert.AreEqual(@"{
+""version"":3,
+""file"":""C:\\some\\long\\path\\to\\js"",
+""mappings"":""AAAAA,MAAM,CAAC,QAAQ,CAAE,CAAA,CAAE,CAAE,QAAQ,CAAA,CAAG,CAAE,OAAQ,QAAQ,CAAA,CAAU,EAC5D,CAAC,CACM,wDAAwD,CAEvDC,QAAQ,CAAA,CAAuC,EAHtD,CAAD,CADgC,CAA1B"",
+""sources"":[""C:\\some\\path\\to\\output\\js""],
+""names"":[""define"",""./node_modules/moment/locale sync recursive ^\\.\\/.*$""]
+}
+".Replace("\n", "\r\n"), actual);
         }
 
         [Test]
