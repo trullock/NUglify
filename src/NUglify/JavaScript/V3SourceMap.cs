@@ -425,7 +425,7 @@ namespace NUglify.JavaScript
         void WriteProperty(string name, string text)
         {
             WritePropertyStart(name);
-            OutputVisitor.EscapeString(text ?? string.Empty);
+            writer.Write(OutputVisitor.EscapeString(text ?? string.Empty));
         }
 
         void WriteProperty(string name, ICollection<string> collection)
@@ -441,7 +441,7 @@ namespace NUglify.JavaScript
 	            else
 		            writer.Write(',');
 
-                OutputVisitor.EscapeString(item);
+                writer.Write(OutputVisitor.EscapeString(item));
             }
 
             writer.Write(']');
@@ -454,7 +454,7 @@ namespace NUglify.JavaScript
                 writer.WriteLine(',');
             }
 
-            OutputVisitor.EscapeString(name);
+            writer.Write(OutputVisitor.EscapeString(name));
             writer.Write(':');
             hasProperty = true;
         }

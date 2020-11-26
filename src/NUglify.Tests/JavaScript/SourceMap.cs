@@ -115,7 +115,7 @@ namespace NUglify.Tests.JavaScript
 
             Assert.AreEqual("function test(n){return n**2}\n//# sourceMappingURL=C:\\some\\other\\path\\to\\map\n", result.Code);
             
-            Assert.AreEqual("{\r\n\"version\":3,\r\n\"file\":\"C:\\some\\long\\path\\to\\js\",\r\n\"mappings\":\"AAAAA,SAASA,IAAI,CAACC,CAAD,CAAG,CACf,OAAOA,CAAC,EAAE,CADK\",\r\n\"sources\":[\"C:\\some\\path\\to\\output\\js\"],\r\n\"names\":[\"test\",\"t\"]\r\n}\r\n", builder.ToString());
+            Assert.AreEqual("{\r\n\"version\":3,\r\n\"file\":\"C:\\\\some\\\\long\\\\path\\\\to\\\\js\",\r\n\"mappings\":\"AAAAA,SAASA,IAAI,CAACC,CAAD,CAAG,CACf,OAAOA,CAAC,EAAE,CADK\",\r\n\"sources\":[\"C:\\\\some\\\\path\\\\to\\\\output\\\\js\"],\r\n\"names\":[\"test\",\"t\"]\r\n}\r\n", builder.ToString());
         }
     }
 }
