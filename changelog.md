@@ -1,7 +1,9 @@
 # Changelog
 
 ## vNext (unpublished)
-- Fixes bug with escaped slashes in JSON and SourceMaps
+
+## v1.11.3 (27 November 2020)
+- Fixes bugs with escaped slashes in JSON and SourceMaps
 
 ## v1.11.1 (25 November 2020)
 - Fixes bug with object literal properties and singly referenced lexical declarations
