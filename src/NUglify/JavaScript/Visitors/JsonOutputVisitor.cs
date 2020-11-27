@@ -715,6 +715,10 @@ namespace NUglify.JavaScript.Visitors
                         writer.Write("\\t");
                         break;
 
+                    case '\\':
+                        writer.Write("\\\\");
+                        break;
+
                     default:
                         if (ch < ' ')
                         {

@@ -164,7 +164,20 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
-        public void Bug199()
+        public void Bug199JSON()
+        {
+	        TestHelper.Instance.RunTest("-js:json");
+        }
+
+        [Test]
+        public void Bug199JS()
+        {
+	        TestHelper.Instance.RunTest();
+        }
+
+
+        [Test]
+        public void Bug199_SourceMap()
         {
 	        UglifyResult result;
 
