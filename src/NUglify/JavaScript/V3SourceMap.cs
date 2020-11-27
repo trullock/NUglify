@@ -20,6 +20,7 @@ using System.IO;
 using System.Text;
 using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
+using NUglify.JavaScript.Visitors;
 
 namespace NUglify.JavaScript
 {
@@ -424,7 +425,7 @@ namespace NUglify.JavaScript
         void WriteProperty(string name, string text)
         {
             WritePropertyStart(name);
-            OutputEscapedString(text ?? string.Empty);
+            writer.Write(OutputVisitor.EscapeString(text ?? string.Empty));
         }
 
         void WriteProperty(string name, ICollection<string> collection)
@@ -435,16 +436,12 @@ namespace NUglify.JavaScript
             var first = true;
             foreach (var item in collection)
             {
-                if (first)
-                {
-                    first = false;
-                }
-                else
-                {
-                    writer.Write(',');
-                }
+	            if (first)
+		            first = false;
+	            else
+		            writer.Write(',');
 
-                OutputEscapedString(item);
+                writer.Write(OutputVisitor.EscapeString(item));
             }
 
             writer.Write(']');
@@ -457,59 +454,9 @@ namespace NUglify.JavaScript
                 writer.WriteLine(',');
             }
 
-            OutputEscapedString(name);
+            writer.Write(OutputVisitor.EscapeString(name));
             writer.Write(':');
             hasProperty = true;
-        }
-
-        void OutputEscapedString(string text)
-        {
-            writer.Write('"');
-            for (var ndx = 0; ndx < text.Length; ++ndx)
-            {
-                var ch = text[ndx];
-                switch (ch)
-                {
-                    case '\"':
-                        writer.Write("\\\"");
-                        break;
-
-                    case '\b':
-                        writer.Write("\\b");
-                        break;
-
-                    case '\f':
-                        writer.Write("\\f");
-                        break;
-
-                    case '\n':
-                        writer.Write("\\n");
-                        break;
-
-                    case '\r':
-                        writer.Write("\\r");
-                        break;
-
-                    case '\t':
-                        writer.Write("\\t");
-                        break;
-
-                    default:
-                        if (ch < ' ')
-                        {
-                            // other control characters must be escaped as \uXXXX
-                            writer.Write("\\u{0:x4}", (int)ch);
-                        }
-                        else
-                        {
-                            // just append it. The output encoding will take care of the rest
-                            writer.Write(ch);
-                        }
-                        break;
-                }
-            }
-
-            writer.Write('"');
         }
 
 
