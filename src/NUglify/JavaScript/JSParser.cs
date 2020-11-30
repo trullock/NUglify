@@ -4908,7 +4908,26 @@ namespace NUglify.JavaScript
             }
             else if (m_currentToken.Is(JSToken.LeftBracket))
             {
-                var computedValue = ParseExpression() as ArrayLiteral;
+	            if (nextToken == JSToken.LeftParenthesis)
+	            {
+		            var test = ParseFunction(FunctionType.Method, m_currentToken.Clone());
+	            }
+
+	            var astNode = ParseExpression();
+
+                if (astNode is CallExpression callExpression)
+	            {
+                    astNode = new FunctionObject(astNode.Context)
+                    {
+	                    FunctionType = FunctionType.Method,
+	                    Binding = callExpression.Function as ArrayLiteral,
+	                    ParameterDeclarations = formalParameters,
+	                    Body = body,
+	                    IsGenerator = isGenerator,
+	                    IsAsync = isAsync
+                    };
+                }
+	            var computedValue = astNode as ArrayLiteral;
                 field = new ComputedPropertyField(computedValue, computedValue.Context);
                 if( field != null)
                 {
