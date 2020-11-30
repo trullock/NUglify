@@ -1470,32 +1470,30 @@ namespace NUglify.JavaScript.Visitors
 
         public void Visit(ComputedPropertyField node)
         {
-            // nothing to do
+	        node?.ArrayNode?.Accept(this);
         }
 
         public void Visit(ObjectLiteralProperty node)
         {
-            if (node != null)
-            {
-                // don't care about the property names; just recurse the values
-                if (node.Value != null)
-                {
-                    node.Value.Accept(this);
-                }
+	        if (node == null)
+		        return;
 
-                if (node.Name == null)
-                {
-                    // if we don't have an explicit property name, then the value
-                    // better just be an identifier!
-                    var lookup = node.Value as LookupExpression;
-                    if (lookup == null)
-                    {
-                        node.Context.HandleError(JSError.ImplicitPropertyNameMustBeIdentifier, true);
-                    }
-                }
+	        node.Value?.Accept(this);
 
-                node.Index = NextOrderIndex;
-            }
+	        node.Name?.Accept(this);
+
+	        if (node.Name == null)
+	        {
+		        // if we don't have an explicit property name, then the value
+		        // better just be an identifier!
+		        var lookup = node.Value as LookupExpression;
+		        if (lookup == null)
+		        {
+			        node.Context.HandleError(JSError.ImplicitPropertyNameMustBeIdentifier, true);
+		        }
+	        }
+
+	        node.Index = NextOrderIndex;
         }
 
         public void Visit(ParameterDeclaration node)

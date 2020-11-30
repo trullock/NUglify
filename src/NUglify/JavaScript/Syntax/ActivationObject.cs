@@ -572,9 +572,7 @@ namespace NUglify.JavaScript.Syntax
 
                             // don't "remove" the field if it's a ghost to another field
                             if (variableField.GhostedField == null)
-                            {
-                                variableField.WasRemoved = true;
-                            }
+	                            variableField.WasRemoved = true;
 
                             // remove the vardecl from the declaration list, and if the
                             // declaration list is now empty, remove it, too

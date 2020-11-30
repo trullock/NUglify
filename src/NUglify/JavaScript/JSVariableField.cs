@@ -396,10 +396,7 @@ namespace NUglify.JavaScript
             {
                 m_referenceTable.Add(reference);
 
-                if (this.OuterField != null)
-                {
-                    this.OuterField.AddReference(reference);
-                }
+                OuterField?.AddReference(reference);
             }
         }
 
