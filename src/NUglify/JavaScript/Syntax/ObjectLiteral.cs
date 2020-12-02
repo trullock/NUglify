@@ -21,15 +21,12 @@ namespace NUglify.JavaScript.Syntax
 {
     public sealed class ObjectLiteral : Expression
     {
-	    AstNodeList m_properties;
+	    AstNodeList properties;
 
         public AstNodeList Properties
         {
-            get { return m_properties; }
-            set
-            {
-                ReplaceNode(ref m_properties, value);
-            }
+            get => properties;
+            set => ReplaceNode(ref properties, value);
         }
 
         public override bool IsConstant
@@ -61,23 +58,14 @@ namespace NUglify.JavaScript.Syntax
 
         public override void Accept(IVisitor visitor)
         {
-            if (visitor != null)
-            {
-                visitor.Visit(this);
-            }
+	        visitor?.Visit(this);
         }
 
-        public override IEnumerable<AstNode> Children
-        {
-            get
-            {
-                return EnumerateNonNullNodes(m_properties);
-            }
-        }
+        public override IEnumerable<AstNode> Children => EnumerateNonNullNodes(properties);
 
         public override bool ReplaceChild(AstNode oldNode, AstNode newNode)
         {
-            if (oldNode == m_properties)
+            if (oldNode == properties)
             {
                 var properties = newNode as AstNodeList;
                 if (newNode == null || properties != null)

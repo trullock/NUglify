@@ -118,8 +118,7 @@ namespace NUglify.JavaScript.Syntax
 
         public override void Accept(IVisitor visitor)
         {
-            if (visitor == null) return;
-            visitor.Visit(this);
+	        visitor?.Visit(this);
         }
 
         public override bool IsEquivalentTo(AstNode otherNode)
