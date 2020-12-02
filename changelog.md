@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.11.4 (2 December 2020)
+- Fixed bug with computed property names in object literals not getting processed
+
 ## v1.11.3 (27 November 2020)
 - Fixes bugs with escaped slashes in JSON and SourceMaps
 
