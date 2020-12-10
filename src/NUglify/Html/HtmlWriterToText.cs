@@ -85,6 +85,9 @@ namespace NUglify.Html
             else if (ShouldKeepFormatting && node.Descriptor != null && (node.Descriptor.Category & ContentKind.Phrasing) != 0)
             {
                 base.WriteStartTag(node);
+            } else if (ShouldKeepStructure && node.Descriptor != null && node.Descriptor.Name == "br")
+            {
+                Write('\n');
             }
         }
 

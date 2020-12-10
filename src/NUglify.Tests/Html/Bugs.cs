@@ -193,5 +193,15 @@ test
 <%-- comment --%>
 <div>text</div>");
 		}
+
+
+		[Test]
+		public void Bug211()
+		{
+			input = "<p>Hello</p><p>This is a test<br/>This is another test</p><p>&nbsp;</p><p>Something</p>";
+			var htmlToText = Uglify.HtmlToText(input, HtmlToTextOptions.KeepStructure);
+			equal(htmlToText.Code, "Hello\nThis is a test\nThis is another test\n \nSomething\n\n");
+		}
+
 	}
 }
