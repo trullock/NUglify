@@ -4272,7 +4272,7 @@ namespace NUglify.JavaScript
                 ast = ParseArrowFunction(ast);
             }
 
-            // can be a CallExpression, that is, followed by '.' or '(' or '['
+            // can be a CallExpression, that is, followed by '.' or '(' or '[' or '`'
             return ParseMemberExpression(ast, newContexts);
         }
 
@@ -5105,7 +5105,21 @@ namespace NUglify.JavaScript
                         else 
                             ParseMemberExpression_AccessField(ref expression, true);
                         break;
+                    case JSToken.TemplateLiteral:
+                        var args = new AstNodeList(CurrentPositionContext);
+                        var templateLiteral = ParseTemplateLiteral();
+                        args.Append(templateLiteral);
+                        args.UpdateWith(templateLiteral.Context);
 
+	                    expression = new CallExpression(expression.Context.CombineWith(args.Context))
+	                    {
+		                    Function = expression,
+		                    Arguments = args,
+		                    InBrackets = false,
+		                    IsTaggedTemplateLiteral = true
+	                    };
+                        GetNextToken();
+                        return expression;
                     default:
                         if (null != newContexts)
                         {
@@ -5181,8 +5195,7 @@ namespace NUglify.JavaScript
 
         void ParseMemberExpression_LeftParenthesis(ref AstNode expression, List<SourceContext> newContexts, bool optionalChaining)
         {
-            AstNodeList args = null;
-            args = ParseExpressionList(JSToken.RightParenthesis);
+	        var args = ParseExpressionList(JSToken.RightParenthesis);
 
             expression = new CallExpression(expression.Context.CombineWith(args.Context))
             {
