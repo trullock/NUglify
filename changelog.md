@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.11.5 (10 December 2020)
+- Fixes bug with `<br>`s when HtmlToText()ing
+
 ## v1.11.4 (2 December 2020)
 - Fixed bug with computed property names in object literals not getting processed
 
