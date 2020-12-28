@@ -288,15 +288,18 @@ namespace NUglify.Html
         /// </summary>
         public static HtmlSettings Pretty()
         {
-            return new HtmlSettings
-            {
-                RemoveComments = false,
-                RemoveOptionalTags = false,
-                RemoveAttributeQuotes = false,
-                MinifyJs = false,
-                MinifyCss = false,
-                PrettyPrint = true
-            };
+	        var htmlSettings = new HtmlSettings
+	        {
+		        RemoveComments = false,
+		        RemoveOptionalTags = false,
+		        RemoveAttributeQuotes = false,
+		        MinifyJs = false,
+		        MinifyCss = false,
+		        PrettyPrint = true
+	        };
+	        htmlSettings.JsSettings = CodeSettings.Pretty();
+            htmlSettings.CssSettings = CssSettings.Pretty();
+	        return htmlSettings;
         }
     }
 }

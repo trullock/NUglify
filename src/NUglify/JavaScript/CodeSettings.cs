@@ -25,12 +25,8 @@ namespace NUglify.JavaScript
     /// </summary>
     public class CodeSettings : CommonSettings
     {
-        #region private fields
-
-        bool m_minify;
-        bool m_amdSupport;
-
-        #endregion
+        bool minify;
+        bool amdSupport;
 
         /// <summary>
         /// Instantiate a CodeSettings object with the default settings
@@ -65,6 +61,20 @@ namespace NUglify.JavaScript
             this.m_identifierReplacementMap = new Dictionary<string, string>();
         }
 
+
+        /// <summary>
+        /// Returns a CodeSettings object configured to output "pretty" js, as opposed to minified
+        /// </summary>
+        /// <returns></returns>
+        public static CodeSettings Pretty()
+        {
+	        var settings = new CodeSettings();
+	        settings.MinifyCode = false;
+	        settings.OutputMode = OutputMode.MultipleLines;
+	        settings.TermSemicolons = true;
+	        return settings;
+        }
+
         /// <summary>
         /// Instantiate a new CodeSettings object with the same settings as the current object.
         /// </summary>
@@ -76,7 +86,7 @@ namespace NUglify.JavaScript
             {
                 // set the field, not the property. Setting the property will set a bunch of
                 // other properties, which may not represent their actual values.
-                m_minify = this.m_minify,
+                minify = this.minify,
 
                 AllowEmbeddedAspNetBlocks = this.AllowEmbeddedAspNetBlocks,
                 AlwaysEscapeNonAscii = this.AlwaysEscapeNonAscii,
@@ -91,7 +101,7 @@ namespace NUglify.JavaScript
                 IgnoreAllErrors = this.IgnoreAllErrors,
                 IgnoreErrorList = this.IgnoreErrorList,
                 IgnorePreprocessorDefines = this.IgnorePreprocessorDefines,
-                IndentSize = this.IndentSize,
+                Indent = this.Indent,
                 InlineSafeStrings = this.InlineSafeStrings,
                 KillSwitch = this.KillSwitch,
                 KnownGlobalNamesList = this.KnownGlobalNamesList,
@@ -556,12 +566,12 @@ namespace NUglify.JavaScript
         {
             get
             {
-                return m_amdSupport;
+                return amdSupport;
             }
             set
             {
-                m_amdSupport = value;
-                if (m_amdSupport)
+                amdSupport = value;
+                if (amdSupport)
                 {
                     // make sure define and require are added to the known globals list
                     m_knownGlobals.Add("define");
@@ -578,7 +588,8 @@ namespace NUglify.JavaScript
 
         /// <summary>
         /// collapse new Array() to [] and new Object() to {} [true]
-        /// or leave ais [false]. Default is true.
+        /// or leave as is [false].
+        /// Default is true.
         /// </summary>
         public bool CollapseToLiteral
         {
@@ -682,29 +693,25 @@ namespace NUglify.JavaScript
         /// </summary>
         public bool MinifyCode
         {
-            get 
-            {
-                // just return the minify flag
-                return m_minify;
-            }
+            get => minify;
             set 
             { 
                 // when we set this flag, we want to turn other things on and off at the same time
-                m_minify = value;
+                minify = value;
 
                 // aligned properties
-                this.CollapseToLiteral = m_minify;
-                this.EvalLiteralExpressions = m_minify;
-                this.RemoveFunctionExpressionNames = m_minify;
-                this.RemoveUnneededCode = m_minify;
-                this.ReorderScopeDeclarations = m_minify;
+                this.CollapseToLiteral = minify;
+                this.EvalLiteralExpressions = minify;
+                this.RemoveFunctionExpressionNames = minify;
+                this.RemoveUnneededCode = minify;
+                this.ReorderScopeDeclarations = minify;
 
                 // opposite properties
-                this.PreserveFunctionNames = !m_minify;
+                this.PreserveFunctionNames = !minify;
 
                 // dependent switches
-                this.LocalRenaming = m_minify ? LocalRenaming.CrunchAll : LocalRenaming.KeepAll;
-                this.KillSwitch = m_minify ? 0 : ~((long)TreeModifications.PreserveImportantComments);
+                this.LocalRenaming = minify ? LocalRenaming.CrunchAll : LocalRenaming.KeepAll;
+                this.KillSwitch = minify ? 0 : ~((long)TreeModifications.PreserveImportantComments);
             }
         }
 
