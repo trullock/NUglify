@@ -1,10 +1,11 @@
 # Changelog
 
 ## vNext (unpublished)
+- Fixes but methods called `set` or `get` on classes
 
 ## v1.11.6 (28 December 2020)
-- Fixed bug with unused setter `value` parameters being removed
 - Fixes tagged template literals
+- Fixed bug with unused setter `value` parameters being removed
 
 ## v1.11.5 (10 December 2020)
 - Fixes bug with `<br>`s when HtmlToText()ing
