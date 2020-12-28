@@ -1,10 +1,10 @@
 # Changelog
 
 ## vNext (unpublished)
+- Fixes but methods called `set` or `get` on classes
 
 ## v1.11.6 (28 December 2020)
 - Fixes tagged template literals
-- Fixes but methods called `set` or `get` on classes
 - Fixed bug with unused setter `value` parameters being removed
 
 ## v1.11.5 (10 December 2020)
