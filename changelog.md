@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.11.9 (28 December 2020)
+- Fixes bug with HtmlToText and trailing newlines
+
 ## v1.11.8 (28 December 2020)
 - Fixes object destructuring syntax and default values in arrow function arguments.
 
