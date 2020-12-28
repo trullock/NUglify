@@ -97,17 +97,16 @@ namespace NUglify.Html
 
         protected override void WriteEndTag(HtmlElement node)
         {
-            if ((node.Descriptor == null || (node.Descriptor.Category & ContentKind.Phrasing) == 0 ||
+	        if (node.Name == "body")
+	        {
+		        outputEnabled = false;
+	        }
+            else if ((node.Descriptor == null || (node.Descriptor.Category & ContentKind.Phrasing) == 0 ||
                 node.Name == "li"))
             {
                 Write('\n');
             }
-
-            if (node.Name == "body")
-            {
-                outputEnabled = false;
-            }
-            else if (ShouldKeepFormatting && node.Descriptor != null && (node.Descriptor.Category & ContentKind.Phrasing) != 0)
+	        else if (ShouldKeepFormatting && node.Descriptor != null && (node.Descriptor.Category & ContentKind.Phrasing) != 0)
             {
                 base.WriteEndTag(node);
             }

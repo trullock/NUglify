@@ -28,9 +28,8 @@ namespace NUglify.Tests.Html
         {
             input = "This is a fragment </p> and it continues here <a>";
             var htmlToText = Uglify.HtmlToText(input);
-            equal("This is a fragment and it continues here  ", htmlToText.Code);
+            equal(htmlToText.Code, "This is a fragment and it continues here ");
         }
-
 
         [Test]
         public void Bug169()
@@ -200,7 +199,7 @@ test
 		{
 			input = "<p>Hello</p><p>This is a test<br/>This is another test</p><p>&nbsp;</p><p>Something</p>";
 			var htmlToText = Uglify.HtmlToText(input, HtmlToTextOptions.KeepStructure);
-			equal(htmlToText.Code, "Hello\nThis is a test\nThis is another test\n \nSomething\n\n");
+			equal(htmlToText.Code, "Hello\nThis is a test\nThis is another test\n \nSomething\n");
 		}
 
 	}
