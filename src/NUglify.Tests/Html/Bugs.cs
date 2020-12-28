@@ -28,7 +28,7 @@ namespace NUglify.Tests.Html
         {
             input = "This is a fragment </p> and it continues here <a>";
             var htmlToText = Uglify.HtmlToText(input);
-            equal("This is a fragment and it continues here", htmlToText.Code);
+            equal(htmlToText.Code, "This is a fragment and it continues here ");
         }
 
         [Test]
