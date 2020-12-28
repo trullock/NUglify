@@ -1,7 +1,9 @@
 # Changelog
 
 ## vNext (unpublished)
-- Changed defaults for HTML minification for embedded JS and CSS
+
+## v.12.0 (28 December 2020)
+- Changed defaults for HTML minification for embedded JS and CSS to make them output prettily
 
 ## v1.11.9 (28 December 2020)
 - Fixes bug with HtmlToText and trailing newlines
