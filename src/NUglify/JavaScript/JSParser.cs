@@ -3219,10 +3219,16 @@ namespace NUglify.JavaScript
             }
 
             // see if this is a getter/setter or a regular method
-            var funcType = m_currentToken.Is(JSToken.Get)
-                ? FunctionType.Getter
-                : m_currentToken.Is(JSToken.Set) ? FunctionType.Setter : FunctionType.Method;
-
+            var funcType = FunctionType.Method;
+            var nextToken = PeekToken();
+            if (nextToken != JSToken.LeftParenthesis)
+            {
+	            if (m_currentToken.Is(JSToken.Get))
+		            funcType = FunctionType.Getter;
+                else if (m_currentToken.Is(JSToken.Set))
+		            funcType = FunctionType.Setter;
+            }
+	            
             // right now the ES6 spec just has method declarations.
             var method = ParseFunction(funcType, m_currentToken.FlattenToStart());
             if (method != null && staticContext != null)
