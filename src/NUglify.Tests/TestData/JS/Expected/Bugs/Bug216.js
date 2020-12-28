@@ -1,0 +1,1 @@
+﻿function test(){const n=new Map;for(const[t,i]of n)alert(t+i)}test()
