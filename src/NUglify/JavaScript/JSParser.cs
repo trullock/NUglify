@@ -4832,6 +4832,8 @@ namespace NUglify.JavaScript
             }
             else if (nextToken == JSToken.Comma || nextToken == JSToken.RightCurly || nextToken == JSToken.Assign)
             {
+	            isBindingPattern |= nextToken == JSToken.Assign;
+
                 // just a name lookup; the property name is implicit
                 ParsedVersion = ScriptVersion.EcmaScript6;
                 value = ParseObjectPropertyValue(isBindingPattern);

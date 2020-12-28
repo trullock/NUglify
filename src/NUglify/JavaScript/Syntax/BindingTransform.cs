@@ -192,27 +192,29 @@ namespace NUglify.JavaScript.Syntax
                 // convert binding identifier to a lookup (reference identifier)
                 return ConvertToBindingIdentifier(lookup);
             }
-            else if ((arrayLiteral = node as ArrayLiteral) != null)
-            {
-                return ConvertToBindingArrayLiteral(arrayLiteral);
-            }
-            else if ((objectLiteral = node as ObjectLiteral) != null)
-            {
-                return ConvertToBindingObjectLiteral(objectLiteral);
-            }
-            else if ((objectProperty = node as ObjectLiteralProperty) != null)
-            {
-                return ConvertToBindingObjectProperty(objectProperty);
-            }
-            else if ((constantWrapper = node as ConstantWrapper) != null
+
+            if ((arrayLiteral = node as ArrayLiteral) != null)
+	            return ConvertToBindingArrayLiteral(arrayLiteral);
+
+            if ((objectLiteral = node as ObjectLiteral) != null)
+	            return ConvertToBindingObjectLiteral(objectLiteral);
+
+            if ((objectProperty = node as ObjectLiteralProperty) != null)
+	            return ConvertToBindingObjectProperty(objectProperty);
+
+            if (node is InitializerNode)
+	            return node;
+
+            if ((constantWrapper = node as ConstantWrapper) != null
                 && constantWrapper.Value == Missing.Value)
             {
-                // must preserve missing constant values in array literals, too
-                return constantWrapper;
+	            // must preserve missing constant values in array literals, too
+	            return constantWrapper;
             }
-            else if ((importExportSpecifier = node as ImportExportSpecifier) != null)
+
+            if ((importExportSpecifier = node as ImportExportSpecifier) != null)
             {
-                return ConvertToBindingSpecifier(importExportSpecifier);
+	            return ConvertToBindingSpecifier(importExportSpecifier);
             }
 
             node.Context.HandleError(JSError.UnableToConvertToBinding, true);

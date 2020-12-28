@@ -225,6 +225,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void Bug201()
+        {
+	        TestHelper.Instance.RunErrorTest("-rename:all");
+        }
+
+        [Test]
         public void Bug204()
         {
 	        TestHelper.Instance.RunTest("-rename:all");
