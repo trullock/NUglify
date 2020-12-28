@@ -301,14 +301,20 @@ namespace NUglify.JavaScript.Syntax
             foreach (var lexDecl in LexicallyDeclaredNames)
             {
                 // use the function as the field value if its parent is a function
-                // or the class node if its a class
-                AstNode fieldValue = lexDecl.Parent as FunctionObject;
-                if (fieldValue == null)
+                if (lexDecl.Parent is FunctionObject)
                 {
-                    fieldValue = lexDecl.Parent as ClassNode;
+                    DefineField(lexDecl, lexDecl.Parent);
+                    continue;
                 }
 
-                DefineField(lexDecl, fieldValue);
+                // Use the class as the field value if its a class
+                if (lexDecl.Parent is ClassNode)
+                {
+                    DefineField(lexDecl, lexDecl.Parent);
+                    continue;
+                }
+                
+                DefineField(lexDecl, lexDecl.Parent);
             }
         }
 
@@ -931,25 +937,6 @@ namespace NUglify.JavaScript.Syntax
                             || !(Settings.RemoveFunctionExpressionNames && Settings.IsModificationAllowed(TreeModifications.RemoveFunctionExpressionNames))))
                         {
                             localField.CrunchedName = crunchEnum.NextName();
-
-                            // This whole block feels like a horrible hack, and is almost certainly missing many other cases.
-                            // The following tests currently cover this block:
-                            //  CatchVariable/ForInLet
-                            //  Bugs/Bug79
-                            if (localField.Declarations.FirstOrDefault()?.Parent?.Parent?.Parent is ForInStatement forInStatement)
-                            {
-                                if (forInStatement.Collection is MemberExpression memberExpression &&
-                                    memberExpression.Root is INameReference nameReference &&
-                                    localField.CrunchedName == (nameReference.VariableField.CrunchedName ?? nameReference.VariableField.Name))
-                                {
-                                    localField.CrunchedName = crunchEnum.NextName();
-                                } 
-                                else if (forInStatement.Collection is LookupExpression lookupExpression &&
-                                           localField.CrunchedName == (lookupExpression.VariableField.CrunchedName ?? lookupExpression.VariableField.Name))
-                                {
-                                    localField.CrunchedName = crunchEnum.NextName();
-                                }
-                            }
                         }
                     }
                 }

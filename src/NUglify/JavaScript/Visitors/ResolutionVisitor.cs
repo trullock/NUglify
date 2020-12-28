@@ -1059,10 +1059,6 @@ namespace NUglify.JavaScript.Visitors
             {
                 node.Index = NextOrderIndex;
 
-                if (node.Collection != null)
-                {
-                    node.Collection.Accept(this);
-                }
 
                 if (node.Variable != null)
                 {
@@ -1083,17 +1079,13 @@ namespace NUglify.JavaScript.Visitors
                     }
                 }
 
+                node.Collection?.Accept(this);
+
                 try
                 {
-                    if (node.Variable != null)
-                    {
-                        node.Variable.Accept(this);
-                    }
+	                node.Variable?.Accept(this);
 
-                    if (node.Body != null)
-                    {
-                        node.Body.Accept(this);
-                    }
+	                node.Body?.Accept(this);
                 }
                 finally
                 {
