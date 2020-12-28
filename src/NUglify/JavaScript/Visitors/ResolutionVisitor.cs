@@ -1481,7 +1481,12 @@ namespace NUglify.JavaScript.Visitors
 		        var lookup = node.Value as LookupExpression;
 		        if (lookup == null)
 		        {
-			        node.Context.HandleError(JSError.ImplicitPropertyNameMustBeIdentifier, true);
+			        if (node.Value is FunctionObject func)
+			        {
+
+			        }
+                    else
+						node.Context.HandleError(JSError.ImplicitPropertyNameMustBeIdentifier, true);
 		        }
 	        }
 
