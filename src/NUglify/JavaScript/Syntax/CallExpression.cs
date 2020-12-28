@@ -36,10 +36,12 @@ namespace NUglify.JavaScript.Syntax
             get => m_arguments;
             set => ReplaceNode(ref m_arguments, value);
         }
-        
+
         public bool IsConstructor { get; set; }
         public bool InBrackets { get; set; }
         public bool OptionalChaining { get; set; }
+        public bool IsTaggedTemplateLiteral { get; set; }
+
 
         public CallExpression(SourceContext context)
             : base(context)
@@ -81,6 +83,7 @@ namespace NUglify.JavaScript.Syntax
         }
 
         public override IEnumerable<AstNode> Children => EnumerateNonNullNodes(Function, Arguments);
+
 
         public override bool ReplaceChild(AstNode oldNode, AstNode newNode)
         {

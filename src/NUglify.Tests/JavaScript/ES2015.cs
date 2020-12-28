@@ -66,7 +66,7 @@ namespace NUglify.Tests.JavaScript
             TestHelper.Instance.RunTest();
         }
 
-        // [Test]
+        [Test]
         public void TaggedTemplates()
         {
             TestHelper.Instance.RunTest();

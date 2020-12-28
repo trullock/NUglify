@@ -752,7 +752,8 @@ namespace NUglify.JavaScript.Visitors
                         OutputPossibleLineBreak('.');
                     }
 
-                    OutputPossibleLineBreak(node.InBrackets ? '[' : '(');
+                    if(!node.IsTaggedTemplateLiteral)
+						OutputPossibleLineBreak(node.InBrackets ? '[' : '(');
                     MarkSegment(node, null, node.Arguments.Context);
 
                     AstNode argument = null;
@@ -776,7 +777,8 @@ namespace NUglify.JavaScript.Visitors
                         }
                     }
 
-                    Output(node.InBrackets ? ']' : ')');
+                    if (!node.IsTaggedTemplateLiteral)
+                        Output(node.InBrackets ? ']' : ')');
                     MarkSegment(node, null, node.Arguments.Context);
                 }
 
