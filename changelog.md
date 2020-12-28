@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.11.8 (28 December 2020)
+- Fixes object destructuring syntax and default values in arrow function arguments.
+
 ## v1.11.7 (28 December 2020)
 - Fixes but methods called `set` or `get` on classes
 - Fixed bug with `for(let x in y)` and `for([x] of y)` and scope lookup crunching
