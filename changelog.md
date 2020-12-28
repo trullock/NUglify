@@ -1,7 +1,10 @@
 # Changelog
 
 ## vNext (unpublished)
+
+## v1.11.7 (28 December 2020)
 - Fixes but methods called `set` or `get` on classes
+- Fixed bug with `for(let x in y)` and `for([x] of y)` and scope lookup crunching
 
 ## v1.11.6 (28 December 2020)
 - Fixes tagged template literals
