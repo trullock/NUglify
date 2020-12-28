@@ -39,6 +39,8 @@ namespace NUglify.JavaScript.Syntax
             }
         }
 
+        public ArrayLiteral ComputedName { get; set; }
+
         public string NameGuess { get; set; }
 
         public AstNodeList ParameterDeclarations

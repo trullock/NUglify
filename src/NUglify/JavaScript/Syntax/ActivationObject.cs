@@ -500,6 +500,7 @@ namespace NUglify.JavaScript.Syntax
 
         void UnreferencedFunction(JSVariableField variableField, FunctionObject functionObject)
         {
+            // TODO: 205
             // if there is no name, then ignore this declaration because it's malformed.
             // (won't be a function expression because those are automatically referenced).
             // also ignore ghosted function fields.

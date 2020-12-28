@@ -1,14 +1,19 @@
-﻿
-function createIterableMethod() {
+﻿function test(a, b) {
 	return {
 		amethod() {
 			return this;
 		},
-		[a](b) {
-			return this;
+		get [a + b]() { },
+		set [a + b](value) { },
+		//[a + b](c) { },
+		*[a + b](c) {
+			return c;
 		},
-		async [c](d) {
-			return this;
+		async [a + b](c) {
+			return c;
+		},
+		async*[a + b](c) {
+			return c;
 		}
 	};
 }

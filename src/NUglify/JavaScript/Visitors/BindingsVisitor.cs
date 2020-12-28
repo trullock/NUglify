@@ -141,6 +141,7 @@ namespace NUglify.JavaScript.Visitors
 
         public void Visit(FunctionObject node)
         {
+            // TODO: 205
             // recurse the function binding
             if (node != null && node.Binding != null)
             {

@@ -1832,6 +1832,7 @@ namespace NUglify.JavaScript.Visitors
 
         public void Visit(FunctionObject node)
         {
+            // TODO: 205
             if (node != null)
             {
                 var symbol = StartSymbol(node);
@@ -1905,6 +1906,9 @@ namespace NUglify.JavaScript.Visitors
                             MarkSegment(node, node.Binding.Name, node.Binding.Context);
                             SetContextOutputPosition(node.Context);
                         }
+                    } else if (node.ComputedName != null)
+                    {
+                        Visit(node.ComputedName);
                     }
 
                     if (settings.SymbolsMap != null && isAnonymous)

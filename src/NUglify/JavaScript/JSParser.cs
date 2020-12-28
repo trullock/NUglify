@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
@@ -2809,6 +2810,7 @@ namespace NUglify.JavaScript
         private FunctionObject ParseFunction(FunctionType functionType, SourceContext fncCtx)
         {
             BindingIdentifier name = null;
+            ArrayLiteral computedName = null;
             AstNodeList formalParameters = null;
             BlockStatement body = null;
             bool inExpression = (functionType == FunctionType.Expression);
@@ -2843,6 +2845,12 @@ namespace NUglify.JavaScript
                         Name = m_scanner.Identifier
                     };
                 GetNextToken();
+            }
+            else if (m_currentToken.Is(JSToken.LeftBracket))
+            {
+	            var arrayLiteral = ParseArrayLiteral(false);
+                // TODO: error handling
+		        computedName = arrayLiteral as ArrayLiteral;
             }
             else
             {
@@ -2965,6 +2973,7 @@ namespace NUglify.JavaScript
                 {
                     FunctionType = functionType,
                     Binding = name,
+                    ComputedName = computedName,
                     ParameterDeclarations = formalParameters,
                     Body = body,
                     IsGenerator = isGenerator,
@@ -4908,26 +4917,30 @@ namespace NUglify.JavaScript
             }
             else if (m_currentToken.Is(JSToken.LeftBracket))
             {
-	            if (nextToken == JSToken.LeftParenthesis)
-	            {
-		            var test = ParseFunction(FunctionType.Method, m_currentToken.Clone());
-	            }
-
 	            var astNode = ParseExpression();
 
-                if (astNode is CallExpression callExpression)
-	            {
-                    astNode = new FunctionObject(astNode.Context)
-                    {
-	                    FunctionType = FunctionType.Method,
-	                    Binding = callExpression.Function as ArrayLiteral,
-	                    ParameterDeclarations = formalParameters,
-	                    Body = body,
-	                    IsGenerator = isGenerator,
-	                    IsAsync = isAsync
-                    };
-                }
+	            // if (m_currentToken == JSToken.LeftParenthesis)
+	            // {
+		           //  var test = ParseFunction(FunctionType.Method, m_currentToken.Clone());
+	            // }
+             //
+             //
+                // if (astNode is CallExpression callExpression)
+                // {
+	               //  var body = ParseBlock();
+                //     astNode = new FunctionObject(astNode.Context)
+                //     {
+	               //      FunctionType = FunctionType.Method,
+	               //      //Binding = callExpression.Function as ArrayLiteral,
+	               //      ParameterDeclarations = callExpression.Arguments,
+	               //      Body = body,
+	               //      IsGenerator = false,
+	               //      IsAsync = false
+                //     };
+                // }
 	            var computedValue = astNode as ArrayLiteral;
+
+
                 field = new ComputedPropertyField(computedValue, computedValue.Context);
                 if( field != null)
                 {

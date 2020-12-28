@@ -1158,6 +1158,7 @@ namespace NUglify.JavaScript.Visitors
 
         public void Visit(FunctionObject node)
         {
+            // TODO: 205
             if (node != null)
             {
                 // it's a declaration; put the index to -1.
@@ -1210,10 +1211,9 @@ namespace NUglify.JavaScript.Visitors
 
                     // once we've recursed the function body, let's recurse the parameters
                     // so that we can hit the lookups in their INTIALIZERS
-                    if (node.ParameterDeclarations != null)
-                    {
-                        node.ParameterDeclarations.Accept(this);
-                    }
+                    node.ParameterDeclarations?.Accept(this);
+
+                    node.ComputedName?.Accept(this);
                 }
                 finally
                 {
