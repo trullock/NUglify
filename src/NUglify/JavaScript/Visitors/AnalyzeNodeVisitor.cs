@@ -2629,9 +2629,10 @@ namespace NUglify.JavaScript.Visitors
                                     if (removeIfUnreferenced)
                                     {
                                         // dont remove `value` from setters even if unused, this is invalid
-	                                    if ((paramDecl.Binding is BindingIdentifier bi) && bi.Name == "value" &&
-	                                        node.FunctionType == FunctionType.Setter)
-		                                    continue;
+                                        if ((paramDecl.Binding is BindingIdentifier bi) &&
+                                            node.ParameterDeclarations.Count == 1 &&
+                                            node.FunctionType == FunctionType.Setter)
+                                            continue;
 
                                         node.ParameterDeclarations.RemoveAt(ndx);
                                     }

@@ -1,1 +1,1 @@
-﻿export class MyClass{set property(value){}}
+﻿export class MyClass{set property(_value){}}
