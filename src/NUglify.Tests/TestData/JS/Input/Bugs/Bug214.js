@@ -1,3 +1,3 @@
 ﻿export class MyClass {
-	set property(value) { }
+	set property(_value) { }
 }
