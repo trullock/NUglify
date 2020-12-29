@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.12.1 (29 December 2020)
+- Improves unused setter parameter handling
+
 ## v.12.0 (28 December 2020)
 - Changed defaults for HTML minification for embedded JS and CSS to make them output prettily
 
