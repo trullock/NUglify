@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using NUglify.Helpers;
 using NUglify.JavaScript.Syntax;
@@ -2809,8 +2810,8 @@ namespace NUglify.JavaScript
         private FunctionObject ParseFunction(FunctionType functionType, SourceContext fncCtx)
         {
             BindingIdentifier name = null;
+            ArrayLiteral computedName = null;
             AstNodeList formalParameters = null;
-            BlockStatement body = null;
             bool inExpression = (functionType == FunctionType.Expression);
 
             var isAsync = m_currentToken.Is(JSToken.Async);
@@ -2843,6 +2844,12 @@ namespace NUglify.JavaScript
                         Name = m_scanner.Identifier
                     };
                 GetNextToken();
+            }
+            else if (m_currentToken.Is(JSToken.LeftBracket))
+            {
+	            var arrayLiteral = ParseArrayLiteral(false);
+                // TODO: error handling
+		        computedName = arrayLiteral as ArrayLiteral;
             }
             else
             {
@@ -2882,94 +2889,101 @@ namespace NUglify.JavaScript
                 }
             }
 
-            if (m_currentToken.IsNot(JSToken.LeftParenthesis))
-            {
-                // we expect a left paren at this point for standard cross-browser support.
-                // BUT -- some versions of IE allow an object property expression to be a function name, like window.onclick. 
-                // we still want to throw the error, because it syntax errors on most browsers, but we still want to
-                // be able to parse it and return the intended results. 
-                // Skip to the open paren and use whatever is in-between as the function name. Doesn't matter that it's 
-                // an invalid identifier; it won't be accessible as a valid field anyway.
-                bool expandedIndentifier = false;
-                while (m_currentToken.IsNot(JSToken.LeftParenthesis)
-                    && m_currentToken.IsNot(JSToken.LeftCurly)
-                    && m_currentToken.IsNot(JSToken.Semicolon)
-                    && m_currentToken.IsNot(JSToken.EndOfFile))
-                {
-                    name.Context.UpdateWith(m_currentToken);
-                    GetNextToken();
-                    expandedIndentifier = true;
-                }
+            return ParseFunctionPart2(functionType, fncCtx, name, computedName, isGenerator, isAsync);
+        }
 
-                // if we actually expanded the identifier context, then we want to report that
-                // the function name needs to be an identifier. Otherwise we didn't expand the 
-                // name, so just report that we expected an open paren at this point.
-                if (expandedIndentifier)
-                {
-                    name.Name = name.Context.Code;
-                    name.Context.HandleError(JSError.FunctionNameMustBeIdentifier, false);
-                }
-                else
-                {
-                    ReportError(JSError.NoLeftParenthesis);
-                }
-            }
+        private FunctionObject ParseFunctionPart2(FunctionType functionType, SourceContext context, BindingIdentifier name, ArrayLiteral computedName, bool isGenerator, bool isAsync)
+        {
+	        BlockStatement body = null;
+	        if (m_currentToken.IsNot(JSToken.LeftParenthesis))
+	        {
+		        // we expect a left paren at this point for standard cross-browser support.
+		        // BUT -- some versions of IE allow an object property expression to be a function name, like window.onclick. 
+		        // we still want to throw the error, because it syntax errors on most browsers, but we still want to
+		        // be able to parse it and return the intended results. 
+		        // Skip to the open paren and use whatever is in-between as the function name. Doesn't matter that it's 
+		        // an invalid identifier; it won't be accessible as a valid field anyway.
+		        bool expandedIndentifier = false;
+		        while (m_currentToken.IsNot(JSToken.LeftParenthesis)
+		               && m_currentToken.IsNot(JSToken.LeftCurly)
+		               && m_currentToken.IsNot(JSToken.Semicolon)
+		               && m_currentToken.IsNot(JSToken.EndOfFile))
+		        {
+			        name.Context.UpdateWith(m_currentToken);
+			        GetNextToken();
+			        expandedIndentifier = true;
+		        }
 
-            // get the formal parameters
-            formalParameters = ParseFormalParameters();
-            fncCtx.UpdateWith(formalParameters.IfNotNull(p => p.Context));
+		        // if we actually expanded the identifier context, then we want to report that
+		        // the function name needs to be an identifier. Otherwise we didn't expand the 
+		        // name, so just report that we expected an open paren at this point.
+		        if (expandedIndentifier)
+		        {
+			        name.Name = name.Context.Code;
+			        name.Context.HandleError(JSError.FunctionNameMustBeIdentifier, false);
+		        }
+		        else
+		        {
+			        ReportError(JSError.NoLeftParenthesis);
+		        }
+	        }
 
-            // read the function body of non-abstract functions.
-            if (m_currentToken.IsNot(JSToken.LeftCurly))
-            {
-                ReportError(JSError.NoLeftCurly);
-            }
+	        // get the formal parameters
+	        var formalParameters = ParseFormalParameters();
+	        context.UpdateWith(formalParameters.IfNotNull(p => p.Context));
 
-            try
-            {
-                // parse the block locally to get the exact end of function
-                body = new BlockStatement(m_currentToken.Clone());
-                body.BraceOnNewLine = m_foundEndOfLine;
-                GetNextToken();
+	        // read the function body of non-abstract functions.
+	        if (m_currentToken.IsNot(JSToken.LeftCurly))
+	        {
+		        ReportError(JSError.NoLeftCurly);
+	        }
 
-                // parse the function body statements
-                ParseFunctionBody(body);
+	        try
+	        {
+		        // parse the block locally to get the exact end of function
+		        body = new BlockStatement(m_currentToken.Clone());
+		        body.BraceOnNewLine = m_foundEndOfLine;
+		        GetNextToken();
 
-                if (m_currentToken.Is(JSToken.RightCurly))
-                {
-                    body.Context.UpdateWith(m_currentToken);
-                    GetNextToken();
-                }
-                else
-                {
-                    if (m_currentToken.Is(JSToken.EndOfFile))
-                    {
-                        fncCtx.HandleError(JSError.UnclosedFunction, true);
-                        ReportError(JSError.ErrorEndOfFile);
-                    }
-                    else
-                    {
-                        ReportError(JSError.NoRightCurly);
-                    }
-                }
+		        // parse the function body statements
+		        ParseFunctionBody(body);
 
-                fncCtx.UpdateWith(body.Context);
-            }
-            catch (EndOfStreamException)
-            {
-                // if we get an EOF here, we never had a chance to find the closing curly-brace
-                fncCtx.HandleError(JSError.UnclosedFunction, true);
-            }
+		        if (m_currentToken.Is(JSToken.RightCurly))
+		        {
+			        body.Context.UpdateWith(m_currentToken);
+			        GetNextToken();
+		        }
+		        else
+		        {
+			        if (m_currentToken.Is(JSToken.EndOfFile))
+			        {
+				        context.HandleError(JSError.UnclosedFunction, true);
+				        ReportError(JSError.ErrorEndOfFile);
+			        }
+			        else
+			        {
+				        ReportError(JSError.NoRightCurly);
+			        }
+		        }
 
-            return new FunctionObject(fncCtx)
-                {
-                    FunctionType = functionType,
-                    Binding = name,
-                    ParameterDeclarations = formalParameters,
-                    Body = body,
-                    IsGenerator = isGenerator,
-                    IsAsync = isAsync
-                };
+		        context.UpdateWith(body.Context);
+	        }
+	        catch (EndOfStreamException)
+	        {
+		        // if we get an EOF here, we never had a chance to find the closing curly-brace
+		        context.HandleError(JSError.UnclosedFunction, true);
+	        }
+
+	        return new FunctionObject(context)
+	        {
+		        FunctionType = functionType,
+		        Binding = name,
+		        ComputedName = computedName,
+		        ParameterDeclarations = formalParameters,
+		        Body = body,
+		        IsGenerator = isGenerator,
+		        IsAsync = isAsync
+	        };
         }
 
         private void ParseFunctionBody(BlockStatement body)
@@ -4810,9 +4824,7 @@ namespace NUglify.JavaScript
                 if (m_currentToken.Is(JSToken.Colon))
                 {
                     if (field != null)
-                    {
-                        field.ColonContext = m_currentToken.Clone();
-                    }
+	                    field.ColonContext = m_currentToken.Clone();
 
                     GetNextToken();
                     value = ParseObjectPropertyValue(isBindingPattern);
@@ -4908,50 +4920,62 @@ namespace NUglify.JavaScript
             }
             else if (m_currentToken.Is(JSToken.LeftBracket))
             {
-                var computedValue = ParseExpression() as ArrayLiteral;
-                field = new ComputedPropertyField(computedValue, computedValue.Context);
-                if( field != null)
-                {
-                    ParsedVersion = ScriptVersion.EcmaScript6;
-                    field.ColonContext = m_currentToken.Clone();
-                }
-                if ( m_currentToken.Token != JSToken.Colon)
-                {
-                    ReportError(JSError.NoColon);
-                }
+	            var ctx = m_currentToken.Clone();
+	            var astNode = ParseArrayLiteral(false);
 
-                GetNextToken();
-                value = ParseObjectPropertyValue(isBindingPattern);
-                if (isBindingPattern && m_currentToken.Is(JSToken.Assign))
-                {
-                    var assignContext = m_currentToken.Clone();
-                    GetNextToken();
-                    value = new InitializerNode(assignContext.Clone())
-                    {
-                        Binding = value,
-                        AssignContext = assignContext,
-                        Initializer = ParseExpression(true)
-                    };
+	            if (m_currentToken.Is(JSToken.LeftParenthesis))
+	            {
+                    value = ParseFunctionPart2(FunctionType.Method, ctx, null, astNode as ArrayLiteral, false, false);
+	            }
+	            else
+	            {
+		            var computedValue = astNode as ArrayLiteral;
+		            field = new ComputedPropertyField(computedValue, computedValue.Context);
+		            if (field != null)
+		            {
+			            ParsedVersion = ScriptVersion.EcmaScript6;
+			            field.ColonContext = m_currentToken.Clone();
+		            }
+
+		            if (m_currentToken.Token != JSToken.Colon)
+		            {
+			            ReportError(JSError.NoColon);
+		            }
+
+		            GetNextToken();
+		            value = ParseObjectPropertyValue(isBindingPattern);
+		            if (isBindingPattern && m_currentToken.Is(JSToken.Assign))
+		            {
+			            var assignContext = m_currentToken.Clone();
+			            GetNextToken();
+			            value = new InitializerNode(assignContext.Clone())
+			            {
+				            Binding = value,
+				            AssignContext = assignContext,
+				            Initializer = ParseExpression(true)
+			            };
+		            }
+
                 }
             }
 
             if (field != null || value != null)
             {
-                // bundle the name/value pair into a property
-                field.IfNotNull(f => propertyContext.UpdateWith(f.Context));
-                value.IfNotNull(v => propertyContext.UpdateWith(v.Context));
+	            // bundle the name/value pair into a property
+	            field.IfNotNull(f => propertyContext.UpdateWith(f.Context));
+	            value.IfNotNull(v => propertyContext.UpdateWith(v.Context));
 
-                property = new ObjectLiteralProperty(propertyContext)
-                {
-                    Name = field,
-                    Value = value,
-                };
+	            property = new ObjectLiteralProperty(propertyContext)
+	            {
+		            Name = field,
+		            Value = value,
+	            };
 
-                if (m_currentToken.Is(JSToken.Comma))
-                {
-                    // skip the comma after adding it to the property as a terminating context
-                    property.IfNotNull(p => p.TerminatingContext = m_currentToken.Clone());
-                }
+	            if (m_currentToken.Is(JSToken.Comma))
+	            {
+		            // skip the comma after adding it to the property as a terminating context
+		            property.IfNotNull(p => p.TerminatingContext = m_currentToken.Clone());
+	            }
             }
 
             return property;

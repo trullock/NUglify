@@ -392,6 +392,7 @@ namespace NUglify.JavaScript.Visitors
 
         public virtual void Visit(FunctionObject node)
         {
+            // TODO: 205
             if (node != null)
             {
                 if (node.Body != null)

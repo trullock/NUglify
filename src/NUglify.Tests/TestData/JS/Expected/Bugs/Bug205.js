@@ -1,0 +1,1 @@
+﻿function test(n,t){return{amethod(){return this},get[n+t](){},set[n+t](value){},*[n+t](i){return i},async[n+t](i){return i},async*[n+t](i){return i}}}
