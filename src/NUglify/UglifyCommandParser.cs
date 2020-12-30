@@ -1189,7 +1189,7 @@ namespace NUglify
                                                 // third optional part is the spaces-per-indent value
                                                 if (!string.IsNullOrEmpty(lineParts[breakIndex]))
                                                 {
-                                                    // get the numeric portion; must be a decimal integer
+                                                    // get the numeric portion; if a decimal integer
                                                     int indentSize;
                                                     if (lineParts[breakIndex].TryParseIntInvariant(NumberStyles.None, out indentSize))
                                                     {
@@ -1198,9 +1198,10 @@ namespace NUglify
                                                         // allow for a sign -- no sign, no negative.
                                                         JSSettings.IndentSize = CssSettings.IndentSize = indentSize;
                                                     }
+                                                    // else use char provided
                                                     else
                                                     {
-                                                        OnInvalidSwitch(switchPart, lineParts[breakIndex]);
+	                                                    JSSettings.Indent = CssSettings.Indent = lineParts[breakIndex];
                                                     }
                                                 }
                                                 else
