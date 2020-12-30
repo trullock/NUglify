@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.12.3 (30 December 2020)
+- Fixed html comments onto new lines when prettifying
+
 ## v1.12.2 (30 December 2020)
 - Attempted to fix unsupported computed method names on object initializers. Beware of bugs with this, please report any you find. There shouldn't be any regressions but this may not fully work.
 
