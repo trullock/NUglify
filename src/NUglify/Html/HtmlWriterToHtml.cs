@@ -184,6 +184,19 @@ namespace NUglify.Html
             }
         }
 
+        protected override void Write(HtmlComment node)
+        {
+	        if (ShouldPretty(node))
+	        {
+		        writer.WriteLine();
+		        this.WriteIndent();
+	        }
+
+            Write("<!--");
+	        Write(node.Slice.ToString());
+	        Write("-->");
+        }
+
         protected override void Write(HtmlText node)
         {
 	        var descriptorName = node.Parent.Descriptor?.Name;
@@ -244,6 +257,18 @@ namespace NUglify.Html
             if (!isFirstChild && node.Descriptor != null && settings.InlineTagsPreservingSpacesAround.ContainsKey(node.Descriptor.Name))
 		        return false;
             
+	        return true;
+        }
+
+
+        protected virtual bool ShouldPretty(HtmlComment node)
+        {
+	        if (isFirstWrite)
+		        return false;
+
+	        if (!settings.PrettyPrint)
+		        return false;
+
 	        return true;
         }
     }

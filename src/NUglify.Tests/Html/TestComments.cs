@@ -37,6 +37,27 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
+        public void FormattingComments()
+        {
+	        input = @"
+<div>
+	<!-- comment 1 -->
+	<p>hello</p><!-- comment 2 -->
+	<!-- comment 3 -->
+";
+	        var htmlSettings = HtmlSettings.Pretty();
+	        htmlSettings.IsFragmentOnly = true;
+	        equal(minify(input, htmlSettings), @"<div>
+  <!-- comment 1 -->
+  <p>
+    hello
+  </p>
+  <!-- comment 2 -->
+  <!-- comment 3 -->
+</div>");
+        }
+
+        [Test]
         public void IgnoringComments()
         {
             // Copyright(c) 2010 - 2016 Juriy "kangax" Zaytsev
