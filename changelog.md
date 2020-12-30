@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.12.2 (30 December 2020)
+- Attempted to fix unsupported computed method names on object initializers. Beware of bugs with this, please report any you find. There shouldn't be any regressions but this may not fully work.
+
 ## v1.12.1 (29 December 2020)
 - Improves unused setter parameter handling
 
