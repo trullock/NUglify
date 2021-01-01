@@ -186,7 +186,7 @@ namespace NUglify.Html
 
         protected override void Write(HtmlComment node)
         {
-	        if (ShouldPretty(node))
+	        if (ShouldPretty())
 	        {
 		        writer.WriteLine();
 		        this.WriteIndent();
@@ -196,6 +196,18 @@ namespace NUglify.Html
 	        Write(node.Slice.ToString());
 	        Write("-->");
         }
+
+        protected override void Write(HtmlDOCTYPE node)
+        {
+	        if (ShouldPretty())
+	        {
+		        writer.WriteLine();
+		        this.WriteIndent();
+	        }
+
+            base.Write(node);
+        }
+
 
         protected override void Write(HtmlText node)
         {
@@ -261,7 +273,7 @@ namespace NUglify.Html
         }
 
 
-        protected virtual bool ShouldPretty(HtmlComment node)
+        protected virtual bool ShouldPretty()
         {
 	        if (isFirstWrite)
 		        return false;
