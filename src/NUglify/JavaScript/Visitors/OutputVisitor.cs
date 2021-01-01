@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NUglify.Helpers;
@@ -159,6 +160,9 @@ namespace NUglify.JavaScript.Visitors
 
             if (node != null)
             {
+	            var elementsOnNewLines = settings.OutputMode == OutputMode.MultipleLines;
+	            elementsOnNewLines &= !node.Elements.All(e => e is ConstantWrapper);
+
                 var symbol = StartSymbol(node);
 
                 OutputPossibleLineBreak('[');
@@ -171,6 +175,10 @@ namespace NUglify.JavaScript.Visitors
                 {
                     Indent();
 
+
+                    if (elementsOnNewLines)
+	                    NewLine();
+
                     AstNode element = null;
                     for (var ndx = 0; ndx < node.Elements.Count; ++ndx)
                     {
@@ -179,20 +187,21 @@ namespace NUglify.JavaScript.Visitors
                             OutputPossibleLineBreak(',');
                             MarkSegment(node, null, element.IfNotNull(e => e.TerminatingContext));
 
-                            if (settings.OutputMode == OutputMode.MultipleLines)
-                            {
-                                OutputPossibleLineBreak(' ');
-                            }
+                            if(elementsOnNewLines)
+                                NewLine();
+                            else if (settings.OutputMode == OutputMode.MultipleLines)
+	                            OutputPossibleLineBreak(' ');
                         }
 
                         element = node.Elements[ndx];
                         if (element != null)
-                        {
-                            AcceptNodeWithParens(element, element.Precedence == OperatorPrecedence.Comma);
-                        }
+	                        AcceptNodeWithParens(element, element.Precedence == OperatorPrecedence.Comma);
                     }
 
                     Unindent();
+
+                    if (elementsOnNewLines)
+	                    NewLine();
                 }
 
                 Output(']');
@@ -282,9 +291,9 @@ namespace NUglify.JavaScript.Visitors
                 // if so, then these expressions were expression statements that we've combined.
                 // if that's the case, we're going to put newlines in so it's a little easier
                 // to read in multi-line mode
-                var addNewLines = node.Parent is CommaExpression
-                    && node.Parent.Parent is BlockStatement
-                    && settings.OutputMode == OutputMode.MultipleLines;
+                var addNewLines = settings.OutputMode == OutputMode.MultipleLines;
+                addNewLines &= (node.Parent is CommaExpression && node.Parent.Parent is BlockStatement) 
+	                || node.Parent is ObjectLiteral;
 
                 // output as comma-separated expressions starting with the first one
                 node[0].Accept(this);
@@ -297,9 +306,7 @@ namespace NUglify.JavaScript.Visitors
                 // if we aren't breaking them up by newlines, indent now in case
                 // one of the items causes a newline to be inserted.
                 if (!addNewLines)
-                {
-                    Indent();
-                }
+	                Indent();
 
                 for (var ndx = 1; ndx < node.Count; ++ndx)
                 {
@@ -308,13 +315,9 @@ namespace NUglify.JavaScript.Visitors
                     MarkSegment(node, null, node[ndx-1].IfNotNull(n => n.TerminatingContext));
 
                     if (addNewLines)
-                    {
-                        NewLine();
-                    }
+	                    NewLine();
                     else if (settings.OutputMode == OutputMode.MultipleLines)
-                    {
-                        OutputPossibleLineBreak(' ');
-                    }
+	                    OutputPossibleLineBreak(' ');
 
                     // output the next node
                     node[ndx].Accept(this);
@@ -2566,56 +2569,52 @@ namespace NUglify.JavaScript.Visitors
 
         public void Visit(ObjectLiteral node)
         {
-            if (node != null)
-            {
-                var symbol = StartSymbol(node);
+	        if (node == null)
+		        return;
 
-                var isNoIn = m_noIn;
-                m_noIn = false;
+	        var symbol = StartSymbol(node);
 
-                // if start of statement, need to enclose in parens
-                var encloseInParens = m_startOfStatement;
-                if (encloseInParens)
-                {
-                    OutputPossibleLineBreak('(');
-                }
+	        var isNoIn = m_noIn;
+	        m_noIn = false;
 
-                OutputPossibleLineBreak('{');
-                MarkSegment(node, null, node.Context);
-                SetContextOutputPosition(node.Context);
+	        // if start of statement, need to enclose in parens
+	        var encloseInParens = m_startOfStatement;
+	        if (encloseInParens)
+		        OutputPossibleLineBreak('(');
 
-                m_startOfStatement = false;
-                Indent();
+	        OutputPossibleLineBreak('{');
+	        MarkSegment(node, null, node.Context);
+	        SetContextOutputPosition(node.Context);
 
-                var count = node.Properties.IfNotNull(p => p.Count);
-                if (count > 1)
-                {
-                    NewLine();
-                }
+	        m_startOfStatement = false;
 
-                // output each key/value pair
-                if (node.Properties != null)
-                {
-                    node.Properties.Accept(this);
-                }
+            if(!(node.Parent is VariableDeclaration))
+				Indent();
 
-                Unindent();
-                if (count > 1)
-                {
-                    NewLine();
-                }
+	        var count = node.Properties.IfNotNull(p => p.Count);
+	        if (count > 1)
+		        NewLine();
+	        else if(settings.OutputMode == OutputMode.MultipleLines)
+		        Output(' ');
 
-                Output('}');
-                MarkSegment(node, null, node.Context);
-                if (encloseInParens)
-                {
-                    Output(')');
-                }
+	        // output each key/value pair
+	        node.Properties?.Accept(this);
+	        
+	        Unindent();
 
-                m_noIn = isNoIn;
+	        if (count > 1)
+		        NewLine();
+	        else if (settings.OutputMode == OutputMode.MultipleLines)
+		        Output(' ');
 
-                EndSymbol(symbol);
-            }
+            Output('}');
+	        MarkSegment(node, null, node.Context);
+	        if (encloseInParens)
+		        Output(')');
+
+	        m_noIn = isNoIn;
+
+	        EndSymbol(symbol);
         }
 
         public void Visit(ObjectLiteralField node)
@@ -3133,6 +3132,7 @@ namespace NUglify.JavaScript.Visitors
                 SetContextOutputPosition(node.Context);
                 m_startOfStatement = false;
                 Indent();
+
                 var useNewLines = !(node.Parent is ForStatement);
 
                 for (var ndx = 0; ndx < node.Count; ++ndx)
@@ -3140,7 +3140,8 @@ namespace NUglify.JavaScript.Visitors
                     var decl = node[ndx];
                     if (decl != null)
                     {
-                        if (ndx > 0)
+
+	                    if (ndx > 0)
                         {
                             OutputPossibleLineBreak(',');
                             if (useNewLines)
@@ -3160,6 +3161,7 @@ namespace NUglify.JavaScript.Visitors
                         decl.Accept(this);
                     }
                 }
+               
                 Unindent();
 
                 EndSymbol(symbol);
@@ -3857,9 +3859,7 @@ namespace NUglify.JavaScript.Visitors
 
             // if we need parentheses, add the closing and restore whatever noin state we had
             if (needsParens)
-            {
-                Output(')');
-            }
+	            Output(')');
 
             // make SURE the start flag is reset
             m_startOfStatement = false;

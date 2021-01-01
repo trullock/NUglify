@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Diagnostics;
 using System.Text;
+using NUglify.Html;
 using NUglify.JavaScript;
 using NUglify.Tests.JavaScript.Common;
 using NUnit.Framework;
@@ -161,6 +162,12 @@ namespace NUglify.Tests.JavaScript
 	        var uglifyResult = Uglify.Js("function foo() { return 1; }",
 		        new CodeSettings {Indent = "   ", OutputMode = OutputMode.MultipleLines});
 	        Assert.AreEqual("function foo()\n{\n   return 1\n}", uglifyResult.Code);
+        }
+
+        [Test]
+        public void Bug197()
+        {
+	        TestHelper.Instance.RunTest("-pretty -line:m,\t");
         }
 
         [Test]
