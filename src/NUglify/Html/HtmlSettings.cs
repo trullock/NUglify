@@ -110,6 +110,7 @@ namespace NUglify.Html
 
         /// <summary>
         /// Gets or sets a value indicating whether to remove comments.
+        /// Note that the KeepCommentsRegex applies when RemoveComments == true to preserve the specified comments
         /// Default is <c>true</c>
         /// </summary>
         public bool RemoveComments { get; set; }
@@ -261,6 +262,7 @@ namespace NUglify.Html
 
         /// <summary>
         /// Gets a list of regex that will be matched against a HTML comment content. If a regex matches a HTML comment content, the comment will be kept
+        /// Only apllies when RemoveComments == true
         /// Default: Conditional and knockout comments
         /// </summary>
         public List<Regex> KeepCommentsRegex { get; }
