@@ -2,6 +2,7 @@
 // This file is licensed under the BSD-Clause 2 license. 
 // See the license.txt file in the project root for more information.
 
+using System.Text.RegularExpressions;
 using NUglify.Html;
 using NUnit.Framework;
 
@@ -166,6 +167,25 @@ test
 <div>
 	Inline text <a>(Show)</a> Between As <a>(Hide)</a>
 </div>");
+		}
+
+		[Test]
+		public void Bug206_MOTW()
+		{
+			var settings = HtmlSettings.Pretty();
+			settings.Indent = "\t";
+			settings.OutputTextNodesOnNewLine = false;
+			settings.RemoveComments = true;
+			settings.KeepCommentsRegex.Add(new Regex(@"saved from url="));
+
+			input = @"<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html>
+<html>
+<body>
+<p>test</p>
+</body>
+</html>";
+			equal(minify(input, settings), "<!-- saved from url=(0014)about:internet -->\n<!DOCTYPE html>\n<html>\n	<body>\n		<p>test</p>\n	</body>\n</html>");
 		}
 
 		[Test]
