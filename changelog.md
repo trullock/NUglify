@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.1 (2 Jan 2021)
+- Improved HTML formatting when prettifying
+
 ## v1.13.0 (1 Jan 2021)
 - Improved ObjectLiteral formatting when outputting "prettyified" code
 
