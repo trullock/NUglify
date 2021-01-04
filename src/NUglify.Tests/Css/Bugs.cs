@@ -62,7 +62,6 @@ namespace NUglify.Tests.Css
         {
 	        TestHelper.Instance.RunTest("-lines:m -comments:all");
         }
-
         [Test]
         public void Bug270()
         {
