@@ -194,12 +194,7 @@ namespace NUglify.JavaScript.Visitors
             // output parens ourselves. And don't bother recursing.
         }
 
-        public void Visit(StandardComment node)
-        {
-            // we're good?
-        }
-
-        public void Visit(ImportantComment node)
+        public void Visit(Syntax.Comment node)
         {
             // we're good?
         }
