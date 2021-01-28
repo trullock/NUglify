@@ -32,8 +32,8 @@ namespace NUglify.Tests.Html
             input = "<input value=\"\" name=\"foo\">";
             equal(minify(input), "<input name=foo>");
 
-            input = "<input value=\"true\" name=\"foo\">";
-            equal(minify(input, new HtmlSettings { ShortBooleanAttribute = true}), "<input value=true name=foo>");
+            input = "<input value=\"true\" name=\"foo\" Aria-Hidden=\"true\">";
+            equal(minify(input, new HtmlSettings { ShortBooleanAttribute = true}), "<input value=true name=foo aria-hidden=true>");
 
             input = "<img src=\"\" alt=\"\">";
             equal(minify(input), "<img src=\"\" alt=\"\">");
