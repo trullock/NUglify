@@ -397,7 +397,8 @@ namespace NUglify.Html
         bool TrimAttribute(HtmlElement element, HtmlAttribute attribute)
         {
             var tag = element.Name.ToLowerInvariant();
-            var attr = attribute.Name.ToLowerInvariant();
+            var attributeNameLower = attribute.Name.ToLowerInvariant();
+            var attr = attributeNameLower;
 
             if (settings.RemoveAttributes.Contains(attribute.Name))
                 return true;
@@ -442,7 +443,7 @@ namespace NUglify.Html
                 }
             }
 
-            if (settings.ShortBooleanAttribute && attribute.Value == "true" && attribute.Name != "value")
+            if (settings.ShortBooleanAttribute && attribute.Value == "true" && attributeNameLower != "value" && attributeNameLower != "aria-hidden")
             {
                 attribute.Value = null;
             }
