@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.2 (29 Jan 2021)
+- Fixed over-minificaiton of aria-hidden="true"
+
 ## v1.13.1 (2 Jan 2021)
 - Improved HTML formatting when prettifying
 
