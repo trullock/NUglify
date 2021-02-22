@@ -1485,6 +1485,10 @@ namespace NUglify.JavaScript.Visitors
 			        {
 
 			        }
+                    else if (node.Value is UnaryExpression unary && unary.OperatorToken == JSToken.RestSpread)
+			        {
+                        unary.Operand.Accept(this);
+			        }
                     else
 						node.Context.HandleError(JSError.ImplicitPropertyNameMustBeIdentifier, true);
 		        }
