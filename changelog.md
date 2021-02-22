@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.3 (22 Feb 2021)
+- Fixes false errors reported with use of rest spread operator in object literals
+
 ## v1.13.2 (29 Jan 2021)
 - Fixed over-minificaiton of aria-hidden="true"
 
