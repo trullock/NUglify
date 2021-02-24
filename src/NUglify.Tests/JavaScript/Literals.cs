@@ -35,7 +35,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void Number()
         {
-            TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunErrorTest(JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.NumericMaximum, JSError.NumericMaximum, JSError.NumericOverflow, JSError.NumericOverflow, JSError.NumericOverflow, JSError.NumericOverflow);
         }
 
         [Test]
