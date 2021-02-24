@@ -5,4 +5,4 @@ let z = foo?.()?.[a];
 // should be treated as a conditional expression
 let p = foo?.3 : 0;
 
-return x + y + z;
+a(x + y + z);

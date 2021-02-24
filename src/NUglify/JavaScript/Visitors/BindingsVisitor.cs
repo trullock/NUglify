@@ -243,7 +243,7 @@ namespace NUglify.JavaScript.Visitors
 
         static void ReportError(AstNode node)
         {
-            node.IfNotNull(n => n.Context.IfNotNull(c => c.HandleError(JSError.BadBindingSyntax, true)));
+            node?.Context?.HandleError(JSError.BadBindingSyntax, true);
         }
 
         public void Visit(AspNetBlockNode node)
@@ -453,7 +453,10 @@ namespace NUglify.JavaScript.Visitors
 
         public void Visit(UnaryExpression node)
         {
-            ReportError(node);
+            if(node.OperatorToken == JSToken.RestSpread)
+                node.Operand.Accept(this);
+            else
+				ReportError(node);
         }
 
         public void Visit(WhileStatement node)
