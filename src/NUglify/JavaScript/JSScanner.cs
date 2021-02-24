@@ -667,7 +667,7 @@ namespace NUglify.JavaScript
                     {
                         token = JSToken.NullishCoalesce;
 
-                        if (GetChar(++currentPosition) == '|')
+                        if (GetChar(++currentPosition) == '=')
                         {
                             token = JSToken.LogicalNullishAssign;
                             ++currentPosition;
