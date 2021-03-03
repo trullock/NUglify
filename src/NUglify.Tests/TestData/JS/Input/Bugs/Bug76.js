@@ -1,4 +1,4 @@
-﻿function(a) {
+﻿function x(a) {
     let b = c(d);
     if (b === "e") {
         return b;

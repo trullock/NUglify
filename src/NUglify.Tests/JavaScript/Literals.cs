@@ -125,13 +125,13 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void Member()
         {
-            TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunTest("-ignore:JS1306");
         }
 
         [Test]
         public void Member_Preserve()
         {
-            TestHelper.Instance.RunTest("-kill:0x200000");
+            TestHelper.Instance.RunTest("-kill:0x200000 -ignore:JS1306");
         }
 
         [Test]

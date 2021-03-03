@@ -143,7 +143,7 @@ namespace NUglify.Tests.JavaScript
         public void StrictToRegular()
         {
             // turn off the "EvaluateNumericExpressions" feature
-            TestHelper.Instance.RunTest("-kill:0x0000000020000000 -unused:keep");
+            TestHelper.Instance.RunTest("-kill:0x0000000020000000 -unused:keep -ignore:JS1287");
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void IfContinue()
         {
-            TestHelper.Instance.RunTest("-unused:keep");
+            TestHelper.Instance.RunTest("-unused:keep -ignore:JS1026");
         }
 
         [Test]

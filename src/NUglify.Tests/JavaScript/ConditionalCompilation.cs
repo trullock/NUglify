@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using NUglify.JavaScript;
 using NUglify.Tests.JavaScript.Common;
 using NUnit.Framework;
 
@@ -64,13 +65,13 @@ namespace NUglify.Tests.JavaScript
     [Test]
     public void NoEnd()
     {
-        TestHelper.Instance.RunTest();
+        TestHelper.Instance.RunErrorTest(JSError.OctalLiteralsDeprecated, JSError.NoCCEnd);
     }
 
     [Test]
     public void SpecialCase()
     {
-        TestHelper.Instance.RunTest();
+        TestHelper.Instance.RunTest("-ignore:JS1282");
     }
 
     [Test]
