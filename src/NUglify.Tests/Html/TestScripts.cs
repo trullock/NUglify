@@ -52,5 +52,24 @@ namespace NUglify.Tests.Html
             output = "<script type=text/html>\n<div>\n</div>\n<!-- aa -->\n</script>";
             equal(minify(input), output);
         }
+
+        [Test]
+        public void Json()
+        {
+
+            input = @"
+<script type=text/javascript>
+var js=""somevar"";
+</script>
+<script type=application/ld+json>{
+    ""@context"": ""http://schema.org/"",
+    ""@type"": ""WebSite"",
+    ""url"": ""https://domain.ext"",
+    ""name"": ""Name Site"",
+    ""alternateName"": null
+}</script>";
+            output = @"<script>var js=""somevar""</script><script type=application/ld+json>{""@context"":""http://schema.org/"",""@type"":""WebSite"",""url"":""https://domain.ext"",""name"":""Name Site"",""alternateName"":null}</script>";
+            equal(minify(input), output);
+        }
     }
 }
