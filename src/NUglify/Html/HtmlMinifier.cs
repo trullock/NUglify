@@ -210,12 +210,9 @@ namespace NUglify.Html
                 }
             }
 
-            var isJavaScript = IsJavaScript(element);
-            var isCssScript = !isJavaScript && IsCssStyle(element);
-            if (isJavaScript || isCssScript)
-            {
-                TrimScriptOrStyle(element, isJavaScript);
-            }
+            var scriptOrStyle = GetElementMinificationType(element);
+            if (scriptOrStyle != HtmlScriptStyleElement.NA)
+	            TrimScriptOrStyle(element, scriptOrStyle);
         }
 
         void TrimPendingTextNodes()
@@ -306,15 +303,17 @@ namespace NUglify.Html
             pendingTexts.Clear();
         }
         
-        void TrimScriptOrStyle(HtmlElement element, bool isJs)
+        void TrimScriptOrStyle(HtmlElement element, HtmlScriptStyleElement type)
         {
-            // We remove the type attribute, as it default to text/css and text/javascript
-            if (settings.RemoveScriptStyleTypeAttribute) 
+            if (settings.RemoveScriptStyleTypeAttribute && type != HtmlScriptStyleElement.JSON) 
 	            element.RemoveAttribute("type");
 
-            if ((isJs && !settings.MinifyJs) || (!isJs && !settings.MinifyCss))
+            if (type != HtmlScriptStyleElement.Style && !settings.MinifyJs)
 	            return;
-            
+
+            if (type == HtmlScriptStyleElement.Style && !settings.MinifyCss)
+	            return;
+
             var raw = element.FirstChild as HtmlRaw;
             if (raw == null)
                 return;
@@ -326,26 +325,43 @@ namespace NUglify.Html
 
             // If the text has a comment or CDATA, we won't try to minify it
             if (slice.StartsWith("<!--") || slice.StartsWithIgnoreCase("<![CDATA["))
-            {
-                return;
-            }
+	            return;
 
             var text = slice.ToString();
 
-            var textMinified = MinifyJsOrCss(text, isJs);
+            var textMinified = MinifyJsOrCss(text, type);
             if (textMinified == null)
                 return;
 
             raw.Slice = new StringSlice(textMinified);
         }
         
-        string MinifyJsOrCss(string text, bool isJs)
+        string MinifyJsOrCss(string text, HtmlScriptStyleElement type)
         {
-            var result = isJs
-                ? Uglify.Js(text, "inner_js", settings.JsSettings)
-                : Uglify.Css(text, "inner_css", settings.CssSettings);
+	        UglifyResult result;
 
-            if (result.Errors != null)
+	        if (type == HtmlScriptStyleElement.Style)
+	        {
+		        result = Uglify.Css(text, "inner_css", settings.CssSettings);
+            }
+            else if (type == HtmlScriptStyleElement.Javascript)
+	        {
+		        result = Uglify.Js(text, "inner_js", settings.JsSettings);
+            }
+            else if (type == HtmlScriptStyleElement.JSON)
+	        {
+		        var jsonSettings = settings.JsSettings.Clone();
+		        jsonSettings.Format = JavaScriptFormat.JSON;
+		        jsonSettings.SourceMode = JavaScriptSourceMode.Expression;
+		        jsonSettings.IgnoreConditionalCompilation = true;
+		        result = Uglify.Js(text, "inner_js", jsonSettings);
+	        }
+	        else
+	        {
+		        return text;
+            }
+
+	        if (result.Errors != null)
                 Errors.AddRange(result.Errors);
 
             if (result.HasErrors)
@@ -466,22 +482,37 @@ namespace NUglify.Html
             return false;
         }
 
-        static bool IsJavaScript(HtmlElement element)
+        static HtmlScriptStyleElement GetElementMinificationType(HtmlElement element)
         {
-            if (!element.Name.Equals("script", StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-            return IsAttributeValueJs(element.FindAttribute("type")?.Value);
+            if (element.Name.Equals("script", StringComparison.OrdinalIgnoreCase))
+	            return GetJavascriptElementMinificationType(element.FindAttribute("type")?.Value);
+
+            if (element.Name.Equals("style", StringComparison.OrdinalIgnoreCase) && IsAttributeValueCss(element.FindAttribute("type")?.Value))
+	            return HtmlScriptStyleElement.Style;
+
+            return HtmlScriptStyleElement.NA;
         }
 
-        static bool IsCssStyle(HtmlElement element)
+        static HtmlScriptStyleElement GetJavascriptElementMinificationType(string value)
         {
-            if (!element.Name.Equals("style", StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-            return IsAttributeValueCss(element.FindAttribute("type")?.Value);
+	        if (string.IsNullOrEmpty(value))
+		        return HtmlScriptStyleElement.Javascript;
+            
+	        var text = value.Split(';')[0].ToLowerInvariant();
+	        switch (text)
+	        {
+		        case "text/javascript":
+		        case "text/ecmascript":
+		        case "text/jscript":
+		        case "application/javascript":
+		        case "application/x-javascript":
+		        case "application/ecmascript":
+			        return HtmlScriptStyleElement.Javascript;
+		        case "application/ld+json":
+			        return HtmlScriptStyleElement.JSON;
+	        }
+
+	        return HtmlScriptStyleElement.NA;
         }
 
         static bool IsAttributeValueCss(string value)
@@ -503,28 +534,6 @@ namespace NUglify.Html
                    (tag == "input" && (attr == "src" || attr == "usemap")) ||
                    (tag == "head" && attr == "profile") ||
                    (tag == "script" && (attr == "src" || attr == "for"));
-        }
-
-        static bool IsAttributeValueJs(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return true;
-            }
-
-            var text = value.Split(';')[0].ToLowerInvariant();
-            switch (text)
-            {
-                case "text/javascript":
-                case "text/ecmascript":
-                case "text/jscript":
-                case "application/javascript":
-                case "application/x-javascript":
-                case "application/ecmascript":
-                case "application/ld+json":
-                    return true;
-            }
-            return false;
         }
     }
 }
