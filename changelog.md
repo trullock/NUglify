@@ -2,8 +2,11 @@
 
 ## vNext (unpublished)
 
-## v1.13.4 (3 Mar 2021)
+## v1.13.6 (9 Mar 2021)
 - Fixes bug with json script elements in HTML e.g. application/ld+json
+
+## v1.13.4-5
+- Publishing error, versions do not exist
 
 ## v1.13.3 (22 Feb 2021)
 - Fixes false errors reported with use of rest spread operator in object literals
