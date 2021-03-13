@@ -118,6 +118,7 @@
     <Compile Include="JavaScript\Encodings.cs" />
     <Compile Include="JavaScript\ES2016.cs" />
     <Compile Include="JavaScript\ES2019.cs" />
+    <Compile Include="JavaScript\TC39.cs" />
     <Compile Include="JavaScript\ES2021.cs" />
     <Compile Include="JavaScript\ES2015.cs" />
     <Compile Include="JavaScript\ES2020.cs" />
@@ -2875,6 +2876,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\Bugs\Bug264.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\JS\Input\TC39\ClassFields.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\JS\Input\ES2015\ConciseProperties.js">
