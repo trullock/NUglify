@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.7 (15 Mar 2021)
+- Fixes bug with javascript pretty-print formatting and empty object initializers {}
+
 ## v1.13.6 (9 Mar 2021)
 - Fixes bug with json script elements in HTML e.g. application/ld+json
 
