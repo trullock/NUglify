@@ -2,6 +2,10 @@
 
 ## vNext (unpublished)
 
+
+## v1.13.8 (15 Mar 2021)
+- Fixes bug with javascript use of "of" as an identifier
+
 ## v1.13.7 (15 Mar 2021)
 - Fixes bug with javascript pretty-print formatting and empty object initializers {}
 
