@@ -2591,21 +2591,22 @@ namespace NUglify.JavaScript.Visitors
             if(!(node.Parent is VariableDeclaration))
 				Indent();
 
-	        var count = node.Properties.IfNotNull(p => p.Count);
-	        if (count > 1)
+	        var propertyCount = node.Properties.IfNotNull(p => p.Count);
+	        if (propertyCount > 1)
 		        NewLine();
-	        else if(settings.OutputMode == OutputMode.MultipleLines)
+	        else if(propertyCount == 1 && settings.OutputMode == OutputMode.MultipleLines)
 		        Output(' ');
 
 	        // output each key/value pair
 	        node.Properties?.Accept(this);
-	        
-	        Unindent();
 
-	        if (count > 1)
+	        if (propertyCount > 0)
+                Unindent();
+
+	        if (propertyCount > 1)
 		        NewLine();
-	        else if (settings.OutputMode == OutputMode.MultipleLines)
-		        Output(' ');
+            else if (propertyCount == 1 && settings.OutputMode == OutputMode.MultipleLines)
+	            Output(' ');
 
             Output('}');
 	        MarkSegment(node, null, node.Context);

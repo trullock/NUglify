@@ -41,4 +41,10 @@ function foo() {
   }
 }
 
-
+(function () {
+	try {
+		var a = {};
+	}
+	catch (ex) {
+	}
+})();

@@ -50,3 +50,11 @@ function foo()
             b = a
     }
 }
+(function()
+{
+    try
+    {
+        var a = {}
+    }
+    catch(ex) {}
+})()
