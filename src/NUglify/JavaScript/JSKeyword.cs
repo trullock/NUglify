@@ -58,6 +58,7 @@ namespace NUglify.JavaScript
                 case JSToken.Get: return "get";
                 case JSToken.Set: return "set";
                 case JSToken.Super: return "super";
+                case JSToken.Of: return "of";
 
                 // what about EcmaScript 6? Does this become a reserved word?
                 case JSToken.Module: return "module";
@@ -78,6 +79,7 @@ namespace NUglify.JavaScript
                 // apparently never allowed for Chrome, so we want to treat it
                 // differently, too
                 case JSToken.Native: return "native";
+
 
                 // no other tokens can be identifiers
                 default: return null;

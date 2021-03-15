@@ -1,0 +1,1 @@
+﻿function foo(){return 1}function of(){return foo()}
