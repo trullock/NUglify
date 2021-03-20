@@ -44,7 +44,7 @@ namespace NUglify.Tests.JavaScript
         }
 
 		
-		[Test]
+		[Test, Ignore("This is broken in .NET framework, can't be fixed by the developer")]
         public void Bug78()
         {
             TestHelper.Instance.RunTest();
