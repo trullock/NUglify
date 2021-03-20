@@ -1,1 +1,1 @@
-﻿function f(x,y,...a){return(x+y)*a.length}var params=["hello",!0,7],other=[1,2,...params],str,chars;f(1,2,...params)===9;str="foo";chars=[...str]
+﻿function t(){function i(n,t,...i){return(n+t)*i.length}var n=["hello",!0,7],u=[1,2,...n],t,r;i(1,2,...n)===9;t="foo";r=[...t]}

@@ -191,19 +191,19 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void NoBreakBreak()
         {
-            TestHelper.Instance.RunTest("-line:4 -unused:keep");
+            TestHelper.Instance.RunTest("-line:4 -unused:keep -ignore:JS1026,JS1019");
         }
 
         [Test]
         public void NoBreakContinue()
         {
-            TestHelper.Instance.RunTest("-line:4 -unused:keep");
+            TestHelper.Instance.RunTest("-line:4 -unused:keep -ignore:JS1026,JS1020");
         }
 
         [Test]
         public void NoBreakReturn()
         {
-            TestHelper.Instance.RunTest("-line:4");
+            TestHelper.Instance.RunTest("-line:4 -ignore:JS1018");
         }
 
         [Test]

@@ -95,7 +95,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void Strict()
         {
-            TestHelper.Instance.RunTest("-kill:0x0000001000000000");
+            TestHelper.Instance.RunTest("-kill:0x0000001000000000 -ignore:JS1287");
         }
 
         [Test]

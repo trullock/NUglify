@@ -57,7 +57,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void SpreadOperator()
         {
-            TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunTest("-rename:all");
         }
 
         [Test]

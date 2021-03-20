@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using NUglify.JavaScript;
 using NUglify.Tests.JavaScript.Common;
 using NUnit.Framework;
 
@@ -29,7 +30,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void Comment()
         {
-            TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunErrorTest("-ignore:JS1270", JSError.NoCommentEnd, JSError.NoCCEnd);
         }
 
         [Test]

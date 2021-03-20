@@ -35,7 +35,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void Number()
         {
-            TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunErrorTest(JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.OctalLiteralsDeprecated, JSError.NumericMaximum, JSError.NumericMaximum, JSError.NumericOverflow, JSError.NumericOverflow, JSError.NumericOverflow, JSError.NumericOverflow);
         }
 
         [Test]
@@ -125,13 +125,13 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void Member()
         {
-            TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunTest("-ignore:JS1306");
         }
 
         [Test]
         public void Member_Preserve()
         {
-            TestHelper.Instance.RunTest("-kill:0x200000");
+            TestHelper.Instance.RunTest("-kill:0x200000 -ignore:JS1306");
         }
 
         [Test]

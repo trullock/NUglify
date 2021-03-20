@@ -84,7 +84,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void BadSemicolon()
         {
-          TestHelper.Instance.RunTest();
+          TestHelper.Instance.RunErrorTest("-rename:none", JSError.UnexpectedSemicolon);
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void FunctionNames()
         {
-            TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunErrorTest("-rename:none", JSError.FunctionNameMustBeIdentifier, JSError.FunctionNameMustBeIdentifier, JSError.NoIdentifier, JSError.NoLeftParenthesis, JSError.NoIdentifier, JSError.NoLeftParenthesis);
         }
 
         [Test]
