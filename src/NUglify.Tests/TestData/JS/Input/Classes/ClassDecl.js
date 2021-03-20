@@ -3,9 +3,6 @@
 // base class
 class Foo
 {
-    bar = 0;
-    baz = 1;
-
     constructor()
     {
         this.foo = 42;
