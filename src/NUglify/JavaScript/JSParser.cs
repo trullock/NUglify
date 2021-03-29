@@ -3225,10 +3225,9 @@ namespace NUglify.JavaScript
             var staticContext = m_currentToken.Is(JSToken.Static)
                 ? m_currentToken.Clone()
                 : null;
+
             if (staticContext != null)
-            {
-                GetNextToken();
-            }
+	            GetNextToken();
 
             // see if this is a getter/setter or a regular method
             var funcType = FunctionType.Method;
@@ -3245,7 +3244,8 @@ namespace NUglify.JavaScript
 	            // field with initialization
 	            var name = new BindingIdentifier(m_currentToken.Clone())
 	            {
-		            Name = m_scanner.Identifier
+		            Name = m_scanner.Identifier,
+                    RenameNotAllowed = true
 	            };
 
                 GetNextToken();
