@@ -2,6 +2,8 @@
 
 ## vNext (unpublished)
 
+## v1.13.8 (28 April 2021)
+- Fixes bug with object destructing and rest spread in arrow function parameters
 
 ## v1.13.8 (15 Mar 2021)
 - Fixes bug with javascript use of "of" as an identifier
