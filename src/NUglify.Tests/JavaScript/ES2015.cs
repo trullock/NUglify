@@ -51,7 +51,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void RestParameters()
         {
-            TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunTest("-rename:all");
         }
 
         [Test]

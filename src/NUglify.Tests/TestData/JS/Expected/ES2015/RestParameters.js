@@ -1,1 +1,1 @@
-﻿function f(x,y,...a){return(x+y)*a.length}f(1,2,"hello",!0,7)===9
+﻿function f(n,t,...i){return(n+t)*i.length}f(1,2,"hello",!0,7)===9;let y=({a:n,b:t,...i})=>n+t+i.length;y(1,2,3,4)

@@ -193,6 +193,16 @@ namespace NUglify.JavaScript.Syntax
                 return ConvertToBindingIdentifier(lookup);
             }
 
+            if (node is UnaryExpression unary && unary.OperatorToken == JSToken.RestSpread)
+            {
+	            var binding = ConvertToBinding(unary.Operand);
+                return new UnaryExpression(node.Context)
+                {
+                    OperatorToken = JSToken.RestSpread,
+                    Operand = binding
+                };
+            }
+
             if ((arrayLiteral = node as ArrayLiteral) != null)
 	            return ConvertToBindingArrayLiteral(arrayLiteral);
 
