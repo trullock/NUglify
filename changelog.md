@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.10 (7 May 2021)
+- Fixed support for multiple negated conditions in css @supports condition 
+
 ## v1.13.9 (28 April 2021)
 - Fixes bug with object destructing and rest spread in arrow function parameters
 
