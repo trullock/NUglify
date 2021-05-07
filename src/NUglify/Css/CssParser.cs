@@ -849,8 +849,17 @@ namespace NUglify.Css
                     ReportError(0, CssErrorCode.UnexpectedToken, CurrentTokenText);
                     return Parsed.False;
                 }
-
             }
+
+            if (foundSupportsCondition && CurrentTokenType == TokenType.Identifier)
+            {
+                var upper = CurrentTokenText.ToUpperInvariant();
+                if (upper == "AND" || upper == "OR")
+                {
+                    ParseSupportsCondition(false, true);
+                }
+            }
+
             return foundSupportsCondition ? Parsed.True : Parsed.False;
         }
 
