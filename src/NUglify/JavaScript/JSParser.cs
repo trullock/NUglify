@@ -5475,6 +5475,7 @@ namespace NUglify.JavaScript
                 case JSToken.Multiply:
                 case JSToken.MultiplyAssign:
                 case JSToken.NotEqual:
+                case JSToken.Of:
                 case JSToken.Plus:
                 case JSToken.PlusAssign:
                 case JSToken.RightShift:
