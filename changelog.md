@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.11 (21 May 2021)
+- Fixed bug with `for..of`
+
 ## v1.13.10 (7 May 2021)
 - Fixed support for multiple negated conditions in css @supports condition 
 
