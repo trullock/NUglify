@@ -1663,8 +1663,10 @@ namespace NUglify.JavaScript
             }
             else if (m_currentToken.IsNot(JSToken.Semicolon))
             {
+	            var nextToken = PeekToken();
+	            var inToken = nextToken == JSToken.Of ? JSToken.Of : JSToken.In;
                 // not a declaration (var, const, let), so parse an expression with the no-in target
-                initializer = ParseExpression(false, JSToken.In);
+                initializer = ParseExpression(false, inToken);
             }
 
             // either we are at a semicolon or an in/of token
@@ -5475,6 +5477,7 @@ namespace NUglify.JavaScript
                 case JSToken.Multiply:
                 case JSToken.MultiplyAssign:
                 case JSToken.NotEqual:
+                case JSToken.Of:
                 case JSToken.Plus:
                 case JSToken.PlusAssign:
                 case JSToken.RightShift:
