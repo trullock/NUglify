@@ -120,6 +120,10 @@ Nuglify was ported and refactored to github by Alexandre Mutel aka [xoofx](http:
 
 It is now maintained by Andrew Bullock aka [trullock](https://github.com/trullock)
 
+## Donate
+
+All donations to help support this project are very welcome https://paypal.me/trullock
+
 ## Credits
 
 The logo Monster is by [Joel McKinney](https://thenounproject.com/joel.mckinney/) from the Noun Project
