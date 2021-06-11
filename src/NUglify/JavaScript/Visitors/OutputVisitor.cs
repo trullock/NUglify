@@ -3008,10 +3008,9 @@ namespace NUglify.JavaScript.Visitors
                 var symbol = StartSymbol(node);
                 OutputTryBranch(node);
 
-                var hasCatchBlock = false;
-                if (node.CatchParameter != null)
+                var hasCatchBlock = node.CatchBlock != null;
+                if (hasCatchBlock)
                 {
-                    hasCatchBlock = true;
                     OutputCatchBranch(node);
                 }
 
@@ -3058,17 +3057,19 @@ namespace NUglify.JavaScript.Visitors
         void OutputCatchBranch(TryStatement node)
         {
             NewLine();
-            Output("catch(");
-            node.CatchParameter.IfNotNull(p => p.Accept(this));
-            OutputPossibleLineBreak(')');
+            Output("catch");
+            if (node.CatchParameter != null)
+            {
+                Output("(");
+                node.CatchParameter.Accept(this);
+                OutputPossibleLineBreak(')');
+            }
 
             if (node.CatchBlock == null || node.CatchBlock.Count == 0)
             {
                 if (settings.OutputMode == OutputMode.MultipleLines)
-                {
                     OutputPossibleLineBreak(' ');
-                }
-
+                
                 Output("{}");
                 BreakLine(false);
             }
@@ -3096,9 +3097,8 @@ namespace NUglify.JavaScript.Visitors
             if (node.FinallyBlock == null || node.FinallyBlock.Count == 0)
             {
                 if (settings.OutputMode == OutputMode.MultipleLines)
-                {
                     OutputPossibleLineBreak(' ');
-                }
+                
 
                 Output("{}");
                 BreakLine(false);

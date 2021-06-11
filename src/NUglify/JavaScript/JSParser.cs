@@ -2316,35 +2316,31 @@ namespace NUglify.JavaScript
                 catchOrFinally = true;
                 catchContext = m_currentToken.Clone();
                 GetNextToken();
-                if (m_currentToken.IsNot(JSToken.LeftParenthesis))
-                {
-                    ReportError(JSError.NoLeftParenthesis);
-                }
-                else
-                {
-                    GetNextToken();
-                }
 
-                var catchBinding = ParseBinding();
-                if (catchBinding == null)
+                if (m_currentToken.Is(JSToken.LeftParenthesis))
                 {
-                    ReportError(JSError.NoBinding);
-                }
-                else
-                {
-                    catchParameter = new ParameterDeclaration(catchBinding.Context.Clone())
-                    {
-                        Binding = catchBinding
-                    };
-                }
+	                GetNextToken();
+                    var catchBinding = ParseBinding();
+	                if (catchBinding == null)
+	                {
+		                ReportError(JSError.NoBinding);
+	                }
+	                else
+	                {
+		                catchParameter = new ParameterDeclaration(catchBinding.Context.Clone())
+		                {
+			                Binding = catchBinding
+		                };
+	                }
 
-                if (m_currentToken.IsNot(JSToken.RightParenthesis))
-                {
-                    ReportError(JSError.NoRightParenthesis);
-                }
-                else
-                {
-                    GetNextToken();
+	                if (m_currentToken.IsNot(JSToken.RightParenthesis))
+	                {
+		                ReportError(JSError.NoRightParenthesis);
+	                }
+	                else
+	                {
+		                GetNextToken();
+	                }
                 }
 
                 if (m_currentToken.IsNot(JSToken.LeftCurly))
