@@ -2,6 +2,10 @@
 
 ## vNext (unpublished)
 
+## v1.13.12 (11 Jun 2021)
+- Fixed bug with optional catch bindings
+- Fixed bug with static and non static class member method duplicates
+
 ## v1.13.11 (21 May 2021)
 - Fixed bug with `for..of`
 
