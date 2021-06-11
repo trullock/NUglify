@@ -111,6 +111,11 @@ namespace NUglify.JavaScript.Visitors
             m_isSafe = node.IfNotNull(n => n.ClassType == ClassType.Declaration);
         }
 
+        public void Visit(ClassField node)
+        {
+	        throw new System.NotImplementedException();
+        }
+
         public void Visit(CustomNode node)
         {
             // we don't know, so assume it's not safe and bail.

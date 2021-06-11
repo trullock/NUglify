@@ -107,6 +107,11 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
+        public void Visit(ClassField node)
+        {
+	        throw new System.NotImplementedException();
+        }
+
         public void Visit(ConstantWrapper node)
         {
             // elisions in rrays are allowed, but don't recurse or contribute.

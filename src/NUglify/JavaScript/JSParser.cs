@@ -3219,7 +3219,7 @@ namespace NUglify.JavaScript
             return classNode;
         }
 
-        private AstNode ParseClassElement()
+        AstNode ParseClassElement()
         {
             // see if we're a static method
             var staticContext = m_currentToken.Is(JSToken.Static)
@@ -3229,24 +3229,27 @@ namespace NUglify.JavaScript
             if (staticContext != null)
 	            GetNextToken();
 
-            // see if this is a getter/setter or a regular method
-            var funcType = FunctionType.Method;
             var nextToken = PeekToken();
-
             if (nextToken == JSToken.Semicolon)
             {
-                // field
-            }
-            else if (nextToken == JSToken.Assign)
-            {
 	            var context = m_currentToken.Clone();
-	            
+	            GetNextToken();
+
+                // its a field without initialization
+                var field = new ClassField(context);
+                field.Name = m_scanner.Identifier;
+                field.StaticContext = staticContext;
+                return field;
+            }
+            
+            if (nextToken == JSToken.Assign)
+            {
 	            // field with initialization
-	            var name = new BindingIdentifier(m_currentToken.Clone())
-	            {
-		            Name = m_scanner.Identifier,
-                    RenameNotAllowed = true
-	            };
+                var context = m_currentToken.Clone();
+	            
+	            var field = new ClassField(context);
+	            field.Name = m_scanner.Identifier;
+	            field.StaticContext = staticContext;
 
                 GetNextToken();
                 context.UpdateWith(m_currentToken);
@@ -3257,18 +3260,29 @@ namespace NUglify.JavaScript
                 if (value != null)
                 {
 	                context.UpdateWith(value.Context);
+                    // TODO: set field.value
                 }
                 else
                 {
 	                m_currentToken.HandleError(JSError.ExpressionExpected);
                 }
+
+                return field;
             }
-            else if (nextToken != JSToken.LeftParenthesis)
+
+            // its a function
+
+            FunctionType funcType = 0;
+            if (nextToken != JSToken.LeftParenthesis)
             {
 	            if (m_currentToken.Is(JSToken.Get))
 		            funcType = FunctionType.Getter;
                 else if (m_currentToken.Is(JSToken.Set))
 		            funcType = FunctionType.Setter;
+            }
+            else
+            {
+	            funcType = FunctionType.Method;
             }
 	            
             var method = ParseFunction(funcType, m_currentToken.FlattenToStart());

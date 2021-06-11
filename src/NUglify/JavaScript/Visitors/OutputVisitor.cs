@@ -870,6 +870,11 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
+        public void Visit(ClassField node)
+        {
+	        throw new NotImplementedException();
+        }
+
         public void Visit(ComprehensionNode node)
         {
             if (node != null)
