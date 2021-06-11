@@ -3358,11 +3358,12 @@ namespace NUglify.JavaScript.Visitors
                     var nameMap = new Dictionary<string, string>();
                     node.Properties.ForEach<ObjectLiteralProperty>(property =>
                         {
-                            var propertyType = GetPropertyType(property.Value as FunctionObject);
+                            var functionObject = property.Value as FunctionObject;
+                            var propertyType = GetPropertyType(functionObject);
 
                             // key name is the name plus the type. Can't just use the name because 
                             // get and set will both have the same name (but different types)
-                            var keyName = (property.Name ?? property.Value) + propertyType;
+                            var keyName = (property.Name?.ToString() ?? functionObject?.Binding?.Name ?? property.Value?.ToString()) + propertyType;
 
                             string mappedType;
                             if (propertyType == "data")
