@@ -1983,7 +1983,7 @@ namespace NUglify.JavaScript.Visitors
 
                             // the keyed name is the function type (get/set/other) plus the name
                             // make sure there's no duplicate with this name
-                            if (!nameHash.Add(ClassElementKeyName(functionObject.FunctionType, functionName)))
+                            if (!nameHash.Add(ClassElementKeyName(functionObject.FunctionType, functionName, functionObject.IsStatic)))
                             {
                                 // couldn't add because there's a duplicate, which is not allowed
                                 errorContext.HandleError(JSError.DuplicateClassElementName, true);
@@ -1992,7 +1992,7 @@ namespace NUglify.JavaScript.Visitors
                             if (functionObject.FunctionType == FunctionType.Getter || functionObject.FunctionType == FunctionType.Setter)
                             {
                                 // make sure there's no method with this name
-                                if (nameHash.Contains(ClassElementKeyName(FunctionType.Method, functionName)))
+                                if (nameHash.Contains(ClassElementKeyName(FunctionType.Method, functionName, functionObject.IsStatic)))
                                 {
                                     // couldn't add because there's a duplicate, which is not allowed
                                     errorContext.HandleError(JSError.DuplicateClassElementName, true);
@@ -2001,8 +2001,8 @@ namespace NUglify.JavaScript.Visitors
                             else
                             {
                                 // make sure there's no getter or setter with this name
-                                if (nameHash.Contains(ClassElementKeyName(FunctionType.Getter, functionName))
-                                    || nameHash.Contains(ClassElementKeyName(FunctionType.Setter, functionName)))
+                                if (nameHash.Contains(ClassElementKeyName(FunctionType.Getter, functionName, false))
+                                    || nameHash.Contains(ClassElementKeyName(FunctionType.Setter, functionName, false)))
                                 {
                                     // couldn't add because there's a duplicate, which is not allowed
                                     errorContext.HandleError(JSError.DuplicateClassElementName, true);
@@ -2024,7 +2024,7 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        static string ClassElementKeyName(FunctionType funcType, string name)
+        static string ClassElementKeyName(FunctionType funcType, string name, bool isStatic)
         {
             switch (funcType)
             {
@@ -2035,7 +2035,7 @@ namespace NUglify.JavaScript.Visitors
                     return "set_" + name;
 
                 default:
-                    return "method_" + name;
+                    return (isStatic ? "static_" : string.Empty) + "method_" + name;
             }
         }
 
