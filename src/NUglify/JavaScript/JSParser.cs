@@ -4881,16 +4881,27 @@ namespace NUglify.JavaScript
             }
             else if (m_currentToken.IsEither(JSToken.Get, JSToken.Set))
             {
-                bool isGet = (m_currentToken.Is(JSToken.Get));
+                var funcType = FunctionType.Method;
+                if (nextToken != JSToken.LeftParenthesis)
+                {
+                    if (m_currentToken.Is(JSToken.Get))
+                        funcType = FunctionType.Getter;
+                    else if (m_currentToken.Is(JSToken.Set))
+                        funcType = FunctionType.Setter;
+                }
+                
                 var funcContext = m_currentToken.Clone();
-                var funcExpr = ParseFunction(isGet ? FunctionType.Getter : FunctionType.Setter, funcContext);
+                var funcExpr = ParseFunction(funcType, funcContext);
                 
                 if (funcExpr != null)
                 {
                     // Binding can be null for identifierless getter/setters
-                    if(funcExpr.Binding != null)
+                    if (funcType != FunctionType.Method && funcExpr.Binding != null)
                         // getter/setter is just the literal name with a get/set flag
-                        field = new GetterSetter(funcExpr.Binding.Name, isGet, funcExpr.Binding.Context.Clone());
+                        field = new GetterSetter(
+                            funcExpr.Binding.Name,
+                            funcType == FunctionType.Getter,
+                            funcExpr.Binding.Context.Clone());
 
                     value = funcExpr;
 

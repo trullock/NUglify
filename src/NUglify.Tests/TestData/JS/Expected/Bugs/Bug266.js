@@ -1,0 +1,1 @@
+var a={set(n,t,i){return n+t+i}}
