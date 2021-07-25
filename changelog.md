@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.13 (25 Jul 2021)
+- Fixed bug with methods in object initializers
+
 ## v1.13.12 (11 Jun 2021)
 - Fixed bug with optional catch bindings
 - Fixed bug with static and non static class member method duplicates
