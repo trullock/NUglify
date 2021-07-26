@@ -1,9 +1,9 @@
 'use strict';
 
 const SomeClass = {
-    property1() {
+    method1() {
     },
 
-    property2() {
+    method2() {
     }
 };

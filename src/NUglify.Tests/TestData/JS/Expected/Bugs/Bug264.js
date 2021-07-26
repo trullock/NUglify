@@ -1,1 +1,1 @@
-"use strict";const SomeClass={property1(){},property2(){}}
+"use strict";const SomeClass={method1(){},method2(){}}

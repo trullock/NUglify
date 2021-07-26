@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.14 (26 Jul 2021)
+- Fixed bug with object literal implicit method duplicates
+
 ## v1.13.13 (25 Jul 2021)
 - Fixed bug with methods in object initializers
 
