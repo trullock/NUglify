@@ -7,7 +7,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <VersionPrefix>1.5.14</VersionPrefix>
     <Authors>Ron Logan;Alexandre Mutel;Andrew Bullock</Authors>
-    <TargetFrameworks>net35;net40;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net35;net40;netstandard1.3;netstandard2.0;net50</TargetFrameworks>
     <AssemblyName>NUglify</AssemblyName>
     <PackageId>NUglify</PackageId>
     <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
