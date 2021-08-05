@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.15 (5 Aug 2021)
+- Added net50 target framework
+
 ## v1.13.14 (26 Jul 2021)
 - Fixed bug with object literal implicit method duplicates
 
