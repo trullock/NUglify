@@ -131,13 +131,13 @@ namespace NUglify.Helpers
         {
             return number.ToStringInvariant(null);
         }
-
+#if !NET6_0
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
             var hash = new HashSet<TKey>();
             return source.Where(p => hash.Add(keySelector(p)));
         }
-
+#endif
         public static void ForEach<TObject>(this IEnumerable<TObject> collection, Action<TObject> action)
         {
             if (action == null)
