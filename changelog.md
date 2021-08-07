@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.13.15 (26 Jul 2021)
+- Fixes bug with object destructuring and binding renaming
+
 ## v1.13.14 (26 Jul 2021)
 - Fixed bug with object literal implicit method duplicates
 

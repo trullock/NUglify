@@ -4847,7 +4847,11 @@ namespace NUglify.JavaScript
                 // just a name lookup; the property name is implicit
                 ParsedVersion = ScriptVersion.EcmaScript6;
                 value = ParseObjectPropertyValue(isBindingPattern);
-
+                
+                // Not sure if this is the right place for this, it might be more aggressive that necessary
+                if (isBindingPattern && value is BindingIdentifier bi)
+	                bi.RenameNotAllowed = true;
+                
                 if (isBindingPattern && m_currentToken.Is(JSToken.Assign))
                 {
                     var assignContext = m_currentToken.Clone();
