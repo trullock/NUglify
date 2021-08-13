@@ -1,0 +1,15 @@
+﻿.selector[attr="value" i] {
+	color: red;
+}
+
+.selector[attr="value"I] {
+	color: red;
+}
+
+.selector[attr="value" s] {
+	color: red;
+}
+
+.selector[attr="value" S] {
+	color: red;
+}

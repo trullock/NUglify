@@ -2390,6 +2390,16 @@ namespace NUglify.Css
                     SkipSpace();
                 }
 
+                if (CurrentTokenType == TokenType.Identifier)
+                {
+	                var lowerText = CurrentTokenText.ToLowerInvariant();
+	                if (lowerText == "i" || lowerText == "s")
+	                {
+		                Append(lowerText);
+		                NextToken();
+	                }
+                }
+
                 if (CurrentTokenType != TokenType.Character
                   || CurrentTokenText != "]")
                 {

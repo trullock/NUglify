@@ -56,5 +56,11 @@ namespace NUglify.Tests.Css
         {
             TestHelper.Instance.RunTest();
         }
+
+        [Test]
+        public void Bug270()
+        {
+	        TestHelper.Instance.RunTest();
+        }
     }
 }
