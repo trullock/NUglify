@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.14.0 (13 Aug 2021)
+- Adds support for CSS case (in)sensitive attribute selectors
+
 ## v1.13.15 (5 Aug 2021)
 - Added net50 target framework
 
