@@ -137,7 +137,7 @@ namespace NUglify.JavaScript.Visitors
 
         public void Visit(ClassField node)
         {
-	        throw new System.NotImplementedException();
+	        // no children
         }
 
         public virtual void Visit(ComprehensionNode node)

@@ -758,7 +758,8 @@ namespace NUglify.JavaScript.Visitors
 
         public void Visit(ClassField node)
         {
-	        throw new NotImplementedException();
+	        node.ComputedName?.Accept(this);
+            node.Initializer?.Accept(this);
         }
 
         public void Visit(ComprehensionNode node)

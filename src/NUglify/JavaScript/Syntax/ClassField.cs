@@ -4,20 +4,19 @@ namespace NUglify.JavaScript.Syntax
 {
     public class ClassField : AstNode
     {
-	    BindingIdentifier m_binding;
-	    AstNodeList m_parameters;
-	    BlockStatement m_body;
-
+	    BindingIdentifier binding;
+	    
         public bool IsStatic { get; set; }
 
         public SourceContext StaticContext { get; set; }
 
         public BindingIdentifier Binding
         {
-            get => m_binding;
-            set => ReplaceNode(ref m_binding, value);
+            get => binding;
+            set => ReplaceNode(ref binding, value);
         }
         public string Name { get; set; }
+        public ArrayLiteral ComputedName { get; set; }
 
         public override bool IsDeclaration => false;
 
@@ -33,5 +32,6 @@ namespace NUglify.JavaScript.Syntax
         }
 
         public bool IsReferenced => true;
+        public AstNode Initializer { get; set; }
     }
 }

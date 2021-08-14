@@ -3219,6 +3219,60 @@ namespace NUglify.JavaScript
             return classNode;
         }
 
+        AstNode ParseClassElement_FieldWithInitialisation(SourceContext staticContext, ArrayLiteral computedName)
+        {
+	        // field with initialization
+	        var context = m_currentToken.Clone();
+
+	        var field = new ClassField(context);
+	        if (computedName == null)
+	        {
+		        field.Name = m_scanner.Identifier;
+		        GetNextToken();
+            }
+	        else
+		        field.ComputedName = computedName;
+
+	        field.StaticContext = staticContext;
+	        field.IsStatic = staticContext != null;
+
+	        context.UpdateWith(m_currentToken);
+	        GetNextToken();
+
+	        var value = ParseExpression(true);
+
+	        if (value != null)
+	        {
+		        context.UpdateWith(value.Context);
+		        // TODO: set field.value
+		        field.Initializer = value;
+	        }
+	        else
+	        {
+		        m_currentToken.HandleError(JSError.ExpressionExpected);
+	        }
+
+	        return field;
+        }
+
+        AstNode ParseClassElement_FieldNoInitialisation(SourceContext staticContext, ArrayLiteral computedName)
+        {
+	        var context = m_currentToken.Clone();
+
+	        // its a field without initialization
+	        var field = new ClassField(context);
+	        if (computedName == null)
+		        field.Name = m_scanner.Identifier;
+	        else
+		        field.ComputedName = computedName;
+            field.StaticContext = staticContext;
+	        field.IsStatic = staticContext != null;
+
+	        GetNextToken();
+
+	        return field;
+        }
+
         AstNode ParseClassElement()
         {
             // see if we're a static method
@@ -3229,60 +3283,40 @@ namespace NUglify.JavaScript
             if (staticContext != null)
 	            GetNextToken();
 
+            ArrayLiteral computedName = null;
+
+
             var nextToken = PeekToken();
+
+            if (m_currentToken.Is(JSToken.LeftBracket))
+            {
+                var ctx = m_currentToken.Clone();
+	            computedName = ParseArrayLiteral(false) as ArrayLiteral;
+	            nextToken = m_currentToken.Token;
+
+	            if (m_currentToken.Is(JSToken.LeftParenthesis))
+	            {
+		            var function = ParseFunctionPart2(FunctionType.Method, ctx, null, computedName, false, false);
+		            return function;
+	            }
+            }
+
             if (nextToken == JSToken.Semicolon)
-            {
-	            var context = m_currentToken.Clone();
-	            GetNextToken();
+	            return this.ParseClassElement_FieldNoInitialisation(staticContext, computedName);
 
-                // its a field without initialization
-                var field = new ClassField(context);
-                field.Name = m_scanner.Identifier;
-                field.StaticContext = staticContext;
-                return field;
-            }
-            
             if (nextToken == JSToken.Assign)
-            {
-	            // field with initialization
-                var context = m_currentToken.Clone();
-	            
-	            var field = new ClassField(context);
-	            field.Name = m_scanner.Identifier;
-	            field.StaticContext = staticContext;
+	            return ParseClassElement_FieldWithInitialisation(staticContext, computedName);
 
-                GetNextToken();
-                context.UpdateWith(m_currentToken);
-                GetNextToken();
-
-                var value = ParseExpression(true);
-
-                if (value != null)
-                {
-	                context.UpdateWith(value.Context);
-                    // TODO: set field.value
-                }
-                else
-                {
-	                m_currentToken.HandleError(JSError.ExpressionExpected);
-                }
-
-                return field;
-            }
 
             // its a function
 
-            FunctionType funcType = 0;
+            FunctionType funcType = FunctionType.Method;
             if (nextToken != JSToken.LeftParenthesis)
             {
 	            if (m_currentToken.Is(JSToken.Get))
 		            funcType = FunctionType.Getter;
                 else if (m_currentToken.Is(JSToken.Set))
 		            funcType = FunctionType.Setter;
-            }
-            else
-            {
-	            funcType = FunctionType.Method;
             }
 	            
             var method = ParseFunction(funcType, m_currentToken.FlattenToStart());

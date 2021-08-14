@@ -29,10 +29,7 @@ namespace NUglify.JavaScript.Syntax
 
         public override void Accept(IVisitor visitor)
         {
-            if( visitor != null)
-            {
-                visitor.Visit(this);
-            }
+	        visitor?.Visit(this);
         }
     }
 }

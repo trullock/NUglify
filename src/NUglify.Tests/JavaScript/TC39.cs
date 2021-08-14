@@ -9,7 +9,7 @@ namespace NUglify.Tests.JavaScript
         [Test]
         public void ClassFields()
         {
-            TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunTest("-rename:all");
         }
     }
 }
