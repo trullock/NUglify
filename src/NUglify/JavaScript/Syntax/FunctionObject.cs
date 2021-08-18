@@ -149,29 +149,34 @@ namespace NUglify.JavaScript.Syntax
                     // if the variable (and therefore the function) is defined in the global scope,
                     // or if it's exported from inside a module, then consider it possibly referenced
                     // from outside code, whether or not it actually is from inside our own code.
-                    if (Binding.VariableField.IfNotNull(v => v.FieldType == FieldType.Global || v.IsExported))
+                    // Binding will be null for computed property names, which can only exist on classes or object literals, which therefore wont be in the global scope
+                    if (Binding?.VariableField?.FieldType == FieldType.Global || Binding?.VariableField?.IsExported == true)
                     {
                         return true;
                     }
 
                     // not defined in the global scope. Check its references.
-                    foreach (var reference in Binding.VariableField.References)
+                    // Binding will be null for computed property names, which we cant reference check
+                    if(Binding != null)
                     {
-                        var referencingScope = reference.VariableScope;
-                        if (referencingScope == null || referencingScope is GlobalScope)
-                        {
-                            // referenced by a lookup in the global scope -- we're good to go.
-                            return true;
-                        }
-                        else
-                        {
-                            var functionObject = referencingScope.Owner as FunctionObject;
-                            if (functionObject != null && functionObject.SafeIsReferenced(visited))
-                            {
-                                // as soon as we find one that's referenced, we stop
-                                return true;
-                            }
-                        }
+	                    foreach (var reference in Binding.VariableField.References)
+	                    {
+		                    var referencingScope = reference.VariableScope;
+		                    if (referencingScope == null || referencingScope is GlobalScope)
+		                    {
+			                    // referenced by a lookup in the global scope -- we're good to go.
+			                    return true;
+		                    }
+		                    else
+		                    {
+			                    var functionObject = referencingScope.Owner as FunctionObject;
+			                    if (functionObject != null && functionObject.SafeIsReferenced(visited))
+			                    {
+				                    // as soon as we find one that's referenced, we stop
+				                    return true;
+			                    }
+		                    }
+	                    }
                     }
                 }
                 else

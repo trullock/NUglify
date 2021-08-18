@@ -176,6 +176,11 @@ namespace NUglify.JavaScript.Visitors
             // not applicable; terminate
         }
 
+        public void Visit(ClassField node)
+        {
+	        throw new System.NotImplementedException();
+        }
+
         public void Visit(ComprehensionNode node)
         {
             // not applicable; terminate

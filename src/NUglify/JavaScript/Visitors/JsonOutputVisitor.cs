@@ -383,6 +383,11 @@ namespace NUglify.JavaScript.Visitors
             IsValid = false;
         }
 
+        public void Visit(ClassField node)
+        {
+	        throw new System.NotImplementedException();
+        }
+
         public void Visit(ComprehensionNode node)
         {
             // invalid! ignore

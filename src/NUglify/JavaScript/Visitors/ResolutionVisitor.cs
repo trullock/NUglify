@@ -756,6 +756,12 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
+        public void Visit(ClassField node)
+        {
+	        node.ComputedName?.Accept(this);
+            node.Initializer?.Accept(this);
+        }
+
         public void Visit(ComprehensionNode node)
         {
             if (node != null)

@@ -135,6 +135,11 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
+        public void Visit(ClassField node)
+        {
+	        // no children
+        }
+
         public virtual void Visit(ComprehensionNode node)
         {
             if (node != null)

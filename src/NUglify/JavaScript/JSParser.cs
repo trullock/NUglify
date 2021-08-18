@@ -3219,20 +3219,98 @@ namespace NUglify.JavaScript
             return classNode;
         }
 
-        private AstNode ParseClassElement()
+        AstNode ParseClassElement_FieldWithInitialisation(SourceContext staticContext, ArrayLiteral computedName)
+        {
+	        // field with initialization
+	        var context = m_currentToken.Clone();
+
+	        var field = new ClassField(context);
+	        if (computedName == null)
+	        {
+		        field.Name = m_scanner.Identifier;
+		        GetNextToken();
+            }
+	        else
+		        field.ComputedName = computedName;
+
+	        field.StaticContext = staticContext;
+	        field.IsStatic = staticContext != null;
+
+	        context.UpdateWith(m_currentToken);
+	        GetNextToken();
+
+	        var value = ParseExpression(true);
+
+	        if (value != null)
+	        {
+		        context.UpdateWith(value.Context);
+		        // TODO: set field.value
+		        field.Initializer = value;
+	        }
+	        else
+	        {
+		        m_currentToken.HandleError(JSError.ExpressionExpected);
+	        }
+
+	        return field;
+        }
+
+        AstNode ParseClassElement_FieldNoInitialisation(SourceContext staticContext, ArrayLiteral computedName)
+        {
+	        var context = m_currentToken.Clone();
+
+	        // its a field without initialization
+	        var field = new ClassField(context);
+	        if (computedName == null)
+		        field.Name = m_scanner.Identifier;
+	        else
+		        field.ComputedName = computedName;
+            field.StaticContext = staticContext;
+	        field.IsStatic = staticContext != null;
+
+	        GetNextToken();
+
+	        return field;
+        }
+
+        AstNode ParseClassElement()
         {
             // see if we're a static method
             var staticContext = m_currentToken.Is(JSToken.Static)
                 ? m_currentToken.Clone()
                 : null;
+
             if (staticContext != null)
+	            GetNextToken();
+
+            ArrayLiteral computedName = null;
+
+
+            var nextToken = PeekToken();
+
+            if (m_currentToken.Is(JSToken.LeftBracket))
             {
-                GetNextToken();
+                var ctx = m_currentToken.Clone();
+	            computedName = ParseArrayLiteral(false) as ArrayLiteral;
+	            nextToken = m_currentToken.Token;
+
+	            if (m_currentToken.Is(JSToken.LeftParenthesis))
+	            {
+		            var function = ParseFunctionPart2(FunctionType.Method, ctx, null, computedName, false, false);
+		            return function;
+	            }
             }
 
-            // see if this is a getter/setter or a regular method
-            var funcType = FunctionType.Method;
-            var nextToken = PeekToken();
+            if (nextToken == JSToken.Semicolon)
+	            return this.ParseClassElement_FieldNoInitialisation(staticContext, computedName);
+
+            if (nextToken == JSToken.Assign)
+	            return ParseClassElement_FieldWithInitialisation(staticContext, computedName);
+
+
+            // its a function
+
+            FunctionType funcType = FunctionType.Method;
             if (nextToken != JSToken.LeftParenthesis)
             {
 	            if (m_currentToken.Is(JSToken.Get))
@@ -3241,7 +3319,6 @@ namespace NUglify.JavaScript
 		            funcType = FunctionType.Setter;
             }
 	            
-            // right now the ES6 spec just has method declarations.
             var method = ParseFunction(funcType, m_currentToken.FlattenToStart());
             if (method != null && staticContext != null)
             {

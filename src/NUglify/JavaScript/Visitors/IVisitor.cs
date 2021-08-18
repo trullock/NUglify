@@ -29,6 +29,7 @@ namespace NUglify.JavaScript.Visitors
         void Visit(BreakStatement node);
         void Visit(CallExpression node);
         void Visit(ClassNode node);
+        void Visit(ClassField node);
         void Visit(ComprehensionNode node);
         void Visit(ComprehensionForClause node);
         void Visit(ComprehensionIfClause node);

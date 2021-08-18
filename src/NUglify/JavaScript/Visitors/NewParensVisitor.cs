@@ -104,6 +104,11 @@ namespace NUglify.JavaScript.Visitors
             // we're good
         }
 
+        public void Visit(ClassField node)
+        {
+	        throw new System.NotImplementedException();
+        }
+
         public void Visit(ComprehensionNode node)
         {
             // we're good. We are either an array comprehension, in which case we start

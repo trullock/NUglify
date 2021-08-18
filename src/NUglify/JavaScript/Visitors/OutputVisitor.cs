@@ -870,6 +870,38 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
+        public void Visit(ClassField node)
+        {
+            if(node == null)
+				return;
+
+            var symbol = StartSymbol(node);
+
+            if(node.IsStatic)
+				Output("static ");
+
+            // TODO: computed properties
+            MarkSegment(node, node.Name, node.Context);
+            SetContextOutputPosition(node.Context);
+
+            m_startOfStatement = false;
+            if(node.Name != null)
+				Output(node.Name);
+            else
+                this.Visit(node.ComputedName);
+            
+            if (node.Initializer != null)
+            {
+                Output('=');
+	            node.Initializer.Accept(this);
+            }
+
+            // TODO: can we optimise not doing this when we dont need to?
+            Output(';');
+
+            EndSymbol(symbol);
+        }
+
         public void Visit(ComprehensionNode node)
         {
             if (node != null)
@@ -1865,23 +1897,25 @@ namespace NUglify.JavaScript.Visitors
                     //    1. there is one AND
                     //      2a. the function is not an expression (declaration, method, getter/setter) OR
                     //      2b. the refcount is greater than zero OR
-                    //      2c. we aren't going to remove function expression names
+                    //      2c. we aren't going to remove function expression names OR
+                    //      2d. we have a computed name
                     // otherwise use the name guess.
                     var hasName = (node.Binding != null && !node.Binding.Name.IsNullOrWhiteSpace())
                             && (node.FunctionType != FunctionType.Expression
                                 || node.Binding.VariableField.RefCount > 0
                                 || !settings.RemoveFunctionExpressionNames
-                                || !settings.IsModificationAllowed(TreeModifications.RemoveFunctionExpressionNames));
-                    var fullFunctionName = hasName
-                            ? node.Binding.Name
-                            : node.NameGuess;
-
+                                || !settings.IsModificationAllowed(TreeModifications.RemoveFunctionExpressionNames)
+                                || node.ComputedName != null);
+                    
                     if (node.IsStatic)
-                    {
-                        Output("static");
-                    }
+	                    Output("static");
 
+
+                    var fullFunctionName = hasName
+	                    ? node.Binding.Name
+	                    : node.NameGuess;
                     OutputFunctionPrefix(node, fullFunctionName);
+
                     m_startOfStatement = false;
                     bool isAnonymous = true;
                     if (node.Binding != null && !node.Binding.Name.IsNullOrWhiteSpace())
