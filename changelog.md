@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.15.0 (18 Aug 2021)
+- Adds support for Class Fields
+
 ## v1.14.0 (13 Aug 2021)
 - Adds support for CSS case (in)sensitive attribute selectors
 
