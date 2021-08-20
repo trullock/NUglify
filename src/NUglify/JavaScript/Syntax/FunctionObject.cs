@@ -32,11 +32,8 @@ namespace NUglify.JavaScript.Syntax
 
         public BindingIdentifier Binding
         {
-            get { return m_binding; }
-            set
-            {
-                ReplaceNode(ref m_binding, value);
-            }
+            get => m_binding;
+            set => ReplaceNode(ref m_binding, value);
         }
 
         public ArrayLiteral ComputedName { get; set; }
@@ -45,20 +42,14 @@ namespace NUglify.JavaScript.Syntax
 
         public AstNodeList ParameterDeclarations
         {
-            get { return m_parameters; }
-            set
-            {
-                ReplaceNode(ref m_parameters, value);
-            }
+            get => m_parameters;
+            set => ReplaceNode(ref m_parameters, value);
         }
 
         public BlockStatement Body
         {
-            get { return m_body; }
-            set
-            {
-                ReplaceNode(ref m_body, value);
-            }
+            get => m_body;
+            set => ReplaceNode(ref m_body, value);
         }
 
         public override bool IsDeclaration

@@ -319,6 +319,7 @@ namespace NUglify.JavaScript
 
                 case '$':
                 case '_':
+                case '#':
                     token = ScanIdentifier(true);
                     break;
 
@@ -933,10 +934,10 @@ namespace NUglify.JavaScript
 
                     break;
 
-                case '#':
-                    ++currentPosition;
-                    token = IllegalCharacter();
-                    break;
+                // case '#':
+                //     ++currentPosition;
+                //     token = IllegalCharacter();
+                //     break;
 
                 case '`':
                     // start a template literal
@@ -1366,6 +1367,7 @@ namespace NUglify.JavaScript
                     || ('A' <= letter && letter <= 'Z')
                     || letter == '_'
                     || letter == '$'
+                    || letter == '#'
                     || letter == '\ufffd'))
                 {
                     return true;
