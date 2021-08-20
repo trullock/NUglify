@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.16.0 (20 Aug 2021)
+- Adds support for private class members
+
 ## v1.15.0 (18 Aug 2021)
 - Adds support for Class Fields
 
