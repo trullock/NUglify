@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.16.1 (5 October 2021)
+- Fixes bugs with assignment operator precendence
+
 ## v1.16.0 (20 Aug 2021)
 - Adds support for private class members
 
