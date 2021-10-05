@@ -11,3 +11,12 @@ function rho(foo, bar)
   a = foo ? bar : 0;
 }
 
+function bitwisexor(foo, bar) {
+    var a = foo * bar;
+    a ^= 5;
+}
+
+function unsignedrightshift(foo) {
+    var c = foo;
+    c >>>= 3;
+}

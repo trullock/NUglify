@@ -88,6 +88,8 @@ namespace NUglify.JavaScript
         Plus = FirstBinaryOperator,     // +
         Minus,                          // -
         Multiply,                       // *
+        Exponent,                       // **
+
         Divide,                         // /
         Modulo,                         // %
         BitwiseAnd,                     // &
@@ -96,6 +98,9 @@ namespace NUglify.JavaScript
         LeftShift,                      // <<
         RightShift,                     // >>
         UnsignedRightShift,             // >>>
+        LogicalAnd,                     // &&
+        LogicalOr,                      // ||
+        NullishCoalesce,                // ??
 
         Equal,                          // ==
         NotEqual,                       // !=
@@ -106,17 +111,12 @@ namespace NUglify.JavaScript
         GreaterThan,                    // >
         GreaterThanEqual,               // >=
 
-        LogicalAnd,                     // &&
-        LogicalOr,                      // ||
-        
-        NullishCoalesce,                // ??
-
         InstanceOf,
         In,                             // in
         Of,                             // of
         Comma,                          // ,
 
-        Assign,                         // =
+        Assign,                         // =   // MUST FOLLOW order as in FirstBinaryOperator (replacement is done as a delta in JSScanner.StripAssignment)
         PlusAssign,                     // +=
         MinusAssign,                    // -=
         MultiplyAssign,                 // *=
@@ -133,8 +133,6 @@ namespace NUglify.JavaScript
         LogicalAndAssign,               // &&=
         LogicalNullishAssign,           // ??=
         LastAssign = LogicalNullishAssign,
-
-        Exponent,                       // **
 
         ConditionalIf,                  // ? // MUST FOLLOW LastBinaryOp
         Colon,                          // :

@@ -1491,7 +1491,8 @@ namespace NUglify.JavaScript
         /// <returns>true if right-associative</returns>
         public static bool IsRightAssociativeOperator(JSToken token)
         {
-            return JSToken.Assign <= token && token <= JSToken.ConditionalIf;
+            return (JSToken.Assign <= token && token <= JSToken.ConditionalIf)
+                || token == JSToken.Exponent;
         }
 
         /// <summary>

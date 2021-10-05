@@ -1,1 +1,1 @@
-function rho(foo,bar){var a=foo*bar,b=(foo,bar),c=a*a;b+=foo||bar;c=(foo,bar);c=(b=5)+6;a=b=c=null;c=b+=a;a=foo+bar+10-5;a=foo?bar:0}
+function rho(foo,bar){var a=foo*bar,b=(foo,bar),c=a*a;b+=foo||bar;c=(foo,bar);c=(b=5)+6;a=b=c=null;c=b+=a;a=foo+bar+10-5;a=foo?bar:0}function bitwisexor(foo,bar){var a=foo*bar^5}function unsignedrightshift(foo){var c=foo>>>3}
