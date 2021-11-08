@@ -62,5 +62,13 @@ namespace NUglify.Tests.Css
         {
 	        TestHelper.Instance.RunTest();
         }
+        
+        [Test]
+        public void Bug280()
+        {
+            Assert.AreEqual(":is(.container) :is(.bold){font-weight:bold;}", Uglify.Css(":is(.container) :is(.bold) { font-weight: bold; }").Code);
+
+            Assert.AreEqual(":is(.container):is(.bold){font-weight:bold;}", Uglify.Css(":is(.container):is(.bold) { font-weight: bold; }").Code);
+        }
     }
 }
