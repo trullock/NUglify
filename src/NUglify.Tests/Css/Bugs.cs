@@ -70,6 +70,8 @@ namespace NUglify.Tests.Css
 
             Assert.AreEqual(":is(.container):is(.bold){font-weight:bold;}", Uglify.Css(":is(.container):is(.bold) { font-weight: bold; }").Code);
 
+            Assert.AreEqual(".container :is(.bold){font-weight:bold;}", Uglify.Css(".container :is(.bold) { font-weight: bold; }").Code);
+
             // Assert whether extra unnecessary spaces around parentheses are removed:
             Assert.AreEqual(":is(.container) :is(.bold){font-weight:bold;}", Uglify.Css(":is(.container ) :is(.bold ) { font-weight: bold; }").Code);
 
