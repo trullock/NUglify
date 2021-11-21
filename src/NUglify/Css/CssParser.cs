@@ -4205,7 +4205,7 @@ namespace NUglify.Css
 
         static bool NeedsSpaceAfter(string text)
         {
-            return text == null ? false : !("{}()[],;:".Contains(text));
+            return text == null ? false : !("{}([],;:".Contains(text));
         }
 
         #endregion
