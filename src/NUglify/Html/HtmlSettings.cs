@@ -92,7 +92,7 @@ namespace NUglify.Html
             KeepCommentsRegex = new List<Regex>
             {
                 new Regex(@"^!"), // Keep conditional comments
-                new Regex(@"^/?ko(?:[\s\-]|$)") // Keep knockout comments
+                new Regex(@"^\s?/?ko(?:[\s\-]|$)") // Keep knockout comments
             };
         }
         

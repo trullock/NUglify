@@ -89,10 +89,17 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
-        public void KeepKnockout()
+        public void KeepKnockoutNoWhitespace()
         {
             var input = @"<div><!--ko if: observable--><!--/ko--></div>";
             equal(minify(input), input);
+        }
+
+        [Test]
+        public void KeepKnockoutShrinkWhitespace()
+        {
+	        var input = @"<div><!-- ko if: observable--><!-- /ko--></div>";
+	        equal(minify(input), input);
         }
     }
 }
