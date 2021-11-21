@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.16.4 (21 November 2021)
+- Allows whitespace around Knoockout comments when retaining them in minified HTML
+
 ## v1.16.3 (21 November 2021)
 - Fixes bug with whitespace around :is() css selectors
 
