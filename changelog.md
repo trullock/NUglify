@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.16.2 (21 November 2021)
+- Fixes bug with whitespace around :is() css selectors
+
 ## v1.16.1 (5 October 2021)
 - Fixes bugs with assignment operator precendence
 
