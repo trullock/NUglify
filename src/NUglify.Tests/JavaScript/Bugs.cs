@@ -299,6 +299,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void Bug284()
+        {
+	        TestHelper.Instance.RunErrorTest("-rename:all", JSError.NoSemicolon, JSError.ExpressionExpected, JSError.SyntaxError, JSError.UndeclaredFunction, JSError.UndeclaredVariable);
+        }
+
+        [Test]
         public void Bug285()
         {
 	        TestHelper.Instance.RunTest("-rename:all");

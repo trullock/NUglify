@@ -4364,7 +4364,10 @@ namespace NUglify.JavaScript
             if (m_currentToken.Is(JSToken.ArrowFunction))
             {
                 ParsedVersion = ScriptVersion.EcmaScript6;
-                ast = ParseArrowFunction(ast);
+                if(ast != null)
+					ast = ParseArrowFunction(ast);
+                else
+	                ReportError(JSError.SyntaxError);
             }
 
             // can be a CallExpression, that is, followed by '.' or '(' or '[' or '`'
