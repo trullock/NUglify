@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.16.5 (13 December 2021)
+- Fixes bug with catch parameters inside lexical scopes
+
 ## v1.16.4 (21 November 2021)
 - Allows whitespace around Knoockout comments when retaining them in minified HTML
 
