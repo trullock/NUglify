@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.16.6 (13 December 2021)
+- Fixes exception thrown on lambda syntax errors
+
 ## v1.16.5 (13 December 2021)
 - Fixes bug with catch parameters inside lexical scopes
 
