@@ -1,0 +1,1 @@
+﻿fff=function(){if(1){let n=1;try{}catch(t){return n+t}}};ggg=function(){if(1){let t=1;try{}catch(n){let i=t+n;try{}catch(n){return i+n}}}}

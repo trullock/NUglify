@@ -1670,7 +1670,7 @@ namespace NUglify.JavaScript.Visitors
                     var bindingIdentifier = node.CatchParameter.Binding as BindingIdentifier;
                     if (bindingIdentifier != null)
                     {
-                        CurrentVariableScope.GhostedCatchParameters.Add(bindingIdentifier);
+	                    CurrentLexicalScope.GhostedCatchParameters.Add(bindingIdentifier);
                     }
                 }
 

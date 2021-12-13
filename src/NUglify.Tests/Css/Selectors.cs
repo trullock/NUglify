@@ -82,9 +82,15 @@ namespace NUglify.Tests.Css
     [Test]
     public void CSS3()
     {
-        TestHelper.Instance.RunTest();
+	    TestHelper.Instance.RunTest();
     }
-
+    
+    [Test]
+    public void Has()
+    {
+	    TestHelper.Instance.RunTest();
+    }
+	
     [Test]
     public void CSS3_all()
     {
