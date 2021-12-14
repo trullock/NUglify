@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.17.1 (14 December 2021)
+- Adds support for #rgba and #rrggbbaa css colors and adds better invalid css color detection
+
 ## v1.17.0 (14 December 2021)
 - Fixes exception thrown on lambda syntax errors
 - Fixes bug with catch parameters inside lexical scopes. Note this removes a syntax error check for ancient IE versions.
