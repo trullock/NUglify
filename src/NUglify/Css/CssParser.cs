@@ -2536,8 +2536,10 @@ namespace NUglify.Css
                         }
                         else
                         {
-                            // anything else and we exit
-                            return parsed;
+                            // don't care if this finds one or not, just process it
+	                        ParseCombinator();
+
+	                        return ParseSelector();
                         }
                         break;
 

@@ -86,7 +86,7 @@ namespace NUglify.Tests.Css
     }
     
     [Test]
-    public void Has()
+    public void PseudoFunctions()
     {
 	    TestHelper.Instance.RunTest();
     }
