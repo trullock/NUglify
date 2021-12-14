@@ -2,11 +2,15 @@
 
 ## vNext (unpublished)
 
-## v1.16.6 (13 December 2021)
+## v1.17.0 (14 December 2021)
 - Fixes exception thrown on lambda syntax errors
+- Fixes bug with catch parameters inside lexical scopes. Note this removes a syntax error check for ancient IE versions.
 
-## v1.16.5 (13 December 2021)
-- Fixes bug with catch parameters inside lexical scopes
+## v1.16.6
+- Skipped due to deployment error
+
+## v1.16.5
+- Skipped due to deployment error
 
 ## v1.16.4 (21 November 2021)
 - Allows whitespace around Knoockout comments when retaining them in minified HTML

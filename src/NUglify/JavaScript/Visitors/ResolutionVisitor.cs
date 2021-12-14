@@ -383,6 +383,8 @@ namespace NUglify.JavaScript.Visitors
                     // collision in IE -- if an error happens, it will clobber the existing field's value,
                     // although that MAY be the intention; we don't know for sure. But it IS a cross-
                     // browser behavior difference.
+
+                    // This is only true for ancient IE versions, do we care about this anymore?
                     ghostField.IsAmbiguous = true;
 
                     if (ghostField.OuterField != null)
@@ -391,7 +393,9 @@ namespace NUglify.JavaScript.Visitors
                         // in modern browsers, but will bind to this catch variable in older
                         // versions of IE! Definitely a cross-browser difference!
                         // throw a cross-browser issue error.
-                        catchBinding.Context.HandleError(JSError.AmbiguousCatchVar);
+
+                        // This is commented now because it only applies to ancient IE versions, which I don't think we care about any more. Modern JS can handle this fine
+                        //catchBinding.Context.HandleError(JSError.AmbiguousCatchVar);
                     }
                 }
 

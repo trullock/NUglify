@@ -128,7 +128,7 @@ namespace NUglify.Tests.JavaScript
             TestHelper.Instance.RunTest("-rename:all");
         }
 
-        [Test]
+        [Test, Ignore("This no longer applies to modern browsers")]
         public void Collision()
         {
             TestHelper.Instance.RunErrorTest("-rename:all", JSError.AmbiguousCatchVar, JSError.SemicolonInsertion, JSError.MisplacedFunctionDeclaration);
