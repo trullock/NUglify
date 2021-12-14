@@ -1,0 +1,1 @@
+a:has(>.b+c){display:block}a:is(.b){display:block}a:where(.b){display:block}a:nth-child(4n){color:#0f0}
