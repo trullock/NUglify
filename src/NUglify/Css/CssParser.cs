@@ -202,14 +202,17 @@ namespace NUglify.Css
         #region color-related fields
 
         /// <summary>
-        /// matches 6-digit RGB color value where both r digits are the same, both
-        /// g digits are the same, and both b digits are the same (but r, g, and b
-        /// values are not necessarily the same). Used to identify #rrggbb values
-        /// that can be collapsed to #rgb
+        /// matches 6 or 8-digit RGB color value where both r digits are the same, both
+        /// g digits are the same, both b digits are the same and optionally both a digits are the same (but r, g, b and a
+        /// values are not necessarily the same). Used to identify #rrggbb/aa) values
+        /// that can be collapsed to #rgb(a)
         /// </summary>
-        static Regex s_rrggbb = new Regex(
-            @"^\#(?<r>[0-9a-fA-F])\k<r>(?<g>[0-9a-fA-F])\k<g>(?<b>[0-9a-fA-F])\k<b>$",
+        static Regex s_rrggbbaa = new Regex(
+            @"^\#(?<r>[0-9a-fA-F])\k<r>(?<g>[0-9a-fA-F])\k<g>(?<b>[0-9a-fA-F])\k<b>((?<a>[0-9a-fA-F])\k<a>)?$",
             RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        private static Regex s_validHex = new Regex("^#[0-9a-f]+$",
+	        RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         // whether we are currently parsing the value for a property that might
         // use color names
@@ -3307,8 +3310,8 @@ namespace NUglify.Css
                         // we can collapse it to either #rrggbb or #rgb
                         // calculate the full hex string and crunch it
                         var fullCode = "#{0:x2}{1:x2}{2:x2}".FormatInvariant(rgb[0], rgb[1], rgb[2]);
-                        var hexString = CrunchHexColor(fullCode, Settings.ColorNames, m_noColorAbbreviation);
-                        Append(hexString);
+                        var result= CrunchHexColor(fullCode, Settings.ColorNames, m_noColorAbbreviation);
+                        Append(result.Color);
 
                         // set the flag so we know we don't want to add the closing paren
                         crunchedRGB = true;
@@ -3463,7 +3466,7 @@ namespace NUglify.Css
                 var colorHash = CurrentTokenText;
                 var appendEscapedTab = false;
 
-                // valid hash colors are #rgb, #rrggbb, and #aarrggbb.
+                // valid hash colors are #rgb, #rgba, #rrggbb, and #rrggbbaa.
                 // but there is a commonly-used IE hack that puts \9 at the end of properties, so
                 // if we have 5, 8, or 10 characters, let's first check to see if the color
                 // ends in a tab.
@@ -3475,18 +3478,19 @@ namespace NUglify.Css
                     appendEscapedTab = true;
                 }
 
-                if (colorHash.Length == 4 || colorHash.Length == 7 || colorHash.Length == 9)
+                if (colorHash.Length == 4 || colorHash.Length == 5 || colorHash.Length == 7 || colorHash.Length == 9)
                 {
+	                var result = CrunchHexColor(colorHash, Settings.ColorNames, m_noColorAbbreviation);
+
+	                if (!result.IsValidColor)
+		                return Parsed.False;
+
                     parsed = Parsed.True;
 
-                    // we won't do any conversion on the #aarrggbb formats to make them smaller.
-                    string hexColor = CrunchHexColor(colorHash, Settings.ColorNames, m_noColorAbbreviation);
-                    Append(hexColor);
+                    Append(result.Color);
 
                     if (appendEscapedTab)
-                    {
-                        Append("\\9");
-                    }
+	                    Append("\\9");
 
                     SkipSpace();
                 }
@@ -4651,8 +4655,9 @@ namespace NUglify.Css
                     }
                     else if (CurrentTokenType == TokenType.ReplacementToken)
                     {
-                        // a replacement token is a color hash -- make sure we trim it to #RGB if it matches #RRGGBB
-                        text = CrunchHexColor(text, Settings.ColorNames, m_noColorAbbreviation);
+                        // a replacement token is a color hash
+                        var result = CrunchHexColor(text, Settings.ColorNames, m_noColorAbbreviation);
+                        text = result.Color;
                     }
                 }
 
@@ -4835,12 +4840,10 @@ namespace NUglify.Css
         #region color methods
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase")]
-        static string CrunchHexColor(string hexColor, CssColor colorNames, bool noAbbr)
+        static CssColorCrunchResult CrunchHexColor(string hexColor, CssColor colorNames, bool noAbbr)
         {
-            if (!noAbbr)
-            {
-                hexColor = s_rrggbb.Replace(hexColor, "#${r}${g}${b}").ToLowerInvariant();
-            }
+	        if (!noAbbr)
+		        hexColor = s_rrggbbaa.Replace(hexColor, "#${r}${g}${b}${a}").ToLowerInvariant();
 
             if (colorNames == CssColor.Strict || colorNames == CssColor.Major)
             {
@@ -4864,19 +4867,13 @@ namespace NUglify.Css
                 // should use the name instead because it's smaller.
                 string colorName;
                 if (ColorSlice.StrictNameShorterThanHex.TryGetValue(hexColor, out colorName))
-                {
-                    hexColor = colorName;
-                }
-                else if (colorNames == CssColor.Major)
-                {
-                    if (ColorSlice.NameShorterThanHex.TryGetValue(hexColor, out colorName))
-                    {
-                        hexColor = colorName;
-                    }
-                }
+	                return new CssColorCrunchResult(true, colorName);
+
+                if (colorNames == CssColor.Major && ColorSlice.NameShorterThanHex.TryGetValue(hexColor, out colorName))
+	                return new CssColorCrunchResult(true, colorName);
             }
 
-            return hexColor;
+            return new CssColorCrunchResult(s_validHex.IsMatch(hexColor), hexColor);
         }
 
         static bool MightContainColorNames(string propertyName)

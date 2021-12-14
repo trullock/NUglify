@@ -338,6 +338,9 @@ namespace NUglify.Tests.Css.Common
                 Assert.Fail("Output file ({0}) does not exist.", outputPath);
             }
 
+            // if(retValue != 0)
+            //     Assert.Fail("Minification error");
+
             return retValue;
         }
 

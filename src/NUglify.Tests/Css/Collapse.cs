@@ -40,9 +40,21 @@ namespace NUglify.Tests.Css
     [Test]
     public void rrggbb()
     {
-      TestHelper.Instance.RunTest();
+	    TestHelper.Instance.RunTest();
     }
 
+    [Test]
+    public void rgba()
+    {
+	    TestHelper.Instance.RunTest();
+    }
+
+    [Test]
+    public void rrggbbaa()
+    {
+	    TestHelper.Instance.RunTest();
+    }
+    
     [Test]
     public void Numbers()
     {

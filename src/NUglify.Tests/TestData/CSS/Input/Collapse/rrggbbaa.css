@@ -1,0 +1,12 @@
+body
+{
+  background-color: #aabbccdd; /* collapse to #abce */
+  background-color: #ffffffff; /* collapse to #ffff */
+  background-color: #abcdef00; /* no collapse */
+  background-color: #aaaaab00; /* no collapse */
+  background-color: #aaaaba00; /* no collapse */
+  background-color: #aaabaa00; /* no collapse */
+  background-color: #aabaaa00; /* no collapse */
+  background-color: #abaaaa00; /* no collapse */
+  background-color: #baaaaa00; /* no collapse */
+}
