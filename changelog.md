@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.17.2 (14 December 2021)
+- Fixes :has(> .bla) type function selectors - beware this may still not be perfect but its considerably better than it was
+
 ## v1.17.1 (14 December 2021)
 - Adds support for #rgba and #rrggbbaa css colors and adds better invalid css color detection
 
