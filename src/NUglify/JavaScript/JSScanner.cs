@@ -2818,11 +2818,20 @@ namespace NUglify.JavaScript
                         switch (ch)
                         {
                             default:
-                            case '\\':
                             case '\'':
                             case '"':
                                 // just the escaped character
                                 decodedLiteral.Append(ch);
+                                break;
+
+                            case '\\':
+	                            // backtick
+	                            decodedLiteral.Append("\\\\");
+	                            break;
+
+                            case '`':
+                                // backtick
+                                decodedLiteral.Append("\\`");
                                 break;
 
                             case 'b':

@@ -15,6 +15,8 @@ var msg = `Total = ${total}, plus tax is ${ total * 1.09800 }`;
 
 // with escapes
 var esc = `\u0ca0_\u{ca0}`;
+esc = `template \` with backtick`;
+var reg = new RegExp(`<[\\w-\\d]$`, "i");
 
 // object literal inside an expression
 var obj = `Via ${ {http: "http", https: "SSL", file: "file system"}[location.protocol] }!`;

@@ -191,6 +191,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void TemplateLiteralsEscaped()
+        {
+	        TestHelper.Instance.RunErrorTest();
+        }
+
+        [Test]
         public void TemplateLiterals_nomin()
         {
             // don't minify the string or template literals
