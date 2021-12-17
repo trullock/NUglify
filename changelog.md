@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.17.3 (17 December 2021)
+- Fixes bug with escape characters in template literals
+
 ## v1.17.2 (14 December 2021)
 - Fixes :has(> .bla) type function selectors - beware this may still not be perfect but its considerably better than it was
 
