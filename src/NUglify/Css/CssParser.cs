@@ -3148,7 +3148,6 @@ namespace NUglify.Css
                 // converting to #rrggbb or #rgb IF we don't find any significant comments!
                 // skip any space or comments
                 var rgb = new int[3];
-                var priorWasVar = false;
 
                 // we're going to be building up the rgb function just in case we need it
                 var sbRGB = StringBuilderPool.Acquire();
