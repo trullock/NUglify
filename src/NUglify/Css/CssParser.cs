@@ -3164,15 +3164,22 @@ namespace NUglify.Css
                         useRGB = true;
                     }
 
+                    bool? usingSpace = null;
                     for (var ndx = 0; ndx < 3; ++ndx)
                     {
-                        // if this isn't the first number, we better find a comma separator
+                        // if this isn't the first number, we better find a comma separator or space
                         if (ndx > 0)
                         {
-                            if (CurrentTokenType == TokenType.Character && CurrentTokenText == ",")
+                            if (usingSpace != true && CurrentTokenType == TokenType.Character && CurrentTokenText == ",")
                             {
                                 // add it to the rgb string builder
                                 sbRGB.Append(',');
+                                usingSpace = false;
+                            }
+                            else if (usingSpace != false && CurrentTokenType == TokenType.Number)
+                            {
+                                sbRGB.Append(' ');
+                                usingSpace = true;
                             }
                             else if (CurrentTokenType == TokenType.Character && CurrentTokenText == ")")
                             {
@@ -3189,14 +3196,17 @@ namespace NUglify.Css
                                 useRGB = true;
                             }
 
-                            // skip to the next significant
-                            comments = NextSignificantToken();
-                            if (comments.Length > 0)
+                            if (usingSpace != true || CurrentTokenType != TokenType.Number)
                             {
-                                // add the comments
-                                sbRGB.Append(comments);
-                                // and signal that we need to use the RGB function because of them
-                                useRGB = true;
+                                // skip to the next significant
+                                comments = NextSignificantToken();
+                                if (comments.Length > 0)
+                                {
+                                    // add the comments
+                                    sbRGB.Append(comments);
+                                    // and signal that we need to use the RGB function because of them
+                                    useRGB = true;
+                                }
                             }
                         }
 
@@ -3219,7 +3229,8 @@ namespace NUglify.Css
                         // we might adjust the value, so save the token text
                         var tokenText = CurrentTokenText;
 
-                        if (CurrentTokenType == TokenType.Function &&
+                        if (ndx == 0 &&
+                            CurrentTokenType == TokenType.Function &&
                             string.Equals("var(", tokenText, StringComparison.OrdinalIgnoreCase))
                         {
                             Append(sbRGB.ToString());
