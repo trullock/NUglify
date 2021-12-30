@@ -102,5 +102,12 @@ namespace NUglify.Tests.Css
         {
             TestHelper.Instance.RunTest();
         }
+
+        [Test]
+        public void RgbWithVar()
+        {
+            var retValue = TestHelper.Instance.RunTest();
+            Assert.IsTrue(retValue == 0, "shouldn't have any errors");
+        }
     }
 }

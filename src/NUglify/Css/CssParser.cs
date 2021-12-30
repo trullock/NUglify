@@ -3148,6 +3148,7 @@ namespace NUglify.Css
                 // converting to #rrggbb or #rgb IF we don't find any significant comments!
                 // skip any space or comments
                 var rgb = new int[3];
+                var priorWasVar = false;
 
                 // we're going to be building up the rgb function just in case we need it
                 var sbRGB = StringBuilderPool.Acquire();
@@ -3219,7 +3220,22 @@ namespace NUglify.Css
                         // we might adjust the value, so save the token text
                         var tokenText = CurrentTokenText;
 
-                        if (CurrentTokenType != TokenType.Number && CurrentTokenType != TokenType.Percentage)
+                        if (CurrentTokenType == TokenType.Function &&
+                            string.Equals("var(", tokenText, StringComparison.OrdinalIgnoreCase))
+                        {
+                            Append(sbRGB.ToString());
+                            sbRGB.Clear();
+                            useRGB = true;
+
+                            if (ParseFunction() == Parsed.False)
+                            {
+                                ReportError(0, CssErrorCode.ExpectedRgbNumberOrPercentage, CurrentTokenText);
+                                return Parsed.False;
+                            }
+
+                            break;
+                        }
+                        else if (CurrentTokenType != TokenType.Number && CurrentTokenType != TokenType.Percentage)
                         {
                             ReportError(0, CssErrorCode.ExpectedRgbNumberOrPercentage, CurrentTokenText);
                             useRGB = true;
