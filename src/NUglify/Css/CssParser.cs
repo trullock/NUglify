@@ -3165,7 +3165,7 @@ namespace NUglify.Css
                     }
 
                     bool? usingSpace = null;
-                    for (var ndx = 0; ndx < 3; ++ndx)
+                    for (var ndx = 0; ndx < 4; ++ndx)
                     {
                         // if this isn't the first number, we better find a comma separator or space
                         if (ndx > 0)
@@ -3175,14 +3175,27 @@ namespace NUglify.Css
                                 // add it to the rgb string builder
                                 sbRGB.Append(',');
                                 usingSpace = false;
+                                if (ndx == 3)
+                                {
+                                    // 4 part format, can't handle that
+                                    useRGB = true;
+                                }
                             }
                             else if (usingSpace != false && CurrentTokenType == TokenType.Number)
                             {
                                 sbRGB.Append(' ');
                                 usingSpace = true;
                             }
+                            else if (usingSpace == true && ndx == 3 && CurrentTokenType == TokenType.Character && CurrentTokenText == "/")
+                            {
+                                sbRGB.Append('/');
+                            }
                             else if (CurrentTokenType == TokenType.Character && CurrentTokenText == ")")
                             {
+                                // 3 part is OK
+                                if (ndx == 3)
+                                    break;
+
                                 ReportError(0, CssErrorCode.ExpectedComma, CurrentTokenText);
 
                                 // closing paren is the end of the function! exit the loop
@@ -3234,7 +3247,7 @@ namespace NUglify.Css
                             ReportError(0, CssErrorCode.ExpectedRgbNumberOrPercentage, CurrentTokenText);
                             useRGB = true;
                         }
-                        else
+                        else if (ndx < 3)
                         {
                             if (CurrentTokenType == TokenType.Number)
                             {
@@ -3296,25 +3309,31 @@ namespace NUglify.Css
                                 }
                             }
                         }
+                        else if (ndx == 3)
+                        {
+                            useRGB = true;
+                        }
 
                         // add the number to the rgb string builder
                         sbRGB.Append(tokenText);
 
-                        if (!usingSpace)
+                        // skip to the next significant
+                        comments = NextSignificantToken();
+                        if (comments.Length > 0)
                         {
-                            // skip to the next significant
-                            comments = NextSignificantToken();
-                            if (comments.Length > 0)
-                            {
-                                // add the comments
-                                sbRGB.Append(comments);
-                                // and signal that we need to use the RGB function because of them
-                                useRGB = true;
-                            }
+                            // add the comments
+                            sbRGB.Append(comments);
+                            // and signal that we need to use the RGB function because of them
+                            useRGB = true;
                         }
                     }
 
-                    if (useRGB)
+                    // if the next character is not a closing paren
+                    // it might be in rgb(1 3 5 %10) or rgb(1, 2, 3, %10) format
+                    // we can't collapse in that case either
+                    if (useRGB ||
+                        CurrentTokenType != TokenType.Character ||
+                        CurrentTokenText != ")")
                     {
                         // something prevented us from collapsing the rgb function
                         // just output the rgb function we've been building up
