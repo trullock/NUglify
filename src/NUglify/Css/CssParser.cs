@@ -3328,12 +3328,7 @@ namespace NUglify.Css
                         }
                     }
 
-                    // if the next character is not a closing paren
-                    // it might be in rgb(1 3 5 %10) or rgb(1, 2, 3, %10) format
-                    // we can't collapse in that case either
-                    if (useRGB ||
-                        CurrentTokenType != TokenType.Character ||
-                        CurrentTokenText != ")")
+                    if (useRGB)
                     {
                         // something prevented us from collapsing the rgb function
                         // just output the rgb function we've been building up
