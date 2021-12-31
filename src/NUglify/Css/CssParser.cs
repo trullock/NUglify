@@ -3229,23 +3229,7 @@ namespace NUglify.Css
                         // we might adjust the value, so save the token text
                         var tokenText = CurrentTokenText;
 
-                        if (ndx == 0 &&
-                            CurrentTokenType == TokenType.Function &&
-                            string.Equals("var(", tokenText, StringComparison.OrdinalIgnoreCase))
-                        {
-                            Append(sbRGB.ToString());
-                            sbRGB.Clear();
-                            useRGB = true;
-
-                            if (ParseFunction() == Parsed.False)
-                            {
-                                ReportError(0, CssErrorCode.ExpectedRgbNumberOrPercentage, CurrentTokenText);
-                                return Parsed.False;
-                            }
-
-                            break;
-                        }
-                        else if (CurrentTokenType != TokenType.Number && CurrentTokenType != TokenType.Percentage)
+                        if (CurrentTokenType != TokenType.Number && CurrentTokenType != TokenType.Percentage)
                         {
                             ReportError(0, CssErrorCode.ExpectedRgbNumberOrPercentage, CurrentTokenText);
                             useRGB = true;
@@ -3316,14 +3300,17 @@ namespace NUglify.Css
                         // add the number to the rgb string builder
                         sbRGB.Append(tokenText);
 
-                        // skip to the next significant
-                        comments = NextSignificantToken();
-                        if (comments.Length > 0)
+                        if (!usingSpace)
                         {
-                            // add the comments
-                            sbRGB.Append(comments);
-                            // and signal that we need to use the RGB function because of them
-                            useRGB = true;
+                            // skip to the next significant
+                            comments = NextSignificantToken();
+                            if (comments.Length > 0)
+                            {
+                                // add the comments
+                                sbRGB.Append(comments);
+                                // and signal that we need to use the RGB function because of them
+                                useRGB = true;
+                            }
                         }
                     }
 

@@ -1,4 +1,0 @@
-a {
-    --rgb-nums: 110 120 130;
-    color: rgb(var(--rgb-nums));
-}
