@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.17.4 (10 January 2022)
+- Fixes bug with `\$` inside template literals
+
 ## v1.17.3 (17 December 2021)
 - Fixes bug with escape characters in template literals
 
