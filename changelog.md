@@ -3,8 +3,11 @@
 ## vNext (unpublished)
 - Fixes bug with escaping of dollar sign in template literals
 
-## v1.17.4 (10 January 2022)
+## v1.17.5 (10 January 2022)
 - Fixes bug with `\$` inside template literals
+
+## v1.17.4
+- Skipped due to deployment error
 
 ## v1.17.3 (17 December 2021)
 - Fixes bug with escape characters in template literals
