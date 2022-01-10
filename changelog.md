@@ -1,6 +1,7 @@
 # Changelog
 
 ## vNext (unpublished)
+- Fixes bug with escaping of dollar sign in template literals
 
 ## v1.17.3 (17 December 2021)
 - Fixes bug with escape characters in template literals

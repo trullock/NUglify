@@ -2825,13 +2825,18 @@ namespace NUglify.JavaScript
                                 break;
 
                             case '\\':
-	                            // backtick
+	                            // backslash
 	                            decodedLiteral.Append("\\\\");
 	                            break;
 
                             case '`':
                                 // backtick
                                 decodedLiteral.Append("\\`");
+                                break;
+
+                            case '$':
+                                // dollar sign
+                                decodedLiteral.Append("\\$");
                                 break;
 
                             case 'b':

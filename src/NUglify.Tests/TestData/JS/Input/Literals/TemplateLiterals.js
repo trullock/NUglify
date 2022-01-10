@@ -16,6 +16,8 @@ var msg = `Total = ${total}, plus tax is ${ total * 1.09800 }`;
 // with escapes
 var esc = `\u0ca0_\u{ca0}`;
 esc = `template \` with backtick`;
+esc = `template \$ with escaped dolar sign`;
+esc = `template \${^^^^this isn't code@#%&} with escaped dolar sign followed by braces`;
 var reg = new RegExp(`<[\\w-\\d]$`, "i");
 
 // object literal inside an expression
