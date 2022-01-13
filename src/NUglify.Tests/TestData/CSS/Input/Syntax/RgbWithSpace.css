@@ -1,0 +1,7 @@
+a {
+    color: rgb(3 5 7);
+    color: rgb(100 190 250);
+    /* these should use rgba normally but they are valid in CSS4 https://www.w3.org/TR/css-color-4/#funcdef-rgb */
+    color: rgb(100 190 250 / 40%);
+    color: rgb(100,190,250,0.4);
+}
