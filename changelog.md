@@ -3,6 +3,9 @@
 ## vNext (unpublished)
 - Fixes bug with escaping of dollar sign in template literals
 
+## v1.17.6 (13 January 2021)
+- Fixes use of spaces instead of commas in CSS RGB values
+
 ## v1.17.5 (10 January 2022)
 - Fixes bug with `\$` inside template literals
 
