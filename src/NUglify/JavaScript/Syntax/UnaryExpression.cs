@@ -68,8 +68,10 @@ namespace NUglify.JavaScript.Syntax
                 case JSToken.Void:
                 case JSToken.Delete:
                 case JSToken.RestSpread:
+				case JSToken.Await:
                     // void returns undefined.
                     // delete returns number, but just return other
+                    // await is a function call, and could return anything so its unknown
                     return PrimitiveType.Other;
 
                 default:
