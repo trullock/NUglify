@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.17.8
+- Fixes bug with rest spread call expressions inside object literals
+
 ## v1.17.7
 - Fixes bug with `await f() === "string"`
 - Fixes bug with escaping of dollar sign in template literals
