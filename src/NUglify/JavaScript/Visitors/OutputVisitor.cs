@@ -396,7 +396,15 @@ namespace NUglify.JavaScript.Visitors
 
                     if (node.Operand1 != null)
                     {
-                        AcceptNodeWithParens(node.Operand1, node.Operand1.Precedence < ourPrecedence);
+	                    if (node.OperatorToken == JSToken.Assign && node.Operand1 is ObjectLiteral && node.Operand2 is ObjectLiteral)
+	                    {
+		                    OutputPossibleLineBreak('(');
+                            
+		                    m_startOfStatement = false;
+		                    m_noIn = false;
+						}
+
+						AcceptNodeWithParens(node.Operand1, node.Operand1.Precedence < ourPrecedence);
                         SetContextOutputPosition(node.Context, node.Operand1.Context);
                     }
 
@@ -518,6 +526,11 @@ namespace NUglify.JavaScript.Visitors
 
                         m_noIn = isNoIn && ourPrecedence <= OperatorPrecedence.Relational;
                         AcceptNodeWithParens(node.Operand2, rightNeedsParens);
+
+                        if (node.OperatorToken == JSToken.Assign && node.Operand1 is ObjectLiteral && node.Operand2 is ObjectLiteral)
+                        {
+	                        Output(')');
+                        }
                     }
 
                     if (isNoIn && node.OperatorToken == JSToken.In)
