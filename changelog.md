@@ -1,6 +1,9 @@
 # Changelog
 
 ## vNext (unpublished)
+
+## v1.17.7
+- Fixes bug with `await f() === "string"`
 - Fixes bug with escaping of dollar sign in template literals
 
 ## v1.17.6 (13 January 2021)
