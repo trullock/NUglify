@@ -3363,7 +3363,24 @@ namespace NUglify.JavaScript.Visitors
 
                             // key name is the name plus the type. Can't just use the name because 
                             // get and set will both have the same name (but different types)
-                            var keyName = (property.Name?.Name ?? functionObject?.Binding?.Name ?? property.Value?.ToString()) + propertyType;
+                            string keyName = property.Name?.Name;
+
+                            if (keyName == null)
+	                            keyName = functionObject?.Binding?.Name;
+
+                            if (keyName == null)
+                            {
+	                            if (property.Value is UnaryExpression ue && ue.OperatorToken == JSToken.RestSpread && ue.Operand is CallExpression ce)
+	                            {
+		                            keyName = property.Value.Context.ToString();
+	                            }
+	                            else
+	                            {
+		                            keyName = property.Value?.ToString();
+	                            }
+                            }
+
+                            keyName += propertyType;
 
                             string mappedType;
                             if (propertyType == "data")
