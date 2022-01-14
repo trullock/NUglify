@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.17.9
+- Fixes bug with object destructuring parenthesis
+
 ## v1.17.8
 - Fixes bug with rest spread call expressions inside object literals
 
