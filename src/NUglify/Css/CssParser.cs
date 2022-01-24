@@ -3165,6 +3165,7 @@ namespace NUglify.Css
                     }
 
                     bool? usingSpace = null;
+                    bool usingFunc = false;
                     for (var ndx = 0; ndx < 4; ++ndx)
                     {
                         // if this isn't the first number, we better find a comma separator or space
@@ -3181,19 +3182,22 @@ namespace NUglify.Css
                                     useRGB = true;
                                 }
                             }
-                            else if (usingSpace != false && CurrentTokenType == TokenType.Number)
+                            else if (usingSpace != false && 
+                                (CurrentTokenType == TokenType.Number ||
+                                 CurrentTokenType == TokenType.Function))
                             {
                                 sbRGB.Append(' ');
                                 usingSpace = true;
                             }
-                            else if (usingSpace == true && ndx == 3 && CurrentTokenType == TokenType.Character && CurrentTokenText == "/")
+                            else if (((usingSpace == true && ndx == 3) || usingFunc) &&
+                                CurrentTokenType == TokenType.Character && CurrentTokenText == "/")
                             {
                                 sbRGB.Append('/');
                             }
                             else if (CurrentTokenType == TokenType.Character && CurrentTokenText == ")")
                             {
-                                // 3 part is OK
-                                if (ndx == 3)
+                                // 3 part is OK, or used a func
+                                if (ndx == 3 || usingFunc)
                                     break;
 
                                 ReportError(0, CssErrorCode.ExpectedComma, CurrentTokenText);
@@ -3209,7 +3213,9 @@ namespace NUglify.Css
                                 useRGB = true;
                             }
 
-                            if (usingSpace != true || CurrentTokenType != TokenType.Number)
+                            if (usingSpace != true || 
+                                (CurrentTokenType != TokenType.Number &&
+                                 CurrentTokenType != TokenType.Function))
                             {
                                 // skip to the next significant
                                 comments = NextSignificantToken();
@@ -3242,7 +3248,22 @@ namespace NUglify.Css
                         // we might adjust the value, so save the token text
                         var tokenText = CurrentTokenText;
 
-                        if (CurrentTokenType != TokenType.Number && CurrentTokenType != TokenType.Percentage)
+                        if (CurrentTokenType == TokenType.Function)
+                        {
+                            useRGB = true;
+                            usingFunc = true;
+                            Append(sbRGB.ToString());
+                            sbRGB.Clear();
+
+                            if (ParseFunction() == Parsed.False)
+                            {
+                                ReportError(0, CssErrorCode.ExpectedRgbNumberOrPercentage, CurrentTokenText);
+                                return Parsed.False;
+                            }
+
+                            continue;
+                        }
+                        else if (CurrentTokenType != TokenType.Number && CurrentTokenType != TokenType.Percentage)
                         {
                             ReportError(0, CssErrorCode.ExpectedRgbNumberOrPercentage, CurrentTokenText);
                             useRGB = true;
