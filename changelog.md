@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.17.10 (24 January 2022)
+- Adds support for css variables inside rgba functions
+
 ## v1.17.9
 - Fixes bug with object destructuring parenthesis
 
