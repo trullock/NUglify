@@ -404,7 +404,10 @@ namespace NUglify.JavaScript.Visitors
 		                    m_noIn = false;
 						}
 
-						AcceptNodeWithParens(node.Operand1, node.Operand1.Precedence < ourPrecedence);
+	                    var leftNeedsParens = node.Operand1.Precedence < ourPrecedence;
+	                    if (node.Operand1 is UnaryExpression { OperatorToken: JSToken.Yield })
+		                    leftNeedsParens = true;
+	                    AcceptNodeWithParens(node.Operand1, leftNeedsParens);
                         SetContextOutputPosition(node.Context, node.Operand1.Context);
                     }
 

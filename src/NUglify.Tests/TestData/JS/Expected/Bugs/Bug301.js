@@ -1,0 +1,1 @@
+﻿let x=1;p!=null&&(yield isOk(p))!=null&&(x=2)
