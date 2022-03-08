@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.17.11 (8 March 2022)
+- Fixed bug with yields inside unary expressions and missing parenthesis
+
 ## v1.17.10 (24 January 2022)
 - Adds support for css variables inside rgba functions
 

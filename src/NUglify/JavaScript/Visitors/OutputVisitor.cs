@@ -3346,7 +3346,10 @@ namespace NUglify.JavaScript.Visitors
                     m_startOfStatement = false;
                     if (node.Operand != null)
                     {
-                        AcceptNodeWithParens(node.Operand, node.Operand.Precedence < node.Precedence);
+	                    var needsParens = node.Operand.Precedence < node.Precedence;
+	                    if (node.Operand is UnaryExpression {OperatorToken: JSToken.Yield})
+		                    needsParens = true;
+		                AcceptNodeWithParens(node.Operand, needsParens);
                     }
                 }
 
