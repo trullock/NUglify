@@ -2,6 +2,10 @@
 
 ## vNext (unpublished)
 
+## v1.17.12 (8 March 2022)
+- Fixed bug with yield on the LHS of binary expressions
+- Fixed bug with leading underscores in css identifiers
+
 ## v1.17.11 (8 March 2022)
 - Fixed bug with yields inside unary expressions and missing parenthesis
 
