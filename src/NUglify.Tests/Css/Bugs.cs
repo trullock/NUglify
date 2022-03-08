@@ -62,11 +62,11 @@ namespace NUglify.Tests.Css
         {
 	        TestHelper.Instance.RunTest();
         }
-        
+
         [Test]
         public void Bug280()
         {
-            Assert.AreEqual(":is(.container) :is(.bold){font-weight:bold}", Uglify.Css(":is(.container) :is(.bold) { font-weight: bold; }").Code);            
+            Assert.AreEqual(":is(.container) :is(.bold){font-weight:bold}", Uglify.Css(":is(.container) :is(.bold) { font-weight: bold; }").Code);
 
             Assert.AreEqual(":is(.container):is(.bold){font-weight:bold}", Uglify.Css(":is(.container):is(.bold) { font-weight: bold; }").Code);
 
@@ -107,6 +107,15 @@ div:is(.test) {
     color: var(--blue);
 }
 ").Code);
+        }
+
+        [Test]
+        public void Bug302()
+        {
+            Assert.AreEqual("p{background-color:var(--_flumo-grid-secondary-border-color) !important}", Uglify.Css(@"
+p {
+	background-color: var(--_flumo-grid-secondary-border-color) !important;
+}").Code);
         }
     }
 }

@@ -222,5 +222,5 @@ test
 			equal(htmlToText.Code, "Hello\nThis is a test\nThis is another test\n \nSomething\n");
 		}
 
-	}
+    }
 }

@@ -4324,28 +4324,27 @@ namespace NUglify.Css
                             
                             if (firstIndex < text.Length)
                             {
-                                // the only valid non-escaped first characters are A-Z (and a-z)
+                                // identifiers (including element names, classes, and IDs in selectors) can contain only the characters [a-zA-Z0-9] and ISO 10646 characters U+0080 and higher, plus the hyphen (-) and the underscore (_); they cannot start with a digit, two hyphens, or a hyphen followed by a digit. Identifiers can also contain escaped characters and any ISO 10646 character as a numeric code (see next item). For instance, the identifier "B&W?" may be written as "B\&W\?" or "B\26 W\3F".
                                 var firstChar = text[firstIndex];
 
                                 // anything at or above 0x80 is okay for identifiers
                                 if (firstChar < 0x80)
                                 {
-                                    // if it's not an a-z or A-Z, we want to escape it
+                                    // if it's not an a-z or A-Z or underscore, we want to escape it
                                     // also leave literal back-slashes as-is, too. The identifier might start with an escape
                                     // sequence that we didn't decode to its Unicode character for whatever reason.
                                     if ((firstChar < 'A' || 'Z' < firstChar)
                                         && (firstChar < 'a' || 'z' < firstChar)
-                                        && firstChar != '\\')
+                                        && firstChar != '\\'
+                                        && firstChar != '_')
                                     {
                                         // invalid first character -- create the string builder
                                         escapedBuilder = StringBuilderPool.Acquire();
 
                                         // if we had a prefix, output it
                                         if (firstIndex > 0)
-                                        {
                                             escapedBuilder.Append(text[0]);
-                                        }
-
+                                        
                                         // output the escaped first character
                                         protectNextHexCharacter = EscapeCharacter(escapedBuilder, text[firstIndex]);
                                         textEndsInEscapeSequence = true;
