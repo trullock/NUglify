@@ -1,0 +1,1 @@
+﻿function test(n){return __awaiter(this,void 0,void 0,function*(){let t=!0;for(let i=1;i<=5;i++)if(!(yield isOk(n*i))){t=!1;break}return t})}
