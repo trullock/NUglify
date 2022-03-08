@@ -507,9 +507,10 @@ namespace NUglify.Html
 		        case "application/javascript":
 		        case "application/x-javascript":
 		        case "application/ecmascript":
-			        return HtmlScriptStyleElement.Javascript;
+              return HtmlScriptStyleElement.Javascript;
 		        case "application/ld+json":
-			        return HtmlScriptStyleElement.JSON;
+            case "application/json":
+              return HtmlScriptStyleElement.JSON;
 	        }
 
 	        return HtmlScriptStyleElement.NA;
