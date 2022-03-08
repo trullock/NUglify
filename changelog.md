@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.17.14 (8 March 2022)
+- Fixed bug with String.raw``
+
 ## v1.17.13 (8 March 2022)
 - Fixed bug with yield on the LHS of binary expressions
 - Fixed bug with leading underscores in css identifiers

@@ -5289,6 +5289,14 @@ namespace NUglify.JavaScript
                     name = m_currentToken.Code;
                     id = new ConstantWrapper(name, PrimitiveType.String, m_currentToken.Clone());
                 }
+                else if(expression is LookupExpression {Name: "String"} && m_currentToken.Token == JSToken.TemplateLiteral && m_currentToken.Code.StartsWith("raw`"))
+                {
+					// We have a String.raw`foo` situation
+                    // This ends up making the raw`foo` a MemberExpression instead of a method call. This is probably wrong but
+                    // template literal functions have a wierd syntax. Future bugs may turn out to mean this should be changed to
+                    // be a CallExpression which may need special treatment elsewhere (e.g. Visitors)
+					name = m_currentToken.Code;
+                }
                 else
                 {
                     ReportError(JSError.NoIdentifier);
@@ -5301,9 +5309,7 @@ namespace NUglify.JavaScript
             }
 
             if (id != null)
-            {
-                nameContext.UpdateWith(id.Context);
-            }
+	            nameContext.UpdateWith(id.Context);
 
             GetNextToken();
             expression = new MemberExpression(expression != null ? expression.Context.CombineWith(nameContext) : nameContext.Clone(), optionalChaining)
