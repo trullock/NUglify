@@ -1,4 +1,0 @@
-[submodule "src/NUglify.Tests/TestData/HTML/tidy-html5-tests"]
-	path = src/NUglify.Tests/TestData/HTML/tidy-html5-tests
-	url = https://github.com/xoofx/tidy-html5-tests.git
-	branch = master
