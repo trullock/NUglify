@@ -3944,15 +3944,14 @@ namespace NUglify.Css
 
                             // add the comment to the builder
                             sb.Append(commentText);
+                            if(Settings.OutputMode == OutputMode.MultipleLines)
+								sb.Append(Settings.LineTerminator);
                         }
                     }
 
                     // next token
                     m_currentToken = m_scanner.NextToken(!m_insideCalc);
-                    if (EchoWriter != null)
-                    {
-                        EchoWriter.Write(CurrentTokenText);
-                    }
+                    EchoWriter?.Write(CurrentTokenText);
 
                     m_encounteredNewLine = m_encounteredNewLine || m_scanner.GotEndOfLine;
                 }

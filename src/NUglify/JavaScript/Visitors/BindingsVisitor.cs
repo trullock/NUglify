@@ -386,7 +386,7 @@ namespace NUglify.JavaScript.Visitors
             ReportError(node);
         }
 
-        public void Visit(ImportantComment node)
+        public void Visit(Syntax.Comment node)
         {
             ReportError(node);
         }

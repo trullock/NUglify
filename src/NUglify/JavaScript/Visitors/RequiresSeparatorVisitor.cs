@@ -415,12 +415,10 @@ namespace NUglify.JavaScript.Visitors
             }
         }
 
-        public void Visit(ImportantComment node)
+        public void Visit(Syntax.Comment node)
         {
             if (node != null)
-            {
-                DoesRequire = false;
-            }
+	            DoesRequire = false;
         }
 
         public void Visit(ImportExportSpecifier node)

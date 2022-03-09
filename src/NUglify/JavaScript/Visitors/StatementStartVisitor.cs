@@ -279,7 +279,7 @@ namespace NUglify.JavaScript.Visitors
             // starts with an 'if', so we don't care
         }
 
-        public void Visit(ImportantComment node)
+        public void Visit(Syntax.Comment node)
         {
             // comment, so we need to keep going
         }
