@@ -354,6 +354,7 @@ namespace NUglify.Html
 		        jsonSettings.Format = JavaScriptFormat.JSON;
 		        jsonSettings.SourceMode = JavaScriptSourceMode.Expression;
 		        jsonSettings.IgnoreConditionalCompilation = true;
+		        jsonSettings.KillSwitch |= (long)TreeModifications.BooleanLiteralsToNotOperators;
 		        result = Uglify.Js(text, "inner_js", jsonSettings);
 	        }
 	        else

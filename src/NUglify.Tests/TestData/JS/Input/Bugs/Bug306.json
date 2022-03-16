@@ -1,0 +1,8 @@
+﻿{
+	"@context": "http://schema.org/",
+	"@type": "WebSite",
+	"url": "https://domain.ext",
+	"name": "Name Site",
+	"isChecked": true,
+	"alternateName": null
+}

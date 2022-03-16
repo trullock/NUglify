@@ -345,5 +345,11 @@ namespace NUglify.Tests.JavaScript
         {
 	        TestHelper.Instance.RunTest("-rename:all");
         }
+
+        [Test]
+        public void Bug306()
+        {
+	        TestHelper.Instance.RunTest("-js:json");
+        }
     }
 }

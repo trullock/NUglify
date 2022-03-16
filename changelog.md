@@ -2,7 +2,10 @@
 
 ## vNext (unpublished)
 
-## v1.18.9 (16 March 2022)
+## v1.19.0 (16 March 2022)
+- Fixed bug with boolean handling inside JSON
+
+## v1.18.0 (16 March 2022)
 - Added support for compressing `<script type="application/json">`
 
 ## v1.17.14 (8 March 2022)

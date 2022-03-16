@@ -303,6 +303,11 @@ namespace NUglify.Tests.JavaScript.Common
 
                             args.AddLast(outputMapFile);
                         }
+                        else if (option.Equals("-js:json", StringComparison.OrdinalIgnoreCase))
+                        {
+	                        inputFile += ".json";
+	                        outputFile += ".json";
+                        }
                     }
                 }
             }
