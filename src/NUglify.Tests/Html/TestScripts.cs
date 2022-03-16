@@ -54,7 +54,7 @@ namespace NUglify.Tests.Html
         }
 
         [Test]
-        public void Json()
+        public void LdJson()
         {
 
             input = @"
@@ -70,6 +70,24 @@ var js=""somevar"";
 }</script>";
             output = @"<script>var js=""somevar""</script><script type=application/ld+json>{""@context"":""http://schema.org/"",""@type"":""WebSite"",""url"":""https://domain.ext"",""name"":""Name Site"",""alternateName"":null}</script>";
             equal(minify(input), output);
+        }
+        [Test]
+        public void Json()
+        {
+
+	        input = @"
+<script type=text/javascript>
+var js=""somevar"";
+</script>
+<script type=application/json>{
+    ""@context"": ""http://schema.org/"",
+    ""@type"": ""WebSite"",
+    ""url"": ""https://domain.ext"",
+    ""name"": ""Name Site"",
+    ""alternateName"": null
+}</script>";
+	        output = @"<script>var js=""somevar""</script><script type=application/json>{""@context"":""http://schema.org/"",""@type"":""WebSite"",""url"":""https://domain.ext"",""name"":""Name Site"",""alternateName"":null}</script>";
+	        equal(minify(input), output);
         }
     }
 }

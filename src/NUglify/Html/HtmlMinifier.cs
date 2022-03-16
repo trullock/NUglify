@@ -498,21 +498,22 @@ namespace NUglify.Html
 	        if (string.IsNullOrEmpty(value))
 		        return HtmlScriptStyleElement.Javascript;
             
-	        var text = value.Split(';')[0].ToLowerInvariant();
-	        switch (text)
-	        {
-		        case "text/javascript":
-		        case "text/ecmascript":
-		        case "text/jscript":
-		        case "application/javascript":
-		        case "application/x-javascript":
-		        case "application/ecmascript":
-			        return HtmlScriptStyleElement.Javascript;
-		        case "application/ld+json":
-			        return HtmlScriptStyleElement.JSON;
+			var text = value.Split(';')[0].ToLowerInvariant();
+			switch (text)
+			{
+				case "text/javascript":
+				case "text/ecmascript":
+				case "text/jscript":
+				case "application/javascript":
+				case "application/x-javascript":
+				case "application/ecmascript":
+				return HtmlScriptStyleElement.Javascript;
+				case "application/ld+json":
+				case "application/json":
+                    return HtmlScriptStyleElement.JSON;
 	        }
 
-	        return HtmlScriptStyleElement.NA;
+			return HtmlScriptStyleElement.NA;
         }
 
         static bool IsAttributeValueCss(string value)
