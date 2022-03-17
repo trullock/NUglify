@@ -1,0 +1,1 @@
+﻿let{op,lhs,rhs}=getASTNode(),{foo,bar}=fooBar;({op,lhs,rhs}=getASTNode());({foo,bar}=fooBar)
