@@ -112,9 +112,20 @@ div:is(.test) {
         [Test]
         public void Bug302()
         {
-            Assert.AreEqual("p{background-color:var(--_flumo-grid-secondary-border-color) !important}", Uglify.Css(@"
+	        Assert.AreEqual("p{background-color:var(--_flumo-grid-secondary-border-color) !important}", Uglify.Css(@"
 p {
 	background-color: var(--_flumo-grid-secondary-border-color) !important;
+}").Code);
+        }
+
+        [Test]
+        public void Bug309()
+        {
+	        Assert.AreEqual("body{border-top-width:.5vmax;--custom-property:0px}", Uglify.Css(@"
+body
+{
+	border-top-width: 0.5vmax;
+	--custom-property: 0px; 
 }").Code);
         }
     }

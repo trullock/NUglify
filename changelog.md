@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.19.1 (30 March 2022)
+- Stopped zeros being reduced for css properties
+
 ## v1.19.0 (16 March 2022)
 - Fixed bug with boolean handling inside JSON
 

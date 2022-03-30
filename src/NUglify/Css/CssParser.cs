@@ -238,7 +238,8 @@ namespace NUglify.Css
         static bool IsZeroReducibleProperty(string propertyName)
         {
             // Are there other delcarations which shouldn't have 0px->0 within them?
-            return !propertyName.Equals("flex", StringComparison.OrdinalIgnoreCase);
+            return !propertyName.Equals("flex", StringComparison.OrdinalIgnoreCase)
+	            && !propertyName.StartsWith("--", StringComparison.OrdinalIgnoreCase);
         }
         #endregion
 
@@ -2579,15 +2580,12 @@ namespace NUglify.Css
                 // so the declaration is not outputted (we'll always reset this flag at
                 // the end of the function)
                 if (Settings.ExcludeVendorPrefixes.Count > 0 && IsExcludedVendorPrefix(propertyName))
-                {
-                    m_noOutput = true;
-                }
+	                m_noOutput = true;
 
                 NewLine();
                 if (prefix != null)
-                {
-                    Append(prefix);
-                }
+	                Append(prefix);
+
                 AppendCurrent();
 
                 // we want to skip space BUT we want to preserve a space if there is a whitespace character
@@ -2607,6 +2605,8 @@ namespace NUglify.Css
 
                 if (Settings.OutputDeclarationWhitespace)
 	                Append(' ');
+
+                m_parsingZeroReducibleProperty = IsZeroReducibleProperty(propertyName);
 
                 SkipSpace();
 
@@ -2628,7 +2628,6 @@ namespace NUglify.Css
                 else 
                 {
                     m_parsingColorValue = MightContainColorNames(propertyName);
-                    m_parsingZeroReducibleProperty = IsZeroReducibleProperty(propertyName);
                     parsed = ParseExpr();
                     m_parsingColorValue = false;
 
