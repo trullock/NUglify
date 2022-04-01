@@ -1,0 +1,1 @@
+﻿class n{constructor(){const n=new.target.prototype}}
