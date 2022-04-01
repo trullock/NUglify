@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.19.2 (1 April 2022)
+- Added support for `new.target.prototype`
+
 ## v1.19.1 (30 March 2022)
 - Stopped zeros being reduced for css properties
 

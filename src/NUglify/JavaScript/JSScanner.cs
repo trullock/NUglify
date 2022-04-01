@@ -1861,7 +1861,13 @@ namespace NUglify.JavaScript
                 if (token == JSToken.Identifier)
                 {
                     // walk the keyword list to find a possible match
-                    token = keyword.GetKeyword(sourceCode, CurrentToken.StartPosition, currentPosition - CurrentToken.StartPosition);
+                    var keywordToken = keyword.GetKeyword(sourceCode, CurrentToken.StartPosition, currentPosition - CurrentToken.StartPosition);
+
+                    // you can do `new.target.prototype`
+                    if (keywordToken == JSToken.New && GetChar(currentPosition) == '.')
+	                    return token;
+
+                    return keywordToken;
                 }
                 else if (token == JSToken.TemplateLiteral)
                 {
