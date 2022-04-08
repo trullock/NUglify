@@ -167,17 +167,13 @@ namespace NUglify.Html
         void TrimNodeOnEnd(HtmlElement element)
         {
             // If the element is a valid HTML descriptor, we can safely turn-it all lowercase
-            if (xmlNamespaceCount == 0)
-            {
-                element.Name = element.Name.ToLowerInvariant();
-            }
+            if (xmlNamespaceCount == 0 && !settings.TagsCaseSensitive)
+	            element.Name = element.Name.ToLowerInvariant();
 
             // If the element being visited is not an inline tag, we need to clear the previous text node
             if (settings.CollapseWhitespaces && !settings.InlineTagsPreservingSpacesAround.ContainsKey(element.Name) && element.Descriptor != null && element.Kind != ElementKind.SelfClosing)
-            {
-                TrimPendingTextNodes();
-            }
-            
+	            TrimPendingTextNodes();
+
             if (element.Attributes != null)
             {
                 for (int i = element.Attributes.Count - 1; i >= 0; i--)

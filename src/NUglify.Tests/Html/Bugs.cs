@@ -222,5 +222,16 @@ test
 			equal(htmlToText.Code, "Hello\nThis is a test\nThis is another test\n \nSomething\n");
 		}
 
+
+
+		[Test]
+		public void Bug311()
+		{
+			HtmlSettings settings = new HtmlSettings();
+			settings.TagsCaseSensitive = true;
+			input = "<TagName>Case sensitive</TagName>";
+			var htmlToText = Uglify.Html(input, settings);
+			equal(htmlToText.Code, input);
+		}
     }
 }

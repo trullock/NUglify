@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.20.0 (8 April 2022)
+- Addes support for HTMLSettings.TagsCaseSensitive
+
 ## v1.19.2 (1 April 2022)
 - Added support for `new.target.prototype`
 

@@ -18,6 +18,7 @@ namespace NUglify.Html
         public HtmlSettings()
         {
             AttributesCaseSensitive = false;
+            TagsCaseSensitive = false;
             CollapseWhitespaces = true;
             RemoveComments = true;
             RemoveOptionalTags = true;
@@ -101,6 +102,12 @@ namespace NUglify.Html
         /// Default is <c>false</c>
         /// </summary>
         public bool AttributesCaseSensitive { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to treat tag names as case sensitive.
+        /// Default is <c>false</c>
+        /// </summary>
+        public bool TagsCaseSensitive { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to collapse whitespaces.
