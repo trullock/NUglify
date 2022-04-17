@@ -2662,11 +2662,12 @@ namespace NUglify.Css
             Parsed parsed = Parsed.False;
             if (CurrentTokenType == TokenType.ImportantSymbol)
             {
-                // issue #21057 - do not trip space before !important keyword.
-                if (m_skippedSpace)
-                {
-                    Append(' ');
-                }
+                // NUglify Bug 314: I don't know what the below issue is/was, but it should be ok for modern browsers to omit the space
+	            // AjaxMin Issue #21057 - do not strip space before !important keyword.
+                // if (m_skippedSpace)
+                // {
+                //     Append(' ');
+                // }
 
                 AppendCurrent();
                 SkipSpace();
