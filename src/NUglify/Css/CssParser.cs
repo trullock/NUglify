@@ -912,9 +912,12 @@ namespace NUglify.Css
                 PushWaypoint();
                 NewLine();
                 AppendCurrent();
-                Append(' ');
+                
                 SkipSpace();
 
+
+                if (CurrentTokenType != TokenType.Character || CurrentTokenText != "(")
+	                Append(' ');
 
                 if (CurrentTokenType == TokenType.Identifier)
                 {
