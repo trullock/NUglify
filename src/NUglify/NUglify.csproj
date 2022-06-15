@@ -14,6 +14,7 @@
     <PackageReleaseNotes>https://github.com/trullock/NUglify/blob/master/changelog.md</PackageReleaseNotes>
     <PackageIcon>nuglify.png</PackageIcon>
     <PackageProjectUrl>https://github.com/trullock/NUglify</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/trullock/NUglify/blob/master/license.txt</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/trullock/NUglify</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
