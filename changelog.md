@@ -2,6 +2,9 @@
 
 ## vNext (unpublished)
 
+## v1.20.2 (21 July 2022)
+- Fixes bug with empty css variable declarations
+
 ## v1.20.0 (8 April 2022)
 - Addes support for HTMLSettings.TagsCaseSensitive
 
