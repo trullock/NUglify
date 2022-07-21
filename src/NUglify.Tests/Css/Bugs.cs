@@ -128,5 +128,13 @@ body
 	--custom-property: 0px; 
 }").Code);
         }
+
+
+        [Test]
+        public void Bug331()
+        {
+	        TestHelper.Instance.RunTest();
+        }
+
     }
 }
