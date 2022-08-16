@@ -767,7 +767,7 @@ namespace NUglify.JavaScript.Visitors
                 {
                     if (node.OptionalChaining)
                     {
-                        OutputPossibleLineBreak('?');
+                        Output('?');
                         OutputPossibleLineBreak('.');
                     }
 
