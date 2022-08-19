@@ -608,6 +608,9 @@
     <Content Include="TestData\JS\Expected\ES2020\BigIntInitialisation.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\JS\Expected\ES2020\OptionalChainingLineBreak.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\JS\Expected\ES2021\LogicalNullishAssign.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2989,6 +2992,9 @@
     <None Include="TestData\JS\Input\CommandLine\Expression.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="TestData\JS\Input\ES2020\OptionalChainingLineBreak.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\JS\Input\Literals\TemplateLiteralsEscaped.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

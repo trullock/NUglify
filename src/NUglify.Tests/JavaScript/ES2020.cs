@@ -20,6 +20,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void OptionalChainingLineBreak() 
+        {
+            TestHelper.Instance.RunTest("-line:1");
+        }
+
+        [Test]
         public void GlobalThis()
         {
             TestHelper.Instance.RunTest("-rename:all");
