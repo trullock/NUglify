@@ -124,6 +124,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void ArrowFunctionLineBreak()
+        {
+            TestHelper.Instance.RunTest("-line:1");
+        }
+
+        [Test]
         public void DefaultValues()
         {
             TestHelper.Instance.RunTest();
