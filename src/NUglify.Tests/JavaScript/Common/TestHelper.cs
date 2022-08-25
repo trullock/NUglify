@@ -712,89 +712,103 @@ namespace NUglify.Tests.JavaScript.Common
         /// </summary>
         /// <exception cref="AggregateException"></exception>
         public void RunSyntaxTestForAllFilesLineBreaks() {
-            int timeOutSeconds = 2;
             DirectoryInfo dir = new DirectoryInfo(InputFolder);
-            List<FileInfo> alltTestFiles = dir.GetFiles("*.js", SearchOption.AllDirectories).ToList();
-            var switchParser = new UglifyCommandParser();
-            switchParser.Parse("-line:1");
-            var filesToTest = alltTestFiles.Select(fi => {
+            List<FileInfo> allTestFiles = dir.GetFiles("*.js", SearchOption.AllDirectories).ToList();
+            var sw = new Stopwatch();
+            sw.Start();
+            var timeout = TimeSpan.FromSeconds(2);
+            var testResults = allTestFiles.Select(fi => {
                 string jsSource = File.ReadAllText(fi.FullName);
-                var engine = new V8ScriptEngine();
-                bool testPassed = false;
-                
-                var task = Task.Run(() => {
-                    try {
-                        Trace.Write($"Testing unminified file: {fi.Name} ");
-                        engine.Execute(jsSource);
-                        testPassed = true;
-                    } catch (ScriptEngineException e) {
-                        if (e.ExecutionStarted) {
-                            testPassed = true;
-                        }
-                    }
-                });
-                bool timedOut = !task.Wait(TimeSpan.FromSeconds(timeOutSeconds));
-                Trace.WriteLine(timedOut ? "finished." : "timed out, but execution started.");
-                return new {
-                    testPassed = testPassed,
-                    timedOut = timedOut,
-                    file = fi,
-                    jsSource = jsSource
-                };
-            }).Where(f => f.testPassed).ToList();
-            var failedFiles = filesToTest.Select(f => {
-                var engine = new V8ScriptEngine();
-                var sb = new StringBuilder();
-                var parser = new JSParser();
-                var testPassed = false;
-                ScriptEngineException exception = new ScriptEngineException();
-                using (var writer = new StringWriter(sb)) {
-                    if (switchParser.JSSettings.PreprocessOnly) {
-                        parser.EchoWriter = writer;
-                    }
-                    // normal -- just run it through the parser
-                    var block = parser.Parse(new DocumentContext(f.jsSource) { FileContext = f.file.FullName }, switchParser.JSSettings);
-                    if (!switchParser.JSSettings.PreprocessOnly) {
-                        // look at the settings for the proper output visitor
-                        if (switchParser.JSSettings.Format == JavaScriptFormat.JSON) {
-                            {
-                                if (!JsonOutputVisitor.Apply(writer, block, switchParser.JSSettings)) {
-                                    Trace.WriteLine("JSON OUTPUT ERRORS!");
-                                }
-                            }
-                        } else {
-                            OutputVisitor.Apply(writer, block, switchParser.JSSettings);
-                        }
+                var (debugFinished, debugExecutionStarted, _) = Execute(jsSource, fi.Name, "debug", sw, timeout);
+                if (!debugExecutionStarted) {
+                    Trace.WriteLine($"{fi.Name}: Syntax error, skipping minification ({fi.FullName}).");
+                    return null;
+                } else {
+                    var crunchedCode = Minify(jsSource, "-line:1");
+                    var (minifiedFinished, minifiedExecutionStarted, minifiedException) = Execute(crunchedCode, fi.Name, "minified", sw, timeout);
+                    if (!minifiedExecutionStarted) {
+                        //There 
+                        Assert.NotNull(minifiedException, "There should be an exception if the execution did not even start.");
+                        return new {
+                            testPassed = false,
+                            message = minifiedException.ErrorDetails,
+                            filePath = fi.FullName,
+                            minifiedContent = crunchedCode
+                        };
+                    } else if (!minifiedFinished && debugFinished) {
+                        //Timeout in minified code, but not in original.
+                        return new {
+                            testPassed = false,
+                            message = "Timeout in minified code, but not in original",
+                            filePath = fi.FullName,
+                            minifiedContent = crunchedCode
+                        };
+                    } else {
+                        return null;
                     }
                 }
-                var crunchedCode = sb.ToString();
-                var task = Task.Run(() => {
-                    try {
-                        Trace.Write($"Testing minified file: {f.file.Name} ");
-                        engine.Execute(crunchedCode);
-                        testPassed = true;
-                    } catch (ScriptEngineException e) {
-                        exception = e;
-                        if (e.ExecutionStarted) {
-                            testPassed = true;
-                        }
-                    }
-                });
-                bool timedOut = !task.Wait(TimeSpan.FromSeconds(timeOutSeconds));
-                Trace.WriteLine(timedOut ? "finished" : "timed out, but execution started.");
-                if (!testPassed && f.timedOut == timedOut && exception.ErrorDetails.StartsWith("An error occurred during script execution")) { // if test timed out before its probably not a wrong syntax. 
-                    testPassed = true;
-                }
-                return new {
-                    testPassed = testPassed,
-                    exception = exception,
-                    filePath = f.file.FullName,
-                    minifiedContent = crunchedCode
-                };
-            }).Where(f => !f.testPassed).ToList();
-            if (failedFiles.Count > 0) {
-                throw new AggregateException("Test failed, following files have wrong syntax after minification." + Environment.NewLine + String.Join(Environment.NewLine, failedFiles.Select(f => $"{f.filePath} => {f.exception.ErrorDetails}{Environment.NewLine}{f.minifiedContent}{Environment.NewLine}")), failedFiles.Select(f => f.exception));
+            }).Where(r => r != null).ToList();
+            
+            if (testResults.Any()) {
+                throw new Exception("Test failed, following files had errors." + Environment.NewLine + String.Join(Environment.NewLine, testResults.Select(f => $"{f.filePath} => {f.message}{Environment.NewLine}{f.minifiedContent}{Environment.NewLine}")));
             }
+        }
+
+        private static String Minify(string code, string minifyParameters) {
+            var switchParser = new UglifyCommandParser();
+            switchParser.Parse(minifyParameters);
+
+            var sb = new StringBuilder();
+            var parser = new JSParser();
+            using (var writer = new StringWriter(sb)) {
+                if (switchParser.JSSettings.PreprocessOnly) {
+                    parser.EchoWriter = writer;
+                }
+                // normal -- just run it through the parser
+                var block = parser.Parse(new DocumentContext(code), switchParser.JSSettings);
+                if (!switchParser.JSSettings.PreprocessOnly) {
+                    // look at the settings for the proper output visitor
+                    if (switchParser.JSSettings.Format == JavaScriptFormat.JSON) {
+                        {
+                            if (!JsonOutputVisitor.Apply(writer, block, switchParser.JSSettings)) {
+                                Trace.WriteLine("JSON OUTPUT ERRORS!");
+                            }
+                        }
+                    } else {
+                        OutputVisitor.Apply(writer, block, switchParser.JSSettings);
+                    }
+                }
+            }
+            return sb.ToString();
+        }
+
+        private (bool, bool, ScriptEngineException) Execute(string code, string filename, string type, Stopwatch sw, TimeSpan timeout) {
+            var engine = new V8ScriptEngine();
+            bool executionStarted = false;
+            ScriptEngineException exception = null;
+            var task = Task.Run(() => {
+                try {
+                    Trace.WriteLine($"{sw.ElapsedMilliseconds}: Starting {filename}.{type}.");
+                    engine.Execute(code);
+                    Trace.WriteLine($"{sw.ElapsedMilliseconds}: Finished {filename}.{type}.");
+                    executionStarted = true;
+                } catch (ScriptEngineException e) {
+                    exception = e;
+                    if (e.ExecutionStarted) {
+                        executionStarted = true;
+                        Trace.WriteLine($"{sw.ElapsedMilliseconds}: Exception from {filename}.{type}. Execution did start.");
+                    } else {
+                        Trace.WriteLine($"{sw.ElapsedMilliseconds}: Exception from {filename}.{type}. Execution did not even start.");
+                    }
+                }
+            });
+            bool finishedInTime = task.Wait(timeout);
+            if (!finishedInTime) {
+                //If a timeout occurs, we do just assume that the execution started.
+                executionStarted = true;
+            }
+            Assert.IsTrue(executionStarted || exception != null, "There should be an exception if the execution did not even start.");
+            return (finishedInTime, executionStarted, exception);
         }
 
         public void RunErrorTest(string settingsSwitches, params JSError[] expectedErrorArray)
