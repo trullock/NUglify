@@ -767,7 +767,7 @@ namespace NUglify.JavaScript.Visitors
                 {
                     if (node.OptionalChaining)
                     {
-                        OutputPossibleLineBreak('?');
+                        Output('?');
                         OutputPossibleLineBreak('.');
                     }
 
@@ -2549,7 +2549,7 @@ namespace NUglify.JavaScript.Visitors
                 }
 
                 if (node.OptionalChaining)
-                    OutputPossibleLineBreak('?');
+                    Output('?');
                 OutputPossibleLineBreak('.');
                 
                 MarkSegment(node, node.Name, node.NameContext);
