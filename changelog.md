@@ -1,9 +1,8 @@
 # Changelog
 
 ## vNext (unpublished)
-
-## v1.20.3 (8 November 2022)
-- Optimises compression onf @supports()
+- Optimises compression of @supports()
+- Optimises !important
 
 ## v1.20.2 (21 July 2022)
 - Fixes bug with empty css variable declarations
