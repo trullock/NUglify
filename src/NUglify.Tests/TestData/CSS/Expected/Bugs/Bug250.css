@@ -1,1 +1,1 @@
-﻿@supports (not (-ms-ime-align:auto)) and (not (-moz-appearance:none)){.foo{width:5px}}.this-should-be-class{height:3px}
+﻿@supports(not (-ms-ime-align:auto)) and (not (-moz-appearance:none)){.foo{width:5px}}.this-should-be-class{height:3px}
