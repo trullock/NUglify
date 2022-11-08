@@ -41,7 +41,9 @@ namespace NUglify.Css
         bool m_skippedSpace;
 
         bool m_insideCalc;
-        bool m_parsingZeroReducibleProperty;
+        bool parsingZeroReducibleProperty;
+        // not to be confused with "non-reducible"
+        bool parsingNoneReducibleProperty;
 
         int lineLength;
         bool m_noColorAbbreviation;
@@ -241,6 +243,18 @@ namespace NUglify.Css
             return !propertyName.Equals("flex", StringComparison.OrdinalIgnoreCase)
 	            && !propertyName.StartsWith("--", StringComparison.OrdinalIgnoreCase);
         }
+
+        // Not to be confused with "non-reducible"
+        static bool IsNoneReducibleProperty(string propertyName)
+        {
+	        // Are there other delcarations which can be reduced?
+	        return propertyName.Equals("border", StringComparison.OrdinalIgnoreCase) 
+	               || propertyName.Equals("border-left", StringComparison.OrdinalIgnoreCase)
+	               || propertyName.Equals("border-top", StringComparison.OrdinalIgnoreCase)
+	               || propertyName.Equals("border-right", StringComparison.OrdinalIgnoreCase)
+	               || propertyName.Equals("border-bottom", StringComparison.OrdinalIgnoreCase)
+	               || propertyName.Equals("outline", StringComparison.OrdinalIgnoreCase);
+        }
         #endregion
 
         #region Sharepoint replacement comment regex
@@ -280,7 +294,7 @@ namespace NUglify.Css
             m_namespaces = new HashSet<string>();
 
             // default is true
-            m_parsingZeroReducibleProperty = true;
+            parsingZeroReducibleProperty = true;
             this.indentLevel = 0;
         }
 
@@ -2609,7 +2623,8 @@ namespace NUglify.Css
                 if (Settings.OutputDeclarationWhitespace)
 	                Append(' ');
 
-                m_parsingZeroReducibleProperty = IsZeroReducibleProperty(propertyName);
+                parsingZeroReducibleProperty = IsZeroReducibleProperty(propertyName);
+                parsingNoneReducibleProperty = IsNoneReducibleProperty(propertyName);
 
                 SkipSpace();
 
@@ -2645,7 +2660,7 @@ namespace NUglify.Css
                         return Parsed.True;
                     }
 
-                    m_parsingZeroReducibleProperty = true;
+                    parsingZeroReducibleProperty = true;
                 }
 
                 // optional
@@ -2838,7 +2853,10 @@ namespace NUglify.Css
                         wasEmpty = false;
                     }
 
-                    AppendCurrent();
+                    if (parsingNoneReducibleProperty && CurrentTokenText.ToLowerInvariant() == "none")
+	                    Append('0');
+                    else
+	                    AppendCurrent();
                     SkipSpace();
                     parsed = Parsed.True;
                     break;
@@ -3818,7 +3836,7 @@ namespace NUglify.Css
         // skip to the next token, but output any comments we may find as we go along
         TokenType NextToken()
         {
-            m_currentToken = m_scanner.NextToken(!m_insideCalc && m_parsingZeroReducibleProperty);
+            m_currentToken = m_scanner.NextToken(!m_insideCalc && parsingZeroReducibleProperty);
             if (EchoWriter != null)
             {
                 EchoWriter.Write(CurrentTokenText);
@@ -3921,9 +3939,7 @@ namespace NUglify.Css
                                         {
                                             m_valueReplacement = resourceList[ndx][ident];
                                             if (m_valueReplacement != null)
-                                            {
-                                                break;
-                                            }
+	                                            break;
                                         }
                                     }
 

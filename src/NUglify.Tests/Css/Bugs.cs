@@ -136,5 +136,20 @@ body
 	        TestHelper.Instance.RunTest();
         }
 
+        [Test]
+        public void Bug317()
+        {
+	        Assert.AreEqual("body{border:0;border-top:0;border-right:0;border-bottom:0;border-left:0;outline:0}", Uglify.Css(@"
+body
+{
+	border: none;
+	border-top: none;
+	border-right: none;
+	border-bottom: none;
+	border-left: none;
+	outline: none;
+}").Code);
+        }
+
     }
 }
