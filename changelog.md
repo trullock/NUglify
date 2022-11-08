@@ -3,6 +3,7 @@
 ## vNext (unpublished)
 - Optimises compression of @supports()
 - Optimises !important
+- Optimises border:0
 
 ## v1.20.2 (21 July 2022)
 - Fixes bug with empty css variable declarations
