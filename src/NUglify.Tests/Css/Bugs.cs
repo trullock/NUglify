@@ -112,7 +112,7 @@ div:is(.test) {
         [Test]
         public void Bug302()
         {
-	        Assert.AreEqual("p{background-color:var(--_flumo-grid-secondary-border-color) !important}", Uglify.Css(@"
+	        Assert.AreEqual("p{background-color:var(--_flumo-grid-secondary-border-color)!important}", Uglify.Css(@"
 p {
 	background-color: var(--_flumo-grid-secondary-border-color) !important;
 }").Code);
