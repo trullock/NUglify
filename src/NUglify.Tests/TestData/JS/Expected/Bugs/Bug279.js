@@ -1,1 +1,1 @@
-﻿"use strict";const config={...Manipulator.getDataAttributes(target),...Manipulator.getDataAttributes(this)}
+﻿"use strict";const config={...Manipulator.getDataAttributes(target),...Manipulator.getDataAttributes(this),...!1,...!1}

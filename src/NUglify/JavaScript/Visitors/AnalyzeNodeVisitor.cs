@@ -3370,7 +3370,7 @@ namespace NUglify.JavaScript.Visitors
 
                             if (keyName == null)
                             {
-	                            if (property.Value is UnaryExpression ue && ue.OperatorToken == JSToken.RestSpread && ue.Operand is CallExpression ce)
+	                            if (property.Value is UnaryExpression ue && ue.OperatorToken == JSToken.RestSpread)
 	                            {
 		                            keyName = property.Value.Context.ToString();
 	                            }
