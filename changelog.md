@@ -1,6 +1,7 @@
 # Changelog
 
-## vNext (unpublished)
+## v1.20.3 (23 November 2022)
+- Fixes spread bug
 - Optimises compression of @supports()
 - Optimises !important
 - Optimises border:0
