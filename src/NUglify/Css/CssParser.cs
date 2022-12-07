@@ -2853,7 +2853,7 @@ namespace NUglify.Css
                         wasEmpty = false;
                     }
 
-                    if (parsingNoneReducibleProperty && CurrentTokenText.ToLowerInvariant() == "none")
+                    if (parsingNoneReducibleProperty && CurrentTokenText.ToLowerInvariant() == "none" && m_lastOutputString == ":")
 	                    Append('0');
                     else
 	                    AppendCurrent();
