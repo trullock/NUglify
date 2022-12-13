@@ -151,5 +151,15 @@ body
 }").Code);
         }
 
+        [Test]
+        public void Bug343()
+        {
+            Assert.AreEqual("body{border:0 none;border:0 none #f00}", Uglify.Css(@"
+body
+{
+	border: 0 none;
+	border: 0 none #f00;
+}").Code);
+        }
     }
 }
