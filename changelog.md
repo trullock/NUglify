@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.20.4 (13 December 2022)
+- Fixes bug with border: 0 none
+
 ## v1.20.3 (23 November 2022)
 - Fixes spread bug
 - Optimises compression of @supports()
