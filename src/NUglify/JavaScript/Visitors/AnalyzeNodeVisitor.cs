@@ -3374,6 +3374,10 @@ namespace NUglify.JavaScript.Visitors
 	                            {
 		                            keyName = property.Value.Context.ToString();
 	                            }
+                                else if (property.Value is InitializerNode inode && inode.Binding is BindingIdentifier bi && !bi.Name.IsNullOrWhiteSpace())
+                                {
+                                    keyName = bi.Name;
+                                }
 	                            else
 	                            {
 		                            keyName = property.Value?.ToString();
