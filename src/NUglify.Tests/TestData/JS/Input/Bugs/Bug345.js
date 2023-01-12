@@ -1,11 +1,13 @@
-'use strict'; 
+'use strict';
 
-function test(
-    { 
-        a = 1, 
-        b = 2 
+function test1(
+    {
+        verylongname_x = 1,
+        verylongname_y = 2
     } = {}) {
- }
+    console.log(verylongname_x + verylongname_y);
+}
 
- function test2(a=1, b=2){
- }
+function test2(verylongname_x = 1, verylongname_y = 2) {
+    console.log(verylongname_x + verylongname_y);
+}
