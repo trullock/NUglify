@@ -29,18 +29,18 @@ namespace NUglify.JavaScript.Visitors
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling")]
     class AnalyzeNodeVisitor : TreeVisitor
     {
-	    JSParser m_parser;
-	    bool m_encounteredCCOn;// = false;
-	    MatchPropertiesVisitor m_matchVisitor;// == null;
-	    Stack<ActivationObject> m_scopeStack;
-	    JSError m_strictNameError = JSError.StrictModeVariableName;
-	    HashSet<string> m_noRename;
-	    bool m_stripDebug;
-	    bool m_lookForDebugNamespaces;
-	    bool m_possibleDebugNamespace;
-	    int m_possibleDebugNamespaceIndex;
-	    List<string[]> m_possibleDebugMatches;
-	    string[][] m_debugNamespaceParts;
+        JSParser m_parser;
+        bool m_encounteredCCOn;// = false;
+        MatchPropertiesVisitor m_matchVisitor;// == null;
+        Stack<ActivationObject> m_scopeStack;
+        JSError m_strictNameError = JSError.StrictModeVariableName;
+        HashSet<string> m_noRename;
+        bool m_stripDebug;
+        bool m_lookForDebugNamespaces;
+        bool m_possibleDebugNamespace;
+        int m_possibleDebugNamespaceIndex;
+        List<string[]> m_possibleDebugMatches;
+        string[][] m_debugNamespaceParts;
 
         public AnalyzeNodeVisitor(JSParser parser)
         {
@@ -86,7 +86,7 @@ namespace NUglify.JavaScript.Visitors
                     node.Operand2.Accept(this);
                 }
 
-                if ((node.Operand1 == null || node.Operand1.IsDebugOnly) 
+                if ((node.Operand1 == null || node.Operand1.IsDebugOnly)
                     && (node.Operand2 == null || node.Operand2.IsDebugOnly))
                 {
                     // if both operands are debug-only, then this whole expression is debug only.
@@ -121,10 +121,10 @@ namespace NUglify.JavaScript.Visitors
                                 // There is an easier way: apply the unary + operator to it. 
                                 // transform: lookup - 0   => +lookup
                                 var unary = new UnaryExpression(node.Context)
-                                    {
-                                        Operand = lookup,
-                                        OperatorToken = JSToken.Plus
-                                    };
+                                {
+                                    Operand = lookup,
+                                    OperatorToken = JSToken.Plus
+                                };
                                 node.Parent.ReplaceChild(node, unary);
 
                                 // because we recursed at the top of this function, we don't need to Analyze
@@ -180,7 +180,7 @@ namespace NUglify.JavaScript.Visitors
                                     node.Operand1.Context.HandleError(JSError.StrictModeUndefinedVariable, true);
                                 }
                                 else if (lookup.VariableField.FieldType == FieldType.Arguments
-                                    || (lookup.VariableField.FieldType == FieldType.Predefined 
+                                    || (lookup.VariableField.FieldType == FieldType.Predefined
                                     && string.CompareOrdinal(lookup.Name, "eval") == 0))
                                 {
                                     // strict mode cannot assign to lookup "eval" or "arguments"
@@ -520,7 +520,7 @@ namespace NUglify.JavaScript.Visitors
                 else if (forStatement.Initializer.IsExpression)
                 {
                     // transform: expr1;for(expr2;...) to for(expr1,expr2;...)
-                    var binOp = CommaExpression.CombineWithComma(node[ndx-1].Context.FlattenToStart(), node[ndx - 1], forStatement.Initializer);
+                    var binOp = CommaExpression.CombineWithComma(node[ndx - 1].Context.FlattenToStart(), node[ndx - 1], forStatement.Initializer);
 
                     // replace the initializer with the new binary operator and remove the previous node
                     forStatement.Initializer = binOp;
@@ -609,7 +609,7 @@ namespace NUglify.JavaScript.Visitors
             // start with the last statement in the block and back up over any function declarations
             // or important comments until we get the last statement
             var lastStatementIndex = node.Count - 1;
-            while (lastStatementIndex >= 0 
+            while (lastStatementIndex >= 0
                 && (node[lastStatementIndex] is FunctionObject || node[lastStatementIndex] is ImportantComment))
             {
                 --lastStatementIndex;
@@ -811,17 +811,17 @@ namespace NUglify.JavaScript.Visitors
                             // if applied on top of it.
                             // transform: if(cond)return expr;} to return cond?expr:void 0}
                             var conditional = new Conditional(ifNode.Condition.Context.FlattenToStart())
-                                {
-                                    Condition = ifNode.Condition,
-                                    TrueExpression = returnNode.Operand,
-                                    FalseExpression = CreateVoidNode(returnNode.Context.FlattenToStart())
-                                };
+                            {
+                                Condition = ifNode.Condition,
+                                TrueExpression = returnNode.Operand,
+                                FalseExpression = CreateVoidNode(returnNode.Context.FlattenToStart())
+                            };
 
                             // replace the if-statement with the new return node
                             node.ReplaceChild(ifNode, new ReturnStatement(ifNode.Context)
-                                {
-                                    Operand = conditional
-                                });
+                            {
+                                Operand = conditional
+                            });
                             Optimize(conditional);
                         }
                     }
@@ -919,17 +919,17 @@ namespace NUglify.JavaScript.Visitors
                                 }
                             }
                         }
-                        else if (previousVar != null 
+                        else if (previousVar != null
                             && (whileNode = node[ndx] as WhileStatement) != null
                             && m_parser.Settings.IsModificationAllowed(TreeModifications.ChangeWhileToFor))
                         {
                             // transform: var ...;while(cond)... => for(var ...;cond;)...
                             node[ndx] = new ForStatement(whileNode.Context.FlattenToStart())
-                                {
-                                    Initializer = previousVar,
-                                    Condition = whileNode.Condition,
-                                    Body = whileNode.Body
-                                };
+                            {
+                                Initializer = previousVar,
+                                Condition = whileNode.Condition,
+                                Body = whileNode.Body
+                            };
                             node.RemoveAt(ndx - 1);
                         }
                         else if (previousVar != null
@@ -955,9 +955,9 @@ namespace NUglify.JavaScript.Visitors
                                     if (newBinding != null)
                                     {
                                         var newVarDecl = new VariableDeclaration(forInNode.Variable.Context.Clone())
-                                            {
-                                                Binding = newBinding,
-                                            };
+                                        {
+                                            Binding = newBinding,
+                                        };
                                         var newVar = new VarDeclaration(forInNode.Variable.Context.Clone());
                                         newVar.Append(newVarDecl);
                                         forInNode.Variable = newVar;
@@ -1049,7 +1049,7 @@ namespace NUglify.JavaScript.Visitors
                     // and only one statement in the true block.
                     Conditional conditional;
                     IfStatement previousIf;
-                    while (indexPrevious >= 0 
+                    while (indexPrevious >= 0
                         && lastReturn != null
                         && (previousIf = node[indexPrevious] as IfStatement) != null
                         && previousIf.TrueBlock != null && previousIf.TrueBlock.Count == 1
@@ -1106,17 +1106,17 @@ namespace NUglify.JavaScript.Visitors
                                 {
                                     // transform: if(cond)return expr;return} to return cond?expr:void 0
                                     conditional = new Conditional(previousIf.Condition.Context.FlattenToStart())
-                                        {
-                                            Condition = previousIf.Condition,
-                                            TrueExpression = previousReturn.Operand,
-                                            FalseExpression = CreateVoidNode(previousReturn.Context.FlattenToStart())
-                                        };
+                                    {
+                                        Condition = previousIf.Condition,
+                                        TrueExpression = previousReturn.Operand,
+                                        FalseExpression = CreateVoidNode(previousReturn.Context.FlattenToStart())
+                                    };
 
                                     // replace the final return with the new return, then delete the previous if-statement
                                     if (node.ReplaceChild(lastReturn, new ReturnStatement(previousReturn.Context.FlattenToStart())
-                                        {
-                                            Operand = conditional
-                                        }))
+                                    {
+                                        Operand = conditional
+                                    }))
                                     {
                                         node.RemoveAt(indexPrevious);
                                         Optimize(conditional);
@@ -1130,17 +1130,17 @@ namespace NUglify.JavaScript.Visitors
                                 {
                                     // transform: if(cond)return;return expr} to return cond?void 0:expr
                                     conditional = new Conditional(previousIf.Condition.Context.FlattenToStart())
-                                        {
-                                            Condition = previousIf.Condition,
-                                            TrueExpression = CreateVoidNode(lastReturn.Context.FlattenToStart()),
-                                            FalseExpression = lastReturn.Operand
-                                        };
+                                    {
+                                        Condition = previousIf.Condition,
+                                        TrueExpression = CreateVoidNode(lastReturn.Context.FlattenToStart()),
+                                        FalseExpression = lastReturn.Operand
+                                    };
 
                                     // replace the final return with the new return, then delete the previous if-statement
                                     if (node.ReplaceChild(lastReturn, new ReturnStatement(lastReturn.Context.FlattenToStart())
-                                        {
-                                            Operand = conditional
-                                        }))
+                                    {
+                                        Operand = conditional
+                                    }))
                                     {
                                         node.RemoveAt(indexPrevious);
                                         Optimize(conditional);
@@ -1178,11 +1178,11 @@ namespace NUglify.JavaScript.Visitors
                                     // and then delete the previous if-statement
                                     // transform: if(cond)return expr1;return expr2} to return cond?expr1:expr2}
                                     conditional = new Conditional(previousIf.Condition.Context.FlattenToStart())
-                                        {
-                                            Condition = previousIf.Condition,
-                                            TrueExpression = previousReturn.Operand,
-                                            FalseExpression = lastReturn.Operand
-                                        };
+                                    {
+                                        Condition = previousIf.Condition,
+                                        TrueExpression = previousReturn.Operand,
+                                        FalseExpression = lastReturn.Operand
+                                    };
 
                                     // replace the operand on the final-return with the new conditional operator,
                                     // and then delete the previous if-statement
@@ -1203,7 +1203,7 @@ namespace NUglify.JavaScript.Visitors
                         {
                             // set the flag that indicates something changed in at least one of these loops
                             changedStatementToExpression = true;
-                            
+
                             // and since we changed something, we need to bump the index down one
                             // AFTER we grab the last return node (which has slipped into the same position
                             // as the previous node)
@@ -1227,7 +1227,7 @@ namespace NUglify.JavaScript.Visitors
                         && (conditional = lastReturn.Operand as Conditional) != null)
                     {
                         var unaryOperator = conditional.FalseExpression as UnaryExpression;
-                        if (unaryOperator != null 
+                        if (unaryOperator != null
                             && unaryOperator.OperatorToken == JSToken.Void
                             && unaryOperator.Operand is ConstantWrapper)
                         {
@@ -1254,20 +1254,20 @@ namespace NUglify.JavaScript.Visitors
                                 // transform: ...;return cond?expr:void 0} to ...;if(cond)return expr}
                                 // (only works at the function-level because of the implicit return statement)
                                 var ifNode = new IfStatement(lastReturn.Context)
+                                {
+                                    Condition = conditional.Condition,
+                                    TrueBlock = AstNode.ForceToBlock(new ReturnStatement(lastReturn.Context.Clone())
                                     {
-                                        Condition = conditional.Condition,
-                                        TrueBlock = AstNode.ForceToBlock(new ReturnStatement(lastReturn.Context.Clone())
-                                            {
-                                                Operand = conditional.TrueExpression
-                                            })
-                                    };
+                                        Operand = conditional.TrueExpression
+                                    })
+                                };
                                 node.ReplaceChild(lastReturn, ifNode);
                             }
                         }
                         else if (isFunctionLevel)
                         {
                             unaryOperator = conditional.TrueExpression as UnaryExpression;
-                            if (unaryOperator != null 
+                            if (unaryOperator != null
                                 && unaryOperator.OperatorToken == JSToken.Void
                                 && unaryOperator.Operand is ConstantWrapper)
                             {
@@ -1280,13 +1280,13 @@ namespace NUglify.JavaScript.Visitors
                                 // create a new if-node based on the condition, with the branches swapped 
                                 // (true-expression goes to false-branch, false-expression goes to true-branch
                                 var ifNode = new IfStatement(lastReturn.Context)
+                                {
+                                    Condition = conditional.Condition,
+                                    TrueBlock = AstNode.ForceToBlock(new ReturnStatement(lastReturn.Context.Clone())
                                     {
-                                        Condition = conditional.Condition,
-                                        TrueBlock = AstNode.ForceToBlock(new ReturnStatement(lastReturn.Context.Clone())
-                                            {
-                                                Operand = conditional.FalseExpression
-                                            })
-                                    };
+                                        Operand = conditional.FalseExpression
+                                    })
+                                };
                                 node.ReplaceChild(lastReturn, ifNode);
                             }
                         }
@@ -1319,12 +1319,12 @@ namespace NUglify.JavaScript.Visitors
                                 // previous condition with a logical-or and delete the current statement.
                                 // transform: if(cond1)return expr;if(cond2)return expr; to if(cond1||cond2)return expr;
                                 ifNode.Condition = new BinaryExpression(condition1.Context.FlattenToStart())
-                                    {
-                                        Operand1 = condition1,
-                                        Operand2 = condition2,
-                                        OperatorToken = JSToken.LogicalOr,
-                                        TerminatingContext = ifNode.TerminatingContext ?? node.TerminatingContext
-                                    };
+                                {
+                                    Operand1 = condition1,
+                                    Operand2 = condition2,
+                                    OperatorToken = JSToken.LogicalOr,
+                                    TerminatingContext = ifNode.TerminatingContext ?? node.TerminatingContext
+                                };
                                 DetachReferencesVisitor.Apply(currentExpr);
                                 node.RemoveAt(ndx);
                             }
@@ -1371,11 +1371,11 @@ namespace NUglify.JavaScript.Visitors
                                         // remove the secondIf node.
                                         node.RemoveAt(ndxMove);
                                         ifNode.Condition = new BinaryExpression(ifNode.Condition.Context.FlattenToStart())
-                                            {
-                                                Operand1 = ifNode.Condition,
-                                                Operand2 = secondIfNode.Condition,
-                                                OperatorToken = JSToken.LogicalAnd
-                                            };
+                                        {
+                                            Operand1 = ifNode.Condition,
+                                            Operand2 = secondIfNode.Condition,
+                                            OperatorToken = JSToken.LogicalAnd
+                                        };
 
                                         ifNode.TrueBlock = secondIfNode.TrueBlock;
                                     }
@@ -1425,7 +1425,7 @@ namespace NUglify.JavaScript.Visitors
 
                                 // if there's no label, then we're good. Otherwise we can only make this optimization
                                 // if the label refers to the parent iterator node.
-                                if (continueNode != null 
+                                if (continueNode != null
                                     && (string.IsNullOrEmpty(continueNode.Label) || (LabelMatchesParent(continueNode.Label, node.Parent))))
                                 {
                                     // if this is the last statement, then we don't really need the if at all
@@ -1455,11 +1455,11 @@ namespace NUglify.JavaScript.Visitors
                                                 // move all secondIf statements inside the if-node,
                                                 // remove the secondIf node.
                                                 ifNode.Condition = new BinaryExpression(ifNode.Condition.Context.FlattenToStart())
-                                                    {
-                                                        Operand1 = ifNode.Condition,
-                                                        Operand2 = secondIfNode.Condition,
-                                                        OperatorToken = JSToken.LogicalAnd
-                                                    };
+                                                {
+                                                    Operand1 = ifNode.Condition,
+                                                    Operand2 = secondIfNode.Condition,
+                                                    OperatorToken = JSToken.LogicalAnd
+                                                };
 
                                                 ifNode.TrueBlock = secondIfNode.TrueBlock;
                                                 node.RemoveAt(ndxMove);
@@ -1685,9 +1685,9 @@ namespace NUglify.JavaScript.Visitors
                                 {
                                     // create the new array literal object
                                     var arrayLiteral = new ArrayLiteral(node.Context)
-                                        {
-                                            Elements = node.Arguments
-                                        };
+                                    {
+                                        Elements = node.Arguments
+                                    };
 
                                     // replace ourself within our parent
                                     if (node.Parent.ReplaceChild(node, arrayLiteral))
@@ -1802,11 +1802,11 @@ namespace NUglify.JavaScript.Visitors
                                 // just going to convert this existing string to a member node WITH THE OLD STRING, 
                                 // and THEN analyze it (which will convert the old string to newName)
                                 MemberExpression replacementMember = new MemberExpression(node.Context, false)
-                                    {
-                                        Root = node.Function,
-                                        Name = argText,
-                                        NameContext = node.Arguments[0].Context
-                                    };
+                                {
+                                    Root = node.Function,
+                                    Name = argText,
+                                    NameContext = node.Arguments[0].Context
+                                };
                                 node.Parent.ReplaceChild(node, replacementMember);
 
                                 // this analyze call will convert the old-name member to the newName value
@@ -1828,11 +1828,11 @@ namespace NUglify.JavaScript.Visitors
                             // not a replacement, but the string literal is a safe identifier. So we will
                             // replace this call node with a Member-dot operation
                             MemberExpression replacementMember = new MemberExpression(node.Context, false)
-                                {
-                                    Root = node.Function,
-                                    Name = argText,
-                                    NameContext = node.Arguments[0].Context
-                                };
+                            {
+                                Root = node.Function,
+                                Name = argText,
+                                NameContext = node.Arguments[0].Context
+                            };
                             node.Parent.ReplaceChild(node, replacementMember);
                             replacementMember.Accept(this);
                             return;
@@ -1855,9 +1855,9 @@ namespace NUglify.JavaScript.Visitors
                         // are stripping debug namespaces. Replace the new-operator with an 
                         // empty object literal.
                         node.Parent.ReplaceChild(node, new ObjectLiteral(node.Context)
-                            {
-                                IsDebugOnly = true
-                            });
+                        {
+                            IsDebugOnly = true
+                        });
                     }
                 }
                 else
@@ -1876,7 +1876,7 @@ namespace NUglify.JavaScript.Visitors
                             m_scopeStack.Peek().IsKnownAtCompileTime = false;
                         }
                     }
-                    
+
                     // if this is a call to BigInt()
                     if (VisitCallExpressionIsGlobalFunction(node, lookup, member, "BigInt"))
                     {
@@ -1887,7 +1887,7 @@ namespace NUglify.JavaScript.Visitors
                                 double bigInt;
                                 if (m_parser.ConvertBigIntLiteralToBigInteger(constArgStringValue, out bigInt))
                                     node.Parent.ReplaceChild(node, new ConstantWrapper((long)bigInt + "n", PrimitiveType.Other, node.Arguments[0].Context));
-                                
+
                                 return;
                             }
 
@@ -1975,8 +1975,8 @@ namespace NUglify.JavaScript.Visitors
                     {
                         string functionName;
                         var functionObject = element as FunctionObject;
-                        if (functionObject != null 
-                            && functionObject.Binding != null 
+                        if (functionObject != null
+                            && functionObject.Binding != null
                             && !(functionName = functionObject.Binding.Name).IsNullOrWhiteSpace())
                         {
                             var errorContext = functionObject.Binding.Context ?? functionObject.Context;
@@ -2075,9 +2075,9 @@ namespace NUglify.JavaScript.Visitors
                 if (node.FalseExpression == null || node.FalseExpression.IsDebugOnly)
                 {
                     node.Parent.ReplaceChild(node, new ConstantWrapper(null, PrimitiveType.Null, node.Context)
-                        {
-                            IsDebugOnly = true
-                        });
+                    {
+                        IsDebugOnly = true
+                    });
                 }
                 else
                 {
@@ -2117,20 +2117,20 @@ namespace NUglify.JavaScript.Visitors
 
                             // transform: cond?lhs=expr1:lhs=expr2 to lhs=cond?expr1:expr2s
                             var binaryOp = new BinaryExpression(node.Context)
+                            {
+                                Operand1 = trueAssign.Operand1,
+                                Operand2 = new Conditional(node.Context)
                                 {
-                                    Operand1 = trueAssign.Operand1,
-                                    Operand2 = new Conditional(node.Context)
-                                    {
-                                        Condition = node.Condition,
-                                        QuestionContext = node.QuestionContext,
-                                        TrueExpression = trueAssign.Operand2,
-                                        ColonContext = node.ColonContext,
-                                        FalseExpression = falseAssign.Operand2
-                                    },
-                                    OperatorContext = trueAssign.OperatorContext,
-                                    OperatorToken = trueAssign.OperatorToken,
-                                    TerminatingContext = node.TerminatingContext
-                                };
+                                    Condition = node.Condition,
+                                    QuestionContext = node.QuestionContext,
+                                    TrueExpression = trueAssign.Operand2,
+                                    ColonContext = node.ColonContext,
+                                    FalseExpression = falseAssign.Operand2
+                                },
+                                OperatorContext = trueAssign.OperatorContext,
+                                OperatorToken = trueAssign.OperatorToken,
+                                TerminatingContext = node.TerminatingContext
+                            };
 
                             node.Parent.ReplaceChild(node, binaryOp);
                         }
@@ -2497,9 +2497,9 @@ namespace NUglify.JavaScript.Visitors
                     else
                     {
                         node.Collection = new ObjectLiteral(node.Collection.Context)
-                            {
-                                IsDebugOnly = true
-                            };
+                        {
+                            IsDebugOnly = true
+                        };
                     }
                 }
             }
@@ -2796,21 +2796,21 @@ namespace NUglify.JavaScript.Visitors
                             // applying a logical-not makes the condition smaller -- reverse the branches
                             logicalNot.Apply();
                             conditional = new Conditional(node.Context)
-                                {
-                                    Condition = node.Condition,
-                                    TrueExpression = node.FalseBlock[0],
-                                    FalseExpression = node.TrueBlock[0]
-                                };
+                            {
+                                Condition = node.Condition,
+                                TrueExpression = node.FalseBlock[0],
+                                FalseExpression = node.TrueBlock[0]
+                            };
                         }
                         else
                         {
                             // regular order
                             conditional = new Conditional(node.Context)
-                                {
-                                    Condition = node.Condition,
-                                    TrueExpression = node.TrueBlock[0],
-                                    FalseExpression = node.FalseBlock[0]
-                                };
+                            {
+                                Condition = node.Condition,
+                                TrueExpression = node.TrueBlock[0],
+                                FalseExpression = node.FalseBlock[0]
+                            };
                         }
 
                         node.Parent.ReplaceChild(
@@ -2843,18 +2843,18 @@ namespace NUglify.JavaScript.Visitors
                                 {
                                     // transform: if(cond)return expr1;else return expr2 to return cond?expr1:expr2
                                     var conditional = new Conditional(node.Condition.Context.FlattenToStart())
-                                        {
-                                            Condition = node.Condition,
-                                            TrueExpression = trueReturn.Operand,
-                                            FalseExpression = falseReturn.Operand
-                                        };
+                                    {
+                                        Condition = node.Condition,
+                                        TrueExpression = trueReturn.Operand,
+                                        FalseExpression = falseReturn.Operand
+                                    };
 
                                     // create a new return node from the conditional and replace
                                     // our if-node with it
                                     var returnNode = new ReturnStatement(node.Context)
-                                        {
-                                            Operand = conditional
-                                        };
+                                    {
+                                        Operand = conditional
+                                    };
 
                                     node.Parent.ReplaceChild(
                                         node,
@@ -2888,11 +2888,11 @@ namespace NUglify.JavaScript.Visitors
                         }
 
                         var binaryOp = new BinaryExpression(node.Context)
-                            {
-                                Operand1 = node.Condition,
-                                Operand2 = node.FalseBlock[0],
-                                OperatorToken = newOperator,
-                            };
+                        {
+                            Operand1 = node.Condition,
+                            Operand2 = node.FalseBlock[0],
+                            OperatorToken = newOperator,
+                        };
 
                         // we don't need to analyse this new node because we've already analyzed
                         // the pieces parts as part of the if. And this visitor's method for the BinaryExpression
@@ -2961,11 +2961,11 @@ namespace NUglify.JavaScript.Visitors
                         // change the first if-statement's condition to be cond1&&cond2
                         // move the nested if-statement's true block to the outer if-statement
                         node.Condition = new BinaryExpression(node.Condition.Context.FlattenToStart())
-                            {
-                                Operand1 = node.Condition,
-                                Operand2 = nestedIf.Condition,
-                                OperatorToken = JSToken.LogicalAnd
-                            };
+                        {
+                            Operand1 = node.Condition,
+                            Operand2 = nestedIf.Condition,
+                            OperatorToken = JSToken.LogicalAnd
+                        };
                         node.TrueBlock = nestedIf.TrueBlock;
                     }
                 }
@@ -2985,15 +2985,15 @@ namespace NUglify.JavaScript.Visitors
                 logicalNot.Apply();
                 newOperator = JSToken.LogicalOr;
             }
-            
+
             // because the true block is an expression, we know it must only have
             // ONE statement in it, so we can just dereference it directly.
             var binaryOp = new BinaryExpression(ifNode.Context)
-                {
-                    Operand1 = ifNode.Condition,
-                    Operand2 = expression,
-                    OperatorToken = newOperator,
-                };
+            {
+                Operand1 = ifNode.Condition,
+                Operand2 = expression,
+                OperatorToken = newOperator,
+            };
 
             // we don't need to analyse this new node because we've already analyzed
             // the pieces parts as part of the if. And this visitor's method for the BinaryExpression
@@ -3116,8 +3116,8 @@ namespace NUglify.JavaScript.Visitors
                         // duplicate constant combination logic should it be turned on.
                         node.Parent.ReplaceChild(node, new ConstantWrapper(double.PositiveInfinity, PrimitiveType.Number, node.Context));
                     }
-                    else if (m_lookForDebugNamespaces 
-                        && parentIsMember 
+                    else if (m_lookForDebugNamespaces
+                        && parentIsMember
                         && string.CompareOrdinal(node.Name, "window") == 0)
                     {
                         // this is a lookup for the global window object. Might be the start of a debug namespace.
@@ -3366,22 +3366,24 @@ namespace NUglify.JavaScript.Visitors
                             string keyName = property.Name?.Name;
 
                             if (keyName == null)
-	                            keyName = functionObject?.Binding?.Name;
+                                keyName = functionObject?.Binding?.Name;
 
                             if (keyName == null)
                             {
-	                            if (property.Value is UnaryExpression ue && ue.OperatorToken == JSToken.RestSpread)
-	                            {
-		                            keyName = property.Value.Context.ToString();
-	                            }
-                                else if (property.Value is InitializerNode inode && inode.Binding is BindingIdentifier bi && !bi.Name.IsNullOrWhiteSpace())
+                                if (property.Value is UnaryExpression ue && ue.OperatorToken == JSToken.RestSpread)
+                                {
+                                    keyName = property.Value.Context.ToString();
+                                }
+                                else if (property.Value is InitializerNode inode &&
+                                         inode.Binding is BindingIdentifier bi &&
+                                         !bi.Name.IsNullOrWhiteSpace())
                                 {
                                     keyName = bi.Name;
                                 }
-	                            else
-	                            {
-		                            keyName = property.Value?.ToString();
-	                            }
+                                else
+                                {
+                                    keyName = property.Value?.ToString();
+                                }
                             }
 
                             keyName += propertyType;
@@ -3488,7 +3490,7 @@ namespace NUglify.JavaScript.Visitors
         static string GetPropertyType(FunctionObject funcObj)
         {
             // should never be a function declaration....
-            switch(funcObj.IfNotNull(f => f.FunctionType))
+            switch (funcObj.IfNotNull(f => f.FunctionType))
             {
                 case FunctionType.Getter:
                     return "get";
@@ -3906,9 +3908,9 @@ namespace NUglify.JavaScript.Visitors
                         case JSToken.TypeOf:
                             // typeof null is "object"
                             node.Parent.ReplaceChild(node, new ConstantWrapper("object", PrimitiveType.String, node.Context)
-                                {
-                                    IsDebugOnly = true
-                                });
+                            {
+                                IsDebugOnly = true
+                            });
                             break;
 
                         case JSToken.Delete:
@@ -3920,41 +3922,41 @@ namespace NUglify.JavaScript.Visitors
                         case JSToken.Decrement:
                             // ++ and -- result in a number, so just replace with 0
                             node.Parent.ReplaceChild(node, new ConstantWrapper(0, PrimitiveType.Number, node.Context)
-                                {
-                                    IsDebugOnly = true
-                                });
+                            {
+                                IsDebugOnly = true
+                            });
                             break;
 
                         case JSToken.LogicalNot:
                             // !null is true
                             node.Parent.ReplaceChild(node, new ConstantWrapper(true, PrimitiveType.Boolean, node.Context)
-                                {
-                                    IsDebugOnly = true
-                                });
+                            {
+                                IsDebugOnly = true
+                            });
                             break;
 
                         case JSToken.BitwiseNot:
                             // ~null is -1
                             node.Parent.ReplaceChild(node, new ConstantWrapper(-1, PrimitiveType.Number, node.Context)
-                                {
-                                    IsDebugOnly = true
-                                });
+                            {
+                                IsDebugOnly = true
+                            });
                             break;
 
                         case JSToken.Plus:
                             // +null is zero
                             node.Parent.ReplaceChild(node, new ConstantWrapper(0, PrimitiveType.Number, node.Context)
-                                {
-                                    IsDebugOnly = true
-                                });
+                            {
+                                IsDebugOnly = true
+                            });
                             break;
 
                         case JSToken.Minus:
                             // -null is negative zero
                             node.Parent.ReplaceChild(node, new ConstantWrapper(-0, PrimitiveType.Number, node.Context)
-                                {
-                                    IsDebugOnly = true
-                                });
+                            {
+                                IsDebugOnly = true
+                            });
                             break;
 
                         default:
@@ -3997,7 +3999,7 @@ namespace NUglify.JavaScript.Visitors
                                 if (lookup.VariableField == null
                                     || lookup.VariableField.FieldType == FieldType.UndefinedGlobal
                                     || lookup.VariableField.FieldType == FieldType.Arguments
-                                    || (lookup.VariableField.FieldType == FieldType.Predefined 
+                                    || (lookup.VariableField.FieldType == FieldType.Predefined
                                     && string.CompareOrdinal(lookup.Name, "eval") == 0))
                                 {
                                     node.Operand.Context.HandleError(JSError.StrictModeInvalidPreOrPost, true);
@@ -4168,7 +4170,7 @@ namespace NUglify.JavaScript.Visitors
 
                 // if this is a binding pattern and the parent is NOT a for-in loop,
                 // then we MUST have an initializer as per the language syntax!
-                if (node.Initializer == null 
+                if (node.Initializer == null
                     && !(node.Binding is BindingIdentifier)
                     && node.Parent.IfNotNull(p => !(p.Parent is ForInStatement)))
                 {
@@ -4259,9 +4261,9 @@ namespace NUglify.JavaScript.Visitors
                     else
                     {
                         node.WithObject = new ObjectLiteral(node.WithObject.Context)
-                            {
-                                IsDebugOnly = true
-                            };
+                        {
+                            IsDebugOnly = true
+                        };
                     }
                 }
             }
@@ -4277,9 +4279,9 @@ namespace NUglify.JavaScript.Visitors
             }
 
             return new ObjectLiteral(node.Context)
-                {
-                    IsDebugOnly = true
-                };
+            {
+                IsDebugOnly = true
+            };
         }
 
         static string GuessAtName(AstNode node)
@@ -4353,17 +4355,17 @@ namespace NUglify.JavaScript.Visitors
                     if (lookup != null)
                     {
                         var bindingIdentifier = new BindingIdentifier(lookup.Context)
-                                {
-                                    Name = lookup.Name,
-                                    TerminatingContext = lookup.TerminatingContext,
-                                    VariableField = lookup.VariableField
-                                };
+                        {
+                            Name = lookup.Name,
+                            TerminatingContext = lookup.TerminatingContext,
+                            VariableField = lookup.VariableField
+                        };
                         var varDecl = new VariableDeclaration(binaryOp.Context.Clone())
-                            {
-                                Binding = bindingIdentifier,
-                                AssignContext = binaryOp.OperatorContext,
-                                Initializer = binaryOp.Operand2,
-                            };
+                        {
+                            Binding = bindingIdentifier,
+                            AssignContext = binaryOp.OperatorContext,
+                            Initializer = binaryOp.Operand2,
+                        };
                         lookup.VariableField.Declarations.Add(bindingIdentifier);
                         declaration.Append(varDecl);
                     }
@@ -4421,10 +4423,10 @@ namespace NUglify.JavaScript.Visitors
         static UnaryExpression CreateVoidNode(SourceContext context)
         {
             return new UnaryExpression(context.FlattenToStart())
-                {
-                    Operand = new ConstantWrapper(0.0, PrimitiveType.Number, context),
-                    OperatorToken = JSToken.Void
-                };
+            {
+                Operand = new ConstantWrapper(0.0, PrimitiveType.Number, context),
+                OperatorToken = JSToken.Void
+            };
         }
 
         static void ValidateIdentifier(bool isStrict, string identifier, SourceContext context, JSError error)
@@ -4502,7 +4504,7 @@ namespace NUglify.JavaScript.Visitors
             if (path.Length > 0 && path[0].Equals("CurrentCulture", StringComparison.Ordinal))
             {
                 object currentObject = CultureInfo.CurrentCulture;
-                for(var ndx = 1; ndx < path.Length; ++ndx)
+                for (var ndx = 1; ndx < path.Length; ++ndx)
                 {
                     var objectType = currentObject.GetType();
                     int index;
@@ -4518,7 +4520,7 @@ namespace NUglify.JavaScript.Visitors
                                 continue;
                             }
                         }
-                        catch(AmbiguousMatchException)
+                        catch (AmbiguousMatchException)
                         {
                             // eat this exception
                         }
@@ -4554,7 +4556,7 @@ namespace NUglify.JavaScript.Visitors
                         // of the current object
                         node.Value = currentObject.ToString();
                     }
-                    else 
+                    else
                     {
                         // create an appropriate node and replace the token node with it
                         var newNode = CreateNodeFromObject(node.Context, currentObject);
@@ -4573,19 +4575,19 @@ namespace NUglify.JavaScript.Visitors
             {
                 return new ConstantWrapper(null, PrimitiveType.Null, context);
             }
-            
+
             if (item is String)
             {
                 // create a string literal
-                return  new ConstantWrapper(item, PrimitiveType.String, context);
+                return new ConstantWrapper(item, PrimitiveType.String, context);
             }
-            
+
             if (item is Boolean)
             {
                 // create a boolean literal
                 return new ConstantWrapper(item, PrimitiveType.Boolean, context);
             }
-            
+
             if (item is Int16
                 || item is UInt16
                 || item is Int32
@@ -4614,9 +4616,9 @@ namespace NUglify.JavaScript.Visitors
             {
                 // create an array literal from the array
                 var arrayLiteral = new ArrayLiteral(context)
-                    {
-                        Elements = new AstNodeList(context)
-                    };
+                {
+                    Elements = new AstNodeList(context)
+                };
                 foreach (var element in arrayObject)
                 {
                     arrayLiteral.Elements.Append(CreateNodeFromObject(context, element));
@@ -4627,11 +4629,11 @@ namespace NUglify.JavaScript.Visitors
 
             // create an object literal from all the public unambiguous properties on the item object
             var objectLiteral = new ObjectLiteral(context)
-                {
-                    Properties = new AstNodeList(context)
-                };
+            {
+                Properties = new AstNodeList(context)
+            };
             var properties = item.GetType().GetTypeInfo().GetDeclaredProperties();
-            foreach(var property in properties)
+            foreach (var property in properties)
             {
                 try
                 {
@@ -4646,7 +4648,7 @@ namespace NUglify.JavaScript.Visitors
                         });
                     }
                 }
-                catch(AmbiguousMatchException)
+                catch (AmbiguousMatchException)
                 {
                     // ignore this property
                 }
