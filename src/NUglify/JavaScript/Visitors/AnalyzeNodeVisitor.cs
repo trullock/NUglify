@@ -3366,24 +3366,24 @@ namespace NUglify.JavaScript.Visitors
                             string keyName = property.Name?.Name;
 
                             if (keyName == null)
-	                            keyName = functionObject?.Binding?.Name;
+                                keyName = functionObject?.Binding?.Name;
 
                             if (keyName == null)
                             {
-	                            if (property.Value is UnaryExpression ue && ue.OperatorToken == JSToken.RestSpread)
-	                            {
-		                            keyName = property.Value.Context.ToString();
-	                            }
+                                if (property.Value is UnaryExpression ue && ue.OperatorToken == JSToken.RestSpread)
+                                {
+                                    keyName = property.Value.Context.ToString();
+                                }
                                 else if (property.Value is InitializerNode inode 
                                          && inode.Binding is BindingIdentifier bi 
                                          && !bi.Name.IsNullOrWhiteSpace())
                                 {
                                     keyName = bi.Name;
                                 }
-	                            else
-	                            {
-		                            keyName = property.Value?.ToString();
-	                            }
+                                else
+                                {
+                                    keyName = property.Value?.ToString();
+                                }
                             }
 
                             keyName += propertyType;
