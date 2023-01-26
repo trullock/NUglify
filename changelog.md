@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.20.5 (26 Jan 2023)
+- Fixes bug with duplicate property names
+
 ## v1.20.4 (13 December 2022)
 - Fixes bug with border: 0 none
 
