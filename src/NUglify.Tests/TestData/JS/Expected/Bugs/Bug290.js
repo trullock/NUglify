@@ -1,1 +1,1 @@
-﻿let foo,bar;({foo,bar}={foo:42,bar:!0})
+﻿let foo,bar;({foo,bar}={foo:42,bar:!0});({foo,bar}=fooBar)

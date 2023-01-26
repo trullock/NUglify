@@ -102,6 +102,12 @@ namespace NUglify.Tests.JavaScript
             TestHelper.Instance.RunTest();
         }
 
+        [Test]
+        public void ObjectDestructuringAssignment()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
         //[Test]
         public void Modules()
         {
