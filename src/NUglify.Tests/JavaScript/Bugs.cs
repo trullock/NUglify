@@ -363,5 +363,19 @@ namespace NUglify.Tests.JavaScript
         {
             TestHelper.Instance.RunTest("-rename:all");
         }
+
+        [Test]
+        public void Bug346()
+        {
+            /**************************
+             *  My TS
+             *  let myArray: Array<string>; AnyDetail() { return myArray?.length > 0 ?? false; }
+             *  conver to JS
+             **************************/
+            var JsCode = "var myArray; function AnyDetail() { var _a; return (_a = (myArray === null || myArray === void 0 ? void 0 : myArray.length) > 0) !== null && _a !== void 0 ? _a : false;}";
+            var jsCcodeSettings = new CodeSettings { PreserveFunctionNames = true, TermSemicolons = true, LocalRenaming = LocalRenaming.KeepAll };
+            var uglifyResult = Uglify.Js(JsCode, jsCcodeSettings);
+            Assert.AreEqual(JsCode, uglifyResult.Code);
+        }
     }
 }
