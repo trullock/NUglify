@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.20.6 (4 April 2023)
+- Fixes bug with delete keyword
+
 ## v1.20.5 (26 Jan 2023)
 - Fixes bug with duplicate property names
 
