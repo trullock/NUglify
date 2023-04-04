@@ -135,29 +135,29 @@ namespace NUglify.JavaScript
             keywords['c' - 'a'] = new JSKeyword(JSToken.Case, "case",
                 new JSKeyword(JSToken.Catch, "catch",
                     new JSKeyword(JSToken.Class, "class",
-                        new JSKeyword(JSToken.Const, "const",
+                        new JSKeyword(JSToken.Const, "const", 
                             new JSKeyword(JSToken.Continue, "continue")))));
             // d
-            keywords['d' - 'a'] = new JSKeyword(JSToken.Do, "do",
+            keywords['d' - 'a'] = new JSKeyword(JSToken.Do, "do", 
                 new JSKeyword(JSToken.Delete, "delete",
-                    new JSKeyword(JSToken.Default, "default",
+                    new JSKeyword(JSToken.Default, "default", 
                         new JSKeyword(JSToken.Debugger, "debugger"))));
             // e
             keywords['e' - 'a'] = new JSKeyword(JSToken.Else, "else",
-                new JSKeyword(JSToken.Enum, "enum",
-                    new JSKeyword(JSToken.Export, "export",
+                new JSKeyword(JSToken.Enum, "enum", 
+                    new JSKeyword(JSToken.Export, "export", 
                         new JSKeyword(JSToken.Extends, "extends"))));
             // f
-            keywords['f' - 'a'] = new JSKeyword(JSToken.For, "for",
-                new JSKeyword(JSToken.False, "false",
+            keywords['f' - 'a'] = new JSKeyword(JSToken.For, "for", 
+                new JSKeyword(JSToken.False, "false", 
                     new JSKeyword(JSToken.Finally, "finally",
                         new JSKeyword(JSToken.Function, "function"))));
             // g
             keywords['g' - 'a'] = new JSKeyword(JSToken.Get, "get");
             // i
             keywords['i' - 'a'] = new JSKeyword(JSToken.If, "if",
-                new JSKeyword(JSToken.In, "in",
-                    new JSKeyword(JSToken.Import, "import",
+                new JSKeyword(JSToken.In, "in", 
+                    new JSKeyword(JSToken.Import, "import", 
                         new JSKeyword(JSToken.Interface, "interface",
                             new JSKeyword(JSToken.Implements, "implements",
                                 new JSKeyword(JSToken.InstanceOf, "instanceof"))))));
@@ -174,24 +174,24 @@ namespace NUglify.JavaScript
             // p
             keywords['p' - 'a'] = new JSKeyword(JSToken.Public, "public",
                 new JSKeyword(JSToken.Package, "package",
-                    new JSKeyword(JSToken.Private, "private",
+                    new JSKeyword(JSToken.Private, "private", 
                         new JSKeyword(JSToken.Protected, "protected"))));
             // r
             keywords['r' - 'a'] = new JSKeyword(JSToken.Return, "return");
             // s
             keywords['s' - 'a'] = new JSKeyword(JSToken.Set, "set",
-                new JSKeyword(JSToken.Super, "super",
+                new JSKeyword(JSToken.Super, "super", 
                     new JSKeyword(JSToken.Static, "static",
                         new JSKeyword(JSToken.Switch, "switch"))));
             // t
-            keywords['t' - 'a'] = new JSKeyword(JSToken.Try, "try",
+            keywords['t' - 'a'] = new JSKeyword(JSToken.Try, "try", 
                 new JSKeyword(JSToken.This, "this",
-                    new JSKeyword(JSToken.True, "true",
+                    new JSKeyword(JSToken.True, "true", 
                         new JSKeyword(JSToken.Throw, "throw",
                             new JSKeyword(JSToken.TypeOf, "typeof")))));
             // u
             // v
-            keywords['v' - 'a'] = new JSKeyword(JSToken.Var, "var",
+            keywords['v' - 'a'] = new JSKeyword(JSToken.Var, "var", 
                 new JSKeyword(JSToken.Void, "void"));
             // w
             keywords['w' - 'a'] = new JSKeyword(JSToken.With, "with",
