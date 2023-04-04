@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Diagnostics;
 using System.Text;
 using NUglify.Html;
@@ -362,6 +362,12 @@ namespace NUglify.Tests.JavaScript
         public void Bug345()
         {
             TestHelper.Instance.RunTest("-rename:all");
+        }
+
+        [Test]
+        public void Bug353()
+        {
+            TestHelper.Instance.RunErrorTest();
         }
     }
 }

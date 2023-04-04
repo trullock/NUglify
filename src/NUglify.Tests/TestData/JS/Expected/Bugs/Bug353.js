@@ -1,0 +1,1 @@
+﻿class HttpClient{delete(n,t){return this.send({...t,method:"DELETE",url:n})}}
