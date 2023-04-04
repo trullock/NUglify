@@ -79,7 +79,7 @@ namespace NUglify.JavaScript
 
                 // apparently never allowed for Chrome, so we want to treat it
                 // differently, too
-                case JSToken.Native: return "native"; 
+                case JSToken.Native: return "native";
 
 
                 // no other tokens can be identifiers
