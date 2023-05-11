@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.20.7 (11 May 2023)
+- Fixes bug with export async
+
 ## v1.20.6 (4 April 2023)
 - Fixes bug with delete keyword
 

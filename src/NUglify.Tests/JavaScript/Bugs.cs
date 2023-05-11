@@ -369,5 +369,12 @@ namespace NUglify.Tests.JavaScript
         {
             TestHelper.Instance.RunErrorTest();
         }
+
+        [Test]
+        public void Bug360()
+        {
+	        TestHelper.Instance.RunTest("-rename:all");
+        }
+
     }
 }

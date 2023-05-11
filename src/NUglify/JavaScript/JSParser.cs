@@ -2483,7 +2483,7 @@ namespace NUglify.JavaScript
                     KeywordContext = m_currentToken.Clone(),
                 };
             GetNextToken();
-            if (m_currentToken.IsOne(JSToken.Var, JSToken.Const, JSToken.Let, JSToken.Function, JSToken.Class))
+            if (m_currentToken.IsOne(JSToken.Var, JSToken.Const, JSToken.Let, JSToken.Async, JSToken.Function, JSToken.Class))
             {
                 // export var/const/let/funcdecl/classdecl
                 var declaration = ParseStatement(true, true);
