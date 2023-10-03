@@ -36,6 +36,7 @@ namespace NUglify.Css
 			FixIE8Fonts = true;
 			ExcludeVendorPrefixes = new List<string>();
 			DecodeEscapes = true;
+            AbbreviateHexColor = true;
 		}
 
 		/// <summary>
@@ -75,8 +76,9 @@ namespace NUglify.Css
 				BlocksStartOnSameLine = BlocksStartOnSameLine,
 				RemoveEmptyBlocks = RemoveEmptyBlocks,
 				IgnoreRazorEscapeSequence = IgnoreRazorEscapeSequence,
-				DecodeEscapes = DecodeEscapes
-			};
+				DecodeEscapes = DecodeEscapes,
+                AbbreviateHexColor = AbbreviateHexColor
+            };
 
 			// add the resource strings (if any)
 			newSettings.AddResourceStrings(ResourceStrings);
@@ -99,9 +101,14 @@ namespace NUglify.Css
 		public CssColor ColorNames { get; set; }
 
 		/// <summary>
-		/// Gets or sets CommentMode setting. Default is Important.
+		/// Gets or sets a value indicating whether to abbreviate hex colors to #rgb(a) format. Default is true
 		/// </summary>
-		public CssComment CommentMode { get; set; }
+		public bool AbbreviateHexColor { get; set; }
+
+        /// <summary>
+        /// Gets or sets CommentMode setting. Default is Important.
+        /// </summary>
+        public CssComment CommentMode { get; set; }
 
 		/// <summary>
 		/// Gets or sets a value indicating whether to minify the javascript within expression functions. Deault is true.

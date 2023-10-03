@@ -3385,7 +3385,7 @@ namespace NUglify.Css
                         // we can collapse it to either #rrggbb or #rgb
                         // calculate the full hex string and crunch it
                         var fullCode = "#{0:x2}{1:x2}{2:x2}".FormatInvariant(rgb[0], rgb[1], rgb[2]);
-                        var result= CrunchHexColor(fullCode, Settings.ColorNames, m_noColorAbbreviation);
+                        var result= CrunchHexColor(fullCode, Settings.ColorNames, m_noColorAbbreviation || !Settings.AbbreviateHexColor);
                         Append(result.Color);
 
                         // set the flag so we know we don't want to add the closing paren
@@ -3555,7 +3555,7 @@ namespace NUglify.Css
 
                 if (colorHash.Length == 4 || colorHash.Length == 5 || colorHash.Length == 7 || colorHash.Length == 9)
                 {
-	                var result = CrunchHexColor(colorHash, Settings.ColorNames, m_noColorAbbreviation);
+	                var result = CrunchHexColor(colorHash, Settings.ColorNames, m_noColorAbbreviation || !Settings.AbbreviateHexColor);
 
 	                if (!result.IsValidColor)
 		                return Parsed.False;
@@ -4728,7 +4728,7 @@ namespace NUglify.Css
                     else if (CurrentTokenType == TokenType.ReplacementToken)
                     {
                         // a replacement token is a color hash
-                        var result = CrunchHexColor(text, Settings.ColorNames, m_noColorAbbreviation);
+                        var result = CrunchHexColor(text, Settings.ColorNames, m_noColorAbbreviation || !Settings.AbbreviateHexColor);
                         text = result.Color;
                     }
                 }
