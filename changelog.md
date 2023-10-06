@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.0 (6 October 2023)
+- Added option to disable crunching hex and rga colors
+
 ## v1.20.7 (11 May 2023)
 - Fixes bug with export async
 
