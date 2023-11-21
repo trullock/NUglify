@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.1 (21 November 2023)
+- Fixed bug with JS variables named `module`
+
 ## v1.21.0 (6 October 2023)
 - Added option to disable crunching hex and rga colors
 
