@@ -1,0 +1,1 @@
+﻿function func(){var n;n={};n.data="text";n.data2=5}

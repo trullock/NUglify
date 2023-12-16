@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.21.1 (21 November 2023)
+## v1.21.2 (16 December 2023)
 - Fixed bug with JS variables named `module`
 
 ## v1.21.0 (6 October 2023)
