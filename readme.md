@@ -4,7 +4,7 @@
 
 NUglify provides minify and compression methods for CSS, JavaScript and HTML files.
 
-This repository is a fork of the [Microsoft Ajax Minifier](http://ajaxmin.codeplex.com/) + additional features (e.g: HTML compressor) 
+This repository is a fork of the [Microsoft Ajax Minifier](https://github.com/microsoft/ajaxmin) + additional features (e.g: HTML compressor) 
 
 While dotnet Core is now relying on the **node.js** ecosystem for its client side tooling (e.g: minify), NUglify is **still useful** in scenarios where we need to access this tooling from a .NET application (not necessarily an ASP one) without having to install another developer platform.
 
