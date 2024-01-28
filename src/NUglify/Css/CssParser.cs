@@ -4414,9 +4414,10 @@ namespace NUglify.Css
                         for (var ndx = firstIndex + 1; ndx < text.Length; ++ndx)
                         {
                             char nextChar = text[ndx];
+                            char? prevChar = text[ndx - 1];
 
                             // anything at or above 0x80, then it's okay and doesnt need to be escaped
-                            if (nextChar < 0x80)
+                            if (nextChar < 0x80 && prevChar != '\\')
                             {
                                 // only -, _, 0-9, a-z, A-Z are allowed without escapes
                                 // but we also want to NOT escape \ or space characters. If the identifier had
