@@ -1,5 +1,8 @@
 # Changelog
 
+## V1.21.3 (04 February 2023)
+- Fixed bug with escaped css identifiers
+
 ## v1.21.2 (16 December 2023)
 - Fixed bug with JS variables named `module`
 
