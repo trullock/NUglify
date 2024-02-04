@@ -161,5 +161,16 @@ body
 	border: 0 none #f00;
 }").Code);
         }
+
+
+        [Test]
+        public void Bug379()
+        {
+	        Assert.AreEqual(".\\!inline-flex{display:inline-flex!important}", Uglify.Css(@"
+.\!inline-flex {
+    display: inline-flex!important
+}
+").Code);
+        }
     }
 }
