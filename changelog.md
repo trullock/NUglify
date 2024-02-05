@@ -1,6 +1,9 @@
 # Changelog
 
-## V1.21.3 (04 February 2023)
+## v1.21.4 (05 February 2024)
+ - Fixes NullReferenceException when parsing object literal with computed property name expression starting with (
+
+## v1.21.3 (04 February 2024)
 - Fixed bug with escaped css identifiers
 
 ## v1.21.2 (16 December 2023)
