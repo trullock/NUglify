@@ -41,7 +41,8 @@ var es6 = {
         // ES2015 computed property name
         [prop]: 'hey',
         ['b' + 'az']: 'there',
-        [('c' + x())]: 'hello',
+        ['c' + x()]: 'hello',
+        [('  abc  ').substring(2,5)]: 'hi', 
 
         // ES6 implicit property name from a lookup name
         location,
