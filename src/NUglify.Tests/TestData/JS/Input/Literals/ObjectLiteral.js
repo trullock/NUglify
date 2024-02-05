@@ -42,7 +42,7 @@ var es6 = {
         [prop]: 'hey',
         ['b' + 'az']: 'there',
         ['c' + x()]: 'hello',
-        [('  abc  ').substring(2,5)]: 'hi', 
+        [('ab' + 'cd' + 'ef').substring(2,4)]: 'hi',
 
         // ES6 implicit property name from a lookup name
         location,
