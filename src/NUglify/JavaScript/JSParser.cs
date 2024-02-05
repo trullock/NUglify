@@ -4995,18 +4995,6 @@ namespace NUglify.JavaScript
                     ReportError(JSError.FunctionExpressionExpected);
                 }
             }
-            else if (m_currentToken.Is(JSToken.Multiply) || m_currentToken.Is(JSToken.Async) || nextToken == JSToken.LeftParenthesis)
-            {
-                // method declaration in ES6
-                // starts off right with the name. Don't set the name field -- the method
-                // itself takes care of it, like an implicit-named property
-                value = ParseFunction(FunctionType.Method, m_currentToken.Clone());
-                if (value != null)
-                {
-                    // definitely an ES6 construct
-                    ParsedVersion = ScriptVersion.EcmaScript6;
-                }
-            }
             else if (m_currentToken.Is(JSToken.LeftBracket))
             {
 	            var ctx = m_currentToken.Clone();
@@ -5047,6 +5035,19 @@ namespace NUglify.JavaScript
 
                 }
             }
+            else if (m_currentToken.Is(JSToken.Multiply) || m_currentToken.Is(JSToken.Async) || nextToken == JSToken.LeftParenthesis)
+            {
+                // method declaration in ES6
+                // starts off right with the name. Don't set the name field -- the method
+                // itself takes care of it, like an implicit-named property
+                value = ParseFunction(FunctionType.Method, m_currentToken.Clone());
+                if (value != null)
+                {
+                    // definitely an ES6 construct
+                    ParsedVersion = ScriptVersion.EcmaScript6;
+                }
+            }
+            
 
             if (field != null || value != null)
             {
