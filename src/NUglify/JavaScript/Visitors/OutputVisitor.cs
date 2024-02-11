@@ -767,7 +767,7 @@ namespace NUglify.JavaScript.Visitors
                 {
                     if (node.OptionalChaining)
                     {
-                        OutputPossibleLineBreak('?');
+                        Output('?');
                         OutputPossibleLineBreak('.');
                     }
 
@@ -2549,7 +2549,7 @@ namespace NUglify.JavaScript.Visitors
                 }
 
                 if (node.OptionalChaining)
-                    OutputPossibleLineBreak('?');
+                    Output('?');
                 OutputPossibleLineBreak('.');
                 
                 MarkSegment(node, node.Name, node.NameContext);
@@ -3985,7 +3985,14 @@ namespace NUglify.JavaScript.Visitors
                     Unindent();
                     if (wrapInParens)
                     {
-                        OutputPossibleLineBreak(')');
+                        if (node.FunctionType == FunctionType.ArrowFunction) 
+                        {
+                            Output(')');
+                        }
+                        else 
+                        {
+                            OutputPossibleLineBreak(')');
+                        }
                         MarkSegment(node, null, node.ParameterDeclarations.Context);
                     }
                 }
@@ -3993,7 +4000,7 @@ namespace NUglify.JavaScript.Visitors
                 {
                     // empty arrow function parameters need the empty parentheses
                     OutputPossibleLineBreak('(');
-                    OutputPossibleLineBreak(')');
+                    Output(')');
                     m_startOfStatement = false;
                 }
 

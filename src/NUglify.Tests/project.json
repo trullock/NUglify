@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "NUnit": "3.5.0",
-    "NUnit3TestAdapter": "3.5.0"
+    "NUnit3TestAdapter": "3.5.0",
+	"Microsoft.ClearScript": "7.3.1"
   }
 }
