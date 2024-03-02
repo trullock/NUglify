@@ -872,26 +872,6 @@ namespace NUglify.Css
                 }
             }
 
-            if (CurrentTokenType == TokenType.Function && CurrentTokenText == "selector(")
-            {
-                do
-                {
-                    AppendCurrent();
-                    SkipSpace();
-                }
-                while (CurrentTokenType != TokenType.Identifier);
-
-                AppendCurrent();
-                SkipSpace();
-                foundSupportsCondition = true;
-            }
-
-            if (foundSupportsCondition && CurrentTokenType == TokenType.Character)
-            {
-                AppendCurrent();
-                SkipSpace();
-            }
-
             if (foundSupportsCondition && CurrentTokenType == TokenType.Identifier)
             {
                 var upper = CurrentTokenText.ToUpperInvariant();
