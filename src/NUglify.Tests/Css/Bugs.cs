@@ -172,5 +172,19 @@ body
 }
 ").Code);
         }
+
+        [Test]
+        public void Bug383()
+        {
+            var result = Uglify.Css("""
+@supports not selector(::-webkit-scrollbar) {
+    .scroll {
+        scrollbar-color: rgba(0,0,0,0.3) rgba(0,0,0,0);
+        scrollbar-width: thin;
+    }
+}
+""");
+            Assert.False(result.HasErrors);
+        }
     }
 }
