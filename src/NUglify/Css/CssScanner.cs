@@ -1086,7 +1086,6 @@ namespace NUglify.Css
                             case "VM":          // viewport width or height, whichever is smaller of the two (use VMIN)
                             case "VMIN":        // minimum of the viewport's height and width
                             case "VMAX":        // maximum of the viewport's height and width
-                            case "FR":          // fraction of available space
                             case "GR":          // grid unit
                             case "GD":          // text grid unit
                                 tokenType = TokenType.RelativeLength;
@@ -1127,6 +1126,10 @@ namespace NUglify.Css
                             case "DB":          // decibel
                             case "ST":          // semitones
                                 tokenType = TokenType.Speech;
+                                break;
+                            // browsers do not animate grid-template-* if the fr unit is stripped
+                            case "FR":          // fraction of available space
+                                tokenType = TokenType.Dimension;
                                 break;
                         }
 
