@@ -1127,9 +1127,8 @@ namespace NUglify.Css
                             case "ST":          // semitones
                                 tokenType = TokenType.Speech;
                                 break;
-                            // browsers do not animate grid-template-* if the fr unit is stripped
                             case "FR":          // fraction of available space
-                                tokenType = TokenType.Dimension;
+                                tokenType = TokenType.Fraction;
                                 break;
                         }
 
@@ -1145,7 +1144,8 @@ namespace NUglify.Css
                             && tokenType != TokenType.Angle
                             && tokenType != TokenType.Time
                             && tokenType != TokenType.Frequency
-                            && tokenType != TokenType.Resolution)
+                            && tokenType != TokenType.Resolution
+                            && tokenType != TokenType.Fraction)
                         {
                             token = new CssToken(TokenType.Number, num, m_context);
                         }
