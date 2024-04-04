@@ -2876,6 +2876,7 @@ namespace NUglify.Css
                 case TokenType.Time:
                 case TokenType.Frequency:
                 case TokenType.Resolution:
+                case TokenType.Fraction:
                     if (wasEmpty)
                     {
                         Append(' ');

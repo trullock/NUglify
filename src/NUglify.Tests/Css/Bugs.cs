@@ -172,5 +172,12 @@ body
 }
 ").Code);
         }
+
+        [Test]
+        public void Bug384()
+        {
+            var uglifyResult = Uglify.Css("grid-template-rows: 0fr 0px 0% 0em;");
+            Assert.AreEqual("grid-template-rows: 0fr 0 0% 0;", uglifyResult.Code);
+        }
     }
 }

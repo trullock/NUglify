@@ -1086,7 +1086,6 @@ namespace NUglify.Css
                             case "VM":          // viewport width or height, whichever is smaller of the two (use VMIN)
                             case "VMIN":        // minimum of the viewport's height and width
                             case "VMAX":        // maximum of the viewport's height and width
-                            case "FR":          // fraction of available space
                             case "GR":          // grid unit
                             case "GD":          // text grid unit
                                 tokenType = TokenType.RelativeLength;
@@ -1128,6 +1127,9 @@ namespace NUglify.Css
                             case "ST":          // semitones
                                 tokenType = TokenType.Speech;
                                 break;
+                            case "FR":          // fraction of available space
+                                tokenType = TokenType.Fraction;
+                                break;
                         }
 
                         // if the number is zero, it really doesn't matter what the dimensions are so we can remove it
@@ -1142,7 +1144,8 @@ namespace NUglify.Css
                             && tokenType != TokenType.Angle
                             && tokenType != TokenType.Time
                             && tokenType != TokenType.Frequency
-                            && tokenType != TokenType.Resolution)
+                            && tokenType != TokenType.Resolution
+                            && tokenType != TokenType.Fraction)
                         {
                             token = new CssToken(TokenType.Number, num, m_context);
                         }
