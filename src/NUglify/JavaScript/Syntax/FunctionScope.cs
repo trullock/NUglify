@@ -45,12 +45,14 @@ namespace NUglify.JavaScript.Syntax
         /// </summary>
         public override void DeclareScope()
         {
+            var functionObject = (FunctionObject)Owner;
+
             // we are a function expression that points to a function object. 
             // if the function object points back to us, then this is the main
             // function scope. But if it doesn't, then this is actually the parent
             // scope for named function expressions that should contain just a field
             // for the function name
-            if (((FunctionObject)Owner).EnclosingScope == this)
+            if (functionObject.EnclosingScope == this)
             {
                 // first bind any parameter names
                 DefineParameters();
@@ -64,7 +66,7 @@ namespace NUglify.JavaScript.Syntax
                 // bind the variable declarations
                 DefineVarDeclarations();
             }
-            else
+            else if (functionObject.Binding != null)
             {
                 // we just need to define the function name in this scope
                 DefineFunctionExpressionName();

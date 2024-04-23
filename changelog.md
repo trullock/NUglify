@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.5 (22 April 2024)
+ - Fixes bug parsing arrow and anonymous functions as object properties within object destructuring.
+
 ## v1.21.4 (05 February 2024)
  - Fixes NullReferenceException when parsing object literal with computed property name expression starting with (
 
