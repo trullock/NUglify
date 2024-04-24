@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.21.5 (23 April 2024)
+## v1.21.6 (24 April 2024)
  - Fixes bug parsing arrow and anonymous functions as object properties within object destructuring.
 
 ## v1.21.4 (05 February 2024)
