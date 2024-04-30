@@ -2564,6 +2564,12 @@ namespace NUglify.Css
                         }
                         break;
 
+                    case TokenType.Of:
+                        AppendCurrent();
+                        NextToken();
+                        ParseSelector(); // Selectors v4 indicates that :nth-child and :nth-last-child can have their n argument followed by "of S" with S being a selector
+                        break;
+
                     default:
                         // anything else and we bail
                         return parsed;

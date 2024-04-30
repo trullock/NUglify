@@ -185,6 +185,7 @@ namespace NUglify.Css
         Character,
         Comment,
         Fraction,
+        Of,
 
         // CSS3 paged media at-symbols
         TopLeftCornerSymbol,

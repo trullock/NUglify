@@ -1205,6 +1205,11 @@ namespace NUglify.Css
                     NextChar();
                     token = ScanProgId();
                 }
+                else if (ident.Equals("of", StringComparison.OrdinalIgnoreCase) && m_currentChar == ' ')
+                {
+                    NextChar();
+                    token = new CssToken(TokenType.Of, " " + ident + " ", m_context);
+                }
                 else
                 {
                     token = new CssToken(TokenType.Identifier, ident, m_context);

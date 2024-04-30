@@ -2,3 +2,6 @@
 {
     border-left: 25.0px dashed lightgray;
 }
+.bar:nth-child(n+1 of .test) {
+    background-color: #ff0000;
+}

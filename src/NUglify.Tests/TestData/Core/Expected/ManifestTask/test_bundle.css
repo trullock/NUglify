@@ -3,6 +3,9 @@
 {
     border-left: 25.0px dashed lightgray;
 }
+.bar:nth-child(n+1 of .test) {
+    background-color: #ff0000;
+}
 /*/#source 1 1 TESTRUNPATH\Out\Dll\Input\ManifestTask\file2.css */
 body
 {
