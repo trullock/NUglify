@@ -4926,10 +4926,20 @@ namespace NUglify.JavaScript
 
                 // just a name lookup; the property name is implicit
                 ParsedVersion = ScriptVersion.EcmaScript6;
+                var fieldContext = m_currentToken.Clone();
+                var fieldScanner = m_scanner.Clone();
                 value = ParseObjectPropertyValue(isBindingPattern);
 
                 if (isBindingPattern && m_currentToken.Is(JSToken.Assign))
                 {
+                    // we need to back up to properly parse the field name
+                    if (m_settings.LocalRenaming != LocalRenaming.KeepAll)
+                    {
+                        m_currentToken = fieldContext;
+                        m_scanner = fieldScanner;
+                        field = ParseObjectLiteralFieldName();
+                    }
+
                     var assignContext = m_currentToken.Clone();
                     GetNextToken();
                     value = new InitializerNode(assignContext.Clone())

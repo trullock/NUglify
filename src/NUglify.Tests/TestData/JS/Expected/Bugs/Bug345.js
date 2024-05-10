@@ -1,1 +1,1 @@
-"use strict";function test1({n=1,t=2}={}){console.log(n+t)}function test2(n=1,t=2){console.log(n+t)}
+"use strict";function test1({verylongname_x:n=1,verylongname_y:t=2}={}){console.log(n+t)}function test2(n=1,t=2){console.log(n+t)}
