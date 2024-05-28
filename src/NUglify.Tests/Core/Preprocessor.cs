@@ -49,15 +49,15 @@ namespace NUglify.Tests.Core
             var parser = new JSParser();
             parser.CompilerError += (sender, ea) =>
                 {
-                    Assert.IsTrue(errors.Count > errorCount, "too many errors");
-                    Assert.AreEqual(errors[errorCount].Item1, ea.Error.File, "file path");
-                    Assert.AreEqual(errors[errorCount].Item2, ea.Error.StartLine, "line number");
-                    Assert.AreEqual(errors[errorCount].Item3, ea.Error.StartColumn, "column number");
+                    Assert.That(errors.Count > errorCount, "too many errors");
+                    Assert.That(ea.Error.File, Is.EqualTo(errors[errorCount].Item1), "file path");
+                    Assert.That(ea.Error.StartLine, Is.EqualTo(errors[errorCount].Item2), "line number");
+                    Assert.That(ea.Error.StartColumn, Is.EqualTo(errors[errorCount].Item3), "column number");
 
                     ++errorCount;
                 };
             var block = parser.Parse(source, new CodeSettings());
-            Assert.AreEqual(errors.Count, errorCount, "errors found");
+            Assert.That(errorCount, Is.EqualTo(errors.Count), "errors found");
         }
 
         [Test]
@@ -82,17 +82,17 @@ namespace NUglify.Tests.Core
             var parser = new CssParser();
             parser.CssError += (sender, ea) =>
             {
-                Assert.IsTrue(errors.Count > errorCount, "too many errors");
-                Assert.AreEqual(errors[errorCount].Item1, ea.Error.File, "file path");
-                Assert.AreEqual(errors[errorCount].Item2, ea.Error.StartLine, "line number");
-                Assert.AreEqual(errors[errorCount].Item3, ea.Error.StartColumn, "column number");
+                Assert.That(errors.Count > errorCount, "too many errors");
+                Assert.That(ea.Error.File, Is.EqualTo(errors[errorCount].Item1), "file path");
+                Assert.That(ea.Error.StartLine, Is.EqualTo(errors[errorCount].Item2), "line number");
+                Assert.That(ea.Error.StartColumn, Is.EqualTo(errors[errorCount].Item3), "column number");
 
                 ++errorCount;
             };
 
             parser.Settings = new CssSettings();
             var minified = parser.Parse(source);
-            Assert.AreEqual(errors.Count, errorCount, "errors found");
+            Assert.That(errorCount, Is.EqualTo(errors.Count), "errors found");
         }
     }
 }

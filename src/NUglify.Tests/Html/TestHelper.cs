@@ -14,28 +14,28 @@ namespace NUglify.Tests.Html
         public void TestCollapseSpace()
         {
             var result = CharHelper.CollapseWhitespaces("");
-            Assert.AreEqual("", result);
+            Assert.That(result, Is.EqualTo(""));
 
             result = CharHelper.CollapseWhitespaces("test1");
-            Assert.AreEqual("test1", result);
+            Assert.That(result, Is.EqualTo("test1"));
 
             result = CharHelper.CollapseWhitespaces("test1 ");
-            Assert.AreEqual("test1 ", result);
+            Assert.That(result, Is.EqualTo("test1 "));
 
             result = CharHelper.CollapseWhitespaces(" test1");
-            Assert.AreEqual(" test1", result);
+            Assert.That(result, Is.EqualTo(" test1"));
 
             result = CharHelper.CollapseWhitespaces(" test1  test2  ");
-            Assert.AreEqual(" test1 test2 ", result);
+            Assert.That(result, Is.EqualTo(" test1 test2 "));
 
             result = CharHelper.CollapseWhitespaces(" \n \f \r \t ");
-            Assert.AreEqual(" ", result);
+            Assert.That(result, Is.EqualTo(" "));
 
             result = CharHelper.CollapseWhitespaces("\n \f \r \t ");
-            Assert.AreEqual(" ", result);
+            Assert.That(result, Is.EqualTo(" "));
 
             result = CharHelper.CollapseWhitespaces("\ntest1\n test2\n ");
-            Assert.AreEqual(" test1 test2 ", result);
+            Assert.That(result, Is.EqualTo(" test1 test2 "));
         }
 
     }

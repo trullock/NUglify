@@ -59,7 +59,7 @@ namespace NUglify.Tests.Core
             var settings = new CodeSettings();
             var source = "var a = 'He said, %My.Token:foo%'";
             var actual = Parse(parser, settings, source);
-            Assert.AreEqual("var a=\"He said, %My.Token:foo%\"", actual);
+            Assert.That(actual, Is.EqualTo("var a=\"He said, %My.Token:foo%\""));
 
             settings.ReplacementTokensApplyDefaults(new Dictionary<string, string> { 
                     { "my.token", "\"Now he's done it!\"" },
@@ -69,13 +69,13 @@ namespace NUglify.Tests.Core
             settings.ReplacementFallbacks.Add("zero", "0");
 
             actual = Parse(parser, settings, source);
-            Assert.AreEqual("var a='He said, \"Now he\\'s done it!\"'", actual);
+            Assert.That(actual, Is.EqualTo("var a='He said, \"Now he\\'s done it!\"'"));
 
             actual = Parse(parser, settings, "var b = '%Num_Token%';");
-            Assert.AreEqual("var b=\"123\"", actual);
+            Assert.That(actual, Is.EqualTo("var b=\"123\""));
 
             actual = Parse(parser, settings, "var c = '%My-JSON%';");
-            Assert.AreEqual("var c='{\"a\": 1, \"b\": 2, \"c\": [ 1, 2, 3 ] }'", actual);
+            Assert.That(actual, Is.EqualTo("var c='{\"a\": 1, \"b\": 2, \"c\": [ 1, 2, 3 ] }'"));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace NUglify.Tests.Core
             var settings = new CodeSettings();
             var source = "var a = %My.Token:foo%;";
             var actual = Parse(parser, settings, source);
-            Assert.AreEqual("var a=%My.Token:foo%", actual);
+            Assert.That(actual, Is.EqualTo("var a=%My.Token:foo%"));
 
             settings.ReplacementTokensApplyDefaults(new Dictionary<string, string> { 
                     { "my.token", "\"Now he's done it!\"" },
@@ -98,22 +98,22 @@ namespace NUglify.Tests.Core
             settings.ReplacementFallbacks.Add("zero", "0");
 
             actual = Parse(parser, settings, source);
-            Assert.AreEqual("var a=\"Now he's done it!\"", actual);
+            Assert.That(actual, Is.EqualTo("var a=\"Now he's done it!\""));
 
             actual = Parse(parser, settings, "var b = %Num_Token%;");
-            Assert.AreEqual("var b=123", actual);
+            Assert.That(actual, Is.EqualTo("var b=123"));
 
             actual = Parse(parser, settings, "var c = %My-JSON%;");
-            Assert.AreEqual("var c={\"a\":1,\"b\":2,\"c\":[1,2,3]}", actual);
+            Assert.That(actual, Is.EqualTo("var c={\"a\":1,\"b\":2,\"c\":[1,2,3]}"));
 
             actual = Parse(parser, settings, "var d = '*%MissingToken:zero%*';");
-            Assert.AreEqual("var d=\"*0*\"", actual);
+            Assert.That(actual, Is.EqualTo("var d=\"*0*\""));
 
             actual = Parse(parser, settings, "var e = '*%MissingToken:ack%*';");
-            Assert.AreEqual("var e=\"**\"", actual);
+            Assert.That(actual, Is.EqualTo("var e=\"**\""));
 
             actual = Parse(parser, settings, "var f = '*%MissingToken:%*';");
-            Assert.AreEqual("var f=\"**\"", actual);
+            Assert.That(actual, Is.EqualTo("var f=\"**\""));
         }
 
         [Test]
@@ -133,16 +133,16 @@ namespace NUglify.Tests.Core
             settings.ReplacementFallbacks.Add("zero", "0");
 
             var actual = Parse(parser, settings, "var a = %MissingToken:zero%;");
-            Assert.AreEqual("var a=0", actual);
+            Assert.That(actual, Is.EqualTo("var a=0"));
 
             actual = Parse(parser, settings, "var b = %MissingToken:ack% + 0;");
-            Assert.AreEqual("var b=+0", actual);
+            Assert.That(actual, Is.EqualTo("var b=+0"));
 
             actual = Parse(parser, settings, "var c = %MissingToken:% + 0;");
-            Assert.AreEqual("var c=+0", actual);
+            Assert.That(actual, Is.EqualTo("var c=+0"));
 
             actual = Parse(parser, settings, "var d = %MissingToken:%;debugger;throw 'why?';");
-            Assert.AreEqual("var d=;throw\"why?\";", actual);
+            Assert.That(actual, Is.EqualTo("var d=;throw\"why?\";"));
         }
 
         [Test]
@@ -167,7 +167,7 @@ namespace NUglify.Tests.Core
             var actual = Uglify.Css(source, settings);
 
             var expected = ReadFile(s_expectedFolder, "replacements.css");
-            Assert.AreEqual(expected, actual.Code);
+            Assert.That(actual.Code, Is.EqualTo(expected));
         }
 
         string ReadFile(string folder, string fileName)

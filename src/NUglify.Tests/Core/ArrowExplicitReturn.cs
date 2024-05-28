@@ -18,7 +18,7 @@ namespace NUglify.Tests.Core
 
             var minified = OutputVisitor.Apply(code, settings);
 
-            Assert.AreEqual(expected, minified);
+            Assert.That(minified, Is.EqualTo(expected));
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace NUglify.Tests.Core
 
             var minified = OutputVisitor.Apply(code, settings);
 
-            Assert.AreEqual(expected, minified);
+            Assert.That(minified, Is.EqualTo(expected));
         }
     }
 }

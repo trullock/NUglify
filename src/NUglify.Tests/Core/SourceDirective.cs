@@ -116,7 +116,7 @@ namespace NUglify.Tests.Core
             Trace.WriteLine("");
 
             // and compare them -- they should be equal
-            Assert.IsTrue(string.CompareOrdinal(minified, expected) == 0, "actual is not the expected");
+            Assert.That(string.CompareOrdinal(minified, expected) == 0, "actual is not the expected");
 
             var expectedErrors = new[] {
                 new {FileContext = "anonfunc.js", StartLine = 2, EndLine = 2, StartColumn = 20, EndColumn = 21, ErrorCode = "JS1010"},
@@ -148,7 +148,7 @@ namespace NUglify.Tests.Core
                     }
                 }
 
-                Assert.IsTrue(foundIt, "Unexpected error");
+                Assert.That(foundIt, "Unexpected error");
             }
 
             Trace.WriteLine("");

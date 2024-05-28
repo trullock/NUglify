@@ -200,10 +200,10 @@ namespace NUglify.Tests.Css.Common
                                 {
                                     // doesn't exist!
                                     Assert.Fail(
-                                        "Expected resource file does not exist for test '{0}' in folder {1}",
+                                        string.Format("Expected resource file does not exist for test '{0}' in folder {1}",
                                         inputFile,
                                         Path.Combine(m_inputFolder, testClass)
-                                        );
+                                        ));
                                 }
                             }
                             args.AddLast(resourcePath);
@@ -335,7 +335,7 @@ namespace NUglify.Tests.Css.Common
             else
             {
                 // no output file....
-                Assert.Fail("Output file ({0}) does not exist.", outputPath);
+                Assert.Fail(string.Format("Output file ({0}) does not exist.", outputPath));
             }
 
             // if(retValue != 0)
@@ -357,7 +357,7 @@ namespace NUglify.Tests.Css.Common
             string fullPath = Path.ChangeExtension(Path.Combine(folderPath, fileName), extension);
             if (mustExist)
             {
-                Assert.IsTrue(
+                Assert.That(
                   File.Exists(fullPath),
                   string.Format("Expected file does not exist: {0}", fullPath)
                   );
@@ -379,8 +379,8 @@ namespace NUglify.Tests.Css.Common
 
         void AssertCompareTextFiles(string outputPath, string expectedPath)
         {
-            Assert.True(File.Exists(outputPath), $"Output file [{outputPath}] does no exist");
-            Assert.True(File.Exists(expectedPath), $"Expected file [{outputPath}] does no exist");
+            Assert.That(File.Exists(outputPath), $"Output file [{outputPath}] does no exist");
+            Assert.That(File.Exists(expectedPath), $"Expected file [{outputPath}] does no exist");
 
             using (StreamReader leftReader = new StreamReader(outputPath))
             {
@@ -389,7 +389,7 @@ namespace NUglify.Tests.Css.Common
                     string output = s_testRunRegex.Replace(leftReader.ReadToEnd(), "$1TESTRUNPATH$2").Replace("\r\n", "\n");
                     string expected = s_testRunRegex.Replace(rightReader.ReadToEnd(), "$1TESTRUNPATH$2").Replace("\r\n", "\n");
 
-                    Assert.AreEqual(expected, output, "The expected output ({1}) and actual output ({0}) do not match!", expectedPath, outputPath);
+                    Assert.That(output, Is.EqualTo(expected), string.Format("The expected output ({1}) and actual output ({0}) do not match!", expectedPath, outputPath));
                 }
             }
         }

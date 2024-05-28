@@ -12,47 +12,47 @@ namespace NUglify.Tests.Core
         [Test]
         public void ValidJSONLiterals()
         {
-            Assert.AreEqual("true", JsonParser.Validate("\t\n\r true  "));
-            Assert.AreEqual("false", JsonParser.Validate("\t\n\r false  "));
-            Assert.AreEqual("null", JsonParser.Validate("\t\n\r null  "));
+            Assert.That(JsonParser.Validate("\t\n\r true  "), Is.EqualTo("true"));
+            Assert.That(JsonParser.Validate("\t\n\r false  "), Is.EqualTo("false"));
+            Assert.That(JsonParser.Validate("\t\n\r null  "), Is.EqualTo("null"));
         }
 
         [Test]
         public void ValidJSONNumbers()
         {
-            Assert.AreEqual("0", JsonParser.Validate("\t\n\r 0  "));
-            Assert.AreEqual("123", JsonParser.Validate("\t\n\r 123  "));
-            Assert.AreEqual("123.456", JsonParser.Validate("\t\n\r 123.456  "));
-            Assert.AreEqual("-0", JsonParser.Validate("\t\n\r -0  "));
-            Assert.AreEqual("-123", JsonParser.Validate("\t\n\r -123  "));
-            Assert.AreEqual("-123.456", JsonParser.Validate("\t\n\r -123.456  "));
-            Assert.AreEqual("1e3", JsonParser.Validate("\t\n\r 1e3  "));
-            Assert.AreEqual("1e-33", JsonParser.Validate("\t\n\r 1e-33  "));
-            Assert.AreEqual("123E+300", JsonParser.Validate("\t\n\r 123E+300  "));
+            Assert.That(JsonParser.Validate("\t\n\r 0  "), Is.EqualTo("0"));
+            Assert.That(JsonParser.Validate("\t\n\r 123  "), Is.EqualTo("123"));
+            Assert.That(JsonParser.Validate("\t\n\r 123.456  "), Is.EqualTo("123.456"));
+            Assert.That(JsonParser.Validate("\t\n\r -0  "), Is.EqualTo("-0"));
+            Assert.That(JsonParser.Validate("\t\n\r -123  "), Is.EqualTo("-123"));
+            Assert.That(JsonParser.Validate("\t\n\r -123.456  "), Is.EqualTo("-123.456"));
+            Assert.That(JsonParser.Validate("\t\n\r 1e3  "), Is.EqualTo("1e3"));
+            Assert.That(JsonParser.Validate("\t\n\r 1e-33  "), Is.EqualTo("1e-33"));
+            Assert.That(JsonParser.Validate("\t\n\r 123E+300  "), Is.EqualTo("123E+300"));
         }
 
         [Test]
         public void ValidJSONStrings()
         {
-            Assert.AreEqual("\"\"", JsonParser.Validate("\t\n\r \"\"  "));
-            Assert.AreEqual("\"123\"", JsonParser.Validate("\t\n\r \"123\"  "));
-            Assert.AreEqual("\"\\\"\\\\\\b\\f\\n\\r\\t\"", JsonParser.Validate("\t\n\r \"\\\"\\\\\\b\\f\\n\\r\\t\"  "));
-            Assert.AreEqual("\"\\u02bb\"", JsonParser.Validate("\t\n\r \"\\u02bb\"  "));
+            Assert.That(JsonParser.Validate("\t\n\r \"\"  "), Is.EqualTo("\"\""));
+            Assert.That(JsonParser.Validate("\t\n\r \"123\"  "), Is.EqualTo("\"123\""));
+            Assert.That(JsonParser.Validate("\t\n\r \"\\\"\\\\\\b\\f\\n\\r\\t\"  "), Is.EqualTo("\"\\\"\\\\\\b\\f\\n\\r\\t\""));
+            Assert.That(JsonParser.Validate("\t\n\r \"\\u02bb\"  "), Is.EqualTo("\"\\u02bb\""));
         }
 
         [Test]
         public void ValidJSONArrays()
         {
-            Assert.AreEqual("[]", JsonParser.Validate("\t\n\r [   ]  "));
-            Assert.AreEqual("[[1,\"a\",true],[2,null,false],[3,{},[]],{\"a\":\"b\"}]", JsonParser.Validate("\t\n\r [ [ 1, \"a\", true ] , [ 2 , null , false ] , [ 3 , { } , [ ] ] , { \"a\" : \"b\"}  ]  "));
+            Assert.That(JsonParser.Validate("\t\n\r [   ]  "), Is.EqualTo("[]"));
+            Assert.That(JsonParser.Validate("\t\n\r [ [ 1, \"a\", true ] , [ 2 , null , false ] , [ 3 , { } , [ ] ] , { \"a\" : \"b\"}  ]  "), Is.EqualTo("[[1,\"a\",true],[2,null,false],[3,{},[]],{\"a\":\"b\"}]"));
         }
 
         [Test]
         public void ValidJSONObjects()
         {
-            Assert.AreEqual("{}", JsonParser.Validate("\t\n\r {  }  "));
-            Assert.AreEqual("{\"one\":1,\"two\":true,\"three\":false,\"four\":null}", JsonParser.Validate("\t\n\r { \"one\" : 1 , \"two\" : true , \"three\" : false , \"four\" : null }  "));
-            Assert.AreEqual("{\"one\":{},\"two\":[{},{\"two\":2}]}", JsonParser.Validate("\t\n\r { \"one\" : {\r\n} ,\t\"two\" : [ { } ,{ \"two\":2} ] }  "));
+            Assert.That(JsonParser.Validate("\t\n\r {  }  "), Is.EqualTo("{}"));
+            Assert.That(JsonParser.Validate("\t\n\r { \"one\" : 1 , \"two\" : true , \"three\" : false , \"four\" : null }  "), Is.EqualTo("{\"one\":1,\"two\":true,\"three\":false,\"four\":null}"));
+            Assert.That(JsonParser.Validate("\t\n\r { \"one\" : {\r\n} ,\t\"two\" : [ { } ,{ \"two\":2} ] }  "), Is.EqualTo("{\"one\":{},\"two\":[{},{\"two\":2}]}"));
         }
     }
 }

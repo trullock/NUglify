@@ -63,7 +63,7 @@ namespace NUglify.Tests.Core
                 // assume succesful unless proven otherwise
                 var success = true;
 
-                Assert.IsTrue(argsActual.Length == argsExpected.Length, "Parsed arguments length {0} not equal to expected arguments length {1}", argsActual.Length, argsExpected.Length);
+                Assert.That(argsActual.Length == argsExpected.Length, string.Format("Parsed arguments length {0} not equal to expected arguments length {1}", argsActual.Length, argsExpected.Length));
                 Trace.WriteLine(string.Format("    {0} arguments", argsActual.Length));
                 for (var ndxArg = 0; ndxArg < argsActual.Length; ++ndxArg)
                 {
@@ -72,7 +72,7 @@ namespace NUglify.Tests.Core
                     success = theSame ? success : false;
                 }
 
-                Assert.IsTrue(success, "TEST {0} FAILED!", ndxTest);
+                Assert.That(success, string.Format("TEST {0} FAILED!", ndxTest));
             }
         }
 
@@ -187,7 +187,7 @@ namespace NUglify.Tests.Core
                 }
 
 
-                Assert.IsTrue(success, "\t****TEST {0} FAILED!", ndxTest);
+                Assert.That(success, string.Format("\t****TEST {0} FAILED!", ndxTest));
             }
         }
 

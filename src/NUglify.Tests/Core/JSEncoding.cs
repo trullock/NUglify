@@ -39,8 +39,8 @@ namespace NUglify.Tests.Core
                 Trace.WriteLine(error.ToString());
             }
 
-            Assert.AreEqual("var str=\"🚀\"", minified.Code);
-            Assert.False(minified.HasErrors);
+            Assert.That(minified.Code, Is.EqualTo("var str=\"🚀\""));
+            Assert.That(!minified.HasErrors);
         }
 
         [Test]
@@ -57,8 +57,8 @@ namespace NUglify.Tests.Core
                 Trace.WriteLine(error.ToString());
             }
 
-            Assert.AreEqual("var str=\"🚀\"", minified.Code);
-            Assert.False(minified.HasErrors);
+            Assert.That(minified.Code, Is.EqualTo("var str=\"🚀\""));
+            Assert.That(!minified.HasErrors);
         }
 
         [Test]
@@ -72,8 +72,8 @@ namespace NUglify.Tests.Core
                 Trace.WriteLine(error.ToString());
             }
 
-            Assert.AreEqual("var 𠀯=\"foo\"", minified.Code);
-            Assert.False(minified.HasErrors);
+            Assert.That(minified.Code, Is.EqualTo("var 𠀯=\"foo\""));
+            Assert.That(!minified.HasErrors);
         }
 
         [Test]
@@ -87,8 +87,8 @@ namespace NUglify.Tests.Core
                 Trace.WriteLine(error.ToString());
             }
 
-            Assert.AreEqual("var 𠀭=\"foo\"", minified.Code);
-            Assert.False(minified.HasErrors);
+            Assert.That(minified.Code, Is.EqualTo("var 𠀭=\"foo\""));
+            Assert.That(!minified.HasErrors);
         }
 
         [Test]
@@ -108,9 +108,9 @@ namespace NUglify.Tests.Core
                 }
             }
 
-            Assert.AreEqual("var \\umberland=\"north\"", minified.Code);
-            Assert.AreEqual(1, minified.Errors.Count);
-            Assert.AreEqual("JS1023", firstErrorCode);
+            Assert.That(minified.Code, Is.EqualTo("var \\umberland=\"north\""));
+            Assert.That(minified.Errors.Count, Is.EqualTo(1));
+            Assert.That(firstErrorCode, Is.EqualTo("JS1023"));
         }
     }
 }

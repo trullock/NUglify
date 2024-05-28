@@ -164,7 +164,7 @@ namespace NUglify.Tests.JavaScript
 
             // compare them
             var exactMatch = string.CompareOrdinal(expectedCode, outputCode) == 0;
-            Assert.IsTrue(exactMatch, "Expected and actual Output code does not match!");
+            Assert.That(exactMatch, "Expected and actual Output code does not match!");
         }
     }
 }

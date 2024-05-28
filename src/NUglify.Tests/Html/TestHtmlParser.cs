@@ -543,7 +543,7 @@ namespace NUglify.Tests.Html
                 Console.WriteLine();
                 count++;
             }
-            Assert.True(count > 0, $"Unable to find any html files from the folder: {folder.FullName} ");
+            Assert.That(count > 0, $"Unable to find any html files from the folder: {folder.FullName} ");
         }
 
 
@@ -560,7 +560,7 @@ namespace NUglify.Tests.Html
                 }
             }
 
-            Assert.NotNull(doc, "HtmlParser failed to create a DOM node. See errors above");
+            Assert.That(doc, Is.Not.Null, "HtmlParser failed to create a DOM node. See errors above");
 
             var output = doc.DumpDom();
 
@@ -604,7 +604,7 @@ namespace NUglify.Tests.Html
 
             Console.Out.WriteLine();
 
-            Assert.AreEqual(expected, output);
+            Assert.That(output, Is.EqualTo(expected));
         }
     }
 }

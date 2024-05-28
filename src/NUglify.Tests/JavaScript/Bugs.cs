@@ -107,27 +107,27 @@ namespace NUglify.Tests.JavaScript
             var uglifyResult = Uglify.Js(@"var testString = `
 `;
             testString += `} async init(){ }`;");
-            Assert.AreEqual("var testString=`\n`+`} async init(){ }`", uglifyResult.Code);
+            Assert.That(uglifyResult.Code, Is.EqualTo("var testString=`\r\n`+`} async init(){ }`"));
 
             // CR
             uglifyResult = Uglify.Js("var testString = `"+ (char)13 +@"`;
             testString += `} async init(){ }`;");
-            Assert.AreEqual("var testString=`\r`+`} async init(){ }`", uglifyResult.Code);
+            Assert.That(uglifyResult.Code, Is.EqualTo("var testString=`\r`+`} async init(){ }`"));
 
             // LF
             uglifyResult = Uglify.Js("var testString = `" + (char)10 + @"`;
             testString += `} async init(){ }`;");
-            Assert.AreEqual("var testString=`\n`+`} async init(){ }`", uglifyResult.Code);
+            Assert.That(uglifyResult.Code, Is.EqualTo("var testString=`\n`+`} async init(){ }`"));
 
             // CRLF
             uglifyResult = Uglify.Js("var testString = `" + (char)13 + (char)10 + @"`;
             testString += `} async init(){ }`;");
-            Assert.AreEqual("var testString=`\r\n`+`} async init(){ }`", uglifyResult.Code);
+            Assert.That(uglifyResult.Code, Is.EqualTo("var testString=`\r\n`+`} async init(){ }`"));
 
             //LFCR
             uglifyResult = Uglify.Js("var testString = `" + (char)10 + (char)13 + @"`;
             testString += `} async init(){ }`;");
-            Assert.AreEqual("var testString=`\n\r`+`} async init(){ }`", uglifyResult.Code);
+            Assert.That(uglifyResult.Code, Is.EqualTo("var testString=`\n\r`+`} async init(){ }`"));
 
         }
 
@@ -161,7 +161,7 @@ namespace NUglify.Tests.JavaScript
         {
 	        var uglifyResult = Uglify.Js("function foo() { return 1; }",
 		        new CodeSettings {Indent = "   ", OutputMode = OutputMode.MultipleLines});
-	        Assert.AreEqual("function foo()\n{\n   return 1\n}", uglifyResult.Code);
+	        Assert.That(uglifyResult.Code, Is.EqualTo("function foo()\n{\n   return 1\n}"));
         }
 
         [Test]
@@ -202,6 +202,7 @@ namespace NUglify.Tests.JavaScript
 			        sourceMap.MakePathsRelative = false;
 
 			        var settings = new CodeSettings();
+                    settings.LineTerminator = "\r\n";
 			        settings.SymbolsMap = sourceMap;
 			        sourceMap.StartPackage(@"C:\some\long\path\to\js", @"C:\some\other\path\to\map");
 
@@ -212,17 +213,17 @@ namespace NUglify.Tests.JavaScript
 	        var expected = @"define(""moment"",[],function(){return function(){}({""./node_modules/moment/locale sync recursive ^\\.\\/.*$"":function(){}})})
 //# sourceMappingURL=C:\some\other\path\to\map
 ";
-	        Assert.AreEqual(expected, result.Code);
+	        Assert.That(result.Code, Is.EqualTo(expected));
 
 	        var actual = builder.ToString();
-	        Assert.AreEqual(@"{
+	        Assert.That(actual, Is.EqualTo(@"{
 ""version"":3,
 ""file"":""C:\\some\\long\\path\\to\\js"",
 ""mappings"":""AAAAA,MAAM,CAAC,QAAQ,CAAE,CAAA,CAAE,CAAE,QAAQ,CAAA,CAAG,CAAE,OAAQ,QAAQ,CAAA,CAAU,EAC5D,CAAC,CACM,wDAAwD,CAEvDC,QAAQ,CAAA,CAAuC,EAHtD,CAAD,CADgC,CAA1B"",
 ""sources"":[""C:\\some\\path\\to\\output\\js""],
 ""names"":[""define"",""./node_modules/moment/locale sync recursive ^\\.\\/.*$""]
 }
-".Replace("\n", "\r\n"), actual);
+"));
         }
 
         [Test]

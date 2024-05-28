@@ -19,16 +19,16 @@ namespace NUglify.Tests.Core
                 Trace.WriteLine(string.Format("{0}: {1}", ndx, name));
             }
 
-            Assert.AreEqual("n", CrunchEnumerator.GenerateNameFromNumber(0), "name for 0");
-            Assert.AreEqual("t", CrunchEnumerator.GenerateNameFromNumber(1), "name for 1");
-            Assert.AreEqual("g", CrunchEnumerator.GenerateNameFromNumber(20), "name for last one-digit");
-            Assert.AreEqual("nt", CrunchEnumerator.GenerateNameFromNumber(21), "name for first roll-over");
-            Assert.AreEqual("tt", CrunchEnumerator.GenerateNameFromNumber(22), "name for first roll-over + 1");
-            Assert.AreEqual("it", CrunchEnumerator.GenerateNameFromNumber(23), "name for first roll-over + 2");
-            Assert.AreEqual("gn", CrunchEnumerator.GenerateNameFromNumber(461), "name for last two-digit");
-            Assert.AreEqual("ntt", CrunchEnumerator.GenerateNameFromNumber(462), "name for first three-digit");
-            Assert.AreEqual("gnn", CrunchEnumerator.GenerateNameFromNumber(9722), "name of last three-digit");
-            Assert.AreEqual("nttt", CrunchEnumerator.GenerateNameFromNumber(9723), "name for first four-digit");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(0), Is.EqualTo("n"), "name for 0");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(1), Is.EqualTo("t"), "name for 1");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(20), Is.EqualTo("g"), "name for last one-digit");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(21), Is.EqualTo("nt"), "name for first roll-over");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(22), Is.EqualTo("tt"), "name for first roll-over + 1");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(23), Is.EqualTo("it"), "name for first roll-over + 2");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(461), Is.EqualTo("gn"), "name for last two-digit");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(462), Is.EqualTo("ntt"), "name for first three-digit");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(9722), Is.EqualTo("gnn"), "name of last three-digit");
+            Assert.That(CrunchEnumerator.GenerateNameFromNumber(9723), Is.EqualTo("nttt"), "name for first four-digit");
         }
     }
 }
