@@ -18,10 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.ClearScript;
+using Microsoft.ClearScript.V8;
 using NUglify.JavaScript;
 using NUglify.JavaScript.Visitors;
 using NUnit.Framework;
@@ -698,6 +702,113 @@ namespace NUglify.Tests.JavaScript.Common
         public void RunErrorTest(params JSError[] expectedErrorArray)
         {
             RunErrorTest(string.Empty, expectedErrorArray);
+        }
+
+        /// <summary>
+        /// check all files in input-directory for syntax errors after minification
+        /// execute javascript in V8 engine
+        /// each file that starts successfully without minification will be rerun after minification.
+        /// in some cases minifier generate endless running code. Example: D:\Git2\NUglify\src\NUglify.Tests\bin\Debug\TestData\JS\Input\ES2015\GeneratorFunction.js
+        /// </summary>
+        /// <exception cref="AggregateException"></exception>
+        public void RunSyntaxTestForAllFilesLineBreaks() {
+            DirectoryInfo dir = new DirectoryInfo(InputFolder);
+            List<FileInfo> allTestFiles = dir.GetFiles("*.js", SearchOption.AllDirectories).ToList();
+            var sw = new Stopwatch();
+            sw.Start();
+            var timeout = TimeSpan.FromSeconds(2);
+            var testResults = allTestFiles.Select(fi => {
+                string jsSource = File.ReadAllText(fi.FullName);
+                var (debugFinished, debugExecutionStarted, _) = Execute(jsSource, fi.Name, "debug", sw, timeout);
+                if (!debugExecutionStarted) {
+                    Trace.WriteLine($"{fi.Name}: Syntax error, skipping minification ({fi.FullName}).");
+                    return null;
+                } else {
+                    var crunchedCode = Minify(jsSource, "-line:1");
+                    var (minifiedFinished, minifiedExecutionStarted, minifiedException) = Execute(crunchedCode, fi.Name, "minified", sw, timeout);
+                    if (!minifiedExecutionStarted) {
+                        //There 
+                        Assert.NotNull(minifiedException, "There should be an exception if the execution did not even start.");
+                        return new {
+                            testPassed = false,
+                            message = minifiedException.ErrorDetails,
+                            filePath = fi.FullName,
+                            minifiedContent = crunchedCode
+                        };
+                    } else if (!minifiedFinished && debugFinished) {
+                        //Timeout in minified code, but not in original.
+                        return new {
+                            testPassed = false,
+                            message = "Timeout in minified code, but not in original",
+                            filePath = fi.FullName,
+                            minifiedContent = crunchedCode
+                        };
+                    } else {
+                        return null;
+                    }
+                }
+            }).Where(r => r != null).ToList();
+            
+            if (testResults.Any()) {
+                throw new Exception("Test failed, following files had errors." + Environment.NewLine + String.Join(Environment.NewLine, testResults.Select(f => $"{f.filePath} => {f.message}{Environment.NewLine}{f.minifiedContent}{Environment.NewLine}")));
+            }
+        }
+
+        private static String Minify(string code, string minifyParameters) {
+            var switchParser = new UglifyCommandParser();
+            switchParser.Parse(minifyParameters);
+
+            var sb = new StringBuilder();
+            var parser = new JSParser();
+            using (var writer = new StringWriter(sb)) {
+                if (switchParser.JSSettings.PreprocessOnly) {
+                    parser.EchoWriter = writer;
+                }
+                // normal -- just run it through the parser
+                var block = parser.Parse(new DocumentContext(code), switchParser.JSSettings);
+                if (!switchParser.JSSettings.PreprocessOnly) {
+                    // look at the settings for the proper output visitor
+                    if (switchParser.JSSettings.Format == JavaScriptFormat.JSON) {
+                        {
+                            if (!JsonOutputVisitor.Apply(writer, block, switchParser.JSSettings)) {
+                                Trace.WriteLine("JSON OUTPUT ERRORS!");
+                            }
+                        }
+                    } else {
+                        OutputVisitor.Apply(writer, block, switchParser.JSSettings);
+                    }
+                }
+            }
+            return sb.ToString();
+        }
+
+        private (bool, bool, ScriptEngineException) Execute(string code, string filename, string type, Stopwatch sw, TimeSpan timeout) {
+            var engine = new V8ScriptEngine();
+            bool executionStarted = false;
+            ScriptEngineException exception = null;
+            var task = Task.Run(() => {
+                try {
+                    Trace.WriteLine($"{sw.ElapsedMilliseconds}: Starting {filename}.{type}.");
+                    engine.Execute(code);
+                    Trace.WriteLine($"{sw.ElapsedMilliseconds}: Finished {filename}.{type}.");
+                    executionStarted = true;
+                } catch (ScriptEngineException e) {
+                    exception = e;
+                    if (e.ExecutionStarted) {
+                        executionStarted = true;
+                        Trace.WriteLine($"{sw.ElapsedMilliseconds}: Exception from {filename}.{type}. Execution did start.");
+                    } else {
+                        Trace.WriteLine($"{sw.ElapsedMilliseconds}: Exception from {filename}.{type}. Execution did not even start.");
+                    }
+                }
+            });
+            bool finishedInTime = task.Wait(timeout);
+            if (!finishedInTime) {
+                //If a timeout occurs, we do just assume that the execution started.
+                executionStarted = true;
+            }
+            Assert.IsTrue(executionStarted || exception != null, "There should be an exception if the execution did not even start.");
+            return (finishedInTime, executionStarted, exception);
         }
 
         public void RunErrorTest(string settingsSwitches, params JSError[] expectedErrorArray)

@@ -15,7 +15,13 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)microsoft.clearscript.v8.native.win-x86\7.3.1\build\Microsoft.ClearScript.V8.Native.win-x86.props" Condition="Exists('$(NuGetPackageRoot)microsoft.clearscript.v8.native.win-x86\7.3.1\build\Microsoft.ClearScript.V8.Native.win-x86.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.clearscript.v8.native.win-x64\7.3.1\build\Microsoft.ClearScript.V8.Native.win-x64.props" Condition="Exists('$(NuGetPackageRoot)microsoft.clearscript.v8.native.win-x64\7.3.1\build\Microsoft.ClearScript.V8.Native.win-x64.props')" />
+  </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgNUnit3TestAdapter Condition=" '$(PkgNUnit3TestAdapter)' == '' ">C:\Users\Andrew Bullock\.nuget\packages\nunit3testadapter\3.5.0</PkgNUnit3TestAdapter>
+    <PkgMicrosoft_ClearScript_V8_Native_win-x86 Condition=" '$(PkgMicrosoft_ClearScript_V8_Native_win-x86)' == '' ">C:\Users\Andrew Bullock\.nuget\packages\microsoft.clearscript.v8.native.win-x86\7.3.1</PkgMicrosoft_ClearScript_V8_Native_win-x86>
+    <PkgMicrosoft_ClearScript_V8_Native_win-x64 Condition=" '$(PkgMicrosoft_ClearScript_V8_Native_win-x64)' == '' ">C:\Users\Andrew Bullock\.nuget\packages\microsoft.clearscript.v8.native.win-x64\7.3.1</PkgMicrosoft_ClearScript_V8_Native_win-x64>
   </PropertyGroup>
 </Project>
