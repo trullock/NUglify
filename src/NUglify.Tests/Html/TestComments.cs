@@ -54,7 +54,7 @@ namespace NUglify.Tests.Html
   </p>
   <!-- comment 2 -->
   <!-- comment 3 -->
-</div>");
+</div>".Replace("\r\n", "\n"));
         }
 
         [Test]

@@ -39,7 +39,7 @@ namespace NUglify.Tests.Core
                 }
             }
 
-            Assert.IsFalse(hasFailed);
+            Assert.That(!hasFailed);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace NUglify.Tests.Core
                 }
             }
 
-            Assert.IsFalse(hasFailed);
+            Assert.That(!hasFailed);
         }
 
 //#if DEBUG

@@ -270,10 +270,10 @@ namespace NUglify.Tests.JavaScript.Common
                                 {
                                     // doesn't exist!
                                     Assert.Fail(
-                                        "Expected resource file does not exist for test '{0}' in folder {1}",
+                                        string.Format("Expected resource file does not exist for test '{0}' in folder {1}",
                                         inputFile,
                                         Path.Combine(InputFolder, testClass)
-                                        );
+                                        ));
                                 }
                             }
                             args.AddLast(resourcePath);
@@ -485,7 +485,7 @@ namespace NUglify.Tests.JavaScript.Common
 
                     // fail the test if the files do not match
                     AssertCompareTextFiles(outputPath, expectedPath);
-                    Assert.IsTrue(retValue == 0, "Run didn't succeed. Return code: {0}", retValue);
+                    Assert.That(retValue == 0, string.Format("Run didn't succeed. Return code: {0}", retValue));
                 }
                 else if (File.Exists(expectedPath))
                 {
@@ -495,12 +495,12 @@ namespace NUglify.Tests.JavaScript.Common
                 else
                 {
                     // input file(s) and output file, but can't find output
-                    Assert.IsTrue(
+                    Assert.That(
                         retValue != 0, 
-                        "Run shouldn't succeed if no output is generated. Return code: {0}; output file: {1}", 
+                        string.Format("Run shouldn't succeed if no output is generated. Return code: {0}; output file: {1}", 
                         retValue,
                         outputPath
-                        );
+                        ));
                 }
 
                 if (outputMapFile != null)
@@ -604,9 +604,9 @@ namespace NUglify.Tests.JavaScript.Common
                 Trace.WriteLine("No input file(s).");
 
                 // if we expected there to be input files, then we failed
-                Assert.IsFalse(inputExpected, "Expected input files to exist");
+                Assert.That(!inputExpected, "Expected input files to exist");
                 // and if we didn't expect the input files to exist, we better have failed
-                Assert.IsTrue(retValue != 0, "Run shouldn't succeed if no input file(s). Return code: {0}", retValue);
+                Assert.That(retValue != 0, string.Format("Run shouldn't succeed if no input file(s). Return code: {0}", retValue));
             }
         }
 
@@ -689,7 +689,7 @@ namespace NUglify.Tests.JavaScript.Common
             catch (XmlException e)
             {
                 Debug.WriteLine(e.ToString());
-                Assert.Fail("XML Exception processing XML input file: {0}", e.Message);
+                Assert.Fail(string.Format("XML Exception processing XML input file: {0}", e.Message));
             }
 
             return outputData;
@@ -743,7 +743,7 @@ namespace NUglify.Tests.JavaScript.Common
               testClass,
               inputFile,
               false);
-            Assert.IsTrue(File.Exists(inputPath), "Input File does not exist: {0}", inputPath);
+            Assert.That(File.Exists(inputPath), "Input File does not exist: {0}", inputPath);
 
             var outputPath = GetJsPath(
                 m_outputFolder,
@@ -903,7 +903,7 @@ namespace NUglify.Tests.JavaScript.Common
             TraceFileContents(outputPath);
 
             AssertCompareTextFiles(outputPath, expectedPath);
-            Assert.IsTrue(testPassed, "Test failed");
+            Assert.That(testPassed, "Test failed");
         }
 
         #region helper methods
@@ -922,7 +922,7 @@ namespace NUglify.Tests.JavaScript.Common
             string fullPath = Path.ChangeExtension(Path.Combine(folderPath, fileName), extension);
             if (mustExist)
             {
-                Assert.IsTrue(
+                Assert.That(
                   File.Exists(fullPath),
                   string.Format("Expected file does not exist: {0}", fullPath)
                   );
@@ -945,7 +945,7 @@ namespace NUglify.Tests.JavaScript.Common
         void AssertCompareTextFiles(string outputPath, string expectedPath)
         {
             // the left file should always exist
-            Assert.IsTrue(File.Exists(outputPath),"File does not exist: {0}", outputPath);
+            Assert.That(File.Exists(outputPath),"File does not exist: {0}", outputPath);
 
             var compareError = $"The expected output ({expectedPath}) and actual output ({outputPath}) do not match!";
 
@@ -961,20 +961,20 @@ namespace NUglify.Tests.JavaScript.Common
                     using (StreamReader rightReader = new StreamReader(expectedPath))
                     {
                         string right = s_testRunRegex.Replace(rightReader.ReadToEnd(), "$1TESTRUNPATH$2").Replace("\r\n", "\n");
-                        Assert.AreEqual(right, left, compareError);
+                        Assert.That(left, Is.EqualTo(right), compareError);
                     }
                 }
                 else
                 {
                     // right file doesn't exist -- compare against an empty string
-                    Assert.AreEqual(string.Empty, left, compareError);
+                    Assert.That(left, Is.EqualTo(string.Empty), compareError);
                 }
             }
         }
 
         void CompareSymbolMapFiles(string leftPath, string rightPath)
         {
-            Assert.IsTrue(File.Exists(leftPath), "File does not exist: {0}", leftPath);
+            Assert.That(File.Exists(leftPath), "File does not exist: {0}", leftPath);
 
             Trace.WriteLine(string.Empty);
             Trace.WriteLine("MAP COMPARISON");

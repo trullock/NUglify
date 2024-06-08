@@ -69,7 +69,7 @@ namespace NUglify.Tests.JavaScript
             {
                 Console.WriteLine(error.ToString());
             }
-            Assert.False(result.HasErrors);
+            Assert.That(!result.HasErrors);
         }
     }
 }

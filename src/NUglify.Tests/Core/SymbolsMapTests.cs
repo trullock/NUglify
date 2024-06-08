@@ -34,20 +34,20 @@ namespace NUglify.Tests.Core
 
             // just verify that we got some source map content
             var mapContent = mapBuilder.ToString();
-            Assert.IsNotNull(mapContent, "map content should not be null");
-            Assert.IsFalse(string.IsNullOrWhiteSpace(mapContent), "map content should not be empty");
+            Assert.That(mapContent, Is.Not.Null, "map content should not be null");
+            Assert.That(!string.IsNullOrWhiteSpace(mapContent), "map content should not be empty");
 
             // better have some minified code results
-            Assert.IsNotNull(minifiedCode, "minified code should not be null");
+            Assert.That(minifiedCode, Is.Not.Null, "minified code should not be null");
 
             // verify the code UP TO the first line break, since the comment should be added on a new line and there
             // shouldn't be any linebreaks other than that.
             var indexLineBreak = minifiedCode.IndexOf('\n');
             var trimmedCode = indexLineBreak < 0 ? minifiedCode : minifiedCode.Substring(0, indexLineBreak);
-            Assert.AreEqual("function globalFunc(n){alert(n)}var foo=42,arrow=n=>n*2", trimmedCode, "minified code not expected");
+            Assert.That("function globalFunc(n){alert(n)}var foo=42,arrow=n=>n*2", Is.EqualTo(trimmedCode), "minified code not expected");
 
             // verify that the minified code has the sourceMappingURL directive in it
-            Assert.IsTrue(minifiedCode.Contains("sourceMappingURL=" + mapPath), "sourceMappingURL should be in minified content");
+            Assert.That(minifiedCode.Contains("sourceMappingURL=" + mapPath), "sourceMappingURL should be in minified content");
         }
     }
 }

@@ -48,7 +48,7 @@ namespace NUglify.Tests.Css
         public void Bug181()
         {
 	        var uglifyResult = Uglify.Css("p { color: red; }", new CssSettings { Indent = "   ", OutputMode = OutputMode.MultipleLines });
-	        Assert.AreEqual("p\n{\n   color: #f00\n}", uglifyResult.Code);
+	        Assert.That(uglifyResult.Code, Is.EqualTo("p\n{\n   color: #f00\n}"));
         }
 
         [Test]
@@ -66,18 +66,17 @@ namespace NUglify.Tests.Css
         [Test]
         public void Bug280()
         {
-            Assert.AreEqual(":is(.container) :is(.bold){font-weight:bold}", Uglify.Css(":is(.container) :is(.bold) { font-weight: bold; }").Code);
+            Assert.That(Uglify.Css(":is(.container) :is(.bold) { font-weight: bold; }").Code, Is.EqualTo(":is(.container) :is(.bold){font-weight:bold}"));
 
-            Assert.AreEqual(":is(.container):is(.bold){font-weight:bold}", Uglify.Css(":is(.container):is(.bold) { font-weight: bold; }").Code);
+            Assert.That(Uglify.Css(":is(.container):is(.bold) { font-weight: bold; }").Code, Is.EqualTo(":is(.container):is(.bold){font-weight:bold}"));
 
-            Assert.AreEqual(".container :is(.bold){font-weight:bold}", Uglify.Css(".container :is(.bold) { font-weight: bold; }").Code);
+            Assert.That(Uglify.Css(".container :is(.bold) { font-weight: bold; }").Code, Is.EqualTo(".container :is(.bold){font-weight:bold}"));
 
             // Assert whether extra unnecessary spaces around parentheses are removed:
-            Assert.AreEqual(":is(.container) :is(.bold){font-weight:bold}", Uglify.Css(":is(.container ) :is(.bold ) { font-weight: bold; }").Code);
+            Assert.That(Uglify.Css(":is(.container ) :is(.bold ) { font-weight: bold; }").Code, Is.EqualTo(":is(.container) :is(.bold){font-weight:bold}"));
 
             // Assert a more extensive scenario:
-            Assert.AreEqual("body{font-family:'Franklin Gothic Medium','Arial Narrow',Arial,sans-serif}:root{--blue:'blue';--five:5px;--width:100px;--half-width:calc(var(--width)/2);--half-width-with-indent:calc(var(--half-width) + 16px);--half-width-with-indent:calc(10% + var(--half-width) + 16px)}.margin{margin:calc(2*var(--five));padding:var(--half-width-with-indent)}:is(.container) :is(.bold){font-weight:bold}:is(.container) :where(.bold){grid-template-areas:'myArea myArea myArea myArea myArea'}div :is(.test),div:is(.test){color:var(--blue)}",
-                 Uglify.Css(@"body {
+            Assert.That(Uglify.Css(@"body {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
@@ -106,27 +105,27 @@ div :is(.test),
 div:is(.test) {
     color: var(--blue);
 }
-").Code);
+").Code, Is.EqualTo("body{font-family:'Franklin Gothic Medium','Arial Narrow',Arial,sans-serif}:root{--blue:'blue';--five:5px;--width:100px;--half-width:calc(var(--width)/2);--half-width-with-indent:calc(var(--half-width) + 16px);--half-width-with-indent:calc(10% + var(--half-width) + 16px)}.margin{margin:calc(2*var(--five));padding:var(--half-width-with-indent)}:is(.container) :is(.bold){font-weight:bold}:is(.container) :where(.bold){grid-template-areas:'myArea myArea myArea myArea myArea'}div :is(.test),div:is(.test){color:var(--blue)}"));
         }
 
         [Test]
         public void Bug302()
         {
-	        Assert.AreEqual("p{background-color:var(--_flumo-grid-secondary-border-color)!important}", Uglify.Css(@"
+	        Assert.That(Uglify.Css(@"
 p {
 	background-color: var(--_flumo-grid-secondary-border-color) !important;
-}").Code);
+}").Code, Is.EqualTo("p{background-color:var(--_flumo-grid-secondary-border-color)!important}"));
         }
 
         [Test]
         public void Bug309()
         {
-	        Assert.AreEqual("body{border-top-width:.5vmax;--custom-property:0px}", Uglify.Css(@"
+	        Assert.That(Uglify.Css(@"
 body
 {
 	border-top-width: 0.5vmax;
 	--custom-property: 0px; 
-}").Code);
+}").Code, Is.EqualTo("body{border-top-width:.5vmax;--custom-property:0px}"));
         }
 
 
@@ -139,7 +138,7 @@ body
         [Test]
         public void Bug317()
         {
-	        Assert.AreEqual("body{border:0;border-top:0;border-right:0;border-bottom:0;border-left:0;outline:0}", Uglify.Css(@"
+	        Assert.That(Uglify.Css(@"
 body
 {
 	border: none;
@@ -148,36 +147,36 @@ body
 	border-bottom: none;
 	border-left: none;
 	outline: none;
-}").Code);
+}").Code, Is.EqualTo("body{border:0;border-top:0;border-right:0;border-bottom:0;border-left:0;outline:0}"));
         }
 
         [Test]
         public void Bug343()
         {
-            Assert.AreEqual("body{border:0 none;border:0 none #f00}", Uglify.Css(@"
+            Assert.That(Uglify.Css(@"
 body
 {
 	border: 0 none;
 	border: 0 none #f00;
-}").Code);
+}").Code, Is.EqualTo("body{border:0 none;border:0 none #f00}"));
         }
 
 
         [Test]
         public void Bug379()
         {
-	        Assert.AreEqual(".\\!inline-flex{display:inline-flex!important}", Uglify.Css(@"
+	        Assert.That(Uglify.Css(@"
 .\!inline-flex {
     display: inline-flex!important
 }
-").Code);
+").Code, Is.EqualTo(".\\!inline-flex{display:inline-flex!important}"));
         }
 
         [Test]
         public void Bug384()
         {
             var uglifyResult = Uglify.Css("grid-template-rows: 0fr 0px 0% 0em;");
-            Assert.AreEqual("grid-template-rows: 0fr 0 0% 0;", uglifyResult.Code);
+            Assert.That(uglifyResult.Code, Is.EqualTo("grid-template-rows: 0fr 0 0% 0;"));
         }
     }
 }

@@ -50,8 +50,8 @@ namespace NUglify.Tests.Html
                 Console.Out.WriteLine(expected);
             }
 
-            Assert.AreEqual(expected, result);
-            Assert.AreEqual(expectedMessages, resultMessages);
+            Assert.That(result, Is.EqualTo(expected));
+            Assert.That(resultMessages, Is.EqualTo(expectedMessages));
         }
 
         protected string minify(string html, HtmlSettings settings = null)

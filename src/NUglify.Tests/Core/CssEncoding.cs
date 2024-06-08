@@ -83,7 +83,7 @@ namespace NUglify.Tests.Core
             // empty file with just UTF-8 BOM
             failed = ParseFile("empty.css", encoding) || failed;
 
-            Assert.IsFalse(failed, "at least one test failed");
+            Assert.That(!failed, "at least one test failed");
         }
 
         [Test]
@@ -98,8 +98,8 @@ namespace NUglify.Tests.Core
 
             // parse it
             var results = cssParser.Parse(null);
-            Assert.AreEqual(string.Empty, results);
-            Assert.AreEqual(0, errors.Count);
+            Assert.That(results, Is.EqualTo(string.Empty));
+            Assert.That(errors.Count, Is.EqualTo(0));
         }
 
         bool ParseFile(string fileName, Encoding encoding, params CssErrorCode[] expectedErrors)

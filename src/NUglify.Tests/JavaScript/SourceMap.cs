@@ -83,9 +83,9 @@ namespace NUglify.Tests.JavaScript
                 sourceMap.Dispose();
 
                 var code = uglifyResult.Code;
-                Assert.AreEqual(File.ReadAllText(Path.Combine(currentPath, "TestData\\JS\\Expected\\SourceMap\\SourceMapForMultipleFiles.js")), code);
+                Assert.That(code, Is.EqualTo(File.ReadAllText(Path.Combine(currentPath, "TestData\\JS\\Expected\\SourceMap\\SourceMapForMultipleFiles.js"))));
                 var builder = stringBuilder.ToString();
-                Assert.AreEqual(File.ReadAllText(Path.Combine(currentPath, "TestData\\JS\\Expected\\SourceMap\\SourceMapForMultipleFiles.js.map")), builder);
+                Assert.That(builder, Is.EqualTo(File.ReadAllText(Path.Combine(currentPath, "TestData\\JS\\Expected\\SourceMap\\SourceMapForMultipleFiles.js.map"))));
             }
 		}
 		
@@ -113,9 +113,9 @@ namespace NUglify.Tests.JavaScript
                 }
             }
 
-            Assert.AreEqual("function test(n){return n**2}\n//# sourceMappingURL=C:\\some\\other\\path\\to\\map\n", result.Code);
+            Assert.That(result.Code, Is.EqualTo("function test(n){return n**2}\n//# sourceMappingURL=C:\\some\\other\\path\\to\\map\n"));
             
-            Assert.AreEqual("{\r\n\"version\":3,\r\n\"file\":\"C:\\\\some\\\\long\\\\path\\\\to\\\\js\",\r\n\"mappings\":\"AAAAA,SAASA,IAAI,CAACC,CAAD,CAAG,CACf,OAAOA,CAAC,EAAE,CADK\",\r\n\"sources\":[\"C:\\\\some\\\\path\\\\to\\\\output\\\\js\"],\r\n\"names\":[\"test\",\"t\"]\r\n}\r\n", builder.ToString());
+            Assert.That(builder.ToString(), Is.EqualTo("{\r\n\"version\":3,\r\n\"file\":\"C:\\\\some\\\\long\\\\path\\\\to\\\\js\",\r\n\"mappings\":\"AAAAA,SAASA,IAAI,CAACC,CAAD,CAAG,CACf,OAAOA,CAAC,EAAE,CADK\",\r\n\"sources\":[\"C:\\\\some\\\\path\\\\to\\\\output\\\\js\"],\r\n\"names\":[\"test\",\"t\"]\r\n}\r\n"));
         }
     }
 }

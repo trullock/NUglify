@@ -31,17 +31,17 @@ namespace NUglify.Tests.Core
 
             // default settings should strip the alert leaving nothing left
             var minified = ProcessCode(source, new CodeSettings());
-            Assert.AreEqual(string.Empty, minified);
+            Assert.That(minified, Is.EqualTo(string.Empty));
             Trace.WriteLine("Default settings: " + minified);
 
             // with strip debug statements set to false, should NOT strip the alert
             minified = ProcessCode(source, new CodeSettings() { StripDebugStatements = false });
-            Assert.AreEqual("alert(\"hi!\")", minified);
+            Assert.That(minified, Is.EqualTo("alert(\"hi!\")"));
             Trace.WriteLine("StripDebugStatements set to false: " + minified);
 
             // with DEBUG defined, should NOT strip the alert
             minified = ProcessCode(source, new CodeSettings() { PreprocessorDefineList = "DEBUG" });
-            Assert.AreEqual("alert(\"hi!\")", minified);
+            Assert.That(minified, Is.EqualTo("alert(\"hi!\")"));
             Trace.WriteLine("DEBUG preprocessor name defined: " + minified);
         }
 
@@ -57,7 +57,7 @@ namespace NUglify.Tests.Core
             var minified = Uglify.Js(source, codeSettings);
 
             // shouldn't be any errors
-            Assert.IsFalse(minified.HasErrors);
+            Assert.That(!minified.HasErrors);
 
             return minified.Code;
         }

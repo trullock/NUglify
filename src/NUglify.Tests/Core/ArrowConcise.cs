@@ -30,13 +30,13 @@ namespace NUglify.Tests.Core
             // if we append something to the arrow body, it should no longer be concise
             // and the first statement should be a return node.
             body.Append(new DebuggerNode(body[0].Context.FlattenToEnd()));
-            Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body[0] is ReturnStatement);
-            Assert.IsTrue(body[1] is DebuggerNode);
+            Assert.That(!body.IsConcise);
+            Assert.That(body[0] is ReturnStatement);
+            Assert.That(body[1] is DebuggerNode);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(appendDebugger, minified);
+            Assert.That(minified, Is.EqualTo(appendDebugger));
         }
 
         [Test]
@@ -48,14 +48,14 @@ namespace NUglify.Tests.Core
 
             // if we insert a debugger statement after the first statement, it should no longer be concise
             body.InsertAfter(body[0], new DebuggerNode(body[0].Context.FlattenToEnd()));
-            Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body.Count == 2);
-            Assert.IsTrue(body[0] is ReturnStatement);
-            Assert.IsTrue(body[1] is DebuggerNode);
+            Assert.That(!body.IsConcise);
+            Assert.That(body.Count == 2);
+            Assert.That(body[0] is ReturnStatement);
+            Assert.That(body[1] is DebuggerNode);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(appendDebugger, minified);
+            Assert.That(minified, Is.EqualTo(appendDebugger));
         }
 
         [Test]
@@ -67,14 +67,14 @@ namespace NUglify.Tests.Core
 
             // if we insert a debugger statement before the first statement, it should no longer be concise
             body.Insert(0, new DebuggerNode(body[0].Context.FlattenToStart()));
-            Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body.Count == 2);
-            Assert.IsTrue(body[0] is DebuggerNode);
-            Assert.IsTrue(body[1] is ReturnStatement);
+            Assert.That(!body.IsConcise);
+            Assert.That(body.Count == 2);
+            Assert.That(body[0] is DebuggerNode);
+            Assert.That(body[1] is ReturnStatement);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(insertDebugger, minified);
+            Assert.That(minified, Is.EqualTo(insertDebugger));
         }
 
         [Test]
@@ -86,15 +86,15 @@ namespace NUglify.Tests.Core
 
             // if we insert two statements before the first statement, it should no longer be concise
             body.InsertRange(0, new AstNode[] { GetLookupToFirstParameter(body.Parent as FunctionObject), new DebuggerNode(body[0].Context.FlattenToStart()) });
-            Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body.Count == 3);
-            Assert.IsTrue(body[0] is LookupExpression);
-            Assert.IsTrue(body[1] is DebuggerNode);
-            Assert.IsTrue(body[2] is ReturnStatement);
+            Assert.That(!body.IsConcise);
+            Assert.That(body.Count == 3);
+            Assert.That(body[0] is LookupExpression);
+            Assert.That(body[1] is DebuggerNode);
+            Assert.That(body[2] is ReturnStatement);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(insertTwo, minified);
+            Assert.That(minified, Is.EqualTo(insertTwo));
         }
 
         [Test]
@@ -106,12 +106,12 @@ namespace NUglify.Tests.Core
 
             // if we clear the arrow body, it should no longer be concise
             body.Clear();
-            Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body.Count == 0);
+            Assert.That(!body.IsConcise);
+            Assert.That(body.Count == 0);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(emptyBody, minified);
+            Assert.That(minified, Is.EqualTo(emptyBody));
         }
 
         [Test]
@@ -123,12 +123,12 @@ namespace NUglify.Tests.Core
 
             // if we remove the last statement in the arrow body, it should no longer be concise
             body.RemoveLast();
-            Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body.Count == 0);
+            Assert.That(!body.IsConcise);
+            Assert.That(body.Count == 0);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(emptyBody, minified);
+            Assert.That(minified, Is.EqualTo(emptyBody));
         }
 
         [Test]
@@ -140,12 +140,12 @@ namespace NUglify.Tests.Core
 
             // if we remove the first statement in the arrow body, it should no longer be concise
             body.RemoveAt(0);
-            Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body.Count == 0);
+            Assert.That(!body.IsConcise);
+            Assert.That(body.Count == 0);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(emptyBody, minified);
+            Assert.That(minified, Is.EqualTo(emptyBody));
         }
 
         [Test]
@@ -157,12 +157,12 @@ namespace NUglify.Tests.Core
 
             // if we replace the only statement with null, it should no longer be concise
             body.ReplaceChild(body[0], null);
-            Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body.Count == 0);
+            Assert.That(!body.IsConcise);
+            Assert.That(body.Count == 0);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(emptyBody, minified);
+            Assert.That(minified, Is.EqualTo(emptyBody));
         }
 
         [Test]
@@ -174,14 +174,14 @@ namespace NUglify.Tests.Core
 
             // if we replace the expression with a non-expression, it should no longer be concise
             body.ReplaceChild(body[0], new DebuggerNode(body[0].Context));
-            Assert.IsFalse(body.IsConcise);
-            Assert.IsTrue(body.Count == 1);
-            Assert.IsTrue(body[0] is DebuggerNode);
-            Assert.IsFalse(body[0].IsExpression);
+            Assert.That(!body.IsConcise);
+            Assert.That(body.Count == 1);
+            Assert.That(body[0] is DebuggerNode);
+            Assert.That(!body[0].IsExpression);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(justDebugger, minified);
+            Assert.That(minified, Is.EqualTo(justDebugger));
         }
 
         [Test]
@@ -193,14 +193,14 @@ namespace NUglify.Tests.Core
 
             // if we replace the expression with another expression, it should still be concise
             body.ReplaceChild(body[0], GetLookupToFirstParameter(body.Parent as FunctionObject));
-            Assert.IsTrue(body.IsConcise);
-            Assert.IsTrue(body.Count == 1);
-            Assert.IsTrue(body[0] is LookupExpression);
-            Assert.IsTrue(body[0].IsExpression);
+            Assert.That(body.IsConcise);
+            Assert.That(body.Count == 1);
+            Assert.That(body[0] is LookupExpression);
+            Assert.That(body[0].IsExpression);
 
             // make sure output is what we expect
             var minified = OutputVisitor.Apply(code, settings);
-            Assert.AreEqual(justLookup, minified);
+            Assert.That(minified, Is.EqualTo(justLookup));
         }
 
         BlockStatement GetParsedArrowFunctionCode(CodeSettings settings)
@@ -214,12 +214,12 @@ namespace NUglify.Tests.Core
             // there should be a block, containing a var, containing a vardecl, which has an initializer that's a FunctionObject,
             // that is an arrow funtion with a body that is concise.
             var arrowFunction = (block[0] as VarDeclaration).IfNotNull(v => v[0].Initializer as FunctionObject);
-            Assert.IsNotNull(arrowFunction);
-            Assert.IsTrue(arrowFunction.FunctionType == FunctionType.ArrowFunction);
-            Assert.IsTrue(arrowFunction.Body.Count == 1);
-            Assert.IsFalse(arrowFunction.Body[0] is ReturnStatement);
-            Assert.IsTrue(arrowFunction.Body[0].IsExpression);
-            Assert.IsTrue(arrowFunction.Body.IsConcise);
+            Assert.That(arrowFunction, Is.Not.Null);
+            Assert.That(arrowFunction.FunctionType == FunctionType.ArrowFunction);
+            Assert.That(arrowFunction.Body.Count == 1);
+            Assert.That(!(arrowFunction.Body[0] is ReturnStatement));
+            Assert.That(arrowFunction.Body[0].IsExpression);
+            Assert.That(arrowFunction.Body.IsConcise);
 
             return arrowFunction.Body;
         }
