@@ -18,7 +18,6 @@
     }
   },
   "dependencies": {
-    "NUnit": "4.1.0",
-    "NUnit3TestAdapter": "4.5.0"
+    "NUnit": "4.1.0"
   }
 }

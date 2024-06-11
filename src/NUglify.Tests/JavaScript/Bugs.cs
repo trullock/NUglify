@@ -107,7 +107,7 @@ namespace NUglify.Tests.JavaScript
             var uglifyResult = Uglify.Js(@"var testString = `
 `;
             testString += `} async init(){ }`;");
-            Assert.That(uglifyResult.Code, Is.EqualTo("var testString=`\r\n`+`} async init(){ }`"));
+            Assert.That(uglifyResult.Code, Is.EqualTo("var testString=`\n`+`} async init(){ }`"));
 
             // CR
             uglifyResult = Uglify.Js("var testString = `"+ (char)13 +@"`;
@@ -202,7 +202,7 @@ namespace NUglify.Tests.JavaScript
 			        sourceMap.MakePathsRelative = false;
 
 			        var settings = new CodeSettings();
-                    settings.LineTerminator = "\r\n";
+                    settings.LineTerminator = "\n";
 			        settings.SymbolsMap = sourceMap;
 			        sourceMap.StartPackage(@"C:\some\long\path\to\js", @"C:\some\other\path\to\map");
 
@@ -215,7 +215,7 @@ namespace NUglify.Tests.JavaScript
 ";
 	        Assert.That(result.Code, Is.EqualTo(expected));
 
-	        var actual = builder.ToString();
+	        var actual = builder.ToString().Replace("\r\n", "\n");
 	        Assert.That(actual, Is.EqualTo(@"{
 ""version"":3,
 ""file"":""C:\\some\\long\\path\\to\\js"",
