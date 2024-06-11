@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.8 (11 June 2024)
+- Added support for 'of' keyword in :nth-child and :nth-last-child
+
 ## v1.21.7 (24 April 2024)
  - Fixes bug parsing arrow and anonymous functions as object properties within object destructuring.
 
