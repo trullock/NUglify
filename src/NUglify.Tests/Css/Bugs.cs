@@ -163,6 +163,17 @@ body
 
 
         [Test]
+        public void Bug366()
+        {
+	        Assert.AreEqual("#thisisanid :nth-child(1 of ul.firstclass~ul:not(.secondclass)){background:#f00}", Uglify.Css(@"
+#thisisanid :nth-child(1 of ul.firstclass ~ ul:not(.secondclass)) {
+  background: #ff0000;
+}
+").Code);
+        }
+
+
+        [Test]
         public void Bug379()
         {
 	        Assert.That(Uglify.Css(@"
