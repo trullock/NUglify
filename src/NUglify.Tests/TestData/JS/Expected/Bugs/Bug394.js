@@ -1,0 +1,1 @@
+﻿const someFunc=({val:t,op:n="eq"})=>{var i=n+t};var args={val:"va",op:"contains"};someFunc(args)
