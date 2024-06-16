@@ -2921,7 +2921,37 @@ namespace NUglify.Css
                     break;
 
                 case TokenType.Character:
-                    if (CurrentTokenText == "(")
+                    // Handle custom identifiers (e.g. used with grid-template-columns)
+                    if (CurrentTokenText == "[")
+                    {
+                        if (wasEmpty)
+                        {
+                            // if we had skipped any space, then add one now
+                            if (m_skippedSpace)
+                            {
+                                Append(' ');
+                            }
+
+                            wasEmpty = false;
+                        }
+                        AppendCurrent();
+                        SkipSpace();
+                        if (CurrentTokenType != TokenType.Identifier)
+                        {
+                            ReportError(0, CssErrorCode.ExpectedIdentifier, CurrentTokenText);
+                        }
+                        AppendCurrent();
+                        SkipSpace();
+                        if (CurrentTokenText != "]")
+                        {
+                            ReportError(0, CssErrorCode.ExpectedClosingBracket, CurrentTokenText);
+                        }
+                        AppendCurrent();
+                        SkipSpace();
+                        parsed = Parsed.True;
+                        break;
+                    }
+                    else if (CurrentTokenText == "(")
                     {
                         // the term starts with an opening paren.
                         // parse an expression followed by the close paren.
