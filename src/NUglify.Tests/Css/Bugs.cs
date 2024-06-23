@@ -189,5 +189,19 @@ body
             var uglifyResult = Uglify.Css("grid-template-rows: 0fr 0px 0% 0em;");
             Assert.That(uglifyResult.Code, Is.EqualTo("grid-template-rows: 0fr 0 0% 0;"));
         }
+
+        [Test]
+        public void Bug383()
+        {
+            var result = Uglify.Css("""
+@supports not selector(::-webkit-scrollbar) {
+    .scroll {
+        scrollbar-color: rgba(0,0,0,0.3) rgba(0,0,0,0);
+        scrollbar-width: thin;
+    }
+}
+""");
+            Assert.False(result.HasErrors);
+        }
     }
 }
