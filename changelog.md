@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.9 (24 June 2024)
+- Adds support for css custom identifiers
+
 ## v1.21.8 (11 June 2024)
 - Added support for 'of' keyword in :nth-child and :nth-last-child
 - Fixed bug with JavaScript Object Destructuring with default values
