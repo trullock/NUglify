@@ -1,77 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Description>NUglify provides minification and compression methods for CSS, JavaScript and HTML files for .NET</Description>
-    <Copyright>Alexandre Mutel;Andrew Bullock</Copyright>
-    <AssemblyTitle>NUglify</AssemblyTitle>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>1.5.14</VersionPrefix>
-    <Authors>Ron Logan;Alexandre Mutel;Andrew Bullock</Authors>
-    <TargetFrameworks>net35;net40;netstandard1.3;netstandard2.0;net50</TargetFrameworks>
-    <AssemblyName>NUglify</AssemblyName>
-    <PackageId>NUglify</PackageId>
-    <PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
-    <PackageReleaseNotes>https://github.com/trullock/NUglify/blob/master/changelog.md</PackageReleaseNotes>
-    <PackageIcon>nuglify.png</PackageIcon>
-    <PackageProjectUrl>https://github.com/trullock/NUglify</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/trullock/NUglify/blob/master/license.txt</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>git://github.com/trullock/NUglify</RepositoryUrl>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.3' ">1.6.0</NetStandardImplicitPackageVersion>
-    <Version>1.21.4</Version>
-    <PackageLicenseExpression></PackageLicenseExpression>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Description>NUglify provides minification and compression methods for CSS, JavaScript and HTML files for .NET</Description>
+		<Copyright>Argo Zhang</Copyright>
+		<AssemblyTitle>BootstrapBlazor.NUglify</AssemblyTitle>
+		<Authors>Ron Logan;Alexandre Mutel;Andrew Bullock;Argo Zhang</Authors>
+		<TargetFramework>net8.0</TargetFramework>
+		<AssemblyName>BootstrapBlazor.NUglify</AssemblyName>
+		<PackageId>BootstrapBlazor.NUglify</PackageId>
+		<PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
+		<PackageReleaseNotes>https://github.com/trullock/NUglify/blob/master/changelog.md</PackageReleaseNotes>
+		<PackageIcon>nuglify.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/trullock/NUglify</PackageProjectUrl>
+		<PackageLicense>https://github.com/trullock/NUglify/blob/master/license.txt</PackageLicense>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/ArgoZhang/NUglify?wt.mc_id=DT-MVP-5004174</RepositoryUrl>
+		<Version>8.0.0</Version>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="*.resx;Css\*.resx;JavaScript\*.resx" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="*.resx;Css\*.resx;JavaScript\*.resx" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+	</ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<NoWarn>$(NoWarn);CS1591</NoWarn>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+		<SignAssembly>true</SignAssembly>
+		<PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+	</PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <DefineConstants>$(DefineConstants);NET_35;NETPRE45</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <DefineConstants>$(DefineConstants);NETPRE45</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <DefineConstants>$(DefineConstants);CORE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>true</SignAssembly>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\images\nuglify.png" Link="nuglify.png" Pack="true" PackagePath="" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\images\nuglify.png" Link="nuglify.png" Pack="true" PackagePath="" />
+	</ItemGroup>
 
 </Project>
