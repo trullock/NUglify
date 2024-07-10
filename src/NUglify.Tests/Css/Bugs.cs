@@ -47,8 +47,8 @@ namespace NUglify.Tests.Css
         [Test]
         public void Bug181()
         {
-	        var uglifyResult = Uglify.Css("p { color: red; }", new CssSettings { Indent = "   ", OutputMode = OutputMode.MultipleLines });
-	        Assert.AreEqual("p\n{\n   color: #f00\n}", uglifyResult.Code);
+            var uglifyResult = Uglify.Css("p { color: red; }", new CssSettings { Indent = "   ", OutputMode = OutputMode.MultipleLines });
+            Assert.AreEqual("p\n{\n   color: #f00\n}", uglifyResult.Code);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NUglify.Tests.Css
         [Test]
         public void Bug270()
         {
-	        TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunTest();
         }
 
         [Test]
@@ -112,7 +112,7 @@ div:is(.test) {
         [Test]
         public void Bug302()
         {
-	        Assert.AreEqual("p{background-color:var(--_flumo-grid-secondary-border-color)!important}", Uglify.Css(@"
+            Assert.AreEqual("p{background-color:var(--_flumo-grid-secondary-border-color)!important}", Uglify.Css(@"
 p {
 	background-color: var(--_flumo-grid-secondary-border-color) !important;
 }").Code);
@@ -121,7 +121,7 @@ p {
         [Test]
         public void Bug309()
         {
-	        Assert.AreEqual("body{border-top-width:.5vmax;--custom-property:0px}", Uglify.Css(@"
+            Assert.AreEqual("body{border-top-width:.5vmax;--custom-property:0px}", Uglify.Css(@"
 body
 {
 	border-top-width: 0.5vmax;
@@ -133,13 +133,13 @@ body
         [Test]
         public void Bug331()
         {
-	        TestHelper.Instance.RunTest();
+            TestHelper.Instance.RunTest();
         }
 
         [Test]
         public void Bug317()
         {
-	        Assert.AreEqual("body{border:0;border-top:0;border-right:0;border-bottom:0;border-left:0;outline:0}", Uglify.Css(@"
+            Assert.AreEqual("body{border:0;border-top:0;border-right:0;border-bottom:0;border-left:0;outline:0}", Uglify.Css(@"
 body
 {
 	border: none;
@@ -166,7 +166,7 @@ body
         [Test]
         public void Bug379()
         {
-	        Assert.AreEqual(".\\!inline-flex{display:inline-flex!important}", Uglify.Css(@"
+            Assert.AreEqual(".\\!inline-flex{display:inline-flex!important}", Uglify.Css(@"
 .\!inline-flex {
     display: inline-flex!important
 }
