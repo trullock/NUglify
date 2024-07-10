@@ -17,6 +17,7 @@ namespace NUglify.Html
         /// </summary>
         /// <param name="tag">The tag for which we want to test if a end tag can be omitted.</param>
         /// <param name="nextSibling">The next sibling or null if it is the last tag of its parent.</param>
+        /// <param name="whileParsing"></param>
         /// <returns><c>true</c> if the end tag can be omitted; <c>false</c> otherwise</returns>
         public delegate bool CanOmitDelegate(HtmlElement tag, HtmlElement nextSibling, bool whileParsing);
 
@@ -83,11 +84,11 @@ namespace NUglify.Html
         }
 
         public static HtmlTagDescriptor Find(string tag)
-		{
-			HtmlTagDescriptor tagDesc;
-			TagDescriptors.TryGetValue(tag, out tagDesc);
-			return tagDesc;
-		}
+        {
+            HtmlTagDescriptor tagDesc;
+            TagDescriptors.TryGetValue(tag, out tagDesc);
+            return tagDesc;
+        }
 
         static readonly Dictionary<string, HtmlTagDescriptor> TagDescriptors = new Dictionary<string, HtmlTagDescriptor>(StringComparer.OrdinalIgnoreCase)
         {
@@ -270,13 +271,13 @@ namespace NUglify.Html
 
         static bool DefinitionDescriptionEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
-            return nextSibling == null || (nextSibling.Name.Equals("dt", StringComparison.OrdinalIgnoreCase) 
+            return nextSibling == null || (nextSibling.Name.Equals("dt", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("dd", StringComparison.OrdinalIgnoreCase));
         }
 
         static bool RubyEndTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
-            return nextSibling == null || (nextSibling.Name.Equals("rt", StringComparison.OrdinalIgnoreCase) 
+            return nextSibling == null || (nextSibling.Name.Equals("rt", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("rp", StringComparison.OrdinalIgnoreCase));
         }
 
@@ -304,7 +305,7 @@ namespace NUglify.Html
 
         static bool THeadTBodyTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
-            return nextSibling == null || (nextSibling.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase) 
+            return nextSibling == null || (nextSibling.Name.Equals("tbody", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("tfoot", StringComparison.OrdinalIgnoreCase));
         }
 
@@ -315,7 +316,7 @@ namespace NUglify.Html
 
         static bool TDTHTagOmissionHandler(HtmlElement parent, HtmlElement nextSibling, bool whileParsing)
         {
-            return nextSibling == null || (nextSibling.Name.Equals("td", StringComparison.OrdinalIgnoreCase) 
+            return nextSibling == null || (nextSibling.Name.Equals("td", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("th", StringComparison.OrdinalIgnoreCase)
                 || nextSibling.Name.Equals("tr", StringComparison.OrdinalIgnoreCase));
         }

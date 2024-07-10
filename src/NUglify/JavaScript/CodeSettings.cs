@@ -20,7 +20,7 @@ using NUglify.Helpers;
 
 namespace NUglify.JavaScript
 {
-	/// <summary>
+    /// <summary>
     /// Object used to store code settings for JavaScript parsing, minification, and output
     /// </summary>
     public class CodeSettings : CommonSettings
@@ -68,11 +68,11 @@ namespace NUglify.JavaScript
         /// <returns></returns>
         public static CodeSettings Pretty()
         {
-	        var settings = new CodeSettings();
-	        settings.MinifyCode = false;
-	        settings.OutputMode = OutputMode.MultipleLines;
-	        settings.TermSemicolons = true;
-	        return settings;
+            var settings = new CodeSettings();
+            settings.MinifyCode = false;
+            settings.OutputMode = OutputMode.MultipleLines;
+            settings.TermSemicolons = true;
+            return settings;
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace NUglify.JavaScript
         /// <summary>
         /// sets the collection of known global names to the enumeration of strings passed to this method
         /// </summary>
-        /// <param name="globalArray">array of known global names</param>
+        /// <param name="noRenameNames">array of known global names</param>
         public int SetNoAutoRenames(IEnumerable<string> noRenameNames)
         {
             m_noRenameSet.Clear();
@@ -452,7 +452,7 @@ namespace NUglify.JavaScript
         /// <summary>
         /// Set the collection of debug "lookup" identifiers
         /// </summary>
-        /// <param name="definedNames">collection of debug lookup identifier strings</param>
+        /// <param name="debugLookups">collection of debug lookup identifier strings</param>
         /// <returns>number of names successfully added to the collection</returns>
         public int SetDebugNamespaces(IEnumerable<string> debugLookups)
         {
@@ -536,7 +536,7 @@ namespace NUglify.JavaScript
                 m_debugLookups.Clear();
                 if (!string.IsNullOrEmpty(value))
                 {
-                    foreach(var debugLookup in value.Split(',', ';'))
+                    foreach (var debugLookup in value.Split(',', ';'))
                     {
                         AddDebugLookup(debugLookup);
                     }
@@ -694,8 +694,8 @@ namespace NUglify.JavaScript
         public bool MinifyCode
         {
             get => minify;
-            set 
-            { 
+            set
+            {
                 // when we set this flag, we want to turn other things on and off at the same time
                 minify = value;
 
@@ -727,10 +727,10 @@ namespace NUglify.JavaScript
         /// <summary>
         /// Gets or sets a boolean value indicating whether or not the input files should be preprocessed only (default is false)
         /// </summary>
-        public bool PreprocessOnly 
-        { 
-            get; 
-            set; 
+        public bool PreprocessOnly
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -860,25 +860,25 @@ namespace NUglify.JavaScript
         /// <summary>
         /// Default. No specific tree modification
         /// </summary>
-        None                                        = 0x0000000000000000,
+        None = 0x0000000000000000,
 
         /// <summary>
         /// Preserve "important" comments in output: /*! ... */
         /// </summary>
-        PreserveImportantComments                   = 0x0000000000000001,
+        PreserveImportantComments = 0x0000000000000001,
 
         /// <summary>
         /// Replace a member-bracket call with a member-dot construct if the member
         /// name is a string literal that can be an identifier.
         /// A["B"] ==&gt; A.B
         /// </summary>
-        BracketMemberToDotMember                    = 0x0000000000000002,
+        BracketMemberToDotMember = 0x0000000000000002,
 
         /// <summary>
         /// Replace a new Object constructor call with an object literal
         /// new Object() ==&gt; {}
         /// </summary>
-        NewObjectToObjectLiteral                    = 0x0000000000000004,
+        NewObjectToObjectLiteral = 0x0000000000000004,
 
         /// <summary>
         /// Change Array constructor calls with array literals.
@@ -887,80 +887,80 @@ namespace NUglify.JavaScript
         /// new Array() ==&gt; []
         /// new Array(A,B,C) ==&gt; [A,B,C]
         /// </summary>
-        NewArrayToArrayLiteral                      = 0x0000000000000008,
+        NewArrayToArrayLiteral = 0x0000000000000008,
 
         /// <summary>
         /// Remove the default case in a switch statement if the block contains
         /// only a break statement.
         /// remove default:break;
         /// </summary>
-        RemoveEmptyDefaultCase                      = 0x0000000000000010,
+        RemoveEmptyDefaultCase = 0x0000000000000010,
 
         /// <summary>
         /// If there is no default case, remove any case statements that contain
         /// only a single break statement.
         /// remove case A:break;
         /// </summary>
-        RemoveEmptyCaseWhenNoDefault                = 0x0000000000000020,
+        RemoveEmptyCaseWhenNoDefault = 0x0000000000000020,
 
         /// <summary>
         /// Remove the break statement from the last case block of a switch statement.
         /// switch(A){case B: C;break;} ==&gt; switch(A){case B:C;}
         /// </summary>
-        RemoveBreakFromLastCaseBlock                = 0x0000000000000040,
+        RemoveBreakFromLastCaseBlock = 0x0000000000000040,
 
         /// <summary>
         /// Remove an empty finally statement if there is a non-empty catch block.
         /// try{...}catch(E){...}finally{} ==&gt; try{...}catch(E){...}
         /// </summary>
-        RemoveEmptyFinally                          = 0x0000000000000080,
+        RemoveEmptyFinally = 0x0000000000000080,
 
         /// <summary>
         /// Remove duplicate var declarations in a var statement that have no initializers.
         /// var A,A=B  ==&gt;  var A=B
         /// var A=B,A  ==&gt;  var A=B
         /// </summary>
-        RemoveDuplicateVar                          = 0x0000000000000100,
+        RemoveDuplicateVar = 0x0000000000000100,
 
         /// <summary>
         /// Combine adjacent var statements.
         /// var A;var B  ==&gt;  var A,B
         /// </summary>
-        CombineVarStatements                        = 0x0000000000000200,
+        CombineVarStatements = 0x0000000000000200,
 
         /// <summary>
         /// Move preceeding var statement into the initializer of the for statement.
         /// var A;for(var B;;);  ==&gt;  for(var A,B;;);
         /// var A;for(;;)  ==&gt; for(var A;;)
         /// </summary>
-        MoveVarIntoFor                              = 0x0000000000000400,
+        MoveVarIntoFor = 0x0000000000000400,
 
         /// <summary>
         /// Combine adjacent var statement and return statement to a single return statement
         /// var A=B;return A  ==&gt; return B
         /// </summary>
-        VarInitializeReturnToReturnInitializer      = 0x0000000000000800,
+        VarInitializeReturnToReturnInitializer = 0x0000000000000800,
 
         /// <summary>
         /// Replace an if-statement that has empty true and false branches with just the 
         /// condition expression.
         /// if(A);else;  ==&gt; A;
         /// </summary>
-        IfEmptyToExpression                         = 0x0000000000001000,
+        IfEmptyToExpression = 0x0000000000001000,
 
         /// <summary>
         /// replace if-statement that only has a single call statement in the true branch
         /// with a logical-and statement
         /// if(A)B() ==&gt; A&amp;&amp;B()
         /// </summary>
-        IfConditionCallToConditionAndCall           = 0x0000000000002000,
+        IfConditionCallToConditionAndCall = 0x0000000000002000,
 
         /// <summary>
         /// Replace an if-else-statement where both branches are only a single return
         /// statement with a single return statement and a conditional operator.
         /// if(A)return B;else return C  ==&gt;  return A?B:C 
         /// </summary>
-        IfElseReturnToReturnConditional             = 0x0000000000004000,
+        IfElseReturnToReturnConditional = 0x0000000000004000,
 
         /// <summary>
         /// If a function ends in an if-statement that only has a true-branch containing
@@ -968,84 +968,84 @@ namespace NUglify.JavaScript
         /// the condition expression.
         /// function A(...){...;if(B)return}  ==&gt; function A(...){...;B}
         /// </summary>
-        IfConditionReturnToCondition                = 0x0000000000008000,
+        IfConditionReturnToCondition = 0x0000000000008000,
 
         /// <summary>
         /// If the true-block of an if-statment is empty and the else-block is not,
         /// negate the condition and move the else-block to the true-block.
         /// if(A);else B  ==&gt;  if(!A)B
         /// </summary>
-        IfConditionFalseToIfNotConditionTrue        = 0x0000000000010000,
+        IfConditionFalseToIfNotConditionTrue = 0x0000000000010000,
 
         /// <summary>
         /// Combine adjacent string literals.
         /// "A"+"B"  ==&gt; "AB"
         /// </summary>
-        CombineAdjacentStringLiterals               = 0x0000000000020000,
+        CombineAdjacentStringLiterals = 0x0000000000020000,
 
         /// <summary>
         /// Remove unary-plus operators when the operand is a numeric literal
         /// +123  ==&gt;  123
         /// </summary>
-        RemoveUnaryPlusOnNumericLiteral             = 0x0000000000040000,
+        RemoveUnaryPlusOnNumericLiteral = 0x0000000000040000,
 
         /// <summary>
         /// Apply (and cascade) unary-minus operators to the value of a numeric literal
         /// -(4)  ==&gt;  -4   (unary minus applied to a numeric 4 ==&gt; numeric -4)
         /// -(-4)  ==&gt;  4   (same as above, but cascading)
         /// </summary>
-        ApplyUnaryMinusToNumericLiteral             = 0x0000000000080000,
+        ApplyUnaryMinusToNumericLiteral = 0x0000000000080000,
 
         /// <summary>
         /// Apply minification technics to string literals
         /// </summary>
-        MinifyStringLiterals                        = 0x0000000000100000,
+        MinifyStringLiterals = 0x0000000000100000,
 
         /// <summary>
         /// Apply minification techniques to numeric literals
         /// </summary>
-        MinifyNumericLiterals                       = 0x0000000000200000,
+        MinifyNumericLiterals = 0x0000000000200000,
 
         /// <summary>
         /// Remove unused function parameters
         /// </summary>
-        RemoveUnusedParameters                      = 0x0000000000400000,
+        RemoveUnusedParameters = 0x0000000000400000,
 
         /// <summary>
         /// remove "debug" statements
         /// </summary>
-        StripDebugStatements                        = 0x0000000000800000,
+        StripDebugStatements = 0x0000000000800000,
 
         /// <summary>
         /// Rename local variables and functions
         /// </summary>
-        LocalRenaming                               = 0x0000000001000000,
+        LocalRenaming = 0x0000000001000000,
 
         /// <summary>
         /// Remove unused function expression names
         /// </summary>
-        RemoveFunctionExpressionNames               = 0x0000000002000000,
+        RemoveFunctionExpressionNames = 0x0000000002000000,
 
         /// <summary>
         /// Remove unnecessary labels from break or continue statements
         /// </summary>
-        RemoveUnnecessaryLabels                     = 0x0000000004000000,
+        RemoveUnnecessaryLabels = 0x0000000004000000,
 
         /// <summary>
         /// Remove unnecessary @cc_on statements
         /// </summary>
-        RemoveUnnecessaryCCOnStatements             = 0x0000000008000000,
+        RemoveUnnecessaryCCOnStatements = 0x0000000008000000,
 
         /// <summary>
         /// Convert (new Date()).getTime() to +new Date
         /// </summary>
-        DateGetTimeToUnaryPlus                      = 0x0000000010000000,
+        DateGetTimeToUnaryPlus = 0x0000000010000000,
 
         /// <summary>
         /// Evaluate numeric literal expressions.
         /// 1 + 2  ==&gt; 3
         /// </summary>
-        EvaluateNumericExpressions                  = 0x0000000020000000,
+        EvaluateNumericExpressions = 0x0000000020000000,
 
         /// <summary>
         /// Simplify a common method on converting string to numeric: 
@@ -1053,93 +1053,85 @@ namespace NUglify.JavaScript
         /// (Subtracting zero converts lookup to number, then doesn't modify
         /// it; unary plus also converts operand to numeric)
         /// </summary>
-        SimplifyStringToNumericConversion           = 0x0000000040000000,
+        SimplifyStringToNumericConversion = 0x0000000040000000,
 
         /// <summary>
         /// Rename properties in object literals, member-dot, and member-bracket operations
         /// </summary>
-        PropertyRenaming                            = 0x0000000080000000,
-
-        /// <summary>
-        /// Use preprocessor defines and the ///#IFDEF directive
-        /// </summary>
-        // WAY too dangerous to have this a kill-switch. Made a separate CodeSettings property: IgnorePreprocessorDefines.
-        // people put -kill:-1 thinking they're just turning off minification, but they were ALSO turning off all the ///#IF processing
-        // and getting unexpected errors when both paths make the output.
-        //PreprocessorDefines                         = 0x0000000100000000,
+        PropertyRenaming = 0x0000000080000000,
 
         /// <summary>
         /// Remove the quotes arounf objectl literal property names when
         /// the names are valid identifiers.
         /// </summary>
-        RemoveQuotesFromObjectLiteralNames          = 0x0000000200000000,
+        RemoveQuotesFromObjectLiteralNames = 0x0000000200000000,
 
         /// <summary>
         /// Change boolean literals to not operators.
         /// true  -> !0
         /// false -> !1
         /// </summary>
-        BooleanLiteralsToNotOperators               = 0x0000000400000000,
+        BooleanLiteralsToNotOperators = 0x0000000400000000,
 
         /// <summary>
         /// Change if-statements with expression statements as their branches to expressions
         /// </summary>
-        IfExpressionsToExpression                   = 0x0000000800000000,
+        IfExpressionsToExpression = 0x0000000800000000,
 
         /// <summary>
         /// Combine adjacent expression statements into a single expression statement
         /// using the comma operator
         /// </summary>
-        CombineAdjacentExpressionStatements         = 0x0000001000000000,
+        CombineAdjacentExpressionStatements = 0x0000001000000000,
 
         /// <summary>
         /// If the types of both sides of a strict operator (=== or !==) are known
         /// to be the same, we can reduce the operators to == or !=
         /// </summary>
-        ReduceStrictOperatorIfTypesAreSame          = 0x0000002000000000,
+        ReduceStrictOperatorIfTypesAreSame = 0x0000002000000000,
 
         /// <summary>
         /// If the types of both sides of a strict operator (=== or !==) are known
         /// to be different, than we can reduct the binary operator to false or true (respectively)
         /// </summary>
-        ReduceStrictOperatorIfTypesAreDifferent     = 0x0000004000000000,
+        ReduceStrictOperatorIfTypesAreDifferent = 0x0000004000000000,
 
         /// <summary>
         /// Move function declarations to the top of the containing scope
         /// </summary>
-        MoveFunctionToTopOfScope                    = 0x0000008000000000,
+        MoveFunctionToTopOfScope = 0x0000008000000000,
 
         /// <summary>
         /// Combine var statements at the top of the containing scope
         /// </summary>
-        CombineVarStatementsToTopOfScope            = 0x0000010000000000,
+        CombineVarStatementsToTopOfScope = 0x0000010000000000,
 
         /// <summary>
         /// If the condition of an if-statement or conditional starts with a not-operator,
         /// get rid of the not-operator and swap the true/false branches.
         /// </summary>
-        IfNotTrueFalseToIfFalseTrue                 = 0x0000020000000000,
+        IfNotTrueFalseToIfFalseTrue = 0x0000020000000000,
 
         /// <summary>
         /// Whether it's okay to move an expression containing an in-operator into a for-statement.
         /// </summary>
-        MoveInExpressionsIntoForStatement           = 0x0000040000000000,
+        MoveInExpressionsIntoForStatement = 0x0000040000000000,
 
         /// <summary>
         /// Whether it's okay to convert function...{...if(cond)return;s1;s2} to function...{...if(!cond){s1;s2}}
         /// </summary>
-        InvertIfReturn                              = 0x0000080000000000,
+        InvertIfReturn = 0x0000080000000000,
 
         /// <summary>
         /// Whether it's okay to combine nested if-statments if(cond1)if(cond2){...} to if(cond1&amp;&amp;cond2){...}
         /// </summary>
-        CombineNestedIfs                            = 0x0000100000000000,
+        CombineNestedIfs = 0x0000100000000000,
 
         /// <summary>
         /// Whether it's okay to combine equivalent if-statments that return the same expression.
         /// if(cond1)return expr;if(cond2)return expr; =&gt; if(cond1||cond2)return expr;
         /// </summary>
-        CombineEquivalentIfReturns                  = 0x0000200000000000,
+        CombineEquivalentIfReturns = 0x0000200000000000,
 
         /// <summary>
         /// Whether to convert certain while-statements to for-statements.
@@ -1147,44 +1139,44 @@ namespace NUglify.JavaScript
         /// var ...;while(1)... => for(var ...;;)
         /// var ...;while(cond)... => for(var ...;cond;)...
         /// </summary>
-        ChangeWhileToFor                            = 0x0000400000000000,
+        ChangeWhileToFor = 0x0000400000000000,
 
         /// <summary>
         /// Whether to invert iterator{if(cond)continue;st1;st2} to iterator{if(!cond){st1;st2}}
         /// </summary>
-        InvertIfContinue                            = 0x0000800000000000,
+        InvertIfContinue = 0x0000800000000000,
 
         /// <summary>
         /// Whether to convert [a,b,c].join(s) to "asbsc" if all items are constants.
         /// </summary>
-        EvaluateLiteralJoins                        = 0x0001000000000000,
+        EvaluateLiteralJoins = 0x0001000000000000,
 
         /// <summary>
         /// Whether we should remove unused variable, or variables assigned a constant in their
         /// initializer and referenced only once.
         /// </summary>
-        RemoveUnusedVariables                       = 0x0002000000000000,
+        RemoveUnusedVariables = 0x0002000000000000,
 
         /// <summary>
         /// Whether we should unfold comma-separated expressions statements into separate statements
         /// as a final minification step (if it doesn't create more bytes)
         /// </summary>
-        UnfoldCommaExpressionStatements             = 0x0004000000000000,
+        UnfoldCommaExpressionStatements = 0x0004000000000000,
 
         /// <summary>
         /// Whether to convert [a,b,c].length to 3 (if all items are constants)
         /// and "123".length to 3 
         /// </summary>
-        EvaluateLiteralLengths                      = 0x0008000000000000,
+        EvaluateLiteralLengths = 0x0008000000000000,
 
         /// <summary>
         /// Whether to remove the "window." portion of a typeof operand
         /// </summary>
-        RemoveWindowDotFromTypeOf                   = 0x0010000000000000,
+        RemoveWindowDotFromTypeOf = 0x0010000000000000,
 
         /// <summary>
         /// Whether to perform CultureInfo.CurrentCulture replacements on stand-alone and full-string tokens
         /// </summary>
-        CultureInfoTokenReplacement                 = 0x0020000000000000,
+        CultureInfoTokenReplacement = 0x0020000000000000,
     }
 }

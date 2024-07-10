@@ -332,9 +332,9 @@ namespace NUglify.JavaScript
                     // a larger structure, and we could return a different block that we would need
                     // to continue processing.
                     scriptBlock = returnBlock = ParseStatements(new BlockStatement(CurrentPositionContext)
-                        {
-                            EnclosingScope = this.GlobalScope
-                        });
+                    {
+                        EnclosingScope = this.GlobalScope
+                    });
                     break;
 
                 case JavaScriptSourceMode.Module:
@@ -342,17 +342,17 @@ namespace NUglify.JavaScript
                     // create a root block with the global scope, add a module with its module body,
                     // then parse the input as statements into the module body.
                     returnBlock = scriptBlock = new BlockStatement(CurrentPositionContext)
-                        {
-                            EnclosingScope = this.GlobalScope
-                        };
+                    {
+                        EnclosingScope = this.GlobalScope
+                    };
                     var module = new ModuleDeclaration(CurrentPositionContext)
+                    {
+                        IsImplicit = true,
+                        Body = new BlockStatement(CurrentPositionContext)
                         {
-                            IsImplicit = true,
-                            Body = new BlockStatement(CurrentPositionContext)
-                                {
-                                    IsModule = true
-                                }
-                        };
+                            IsModule = true
+                        }
+                    };
                     scriptBlock.Append(module);
 
                     // we just created an implicit ES6 module, so we are already parsing as ES6
@@ -367,9 +367,9 @@ namespace NUglify.JavaScript
                     // create a block, get the first token, add in the parse of a single expression, 
                     // and we'll go fron there.
                     returnBlock = scriptBlock = new BlockStatement(CurrentPositionContext)
-                        {
-                            EnclosingScope = this.GlobalScope
-                        };
+                    {
+                        EnclosingScope = this.GlobalScope
+                    };
                     try
                     {
                         var expr = ParseExpression();
@@ -391,26 +391,26 @@ namespace NUglify.JavaScript
                     // function expression. We're going to resolve the global block, but only return the body
                     // of the function.
                     scriptBlock = new BlockStatement(CurrentPositionContext)
-                        {
-                            EnclosingScope = this.GlobalScope
-                        };
+                    {
+                        EnclosingScope = this.GlobalScope
+                    };
 
                     var parameters = new AstNodeList(CurrentPositionContext);
                     parameters.Append(new ParameterDeclaration(CurrentPositionContext)
+                    {
+                        Binding = new BindingIdentifier(CurrentPositionContext)
                         {
-                            Binding = new BindingIdentifier(CurrentPositionContext)
-                            {
-                                Name = "event",
-                                RenameNotAllowed = true
-                            }
-                        });
+                            Name = "event",
+                            RenameNotAllowed = true
+                        }
+                    });
 
                     var funcExpression = new FunctionObject(CurrentPositionContext)
-                        {
-                            FunctionType = FunctionType.Expression,
-                            ParameterDeclarations = parameters,
-                            Body = new BlockStatement(CurrentPositionContext)
-                        };
+                    {
+                        FunctionType = FunctionType.Expression,
+                        ParameterDeclarations = parameters,
+                        Body = new BlockStatement(CurrentPositionContext)
+                    };
                     scriptBlock.Append(funcExpression);
                     ParseFunctionBody(funcExpression.Body);
 
@@ -522,12 +522,12 @@ namespace NUglify.JavaScript
             var defines = new HashSet<string>();
 
             // walk backwards so we keep the last one
-            for(var ndx = scriptBlock.Count - 1; ndx >= 0; --ndx)
+            for (var ndx = scriptBlock.Count - 1; ndx >= 0; --ndx)
             {
                 var callNode = scriptBlock[ndx] as CallExpression;
                 if (callNode != null)
                 {
-                    if (callNode.Function.IsGlobalNamed("define") 
+                    if (callNode.Function.IsGlobalNamed("define")
                         && callNode.Arguments.IfNotNull(args => args.Count) > 0)
                     {
                         var firstArg = callNode.Arguments[0] as ConstantWrapper;
@@ -566,9 +566,9 @@ namespace NUglify.JavaScript
                 if (m_settings != null && !m_settings.IgnoreErrorCollection.Contains(se.ErrorCode))
                 {
                     CompilerError(this, new ContextErrorEventArgs()
-                        {
-                            Error = se
-                        });
+                    {
+                        Error = se
+                    });
                 }
             }
         }
@@ -615,9 +615,9 @@ namespace NUglify.JavaScript
                             {
                                 // use a directive prologue node instead
                                 ast = new DirectivePrologue(constantWrapper.Value.ToString(), ast.Context)
-                                    {
-                                        MayHaveIssues = constantWrapper.MayHaveIssues
-                                    };
+                                {
+                                    MayHaveIssues = constantWrapper.MayHaveIssues
+                                };
                             }
                         }
                         else if (!m_newModule)
@@ -653,18 +653,18 @@ namespace NUglify.JavaScript
                                 // create a new block that has the global scope and remove the
                                 // global scope from this block
                                 returnBlock = new BlockStatement(block.Context.Clone())
-                                    {
-                                        EnclosingScope = block.EnclosingScope
-                                    };
+                                {
+                                    EnclosingScope = block.EnclosingScope
+                                };
                                 block.EnclosingScope = null;
 
                                 // add a new implicit module declaration to the new global block, with the block
                                 // we've been processing as its body. we'll return the new global block.
                                 returnBlock.Append(new ModuleDeclaration(new SourceContext(m_currentToken.Document))
-                                    {
-                                        IsImplicit = true,
-                                        Body = block,
-                                    });
+                                {
+                                    IsImplicit = true,
+                                    Body = block,
+                                });
                             }
                         }
 
@@ -815,7 +815,7 @@ namespace NUglify.JavaScript
                         return ParseTryStatement();
 
                     case JSToken.Async:
-                        
+
                         var peekToken = PeekToken();
                         if (peekToken == JSToken.Function)
                         {
@@ -1103,10 +1103,10 @@ namespace NUglify.JavaScript
             }
 
             return new ConditionalCompilationSet(context)
-                {
-                    VariableName = variableName,
-                    Value = value
-                };
+            {
+                VariableName = variableName,
+                Value = value
+            };
         }
 
         private ConditionalCompilationStatement ParseConditionalCompilationIf(bool isElseIf)
@@ -1146,15 +1146,15 @@ namespace NUglify.JavaScript
             if (isElseIf)
             {
                 return new ConditionalCompilationElseIf(context)
-                    {
-                        Condition = condition
-                    };
-            }
-
-            return new ConditionalCompilationIf(context)
                 {
                     Condition = condition
                 };
+            }
+
+            return new ConditionalCompilationIf(context)
+            {
+                Condition = condition
+            };
         }
 
         //---------------------------------------------------------------------------------------
@@ -1170,9 +1170,9 @@ namespace NUglify.JavaScript
             // the code, we will reset these properties as we encounter them so that unneeded curly-braces 
             // can be removed.
             BlockStatement codeBlock = new BlockStatement(m_currentToken.Clone())
-                {
-                    ForceBraces = true
-                };
+            {
+                ForceBraces = true
+            };
             codeBlock.BraceOnNewLine = m_foundEndOfLine;
             GetNextToken();
 
@@ -1255,30 +1255,30 @@ namespace NUglify.JavaScript
             if (m_currentToken.Is(JSToken.Var))
             {
                 varList = new VarDeclaration(m_currentToken.Clone())
-                    {
-                        StatementToken = m_currentToken.Token,
-                        KeywordContext = m_currentToken.Clone()
-                    };
+                {
+                    StatementToken = m_currentToken.Token,
+                    KeywordContext = m_currentToken.Clone()
+                };
             }
             else if (m_currentToken.IsEither(JSToken.Const, JSToken.Let))
             {
                 if (m_currentToken.Is(JSToken.Const) && m_settings.ConstStatementsMozilla)
                 {
                     varList = new ConstStatement(m_currentToken.Clone())
-                        {
-                            StatementToken = m_currentToken.Token,
-                            KeywordContext = m_currentToken.Clone()
-                        };
+                    {
+                        StatementToken = m_currentToken.Token,
+                        KeywordContext = m_currentToken.Clone()
+                    };
                 }
                 else
                 {
                     // this is EcmaScript6-specific statement
                     ParsedVersion = ScriptVersion.EcmaScript6;
                     varList = new LexicalDeclaration(m_currentToken.Clone())
-                        {
-                            StatementToken = m_currentToken.Token,
-                            KeywordContext = m_currentToken.Clone()
-                        };
+                    {
+                        StatementToken = m_currentToken.Token,
+                        KeywordContext = m_currentToken.Clone()
+                    };
                 }
             }
             else
@@ -1403,13 +1403,13 @@ namespace NUglify.JavaScript
                 }
 
                 varDecl = new VariableDeclaration(context)
-                    {
-                        Binding = binding,
-                        AssignContext = assignContext,
-                        Initializer = initializer,
-                        IsCCSpecialCase = ccSpecialCase,
-                        UseCCOn = ccOn
-                    };
+                {
+                    Binding = binding,
+                    AssignContext = assignContext,
+                    Initializer = initializer,
+                    IsCCSpecialCase = ccSpecialCase,
+                    UseCCOn = ccOn
+                };
             }
 
             return varDecl;
@@ -1428,9 +1428,9 @@ namespace NUglify.JavaScript
             if (m_currentToken.Is(JSToken.Identifier))
             {
                 binding = new BindingIdentifier(m_currentToken.Clone())
-                    {
-                        Name = m_scanner.Identifier
-                    };
+                {
+                    Name = m_scanner.Identifier
+                };
                 GetNextToken();
             }
             else if (m_currentToken.Is(JSToken.LeftBracket))
@@ -1449,9 +1449,9 @@ namespace NUglify.JavaScript
                 if (null != identifier)
                 {
                     binding = new BindingIdentifier(m_currentToken.Clone())
-                        {
-                            Name = identifier
-                        };
+                    {
+                        Name = identifier
+                    };
                     GetNextToken();
                 }
                 else if (JSScanner.IsValidIdentifier(identifier = m_currentToken.Code))
@@ -1459,9 +1459,9 @@ namespace NUglify.JavaScript
                     // it's probably just a keyword
                     ReportError(JSError.NoIdentifier);
                     binding = new BindingIdentifier(m_currentToken.Clone())
-                        {
-                            Name = identifier
-                        };
+                    {
+                        Name = identifier
+                    };
                     GetNextToken();
                 }
                 else
@@ -1574,12 +1574,12 @@ namespace NUglify.JavaScript
             }
 
             return new IfStatement(ifCtx)
-                {
-                    Condition = condition,
-                    TrueBlock = AstNode.ForceToBlock(trueBranch),
-                    ElseContext = elseCtx,
-                    FalseBlock = AstNode.ForceToBlock(falseBranch)
-                };
+            {
+                Condition = condition,
+                TrueBlock = AstNode.ForceToBlock(trueBranch),
+                ElseContext = elseCtx,
+                FalseBlock = AstNode.ForceToBlock(falseBranch)
+            };
         }
 
         //---------------------------------------------------------------------------------------
@@ -1632,19 +1632,19 @@ namespace NUglify.JavaScript
                 if (m_currentToken.Is(JSToken.Var))
                 {
                     declaration = new VarDeclaration(m_currentToken.Clone())
-                        {
-                            StatementToken = m_currentToken.Token,
-                            KeywordContext = m_currentToken.Clone()
-                        };
+                    {
+                        StatementToken = m_currentToken.Token,
+                        KeywordContext = m_currentToken.Clone()
+                    };
                 }
                 else
                 {
                     ParsedVersion = ScriptVersion.EcmaScript6;
                     declaration = new LexicalDeclaration(m_currentToken.Clone())
-                        {
-                            StatementToken = m_currentToken.Token,
-                            KeywordContext = m_currentToken.Clone()
-                        };
+                    {
+                        StatementToken = m_currentToken.Token,
+                        KeywordContext = m_currentToken.Clone()
+                    };
                 }
 
                 GetNextToken();
@@ -1663,8 +1663,8 @@ namespace NUglify.JavaScript
             }
             else if (m_currentToken.IsNot(JSToken.Semicolon))
             {
-	            var nextToken = PeekToken();
-	            var inToken = nextToken == JSToken.Of ? JSToken.Of : JSToken.In;
+                var nextToken = PeekToken();
+                var inToken = nextToken == JSToken.Of ? JSToken.Of : JSToken.In;
                 // not a declaration (var, const, let), so parse an expression with the no-in target
                 initializer = ParseExpression(false, inToken);
             }
@@ -1761,14 +1761,14 @@ namespace NUglify.JavaScript
                 }
 
                 forNode = new ForStatement(forCtx)
-                    {
-                        Initializer = initializer,
-                        Separator1Context = separator1Context,
-                        Condition = condOrColl,
-                        Separator2Context = separator2Context,
-                        Incrementer = increment,
-                        Body = AstNode.ForceToBlock(body)
-                    };
+                {
+                    Initializer = initializer,
+                    Separator1Context = separator1Context,
+                    Condition = condOrColl,
+                    Separator2Context = separator2Context,
+                    Incrementer = increment,
+                    Body = AstNode.ForceToBlock(body)
+                };
             }
 
             return forNode;
@@ -1855,12 +1855,12 @@ namespace NUglify.JavaScript
             }
 
             return new DoWhileStatement(doCtx)
-                {
-                    Body = AstNode.ForceToBlock(body),
-                    WhileContext = whileContext,
-                    Condition = condition,
-                    TerminatingContext = terminatorContext
-                };
+            {
+                Body = AstNode.ForceToBlock(body),
+                WhileContext = whileContext,
+                Condition = condition,
+                TerminatingContext = terminatorContext
+            };
         }
 
         //---------------------------------------------------------------------------------------
@@ -1917,10 +1917,10 @@ namespace NUglify.JavaScript
             body = ParseStatement(false, true);
 
             return new WhileStatement(whileCtx)
-                {
-                    Condition = condition,
-                    Body = AstNode.ForceToBlock(body)
-                };
+            {
+                Condition = condition,
+                Body = AstNode.ForceToBlock(body)
+            };
         }
 
         //---------------------------------------------------------------------------------------
@@ -2100,10 +2100,10 @@ namespace NUglify.JavaScript
             var statement = ParseStatement(false, true);
 
             return new WithStatement(withCtx)
-                {
-                    WithObject = obj,
-                    Body = AstNode.ForceToBlock(statement)
-                };
+            {
+                WithObject = obj,
+                Body = AstNode.ForceToBlock(statement)
+            };
         }
 
         //---------------------------------------------------------------------------------------
@@ -2225,11 +2225,11 @@ namespace NUglify.JavaScript
 
                 caseCtx.UpdateWith(statements.Context);
                 caseClause = new SwitchCase(caseCtx)
-                    {
-                        CaseValue = caseValue,
-                        ColonContext = colonContext,
-                        Statements = statements
-                    };
+                {
+                    CaseValue = caseValue,
+                    ColonContext = colonContext,
+                    Statements = statements
+                };
                 cases.Append(caseClause);
             }
 
@@ -2237,12 +2237,12 @@ namespace NUglify.JavaScript
             GetNextToken();
 
             return new SwitchStatement(switchCtx)
-                {
-                    Expression = expr,
-                    BraceContext = braceContext,
-                    Cases = cases,
-                    BraceOnNewLine = braceOnNewLine
-                };
+            {
+                Expression = expr,
+                BraceContext = braceContext,
+                Cases = cases,
+                BraceOnNewLine = braceOnNewLine
+            };
         }
 
         //---------------------------------------------------------------------------------------
@@ -2319,28 +2319,28 @@ namespace NUglify.JavaScript
 
                 if (m_currentToken.Is(JSToken.LeftParenthesis))
                 {
-	                GetNextToken();
+                    GetNextToken();
                     var catchBinding = ParseBinding();
-	                if (catchBinding == null)
-	                {
-		                ReportError(JSError.NoBinding);
-	                }
-	                else
-	                {
-		                catchParameter = new ParameterDeclaration(catchBinding.Context.Clone())
-		                {
-			                Binding = catchBinding
-		                };
-	                }
+                    if (catchBinding == null)
+                    {
+                        ReportError(JSError.NoBinding);
+                    }
+                    else
+                    {
+                        catchParameter = new ParameterDeclaration(catchBinding.Context.Clone())
+                        {
+                            Binding = catchBinding
+                        };
+                    }
 
-	                if (m_currentToken.IsNot(JSToken.RightParenthesis))
-	                {
-		                ReportError(JSError.NoRightParenthesis);
-	                }
-	                else
-	                {
-		                GetNextToken();
-	                }
+                    if (m_currentToken.IsNot(JSToken.RightParenthesis))
+                    {
+                        ReportError(JSError.NoRightParenthesis);
+                    }
+                    else
+                    {
+                        GetNextToken();
+                    }
                 }
 
                 if (m_currentToken.IsNot(JSToken.LeftCurly))
@@ -2375,14 +2375,14 @@ namespace NUglify.JavaScript
             }
 
             return new TryStatement(tryCtx)
-                {
-                    TryBlock = body,
-                    CatchContext = catchContext,
-                    CatchParameter = catchParameter,
-                    CatchBlock = catchBlock,
-                    FinallyContext = finallyContext,
-                    FinallyBlock = finallyBlock
-                };
+            {
+                TryBlock = body,
+                CatchContext = catchContext,
+                CatchParameter = catchParameter,
+                CatchBlock = catchBlock,
+                FinallyContext = finallyContext,
+                FinallyBlock = finallyBlock
+            };
         }
 
         private AstNode ParseModule()
@@ -2458,13 +2458,13 @@ namespace NUglify.JavaScript
             }
 
             var moduleDecl = new ModuleDeclaration(context)
-                {
-                    ModuleName = moduleName,
-                    ModuleContext = moduleContext,
-                    Body = body,
-                    Binding = binding,
-                    FromContext = fromContext
-                };
+            {
+                ModuleName = moduleName,
+                ModuleContext = moduleContext,
+                Body = body,
+                Binding = binding,
+                FromContext = fromContext
+            };
 
             if (binding != null)
             {
@@ -2479,9 +2479,9 @@ namespace NUglify.JavaScript
             // we know we're parsing an ES6 export
             ParsedVersion = ScriptVersion.EcmaScript6;
             var exportNode = new ExportStatement(m_currentToken.Clone())
-                {
-                    KeywordContext = m_currentToken.Clone(),
-                };
+            {
+                KeywordContext = m_currentToken.Clone(),
+            };
             GetNextToken();
             if (m_currentToken.IsOne(JSToken.Var, JSToken.Const, JSToken.Let, JSToken.Async, JSToken.Function, JSToken.Class))
             {
@@ -2518,7 +2518,7 @@ namespace NUglify.JavaScript
 
                 ExpectSemicolon(exportNode);
             }
-            else 
+            else
             {
                 if (m_currentToken.Is(JSToken.Identifier) || JSKeyword.CanBeIdentifier(m_currentToken.Token) != null)
                 {
@@ -2529,7 +2529,7 @@ namespace NUglify.JavaScript
                     };
                     exportNode.Append(lookup);
                     GetNextToken();
-                } 
+                }
                 else if (m_currentToken.Is(JSToken.Multiply))
                 {
                     // export * (from "module")?
@@ -2553,9 +2553,9 @@ namespace NUglify.JavaScript
                             {
                                 var specifierContext = m_currentToken.Clone();
                                 var lookup = new LookupExpression(m_currentToken.Clone())
-                                    {
-                                        Name = identifier ?? m_scanner.Identifier
-                                    };
+                                {
+                                    Name = identifier ?? m_scanner.Identifier
+                                };
                                 GetNextToken();
 
                                 SourceContext asContext = null;
@@ -2581,12 +2581,12 @@ namespace NUglify.JavaScript
                                 }
 
                                 var specifier = new ImportExportSpecifier(specifierContext)
-                                    {
-                                        LocalIdentifier = lookup,
-                                        AsContext = asContext,
-                                        ExternalName = externalName,
-                                        NameContext = nameContext
-                                    };
+                                {
+                                    LocalIdentifier = lookup,
+                                    AsContext = asContext,
+                                    ExternalName = externalName,
+                                    NameContext = nameContext
+                                };
                                 exportNode.Append(specifier);
 
                                 if (m_currentToken.Is(JSToken.Comma))
@@ -2649,9 +2649,9 @@ namespace NUglify.JavaScript
             // we know we're parsing an ES6 import
             ParsedVersion = ScriptVersion.EcmaScript6;
             var importNode = new ImportStatement(m_currentToken.Clone())
-                {
-                    KeywordContext = m_currentToken.Clone(),
-                };
+            {
+                KeywordContext = m_currentToken.Clone(),
+            };
             GetNextToken();
             if (m_currentToken.Is(JSToken.StringLiteral))
             {
@@ -2700,9 +2700,9 @@ namespace NUglify.JavaScript
                                 {
                                     // the external name is also the local binding
                                     localIdentifier = new BindingIdentifier(nameContext)
-                                        {
-                                            Name = externalName
-                                        };
+                                    {
+                                        Name = externalName
+                                    };
                                     externalName = null;
                                     nameContext = null;
                                 }
@@ -2744,17 +2744,17 @@ namespace NUglify.JavaScript
                 {
                     // import identifier from "module"
                     importNode.Append(ParseBinding());
-                } 
+                }
                 else if (m_currentToken.Is(JSToken.LeftParenthesis))
                 {
                     // this allows `import` as an identifier where you really shouldnt.
                     // However, if youve done something that causes this, it will be invalid before and after minification so its kind of not our problem.
-	                var ast = new LookupExpression(importNode.Context)
-	                {
-		                Name = "import"
-	                };
+                    var ast = new LookupExpression(importNode.Context)
+                    {
+                        Name = "import"
+                    };
 
-	                return ParseMemberExpression(ast, null);
+                    return ParseMemberExpression(ast, null);
                 }
 
                 if (m_currentToken.Is("from"))
@@ -2809,7 +2809,6 @@ namespace NUglify.JavaScript
         {
             BindingIdentifier name = null;
             ArrayLiteral computedName = null;
-            AstNodeList formalParameters = null;
             bool inExpression = (functionType == FunctionType.Expression);
 
             var isAsync = m_currentToken.Is(JSToken.Async);
@@ -2838,16 +2837,16 @@ namespace NUglify.JavaScript
             if (m_currentToken.Is(JSToken.Identifier))
             {
                 name = new BindingIdentifier(m_currentToken.Clone())
-                    {
-                        Name = m_scanner.Identifier
-                    };
+                {
+                    Name = m_scanner.Identifier
+                };
                 GetNextToken();
             }
             else if (m_currentToken.Is(JSToken.LeftBracket))
             {
-	            var arrayLiteral = ParseArrayLiteral(false);
+                var arrayLiteral = ParseArrayLiteral(false);
                 // TODO: error handling
-		        computedName = arrayLiteral as ArrayLiteral;
+                computedName = arrayLiteral as ArrayLiteral;
             }
             else
             {
@@ -2855,9 +2854,9 @@ namespace NUglify.JavaScript
                 if (null != identifier)
                 {
                     name = new BindingIdentifier(m_currentToken.Clone())
-                        {
-                            Name = identifier
-                        };
+                    {
+                        Name = identifier
+                    };
                     GetNextToken();
                 }
                 else
@@ -2892,96 +2891,96 @@ namespace NUglify.JavaScript
 
         private FunctionObject ParseFunctionPart2(FunctionType functionType, SourceContext context, BindingIdentifier name, ArrayLiteral computedName, bool isGenerator, bool isAsync)
         {
-	        BlockStatement body = null;
-	        if (m_currentToken.IsNot(JSToken.LeftParenthesis))
-	        {
-		        // we expect a left paren at this point for standard cross-browser support.
-		        // BUT -- some versions of IE allow an object property expression to be a function name, like window.onclick. 
-		        // we still want to throw the error, because it syntax errors on most browsers, but we still want to
-		        // be able to parse it and return the intended results. 
-		        // Skip to the open paren and use whatever is in-between as the function name. Doesn't matter that it's 
-		        // an invalid identifier; it won't be accessible as a valid field anyway.
-		        bool expandedIndentifier = false;
-		        while (m_currentToken.IsNot(JSToken.LeftParenthesis)
-		               && m_currentToken.IsNot(JSToken.LeftCurly)
-		               && m_currentToken.IsNot(JSToken.Semicolon)
-		               && m_currentToken.IsNot(JSToken.EndOfFile))
-		        {
-			        name.Context.UpdateWith(m_currentToken);
-			        GetNextToken();
-			        expandedIndentifier = true;
-		        }
+            BlockStatement body = null;
+            if (m_currentToken.IsNot(JSToken.LeftParenthesis))
+            {
+                // we expect a left paren at this point for standard cross-browser support.
+                // BUT -- some versions of IE allow an object property expression to be a function name, like window.onclick. 
+                // we still want to throw the error, because it syntax errors on most browsers, but we still want to
+                // be able to parse it and return the intended results. 
+                // Skip to the open paren and use whatever is in-between as the function name. Doesn't matter that it's 
+                // an invalid identifier; it won't be accessible as a valid field anyway.
+                bool expandedIndentifier = false;
+                while (m_currentToken.IsNot(JSToken.LeftParenthesis)
+                       && m_currentToken.IsNot(JSToken.LeftCurly)
+                       && m_currentToken.IsNot(JSToken.Semicolon)
+                       && m_currentToken.IsNot(JSToken.EndOfFile))
+                {
+                    name.Context.UpdateWith(m_currentToken);
+                    GetNextToken();
+                    expandedIndentifier = true;
+                }
 
-		        // if we actually expanded the identifier context, then we want to report that
-		        // the function name needs to be an identifier. Otherwise we didn't expand the 
-		        // name, so just report that we expected an open paren at this point.
-		        if (expandedIndentifier)
-		        {
-			        name.Name = name.Context.Code;
-			        name.Context.HandleError(JSError.FunctionNameMustBeIdentifier, false);
-		        }
-		        else
-		        {
-			        ReportError(JSError.NoLeftParenthesis);
-		        }
-	        }
+                // if we actually expanded the identifier context, then we want to report that
+                // the function name needs to be an identifier. Otherwise we didn't expand the 
+                // name, so just report that we expected an open paren at this point.
+                if (expandedIndentifier)
+                {
+                    name.Name = name.Context.Code;
+                    name.Context.HandleError(JSError.FunctionNameMustBeIdentifier, false);
+                }
+                else
+                {
+                    ReportError(JSError.NoLeftParenthesis);
+                }
+            }
 
-	        // get the formal parameters
-	        var formalParameters = ParseFormalParameters();
-	        context.UpdateWith(formalParameters.IfNotNull(p => p.Context));
+            // get the formal parameters
+            var formalParameters = ParseFormalParameters();
+            context.UpdateWith(formalParameters.IfNotNull(p => p.Context));
 
-	        // read the function body of non-abstract functions.
-	        if (m_currentToken.IsNot(JSToken.LeftCurly))
-	        {
-		        ReportError(JSError.NoLeftCurly);
-	        }
+            // read the function body of non-abstract functions.
+            if (m_currentToken.IsNot(JSToken.LeftCurly))
+            {
+                ReportError(JSError.NoLeftCurly);
+            }
 
-	        try
-	        {
-		        // parse the block locally to get the exact end of function
-		        body = new BlockStatement(m_currentToken.Clone());
-		        body.BraceOnNewLine = m_foundEndOfLine;
-		        GetNextToken();
+            try
+            {
+                // parse the block locally to get the exact end of function
+                body = new BlockStatement(m_currentToken.Clone());
+                body.BraceOnNewLine = m_foundEndOfLine;
+                GetNextToken();
 
-		        // parse the function body statements
-		        ParseFunctionBody(body);
+                // parse the function body statements
+                ParseFunctionBody(body);
 
-		        if (m_currentToken.Is(JSToken.RightCurly))
-		        {
-			        body.Context.UpdateWith(m_currentToken);
-			        GetNextToken();
-		        }
-		        else
-		        {
-			        if (m_currentToken.Is(JSToken.EndOfFile))
-			        {
-				        context.HandleError(JSError.UnclosedFunction, true);
-				        ReportError(JSError.ErrorEndOfFile);
-			        }
-			        else
-			        {
-				        ReportError(JSError.NoRightCurly);
-			        }
-		        }
+                if (m_currentToken.Is(JSToken.RightCurly))
+                {
+                    body.Context.UpdateWith(m_currentToken);
+                    GetNextToken();
+                }
+                else
+                {
+                    if (m_currentToken.Is(JSToken.EndOfFile))
+                    {
+                        context.HandleError(JSError.UnclosedFunction, true);
+                        ReportError(JSError.ErrorEndOfFile);
+                    }
+                    else
+                    {
+                        ReportError(JSError.NoRightCurly);
+                    }
+                }
 
-		        context.UpdateWith(body.Context);
-	        }
-	        catch (EndOfStreamException)
-	        {
-		        // if we get an EOF here, we never had a chance to find the closing curly-brace
-		        context.HandleError(JSError.UnclosedFunction, true);
-	        }
+                context.UpdateWith(body.Context);
+            }
+            catch (EndOfStreamException)
+            {
+                // if we get an EOF here, we never had a chance to find the closing curly-brace
+                context.HandleError(JSError.UnclosedFunction, true);
+            }
 
-	        return new FunctionObject(context)
-	        {
-		        FunctionType = functionType,
-		        Binding = name,
-		        ComputedName = computedName,
-		        ParameterDeclarations = formalParameters,
-		        Body = body,
-		        IsGenerator = isGenerator,
-		        IsAsync = isAsync
-	        };
+            return new FunctionObject(context)
+            {
+                FunctionType = functionType,
+                Binding = name,
+                ComputedName = computedName,
+                ParameterDeclarations = formalParameters,
+                Body = body,
+                IsGenerator = isGenerator,
+                IsAsync = isAsync
+            };
         }
 
         private void ParseFunctionBody(BlockStatement body)
@@ -3205,72 +3204,72 @@ namespace NUglify.JavaScript
 
             // create the class
             classNode = new ClassNode(context)
-                {
-                    ClassType = classType,
-                    ClassContext = classContext,
-                    Binding = binding,
-                    ExtendsContext = extendsContext,
-                    Heritage = heritage,
-                    OpenBrace = openBrace,
-                    Elements = elements,
-                    CloseBrace = closeBrace,
-                };
+            {
+                ClassType = classType,
+                ClassContext = classContext,
+                Binding = binding,
+                ExtendsContext = extendsContext,
+                Heritage = heritage,
+                OpenBrace = openBrace,
+                Elements = elements,
+                CloseBrace = closeBrace,
+            };
 
             return classNode;
         }
 
         AstNode ParseClassElement_FieldWithInitialisation(SourceContext staticContext, ArrayLiteral computedName)
         {
-	        // field with initialization
-	        var context = m_currentToken.Clone();
+            // field with initialization
+            var context = m_currentToken.Clone();
 
-	        var field = new ClassField(context);
-	        if (computedName == null)
-	        {
-		        field.Name = m_scanner.Identifier;
-		        GetNextToken();
+            var field = new ClassField(context);
+            if (computedName == null)
+            {
+                field.Name = m_scanner.Identifier;
+                GetNextToken();
             }
-	        else
-		        field.ComputedName = computedName;
+            else
+                field.ComputedName = computedName;
 
-	        field.StaticContext = staticContext;
-	        field.IsStatic = staticContext != null;
+            field.StaticContext = staticContext;
+            field.IsStatic = staticContext != null;
 
-	        context.UpdateWith(m_currentToken);
-	        GetNextToken();
+            context.UpdateWith(m_currentToken);
+            GetNextToken();
 
-	        var value = ParseExpression(true);
+            var value = ParseExpression(true);
 
-	        if (value != null)
-	        {
-		        context.UpdateWith(value.Context);
-		        // TODO: set field.value
-		        field.Initializer = value;
-	        }
-	        else
-	        {
-		        m_currentToken.HandleError(JSError.ExpressionExpected);
-	        }
+            if (value != null)
+            {
+                context.UpdateWith(value.Context);
+                // TODO: set field.value
+                field.Initializer = value;
+            }
+            else
+            {
+                m_currentToken.HandleError(JSError.ExpressionExpected);
+            }
 
-	        return field;
+            return field;
         }
 
         AstNode ParseClassElement_FieldNoInitialisation(SourceContext staticContext, ArrayLiteral computedName)
         {
-	        var context = m_currentToken.Clone();
+            var context = m_currentToken.Clone();
 
-	        // its a field without initialization
-	        var field = new ClassField(context);
-	        if (computedName == null)
-		        field.Name = m_scanner.Identifier;
-	        else
-		        field.ComputedName = computedName;
+            // its a field without initialization
+            var field = new ClassField(context);
+            if (computedName == null)
+                field.Name = m_scanner.Identifier;
+            else
+                field.ComputedName = computedName;
             field.StaticContext = staticContext;
-	        field.IsStatic = staticContext != null;
+            field.IsStatic = staticContext != null;
 
-	        GetNextToken();
+            GetNextToken();
 
-	        return field;
+            return field;
         }
 
         AstNode ParseClassElement()
@@ -3281,7 +3280,7 @@ namespace NUglify.JavaScript
                 : null;
 
             if (staticContext != null)
-	            GetNextToken();
+                GetNextToken();
 
             ArrayLiteral computedName = null;
 
@@ -3291,21 +3290,21 @@ namespace NUglify.JavaScript
             if (m_currentToken.Is(JSToken.LeftBracket))
             {
                 var ctx = m_currentToken.Clone();
-	            computedName = ParseArrayLiteral(false) as ArrayLiteral;
-	            nextToken = m_currentToken.Token;
+                computedName = ParseArrayLiteral(false) as ArrayLiteral;
+                nextToken = m_currentToken.Token;
 
-	            if (m_currentToken.Is(JSToken.LeftParenthesis))
-	            {
-		            var function = ParseFunctionPart2(FunctionType.Method, ctx, null, computedName, false, false);
-		            return function;
-	            }
+                if (m_currentToken.Is(JSToken.LeftParenthesis))
+                {
+                    var function = ParseFunctionPart2(FunctionType.Method, ctx, null, computedName, false, false);
+                    return function;
+                }
             }
 
             if (nextToken == JSToken.Semicolon)
-	            return this.ParseClassElement_FieldNoInitialisation(staticContext, computedName);
+                return this.ParseClassElement_FieldNoInitialisation(staticContext, computedName);
 
             if (nextToken == JSToken.Assign)
-	            return ParseClassElement_FieldWithInitialisation(staticContext, computedName);
+                return ParseClassElement_FieldWithInitialisation(staticContext, computedName);
 
 
             // its a function
@@ -3313,12 +3312,12 @@ namespace NUglify.JavaScript
             FunctionType funcType = FunctionType.Method;
             if (nextToken != JSToken.LeftParenthesis)
             {
-	            if (m_currentToken.Is(JSToken.Get))
-		            funcType = FunctionType.Getter;
+                if (m_currentToken.Is(JSToken.Get))
+                    funcType = FunctionType.Getter;
                 else if (m_currentToken.Is(JSToken.Set))
-		            funcType = FunctionType.Setter;
+                    funcType = FunctionType.Setter;
             }
-	            
+
             var method = ParseFunction(funcType, m_currentToken.FlattenToStart());
             if (method != null && staticContext != null)
             {
@@ -3517,13 +3516,13 @@ namespace NUglify.JavaScript
                         AstNode operand2 = ParseExpression(true, inToken);
 
                         expr = new Conditional(condition.Context.CombineWith(operand2.Context))
-                            {
-                                Condition = condition,
-                                QuestionContext = questionCtx,
-                                TrueExpression = operand1,
-                                ColonContext = colonCtx,
-                                FalseExpression = operand2
-                            };
+                        {
+                            Condition = condition,
+                            QuestionContext = questionCtx,
+                            TrueExpression = operand1,
+                            ColonContext = colonCtx,
+                            FalseExpression = operand2
+                        };
                         termStack.Push(expr);
                     }
                     else
@@ -3601,11 +3600,11 @@ namespace NUglify.JavaScript
                     {
                         // yield expression
                         term = new UnaryExpression(term.Context.CombineWith(expression.Context))
-                            {
-                                OperatorToken = term.Context.Token,
-                                OperatorContext = term.Context,
-                                Operand = expression
-                            };
+                        {
+                            OperatorToken = term.Context.Token,
+                            OperatorContext = term.Context,
+                            Operand = expression
+                        };
                     }
                 }
             }
@@ -3663,11 +3662,11 @@ namespace NUglify.JavaScript
                     GetNextToken();
                     expr = ParseUnaryExpression(out dummy, false);
                     ast = new UnaryExpression(exprCtx.CombineWith(expr.Context))
-                        {
-                            Operand = expr,
-                            OperatorContext = exprCtx,
-                            OperatorToken = opToken
-                        };
+                    {
+                        Operand = expr,
+                        OperatorContext = exprCtx,
+                        OperatorToken = opToken
+                    };
                     break;
 
                 case JSToken.ConditionalCommentStart:
@@ -3688,10 +3687,10 @@ namespace NUglify.JavaScript
                         {
                             // /*@cc_on@IDENT -- check for @*/
                             ast = new ConstantWrapperPP(m_currentToken.Clone())
-                                {
-                                    VarName = m_currentToken.Code,
-                                    ForceComments = true
-                                };
+                            {
+                                VarName = m_currentToken.Code,
+                                ForceComments = true
+                            };
 
                             GetNextToken();
 
@@ -3720,11 +3719,11 @@ namespace NUglify.JavaScript
                                 exprCtx.UpdateWith(expr.Context);
 
                                 var unary = new UnaryExpression(exprCtx)
-                                    {
-                                        Operand = expr,
-                                        OperatorContext = operatorContext,
-                                        OperatorToken = JSToken.LogicalNot
-                                    };
+                                {
+                                    Operand = expr,
+                                    OperatorContext = operatorContext,
+                                    OperatorToken = JSToken.LogicalNot
+                                };
                                 unary.OperatorInConditionalCompilationComment = true;
                                 unary.ConditionalCommentContainsOn = true;
                                 ast = unary;
@@ -3756,11 +3755,11 @@ namespace NUglify.JavaScript
                             exprCtx.UpdateWith(expr.Context);
 
                             var unary = new UnaryExpression(exprCtx)
-                                {
-                                    Operand = expr,
-                                    OperatorContext = operatorContext,
-                                    OperatorToken = JSToken.LogicalNot
-                                };
+                            {
+                                Operand = expr,
+                                OperatorContext = operatorContext,
+                                OperatorToken = JSToken.LogicalNot
+                            };
                             unary.OperatorInConditionalCompilationComment = true;
                             ast = unary;
                         }
@@ -3775,10 +3774,10 @@ namespace NUglify.JavaScript
                     {
                         // @IDENT -- check for @*/
                         ast = new ConstantWrapperPP(m_currentToken.Clone())
-                            {
-                                VarName = m_currentToken.Code,
-                                ForceComments = true
-                            };
+                        {
+                            VarName = m_currentToken.Code,
+                            ForceComments = true
+                        };
                         GetNextToken();
 
                         if (m_currentToken.Is(JSToken.ConditionalCommentEnd))
@@ -3835,12 +3834,12 @@ namespace NUglify.JavaScript
                         exprCtx = ast.Context.Clone();
                         exprCtx.UpdateWith(m_currentToken);
                         ast = new UnaryExpression(exprCtx)
-                            {
-                                Operand = ast,
-                                OperatorToken = m_currentToken.Token,
-                                OperatorContext = m_currentToken.Clone(),
-                                IsPostfix = true
-                            };
+                        {
+                            Operand = ast,
+                            OperatorToken = m_currentToken.Token,
+                            OperatorContext = m_currentToken.Clone(),
+                            IsPostfix = true
+                        };
                         GetNextToken();
                     }
                     else if (m_currentToken.Is(JSToken.Decrement))
@@ -3849,12 +3848,12 @@ namespace NUglify.JavaScript
                         exprCtx = ast.Context.Clone();
                         exprCtx.UpdateWith(m_currentToken);
                         ast = new UnaryExpression(exprCtx)
-                            {
-                                Operand = ast,
-                                OperatorToken = m_currentToken.Token,
-                                OperatorContext = m_currentToken.Clone(),
-                                IsPostfix = true
-                            };
+                        {
+                            Operand = ast,
+                            OperatorToken = m_currentToken.Token,
+                            OperatorContext = m_currentToken.Clone(),
+                            IsPostfix = true
+                        };
                         GetNextToken();
                     }
                 }
@@ -3884,7 +3883,7 @@ namespace NUglify.JavaScript
         //    <empty> |
         //    Identifier
         //---------------------------------------------------------------------------------------
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode"), 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode"),
          System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         private AstNode ParseLeftHandSideExpression(bool isMinus)
         {
@@ -3907,9 +3906,9 @@ namespace NUglify.JavaScript
                 // primary expression
                 case JSToken.Identifier:
                     ast = new LookupExpression(m_currentToken.Clone())
-                        {
-                            Name = m_scanner.Identifier
-                        };
+                    {
+                        Name = m_scanner.Identifier
+                    };
                     GetNextToken();
                     break;
 
@@ -3924,10 +3923,10 @@ namespace NUglify.JavaScript
                     {
                         // we have /*@id
                         ast = new ConstantWrapperPP(m_currentToken.Clone())
-                            {
-                                VarName = m_currentToken.Code,
-                                ForceComments = true
-                            };
+                        {
+                            VarName = m_currentToken.Code,
+                            ForceComments = true
+                        };
 
                         GetNextToken();
 
@@ -3976,9 +3975,9 @@ namespace NUglify.JavaScript
 
                 case JSToken.StringLiteral:
                     ast = new ConstantWrapper(m_scanner.StringLiteralValue, PrimitiveType.String, m_currentToken.Clone())
-                        {
-                            MayHaveIssues = m_scanner.LiteralHasIssues
-                        };
+                    {
+                        MayHaveIssues = m_scanner.LiteralHasIssues
+                    };
                     GetNextToken();
                     break;
 
@@ -4003,9 +4002,9 @@ namespace NUglify.JavaScript
 
                             // create the constant wrapper from the value
                             ast = new ConstantWrapper(doubleValue, PrimitiveType.Number, numericContext)
-                                {
-                                    MayHaveIssues = mayHaveIssues
-                                };
+                            {
+                                MayHaveIssues = mayHaveIssues
+                            };
                         }
                         else
                         {
@@ -4094,10 +4093,10 @@ namespace NUglify.JavaScript
 
                 case JSToken.ConditionalCompilationVariable:
                     ast = new ConstantWrapperPP(m_currentToken.Clone())
-                        {
-                            VarName = m_currentToken.Code,
-                            ForceComments = false
-                        };
+                    {
+                        VarName = m_currentToken.Code,
+                        ForceComments = false
+                    };
                     GetNextToken();
                     break;
 
@@ -4162,11 +4161,11 @@ namespace NUglify.JavaScript
                                 if (ast != null)
                                 {
                                     ast = new UnaryExpression(restContext.CombineWith(ast.Context))
-                                        {
-                                            OperatorContext = restContext,
-                                            OperatorToken = JSToken.RestSpread,
-                                            Operand = ast
-                                        };
+                                    {
+                                        OperatorContext = restContext,
+                                        OperatorToken = JSToken.RestSpread,
+                                        Operand = ast
+                                    };
                                 }
 
                                 // now, we want to continue parsing if there is a comma
@@ -4178,9 +4177,9 @@ namespace NUglify.JavaScript
                                 if (m_currentToken.Is(JSToken.RightParenthesis))
                                 {
                                     ast = new GroupingOperator(leftParen)
-                                        {
-                                            Operand = ast
-                                        };
+                                    {
+                                        Operand = ast
+                                    };
                                     ast.UpdateWith(m_currentToken);
                                     GetNextToken();
                                 }
@@ -4201,9 +4200,9 @@ namespace NUglify.JavaScript
                                 else
                                 {
                                     ast = new GroupingOperator(leftParen)
-                                        {
-                                            Operand = operand
-                                        };
+                                    {
+                                        Operand = operand
+                                    };
                                     ast.UpdateWith(operand.Context);
 
                                     if (m_currentToken.IsNot(JSToken.RightParenthesis))
@@ -4240,7 +4239,7 @@ namespace NUglify.JavaScript
                     if (nextToken == JSToken.Function)
                     {
                         // treat 'async function' as a function expression
-                        goto case (JSToken.Function); 
+                        goto case (JSToken.Function);
                     }
                     else if (nextToken == JSToken.LeftParenthesis)
                     {
@@ -4248,7 +4247,7 @@ namespace NUglify.JavaScript
                         {
                             Name = JSKeyword.CanBeIdentifier(m_currentToken.Token)
                         };
-                        
+
                         GetNextToken();
 
                         nextToken = PeekToken();
@@ -4293,9 +4292,9 @@ namespace NUglify.JavaScript
 
                 case JSToken.AspNetBlock:
                     ast = new AspNetBlockNode(m_currentToken.Clone())
-                        {
-                            AspNetBlockText = m_currentToken.Code
-                        };
+                    {
+                        AspNetBlockText = m_currentToken.Code
+                    };
                     GetNextToken();
                     break;
 
@@ -4332,26 +4331,26 @@ namespace NUglify.JavaScript
                             // we need to protect against non-ES6 code using "yield" as a variable name versus the
                             // Mozilla yield syntax. We'll do that further upstream.
                             ast = new LookupExpression(m_currentToken.Clone())
-                                {
-                                    Name = "yield"
-                                };
+                            {
+                                Name = "yield"
+                            };
                             GetNextToken();
                         }
                     }
                     break;
 
                 case JSToken.Import:
-	                ast = ParseImport();
-	                break;
+                    ast = ParseImport();
+                    break;
 
                 default:
                     var identifier = JSKeyword.CanBeIdentifier(m_currentToken.Token);
                     if (identifier != null)
                     {
                         ast = new LookupExpression(m_currentToken.Clone())
-                            {
-                                Name = identifier
-                            };
+                        {
+                            Name = identifier
+                        };
                         GetNextToken();
                     }
                     else
@@ -4364,10 +4363,10 @@ namespace NUglify.JavaScript
             if (m_currentToken.Is(JSToken.ArrowFunction))
             {
                 ParsedVersion = ScriptVersion.EcmaScript6;
-                if(ast != null)
-					ast = ParseArrowFunction(ast);
+                if (ast != null)
+                    ast = ParseArrowFunction(ast);
                 else
-	                ReportError(JSError.SyntaxError);
+                    ReportError(JSError.SyntaxError);
             }
 
             // can be a CallExpression, that is, followed by '.' or '(' or '[' or '`'
@@ -4437,9 +4436,9 @@ namespace NUglify.JavaScript
 
                 // TODO: figure out how to get a context on just the literal part!
                 lookup = new LookupExpression(tagContext)
-                    {
-                        Name = literalName
-                    };
+                {
+                    Name = literalName
+                };
             }
 
             // if the token doesn't end with a terminator, then we'll need to parse replacement expressions
@@ -4471,10 +4470,10 @@ namespace NUglify.JavaScript
                         {
                             text = m_scanner.StringLiteralValue;
                             var templateExpression = new TemplateLiteralExpression(expression.Context.Clone())
-                                {
-                                    Expression = expression,
-                                    Text = text
-                                };
+                            {
+                                Expression = expression,
+                                Text = text
+                            };
                             templateLiteral.UpdateWith(templateExpression.Context);
                             templateLiteral.Expressions.Append(templateExpression);
                             GetNextToken();
@@ -4523,12 +4522,12 @@ namespace NUglify.JavaScript
             }
 
             return new UnaryExpression(context)
-                {
-                    OperatorContext = operatorContext,
-                    OperatorToken = JSToken.Yield,
-                    Operand = expression,
-                    IsDelegator = isDelegator
-                };
+            {
+                OperatorContext = operatorContext,
+                OperatorToken = JSToken.Yield,
+                Operand = expression,
+                IsDelegator = isDelegator
+            };
         }
 
         private AstNode ParseAwaitExpression()
@@ -4543,11 +4542,11 @@ namespace NUglify.JavaScript
             bool bAssign;
             AstNode expression = ParseUnaryExpression(out bAssign, false);
             expression = new UnaryExpression(expression.Context.CombineWith(operatorContext))
-                {
-                    OperatorContext = operatorContext,
-                    OperatorToken = JSToken.Await,
-                    Operand = expression
-                };
+            {
+                OperatorContext = operatorContext,
+                OperatorToken = JSToken.Await,
+                Operand = expression
+            };
 
             return expression;
         }
@@ -4560,10 +4559,10 @@ namespace NUglify.JavaScript
             ParsedVersion = ScriptVersion.EcmaScript6;
 
             var functionObject = new FunctionObject(parameters.Context.Clone())
-                {
-                    ParameterDeclarations = BindingTransform.ToParameters(parameters),
-                    FunctionType = FunctionType.ArrowFunction,
-                    IsAsync = parameters.Parent is LookupExpression lookupExpression && lookupExpression.Name == JSKeyword.CanBeIdentifier(JSToken.Async)
+            {
+                ParameterDeclarations = BindingTransform.ToParameters(parameters),
+                FunctionType = FunctionType.ArrowFunction,
+                IsAsync = parameters.Parent is LookupExpression lookupExpression && lookupExpression.Name == JSKeyword.CanBeIdentifier(JSToken.Async)
             };
             functionObject.UpdateWith(arrowContext);
             if (m_currentToken.Is(JSToken.LeftCurly))
@@ -4659,11 +4658,11 @@ namespace NUglify.JavaScript
                     if (spreadContext != null)
                     {
                         element = new UnaryExpression(spreadContext.CombineWith(element.Context))
-                            {
-                                Operand = element,
-                                OperatorToken = JSToken.RestSpread,
-                                OperatorContext = spreadContext
-                            };
+                        {
+                            Operand = element,
+                            OperatorToken = JSToken.RestSpread,
+                            OperatorContext = spreadContext
+                        };
                     }
                 }
 
@@ -4697,10 +4696,10 @@ namespace NUglify.JavaScript
             }
 
             return new ArrayLiteral(listCtx)
-                {
-                    Elements = list,
-                    MayHaveIssues = hasTrailingCommas
-                };
+            {
+                Elements = list,
+                MayHaveIssues = hasTrailingCommas
+            };
         }
 
         private ComprehensionNode ParseComprehension(bool isArray, SourceContext openDelimiter, AstNode expression)
@@ -4727,7 +4726,7 @@ namespace NUglify.JavaScript
                 }
             }
             while (m_currentToken.IsEither(JSToken.For, JSToken.If));
-            
+
             context.UpdateWith(clauseList.Context);
 
             // if we didn't get an expression yet (and we shouldn't for ES6-spec comprehensions), 
@@ -4752,14 +4751,14 @@ namespace NUglify.JavaScript
 
             ParsedVersion = ScriptVersion.EcmaScript6;
             return new ComprehensionNode(context)
-                {
-                    OpenDelimiter = openDelimiter,
-                    Expression = expression,
-                    Clauses = clauseList,
-                    CloseDelimiter = closeDelimiter,
-                    ComprehensionType = isArray ? ComprehensionType.Array : ComprehensionType.Generator,
-                    MozillaOrdering = isMozilla
-                };
+            {
+                OpenDelimiter = openDelimiter,
+                Expression = expression,
+                Clauses = clauseList,
+                CloseDelimiter = closeDelimiter,
+                ComprehensionType = isArray ? ComprehensionType.Array : ComprehensionType.Generator,
+                MozillaOrdering = isMozilla
+            };
         }
 
         private ComprehensionClause ParseComprehensionClause()
@@ -4831,26 +4830,26 @@ namespace NUglify.JavaScript
             {
                 // for-clause
                 return new ComprehensionForClause(clauseContext)
-                    {
-                        OperatorContext = forOrIfContext,
-                        OpenContext = leftParen,
-                        Binding = binding,
-                        IsInOperation = isInOperation,
-                        OfContext = ofContext,
-                        Expression = expression,
-                        CloseContext = rightParen,
-                    };
+                {
+                    OperatorContext = forOrIfContext,
+                    OpenContext = leftParen,
+                    Binding = binding,
+                    IsInOperation = isInOperation,
+                    OfContext = ofContext,
+                    Expression = expression,
+                    CloseContext = rightParen,
+                };
             }
             else //if (tokenContext.Is(JSToken.If))
             {
                 // if-clause
                 return new ComprehensionIfClause(clauseContext)
-                    {
-                        OperatorContext = forOrIfContext,
-                        OpenContext = leftParen,
-                        Condition = expression,
-                        CloseContext = rightParen,
-                    };
+                {
+                    OperatorContext = forOrIfContext,
+                    OpenContext = leftParen,
+                    Condition = expression,
+                    CloseContext = rightParen,
+                };
             }
         }
 
@@ -4902,7 +4901,7 @@ namespace NUglify.JavaScript
                 if (m_currentToken.Is(JSToken.Colon))
                 {
                     if (field != null)
-	                    field.ColonContext = m_currentToken.Clone();
+                        field.ColonContext = m_currentToken.Clone();
 
                     GetNextToken();
                     value = ParseObjectPropertyValue(isBindingPattern);
@@ -4922,7 +4921,7 @@ namespace NUglify.JavaScript
             }
             else if (nextToken == JSToken.Comma || nextToken == JSToken.RightCurly || nextToken == JSToken.Assign)
             {
-	            isBindingPattern |= nextToken == JSToken.Assign;
+                isBindingPattern |= nextToken == JSToken.Assign;
 
                 // just a name lookup; the property name is implicit
                 ParsedVersion = ScriptVersion.EcmaScript6;
@@ -4969,10 +4968,10 @@ namespace NUglify.JavaScript
                     else if (m_currentToken.Is(JSToken.Set))
                         funcType = FunctionType.Setter;
                 }
-                
+
                 var funcContext = m_currentToken.Clone();
                 var funcExpr = ParseFunction(funcType, funcContext);
-                
+
                 if (funcExpr != null)
                 {
                     // Binding can be null for identifierless getter/setters
@@ -4997,41 +4996,41 @@ namespace NUglify.JavaScript
             }
             else if (m_currentToken.Is(JSToken.LeftBracket))
             {
-	            var ctx = m_currentToken.Clone();
-	            var astNode = ParseArrayLiteral(false);
+                var ctx = m_currentToken.Clone();
+                var astNode = ParseArrayLiteral(false);
 
-	            if (m_currentToken.Is(JSToken.LeftParenthesis))
-	            {
+                if (m_currentToken.Is(JSToken.LeftParenthesis))
+                {
                     value = ParseFunctionPart2(FunctionType.Method, ctx, null, astNode as ArrayLiteral, false, false);
-	            }
-	            else
-	            {
-		            var computedValue = astNode as ArrayLiteral;
-		            field = new ComputedPropertyField(computedValue, computedValue.Context);
-		            if (field != null)
-		            {
-			            ParsedVersion = ScriptVersion.EcmaScript6;
-			            field.ColonContext = m_currentToken.Clone();
-		            }
+                }
+                else
+                {
+                    var computedValue = astNode as ArrayLiteral;
+                    field = new ComputedPropertyField(computedValue, computedValue.Context);
+                    if (field != null)
+                    {
+                        ParsedVersion = ScriptVersion.EcmaScript6;
+                        field.ColonContext = m_currentToken.Clone();
+                    }
 
-		            if (m_currentToken.Token != JSToken.Colon)
-		            {
-			            ReportError(JSError.NoColon);
-		            }
+                    if (m_currentToken.Token != JSToken.Colon)
+                    {
+                        ReportError(JSError.NoColon);
+                    }
 
-		            GetNextToken();
-		            value = ParseObjectPropertyValue(isBindingPattern);
-		            if (isBindingPattern && m_currentToken.Is(JSToken.Assign))
-		            {
-			            var assignContext = m_currentToken.Clone();
-			            GetNextToken();
-			            value = new InitializerNode(assignContext.Clone())
-			            {
-				            Binding = value,
-				            AssignContext = assignContext,
-				            Initializer = ParseExpression(true)
-			            };
-		            }
+                    GetNextToken();
+                    value = ParseObjectPropertyValue(isBindingPattern);
+                    if (isBindingPattern && m_currentToken.Is(JSToken.Assign))
+                    {
+                        var assignContext = m_currentToken.Clone();
+                        GetNextToken();
+                        value = new InitializerNode(assignContext.Clone())
+                        {
+                            Binding = value,
+                            AssignContext = assignContext,
+                            Initializer = ParseExpression(true)
+                        };
+                    }
 
                 }
             }
@@ -5047,25 +5046,25 @@ namespace NUglify.JavaScript
                     ParsedVersion = ScriptVersion.EcmaScript6;
                 }
             }
-            
+
 
             if (field != null || value != null)
             {
-	            // bundle the name/value pair into a property
-	            field.IfNotNull(f => propertyContext.UpdateWith(f.Context));
-	            value.IfNotNull(v => propertyContext.UpdateWith(v.Context));
+                // bundle the name/value pair into a property
+                field.IfNotNull(f => propertyContext.UpdateWith(f.Context));
+                value.IfNotNull(v => propertyContext.UpdateWith(v.Context));
 
-	            property = new ObjectLiteralProperty(propertyContext)
-	            {
-		            Name = field,
-		            Value = value,
-	            };
+                property = new ObjectLiteralProperty(propertyContext)
+                {
+                    Name = field,
+                    Value = value,
+                };
 
-	            if (m_currentToken.Is(JSToken.Comma))
-	            {
-		            // skip the comma after adding it to the property as a terminating context
-		            property.IfNotNull(p => p.TerminatingContext = m_currentToken.Clone());
-	            }
+                if (m_currentToken.Is(JSToken.Comma))
+                {
+                    // skip the comma after adding it to the property as a terminating context
+                    property.IfNotNull(p => p.TerminatingContext = m_currentToken.Clone());
+                }
             }
 
             return property;
@@ -5081,16 +5080,16 @@ namespace NUglify.JavaScript
                 case JSToken.Get:
                 case JSToken.Set:
                     field = new ObjectLiteralField(m_scanner.Identifier, PrimitiveType.String, m_currentToken.Clone())
-                        {
-                            IsIdentifier = true
-                        };
+                    {
+                        IsIdentifier = true
+                    };
                     break;
 
                 case JSToken.StringLiteral:
                     field = new ObjectLiteralField(m_scanner.StringLiteralValue, PrimitiveType.String, m_currentToken.Clone())
-                        {
-                            MayHaveIssues = m_scanner.LiteralHasIssues
-                        };
+                    {
+                        MayHaveIssues = m_scanner.LiteralHasIssues
+                    };
                     break;
 
                 case JSToken.IntegerLiteral:
@@ -5211,7 +5210,7 @@ namespace NUglify.JavaScript
                         break;
 
                     case JSToken.OptionalChaining:
-                        
+
                         var nextToken = PeekToken();
 
                         if (nextToken == JSToken.LeftBracket)
@@ -5224,7 +5223,7 @@ namespace NUglify.JavaScript
                             GetNextToken();
                             ParseMemberExpression_LeftParenthesis(ref expression, newContexts, true);
                         }
-                        else 
+                        else
                             ParseMemberExpression_AccessField(ref expression, true);
                         break;
                     case JSToken.TemplateLiteral:
@@ -5233,13 +5232,13 @@ namespace NUglify.JavaScript
                         args.Append(templateLiteral);
                         args.UpdateWith(templateLiteral.Context);
 
-	                    expression = new CallExpression(expression.Context.CombineWith(args.Context))
-	                    {
-		                    Function = expression,
-		                    Arguments = args,
-		                    InBrackets = false,
-		                    IsTaggedTemplateLiteral = true
-	                    };
+                        expression = new CallExpression(expression.Context.CombineWith(args.Context))
+                        {
+                            Function = expression,
+                            Arguments = args,
+                            InBrackets = false,
+                            IsTaggedTemplateLiteral = true
+                        };
                         GetNextToken();
                         return expression;
                     default:
@@ -5249,10 +5248,10 @@ namespace NUglify.JavaScript
                             {
                                 (newContexts[newContexts.Count - 1]).UpdateWith(expression.Context);
                                 expression = new CallExpression(newContexts[newContexts.Count - 1])
-                                    {
-                                        Function = expression,
-                                        Arguments = new AstNodeList(CurrentPositionContext)
-                                    };
+                                {
+                                    Function = expression,
+                                    Arguments = new AstNodeList(CurrentPositionContext)
+                                };
                                 ((CallExpression)expression).IsConstructor = true;
                                 newContexts.RemoveAt(newContexts.Count - 1);
                             }
@@ -5290,13 +5289,13 @@ namespace NUglify.JavaScript
                     name = m_currentToken.Code;
                     id = new ConstantWrapper(name, PrimitiveType.String, m_currentToken.Clone());
                 }
-                else if(expression is LookupExpression {Name: "String"} && m_currentToken.Token == JSToken.TemplateLiteral && m_currentToken.Code.StartsWith("raw`"))
+                else if (expression is LookupExpression { Name: "String" } && m_currentToken.Token == JSToken.TemplateLiteral && m_currentToken.Code.StartsWith("raw`"))
                 {
-					// We have a String.raw`foo` situation
+                    // We have a String.raw`foo` situation
                     // This ends up making the raw`foo` a MemberExpression instead of a method call. This is probably wrong but
                     // template literal functions have a wierd syntax. Future bugs may turn out to mean this should be changed to
                     // be a CallExpression which may need special treatment elsewhere (e.g. Visitors)
-					name = m_currentToken.Code;
+                    name = m_currentToken.Code;
                 }
                 else
                 {
@@ -5310,7 +5309,7 @@ namespace NUglify.JavaScript
             }
 
             if (id != null)
-	            nameContext.UpdateWith(id.Context);
+                nameContext.UpdateWith(id.Context);
 
             GetNextToken();
             expression = new MemberExpression(expression != null ? expression.Context.CombineWith(nameContext) : nameContext.Clone(), optionalChaining)
@@ -5323,7 +5322,7 @@ namespace NUglify.JavaScript
 
         void ParseMemberExpression_LeftParenthesis(ref AstNode expression, List<SourceContext> newContexts, bool optionalChaining)
         {
-	        var args = ParseExpressionList(JSToken.RightParenthesis);
+            var args = ParseExpressionList(JSToken.RightParenthesis);
 
             expression = new CallExpression(expression.Context.CombineWith(args.Context))
             {
@@ -5350,7 +5349,7 @@ namespace NUglify.JavaScript
                     expression.Context = newContexts[newContexts.Count - 1];
                 }
 
-                ((CallExpression) expression).IsConstructor = true;
+                ((CallExpression)expression).IsConstructor = true;
                 newContexts.RemoveAt(newContexts.Count - 1);
             }
 
@@ -5434,11 +5433,11 @@ namespace NUglify.JavaScript
                     if (spreadContext != null)
                     {
                         item = new UnaryExpression(spreadContext.CombineWith(item.Context))
-                            {
-                                Operand = item,
-                                OperatorToken = JSToken.RestSpread,
-                                OperatorContext = spreadContext
-                            };
+                        {
+                            Operand = item,
+                            OperatorToken = JSToken.RestSpread,
+                            OperatorContext = spreadContext
+                        };
                     }
 
                     list.Append(item);
@@ -5492,8 +5491,7 @@ namespace NUglify.JavaScript
         /// set the source by creating a document from the actual source and its context,
         /// then create and initialize a scanner for that document.
         /// </summary>
-        /// <param name="source">source code</param>
-        /// <param name="sourceContext">optional context for the source code</param>
+        /// <param name="documentContext"></param>
         private void SetDocumentContext(DocumentContext documentContext)
         {
             // set the document object to point to this parser.
@@ -5585,12 +5583,12 @@ namespace NUglify.JavaScript
                 case JSToken.LogicalOrAssign:
                     // regular binary operator
                     return new BinaryExpression(context)
-                        {
-                            Operand1 = operand1,
-                            Operand2 = operand2,
-                            OperatorContext = operatorContext,
-                            OperatorToken = operatorContext.Token
-                        };
+                    {
+                        Operand1 = operand1,
+                        Operand2 = operand2,
+                        OperatorContext = operatorContext,
+                        OperatorToken = operatorContext.Token
+                    };
 
                 case JSToken.Comma:
                     // use the special comma-operator class derived from binary operator.
@@ -5737,7 +5735,7 @@ namespace NUglify.JavaScript
         /// Convert the given bigint string to a BigInteger value
         /// </summary>
         /// <param name="str">string representation of a number</param>
-        /// <param name="doubleValue">output value</param>
+        /// <param name="bigIntegerValue"></param>
         /// <returns>true if there were no problems; false if there were</returns>
         public bool ConvertBigIntLiteralToBigInteger(string str, out double bigIntegerValue)
         {
@@ -5790,7 +5788,7 @@ namespace NUglify.JavaScript
                         try
                         {
                             bigIntegerValue = (double)System.Convert.ToInt64(str, 8);
-                
+
                             // if we got here, we successfully converted it to octal.
                             // now, octal literals are deprecated -- not all JS implementations will
                             // decode them. If this decoded as an octal, it can also be a decimal. Check
@@ -5802,7 +5800,7 @@ namespace NUglify.JavaScript
                             {
                                 // throw a warning!
                                 ReportError(JSError.OctalLiteralsDeprecated);
-                
+
                                 // return false because octals are deprecated and might have
                                 // cross-browser issues
                                 return false;
@@ -5821,7 +5819,7 @@ namespace NUglify.JavaScript
                     // just parse the integer as a bigint value
                     bigIntegerValue = double.Parse(str.TrimEnd('n'), CultureInfo.InvariantCulture);
                 }
-                
+
                 // if we got here, we should have an appropriate value in doubleValue
                 return true;
             }
@@ -5989,7 +5987,7 @@ namespace NUglify.JavaScript
             var clonedScanner = m_scanner.PeekClone();
             clonedScanner.SuppressErrors = true;
             var peekToken = clonedScanner.ScanNextToken();
-            
+
             // skip whitespace, but not linebreaks
             var lineBreak = false;
             while (peekToken.IsOne(JSToken.WhiteSpace, JSToken.EndOfLine, JSToken.Error, JSToken.SingleLineComment,
@@ -6047,7 +6045,6 @@ namespace NUglify.JavaScript
         ///  token or not
         /// </summary>
         /// <param name="errorId">Error to report</param>
-        /// <param name="skipToken">true to move to the next token when GetNextToken is called; false to stay on this token</param>
         /// <param name="context">context to report against, or current token if null</param>
         /// <param name="forceToError">whether to force to an error, or use the default severity</param>
         private void ReportError(JSError errorId, SourceContext context = null, bool forceToError = false)

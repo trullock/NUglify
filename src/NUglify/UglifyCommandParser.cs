@@ -53,7 +53,7 @@ namespace NUglify
         /// Existing files will be overwritten, but existing files marked with the read-only flag will not
         /// </summary>
         Auto = 0,
-        
+
         /// <summary>
         /// Any existing file will be overwritten, regardless of the state of its read-only flag
         /// </summary>
@@ -345,7 +345,7 @@ namespace NUglify
         /// Takes an array of arguments and parses the switches into the appropriate settings objects
         /// </summary>
         /// <param name="args"></param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification="Big switch statement"), 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "Big switch statement"),
          System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "Big switch statement")]
         public void Parse(string[] args)
         {
@@ -452,7 +452,7 @@ namespace NUglify
                             case "BRACES":
                                 if (paramPartUpper == "NEW")
                                 {
-                                    JSSettings.BlocksStartOnSameLine = 
+                                    JSSettings.BlocksStartOnSameLine =
                                         CssSettings.BlocksStartOnSameLine = BlockStart.NewLine;
                                 }
                                 else if (paramPartUpper == "SAME")
@@ -1094,14 +1094,14 @@ namespace NUglify
                                     // if no number specified, use the max default threshold
                                     JSSettings.LineBreakThreshold =
                                         CssSettings.LineBreakThreshold = int.MaxValue - 1000;
-                                    
+
                                     // single-line mode
-                                    JSSettings.OutputMode = 
+                                    JSSettings.OutputMode =
                                         CssSettings.OutputMode = OutputMode.SingleLine;
 
                                     // and four spaces per indent level
-                                    JSSettings.IndentSize =
-                                        CssSettings.IndentSize = 4;
+                                    JSSettings.Indent =
+                                        CssSettings.Indent = "4";
                                 }
                                 else
                                 {
@@ -1196,19 +1196,19 @@ namespace NUglify
                                                         // same value for JS and CSS.
                                                         // don't need to check for negative, because the tryparse method above does NOT
                                                         // allow for a sign -- no sign, no negative.
-                                                        JSSettings.IndentSize = CssSettings.IndentSize = indentSize;
+                                                        JSSettings.Indent = CssSettings.Indent = indentSize.ToString();
                                                     }
                                                     // else use char provided
                                                     else
                                                     {
-	                                                    JSSettings.Indent = CssSettings.Indent = lineParts[breakIndex];
+                                                        JSSettings.Indent = CssSettings.Indent = lineParts[breakIndex];
                                                     }
                                                 }
                                                 else
                                                 {
                                                     // default of 4
-                                                    JSSettings.IndentSize =
-                                                        CssSettings.IndentSize = 4;
+                                                    JSSettings.Indent =
+                                                        CssSettings.Indent = "4";
                                                 }
                                             }
                                         }
@@ -1409,7 +1409,7 @@ namespace NUglify
                                 else
                                 {
                                     var vendorPrefixes = paramPart.Split(listSeparators, StringSplitOptions.RemoveEmptyEntries);
-                                    foreach(var prefix in vendorPrefixes)
+                                    foreach (var prefix in vendorPrefixes)
                                     {
                                         if (CssScanner.IsValidVendorPrefix(prefix))
                                         {
@@ -1506,9 +1506,9 @@ namespace NUglify
                                         // same value for JS and CSS.
                                         // don't need to check for negative, because the tryparse method above does NOT
                                         // allow for a sign -- no sign, no negative.
-                                        JSSettings.IndentSize = CssSettings.IndentSize = indentSize;
+                                        JSSettings.Indent = CssSettings.Indent = indentSize.ToString();
                                     }
-                                    else 
+                                    else
                                     {
                                         OnInvalidSwitch(switchPart, paramPart);
                                     }
@@ -2044,7 +2044,7 @@ namespace NUglify
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification="duly noted")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "duly noted")]
         public static bool BooleanSwitch(string booleanText, bool defaultValue, out bool booleanValue)
         {
             // assume it's valid unless proven otherwise

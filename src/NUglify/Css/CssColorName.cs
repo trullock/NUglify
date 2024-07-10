@@ -34,7 +34,7 @@ namespace NUglify.Css
 
         #region constructor
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1809:AvoidExcessiveLocals", Justification="there are a lot of colors")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1809:AvoidExcessiveLocals", Justification = "there are a lot of colors")]
         ColorSlice()
         {
             _colorArray = new[] {
@@ -258,9 +258,10 @@ namespace NUglify.Css
 
             static Dictionary<string, string> Create(ColorSlice singleton)
             {
-                return (from colorName in singleton._colorArray
-                        where colorName.Hex.Length > colorName.Name.Length
-                        select colorName).DistinctBy(c => c.Hex).ToDictionary(p => p.Hex, p => p.Name);
+                var source = (from colorName in singleton._colorArray
+                              where colorName.Hex.Length > colorName.Name.Length
+                              select colorName);
+                return NUglify.Helpers.NUglifyExtensions.DistinctBy(source, c => c.Hex).ToDictionary(p => p.Hex, p => p.Name);
             }
         }
 
@@ -270,9 +271,10 @@ namespace NUglify.Css
 
             static Dictionary<string, string> Create(ColorSlice singleton)
             {
-                return (from colorName in singleton._colorArray
-                        where colorName.Strict == true && colorName.Hex.Length > colorName.Name.Length
-                        select colorName).DistinctBy(c => c.Hex).ToDictionary(p => p.Hex, p => p.Name);
+                var source = (from colorName in singleton._colorArray
+                              where colorName.Strict == true && colorName.Hex.Length > colorName.Name.Length
+                              select colorName);
+                return NUglify.Helpers.NUglifyExtensions.DistinctBy(source, c => c.Hex).ToDictionary(p => p.Hex, p => p.Name);
             }
         }
 
@@ -282,9 +284,10 @@ namespace NUglify.Css
 
             static Dictionary<string, string> Create(ColorSlice singleton)
             {
-                return (from colorName in singleton._colorArray
-                        where colorName.Name.Length > colorName.Hex.Length
-                        select colorName).DistinctBy(c => c.Name).ToDictionary(p => p.Name, p => p.Hex);
+                var source = (from colorName in singleton._colorArray
+                              where colorName.Name.Length > colorName.Hex.Length
+                              select colorName);
+                return NUglify.Helpers.NUglifyExtensions.DistinctBy(source, c => c.Name).ToDictionary(p => p.Name, p => p.Hex);
             }
         }
 
@@ -294,9 +297,10 @@ namespace NUglify.Css
 
             static Dictionary<string, string> Create(ColorSlice singleton)
             {
-                return (from colorName in singleton._colorArray
-                        where (colorName.Strict == true && colorName.Name.Length > colorName.Hex.Length) || colorName.Strict == false
-                        select colorName).DistinctBy(c => c.Name).ToDictionary(p => p.Name, p => p.Hex);
+                var source = (from colorName in singleton._colorArray
+                              where (colorName.Strict == true && colorName.Name.Length > colorName.Hex.Length) || colorName.Strict == false
+                              select colorName);
+                return NUglify.Helpers.NUglifyExtensions.DistinctBy(source, c => c.Name).ToDictionary(p => p.Name, p => p.Hex);
             }
         }
 
@@ -306,8 +310,9 @@ namespace NUglify.Css
 
             static Dictionary<string, string> Create(ColorSlice singleton)
             {
-                return (from colorName in singleton._colorArray
-                        select colorName).DistinctBy(c => c.Name).ToDictionary(p => p.Name, p => p.Hex);
+                var source = (from colorName in singleton._colorArray
+                              select colorName);
+                return NUglify.Helpers.NUglifyExtensions.DistinctBy(source, c => c.Name).ToDictionary(p => p.Name, p => p.Hex);
             }
         }
 

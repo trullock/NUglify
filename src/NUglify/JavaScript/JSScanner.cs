@@ -24,7 +24,7 @@ using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript
 {
-	public sealed class JSScanner
+    public sealed class JSScanner
     {
         // keyword table
         static readonly JSKeyword[] keywords = JSKeyword.InitKeywords();
@@ -76,7 +76,7 @@ namespace NUglify.JavaScript
         /// Gets or sets whether to suppress all scanning errors
         /// </summary>
         public bool SuppressErrors { get; set; }
-        
+
         /// <summary>
         /// Gets the current line of the input file
         /// </summary>
@@ -106,9 +106,9 @@ namespace NUglify.JavaScript
         /// Gets the current decoded identifier string
         /// </summary>
         public string Identifier =>
-	        identifier.Length > 0
-		        ? identifier.ToString()
-		        : CurrentToken.Code;
+            identifier.Length > 0
+                ? identifier.ToString()
+                : CurrentToken.Code;
 
         /// <summary>
         /// Gets the current token reference
@@ -131,14 +131,14 @@ namespace NUglify.JavaScript
         public JSScanner(DocumentContext sourceContext)
         {
             if (sourceContext == null)
-	            throw new ArgumentNullException("sourceContext");
+                throw new ArgumentNullException("sourceContext");
 
             // create a new empty context. By default the constructor will make the context
             // represent the entire document, but we want to start it off at just the beginning of it.
             CurrentToken = new SourceContext(sourceContext)
-                {
-                    EndPosition = 0
-                };
+            {
+                EndPosition = 0
+            };
             CurrentLine = 1;
 
             // just hold on to these values so we don't have to keep dereferencing them
@@ -178,7 +178,7 @@ namespace NUglify.JavaScript
         internal JSScanner PeekClone()
         {
             if (peekClone == null)
-	            peekClone = new JSScanner(this.defines);
+                peekClone = new JSScanner(this.defines);
 
             peekClone.AllowEmbeddedAspNetBlocks = this.AllowEmbeddedAspNetBlocks;
             peekClone.IgnoreConditionalCompilation = this.IgnoreConditionalCompilation;
@@ -245,7 +245,7 @@ namespace NUglify.JavaScript
                 foreach (var nameValuePair in defines)
                 {
                     if (JSScanner.IsValidIdentifier(nameValuePair.Key) && !this.defines.ContainsKey(nameValuePair.Key))
-	                    this.defines.Add(nameValuePair.Key, nameValuePair.Value);
+                        this.defines.Add(nameValuePair.Key, nameValuePair.Value);
                 }
             }
             else
@@ -259,7 +259,7 @@ namespace NUglify.JavaScript
         /// main method for the scanner; scans the next token from the input stream.
         /// </summary>
         /// <returns>next token from the input</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity"), 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity"),
          System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "big case statement")]
         public SourceContext ScanNextToken()
         {
@@ -374,7 +374,7 @@ namespace NUglify.JavaScript
                     {
                         ++currentPosition;
                         token = JSToken.MultiplyAssign;
-                    } 
+                    }
                     else if ('*' == nextChar)
                     {
                         token = JSToken.Exponent;
@@ -662,7 +662,7 @@ namespace NUglify.JavaScript
                 case '?':
                     token = JSToken.ConditionalIf;
                     ++currentPosition;
-					
+
                     ch = GetChar(currentPosition);
                     if ('?' == ch)
                     {
@@ -674,7 +674,7 @@ namespace NUglify.JavaScript
                             ++currentPosition;
                         }
                     }
-					else if ('.' == GetChar(currentPosition))
+                    else if ('.' == GetChar(currentPosition))
                     {
                         // ensure x?.1:2 is treated as a conditional expression not optional chaining
                         var chNext = GetChar(currentPosition + 1);
@@ -1095,7 +1095,7 @@ namespace NUglify.JavaScript
 
         public SourceContext UpdateToken(UpdateHint updateHint)
         {
-            if (updateHint == UpdateHint.RegularExpression 
+            if (updateHint == UpdateHint.RegularExpression
                 && (CurrentToken.IsEither(JSToken.Divide, JSToken.DivideAssign)))
             {
                 CurrentToken.Token = ScanRegExp();
@@ -1225,7 +1225,7 @@ namespace NUglify.JavaScript
         /// <summary>
         /// Determines if the character(s) at the given index is a valid identifier start
         /// </summary>
-        /// <param name="startIndex">potential identifier string</param>
+        /// <param name="text">potential identifier string</param>
         /// <param name="index">index of the starting character</param>
         /// <returns>true if the character at the given position is a valid identifier start</returns>
         static bool IsValidIdentifierStart(string text, int index)
@@ -1237,8 +1237,8 @@ namespace NUglify.JavaScript
         /// Determines if the character(s) at the given index is a valid identifier start,
         /// and adjust the index to point to the following character
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="startIndex">potential identifier string</param>
-        /// <param name="index">index of the starting character on entry; index of the NEXT character on exit</param>
         /// <returns>true if the character at the given position is a valid identifier start</returns>
         static bool IsValidIdentifierStart(string name, ref int startIndex)
         {
@@ -1293,7 +1293,7 @@ namespace NUglify.JavaScript
         /// <summary>
         /// Determines if the character(s) at the given index is a valid identifier part
         /// </summary>
-        /// <param name="startIndex">potential identifier string</param>
+        /// <param name="text">potential identifier string</param>
         /// <param name="index">index of the starting character</param>
         /// <returns>true if the character at the given position is a valid identifier part</returns>
         static bool IsValidIdentifierPart(string text, int index)
@@ -1865,7 +1865,7 @@ namespace NUglify.JavaScript
 
                     // you can do `new.target.prototype`
                     if (keywordToken == JSToken.New && GetChar(currentPosition) == '.')
-	                    return token;
+                        return token;
 
                     return keywordToken;
                 }
@@ -1982,7 +1982,7 @@ namespace NUglify.JavaScript
                 }
             }
 
-            for (;;)
+            for (; ; )
             {
                 c = GetChar(currentPosition);
                 if (!IsDigit(c))
@@ -2119,7 +2119,7 @@ namespace NUglify.JavaScript
                 }
             }
 
-            if (ch == '%' 
+            if (ch == '%'
                 && currentPosition > startingPosition + 1
                 && GetChar(currentPosition - 1) != '.')
             {
@@ -2831,9 +2831,9 @@ namespace NUglify.JavaScript
                                 break;
 
                             case '\\':
-	                            // backslash
-	                            decodedLiteral.Append("\\\\");
-	                            break;
+                                // backslash
+                                decodedLiteral.Append("\\\\");
+                                break;
 
                             case '`':
                                 // backtick
@@ -3104,7 +3104,7 @@ namespace NUglify.JavaScript
                     {
                         break;
                     }
-                    
+
                     if (IsLineTerminator(c, 1))
                     {
                         c = GetChar(++currentPosition);
@@ -3321,7 +3321,7 @@ namespace NUglify.JavaScript
         {
             // decode the first escape sequence
             var codePoint = DecodeOneUnicodeEscapeSequence(text, ref index);
-            
+
             // if this is a high-surrogate, try decoding a second escape sequence
             if (0xd800 <= codePoint && codePoint <= 0xdbff)
             {
@@ -3445,7 +3445,7 @@ namespace NUglify.JavaScript
             {
                 identifier = sourceCode.Substring(startPos, currentPosition - startPos);
                 if (forceUpper)
-	                identifier = identifier.ToUpperInvariant();
+                    identifier = identifier.ToUpperInvariant();
             }
 
             return identifier;
@@ -3455,7 +3455,7 @@ namespace NUglify.JavaScript
         {
             var startPos = currentPosition;
             while (IsDigit(GetChar(currentPosition)))
-	            ++currentPosition;
+                ++currentPosition;
 
             var success = false;
             if (currentPosition > startPos)
@@ -3502,7 +3502,7 @@ namespace NUglify.JavaScript
                             contextError.EndLineNumber = endLineNum;
                             contextError.EndLinePosition = endLinePos;
                             contextError.HandleError(string.CompareOrdinal(endStrings[0], "#ENDDEBUG") == 0
-                                ? JSError.NoEndDebugDirective 
+                                ? JSError.NoEndDebugDirective
                                 : JSError.NoEndIfDirective);
                             throw new EndOfStreamException();
                         }
@@ -3815,7 +3815,7 @@ namespace NUglify.JavaScript
             return true;
         }
 
-        Func<string,string,bool> CheckForOperator(SortedDictionary<string, Func<string,string,bool>> operators)
+        Func<string, string, bool> CheckForOperator(SortedDictionary<string, Func<string, string, bool>> operators)
         {
             // we need to make SURE we are checking the longer strings before we check the
             // shorter strings, because if the source is === and we check for ==, we'll pop positive
@@ -4117,7 +4117,7 @@ namespace NUglify.JavaScript
         /// </summary>
         sealed class PPOperators : SortedDictionary<string, Func<string, string, bool>>
         {
-	        PPOperators()
+            PPOperators()
                 : base(new LengthComparer())
             {
                 // add the operator information

@@ -20,11 +20,11 @@ using NUglify.JavaScript.Syntax;
 
 namespace NUglify.JavaScript.Visitors
 {
-	class EvaluateLiteralVisitor : TreeVisitor
+    class EvaluateLiteralVisitor : TreeVisitor
     {
-	    JSParser m_parser;
+        JSParser m_parser;
 
-        public EvaluateLiteralVisitor(JSParser parser) 
+        public EvaluateLiteralVisitor(JSParser parser)
         {
             m_parser = parser;
         }
@@ -36,6 +36,7 @@ namespace NUglify.JavaScript.Visitors
         /// parent is a CallNode. If it is, and if the string literal can be an identifier,
         /// we'll replace it with a Member-Dot operation.
         /// </summary>
+        /// <param name="node"></param>
         /// <param name="newLiteral">newLiteral we intend to replace this binaryop node with</param>
         /// <returns>true if we replaced the parent callnode with a member-dot operation</returns>
         bool ReplaceMemberBracketWithDot(BinaryExpression node, ConstantWrapper newLiteral)
@@ -70,11 +71,11 @@ namespace NUglify.JavaScript.Visitors
                             // since we won't be analyzing it (we're past the analyze phase, we're going to need
                             // to use the new string value
                             MemberExpression replacementMember = new MemberExpression(parentCall.Context, false)
-                                {
-                                    Root = parentCall.Function,
-                                    Name = newName,
-                                    NameContext = parentCall.Arguments[0].Context
-                                };
+                            {
+                                Root = parentCall.Function,
+                                Name = newName,
+                                NameContext = parentCall.Arguments[0].Context
+                            };
                             parentCall.Parent.ReplaceChild(parentCall, replacementMember);
                             return true;
                         }
@@ -93,16 +94,16 @@ namespace NUglify.JavaScript.Visitors
                     {
                         // our parent is a call-bracket -- now we just need to see if the newly-combined
                         // string can be an identifier
-                        if (JSScanner.IsSafeIdentifier(combinedString) 
+                        if (JSScanner.IsSafeIdentifier(combinedString)
                             && !JSScanner.IsKeyword(combinedString, (parentCall.EnclosingScope ?? m_parser.GlobalScope).UseStrict))
                         {
                             // yes -- replace the parent call with a new member node using the newly-combined string
                             MemberExpression replacementMember = new MemberExpression(parentCall.Context, false)
-                                {
-                                    Root = parentCall.Function,
-                                    Name = combinedString,
-                                    NameContext = parentCall.Arguments[0].Context
-                                };
+                            {
+                                Root = parentCall.Function,
+                                Name = combinedString,
+                                NameContext = parentCall.Arguments[0].Context
+                            };
                             parentCall.Parent.ReplaceChild(parentCall, replacementMember);
                             return true;
                         }
@@ -183,6 +184,7 @@ namespace NUglify.JavaScript.Visitors
         /// <summary>
         /// Both the operands of this operator are constants. See if we can evaluate them
         /// </summary>
+        /// <param name="node"></param>
         /// <param name="left">left-side operand</param>
         /// <param name="right">right-side operand</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
@@ -294,7 +296,7 @@ namespace NUglify.JavaScript.Visitors
                 case JSToken.NullishCoalesce:
                     newLiteral = NullCoalesce(left, right);
                     break;
-					
+
                 case JSToken.Exponent:
                     newLiteral = Exponent(left, right);
                     break;
@@ -325,6 +327,7 @@ namespace NUglify.JavaScript.Visitors
         /// combined constant value, and then rotate it up -- replace our binary operator
         /// with this newly-modified binary operator, and then attempt to re-evaluate it.
         /// </summary>
+        /// <param name="node"></param>
         /// <param name="binaryOp">the binary operator that is our left-hand operand</param>
         /// <param name="newLiteral">the newly-combined literal</param>
         void RotateFromLeft(BinaryExpression node, BinaryExpression binaryOp, ConstantWrapper newLiteral)
@@ -349,6 +352,7 @@ namespace NUglify.JavaScript.Visitors
         /// combined constant value, and then rotate it up -- replace our binary operator
         /// with this newly-modified binary operator, and then attempt to re-evaluate it.
         /// </summary>
+        /// <param name="node"></param>
         /// <param name="binaryOp">the binary operator that is our right-hand operand</param>
         /// <param name="newLiteral">the newly-combined literal</param>
         void RotateFromRight(BinaryExpression node, BinaryExpression binaryOp, ConstantWrapper newLiteral)
@@ -402,6 +406,7 @@ namespace NUglify.JavaScript.Visitors
         /// <summary>
         /// Evaluate: (OTHER [op] CONST) [op] CONST
         /// </summary>
+        /// <param name="node"></param>
         /// <param name="thisConstant">second constant</param>
         /// <param name="otherConstant">first constant</param>
         /// <param name="leftExpression">first operator</param>
@@ -558,6 +563,7 @@ namespace NUglify.JavaScript.Visitors
         /// <summary>
         /// Evaluate: (CONST [op] OTHER) [op] CONST
         /// </summary>
+        /// <param name="node"></param>
         /// <param name="thisConstant">second constant</param>
         /// <param name="otherConstant">first constant</param>
         /// <param name="leftExpression">first operator</param>
@@ -649,9 +655,10 @@ namespace NUglify.JavaScript.Visitors
         /// <summary>
         /// Evaluate: CONST [op] (CONST [op] OTHER)
         /// </summary>
-        /// <param name="thisConstant">first constant</param>
+        /// <param name="node">first constant</param>
+        /// <param name="thisConstant"></param>
         /// <param name="otherConstant">second constant</param>
-        /// <param name="leftOperator">second operator</param>
+        /// <param name="rightExpression"></param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         void EvalToTheRight(BinaryExpression node, ConstantWrapper thisConstant, ConstantWrapper otherConstant, BinaryExpression rightExpression)
         {
@@ -776,6 +783,7 @@ namespace NUglify.JavaScript.Visitors
         /// <summary>
         /// Eval the two constants: CONST [op] (OTHER [op] CONST)
         /// </summary>
+        /// <param name="node"></param>
         /// <param name="thisConstant">first constant</param>
         /// <param name="otherConstant">second constant</param>
         /// <param name="rightExpression">second operator</param>
@@ -1905,7 +1913,7 @@ namespace NUglify.JavaScript.Visitors
                                 {
                                     // they are not the same type -- replace with a boolean and bail
                                     ReplaceNodeWithLiteral(
-                                        node, 
+                                        node,
                                         new ConstantWrapper(node.OperatorToken == JSToken.StrictEqual ? false : true, PrimitiveType.Boolean, node.Context));
                                     return;
                                 }
@@ -2076,10 +2084,10 @@ namespace NUglify.JavaScript.Visitors
                                     // this is done frequently to force a value to be numeric. 
                                     // There is an easier way: apply the unary + operator to it. 
                                     var unary = new UnaryExpression(node.Context)
-                                        {
-                                            Operand = lookup,
-                                            OperatorToken = JSToken.Plus
-                                        };
+                                    {
+                                        Operand = lookup,
+                                        OperatorToken = JSToken.Plus
+                                    };
                                     ReplaceNodeCheckParens(node, unary);
                                 }
                             }
@@ -2131,7 +2139,7 @@ namespace NUglify.JavaScript.Visitors
                                         if (combinedJoin.Length + 2 < NodeLength(node))
                                         {
                                             // transform: [c,c,c].join(s) => "cscsc"
-                                            ReplaceNodeWithLiteral(node, 
+                                            ReplaceNodeWithLiteral(node,
                                                 new ConstantWrapper(combinedJoin, PrimitiveType.String, node.Context));
                                         }
                                     }
@@ -2419,7 +2427,7 @@ namespace NUglify.JavaScript.Visitors
                 && m_parser.Settings.IsModificationAllowed(TreeModifications.EvaluateNumericExpressions))
             {
                 var literalOperand = node.Operand as ConstantWrapper;
-                switch(node.OperatorToken)
+                switch (node.OperatorToken)
                 {
                     case JSToken.Void:
                         // see if our operand is a ConstantWrapper
@@ -2596,10 +2604,10 @@ namespace NUglify.JavaScript.Visitors
 
                                 // create the for using our body and replace ourselves with it
                                 var forNode = new ForStatement(node.Context)
-                                    {
-                                        Initializer = initializer,
-                                        Body = node.Body
-                                    };
+                                {
+                                    Initializer = initializer,
+                                    Body = node.Body
+                                };
                                 node.Parent.ReplaceChild(node, forNode);
                             }
                             else
