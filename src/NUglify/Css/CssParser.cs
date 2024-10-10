@@ -2655,7 +2655,7 @@ namespace NUglify.Css
                 else 
                 {
                     // valueless variable declarations are legal
-	                if (propertyName.StartsWith("--") && CurrentTokenText == ";")
+	                if (propertyName.StartsWith("--") && (CurrentTokenText == ";" || CurrentTokenText == "}"))
 		                return Parsed.True;
 
 	                m_parsingColorValue = MightContainColorNames(propertyName);

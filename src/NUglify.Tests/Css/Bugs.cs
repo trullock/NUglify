@@ -189,5 +189,17 @@ body
             var uglifyResult = Uglify.Css("grid-template-rows: 0fr 0px 0% 0em;");
             Assert.That(uglifyResult.Code, Is.EqualTo("grid-template-rows: 0fr 0 0% 0;"));
         }
+        
+        [Test]
+        public void Bug407()
+        {
+            //End statement semicolon is optional
+            Assert.That(Uglify.Css(@"
+*, ::before, ::after {
+	--tw-contain-paint:  ;
+	--tw-contain-style:
+}").HasErrors, Is.False);
+        }
+        
     }
 }
