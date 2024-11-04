@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.10 (4 November 2024)
+- Fixed bug with missing final semicolons in css
+
 ## v1.21.9 (24 June 2024)
 - Adds support for css custom identifiers
 
