@@ -136,6 +136,12 @@ body
         }
 
         [Test]
+        public void Bug412()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
         public void Bug317()
         {
 	        Assert.That(Uglify.Css(@"

@@ -2465,6 +2465,9 @@ namespace NUglify.Css
                     case TokenType.Not:
                     case TokenType.Any:
                     case TokenType.Matches:
+                    case TokenType.Is:
+                    case TokenType.Where:
+                    case TokenType.Has:
                         AppendCurrent();
                         SkipSpace();
 

@@ -1185,6 +1185,7 @@ namespace NUglify.Css
                     NextChar();
 
                     var tokenType = TokenType.Function;
+                    // TODO: Refactor to shared TokenType of "PsuedoWithNested"
                     if (ident.Equals("not", StringComparison.OrdinalIgnoreCase))
                     {
                         tokenType = TokenType.Not;
@@ -1196,6 +1197,18 @@ namespace NUglify.Css
                     else if (ident.Equals("matches", StringComparison.OrdinalIgnoreCase))
                     {
                         tokenType = TokenType.Matches;
+                    }
+                    else if (ident.Equals("has", StringComparison.OrdinalIgnoreCase))
+                    {
+                        tokenType = TokenType.Has;
+                    }
+                    else if (ident.Equals("is", StringComparison.OrdinalIgnoreCase))
+                    {
+                        tokenType = TokenType.Is;
+                    }
+                    else if (ident.Equals("where", StringComparison.OrdinalIgnoreCase))
+                    {
+                        tokenType = TokenType.Where;
                     }
 
                     token = new CssToken(tokenType, ident + '(', m_context);
