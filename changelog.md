@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.11 (10 December 2024)
+- Fixed bug with :has/:is/:where nested selectors
+
 ## v1.21.10 (4 November 2024)
 - Fixed bug with missing final semicolons in css
 
