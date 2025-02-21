@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.12 (21 February 2025)
+- Fixed issue where null coalescing operator combined with "||" or "&&" resulted in syntax errors.
+
 ## v1.21.11 (10 December 2024)
 - Fixed bug with :has/:is/:where nested selectors
 
