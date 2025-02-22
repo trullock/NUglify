@@ -14,6 +14,12 @@ namespace NUglify.Tests.JavaScript
         }
 
         [Test]
+        public void NullCoalesceAndOr()
+        {
+            TestHelper.Instance.RunTest();
+        }
+
+        [Test]
         public void OptionalChaining()
         {
             TestHelper.Instance.RunTest();
