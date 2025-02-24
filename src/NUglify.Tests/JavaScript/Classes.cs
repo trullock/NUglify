@@ -43,5 +43,11 @@ namespace NUglify.Tests.JavaScript
         {
             TestHelper.Instance.RunErrorTest(JSError.NoIdentifier, JSError.NoIdentifier, JSError.NoLeftCurly, JSError.NoRightCurly);
         }
+
+        [Test]
+        public void ClassNormalAndStaticProperty()
+        {
+            TestHelper.Instance.RunErrorTest();
+        }
     }
 }
