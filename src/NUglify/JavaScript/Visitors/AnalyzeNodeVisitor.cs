@@ -2026,17 +2026,13 @@ namespace NUglify.JavaScript.Visitors
 
         static string ClassElementKeyName(FunctionType funcType, string name, bool isStatic)
         {
-            switch (funcType)
-            {
-                case FunctionType.Getter:
-                    return "get_" + name;
+            var funcTypeName = funcType switch {
+                FunctionType.Getter => "get_",
+                FunctionType.Setter => "set_",
+                _ => "method_"
+            };
 
-                case FunctionType.Setter:
-                    return "set_" + name;
-
-                default:
-                    return (isStatic ? "static_" : string.Empty) + "method_" + name;
-            }
+            return $"{(isStatic ? "static_" : string.Empty)}{funcTypeName}{name}";
         }
 
         public override void Visit(ComprehensionNode node)

@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.13 (24 February 2025)
+- Fixed issue where 2 getters with the same name where 1 of the getters is static resulted in "JS1323: Duplicate class element name"
+
 ## v1.21.12 (21 February 2025)
 - Fixed issue where null coalescing operator combined with "||" or "&&" resulted in syntax errors.
 
