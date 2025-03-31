@@ -1,5 +1,11 @@
 ﻿let a = true;
 let b = (a ?? false) || true;
 let c = (a ?? false) && true;
-let e = true || (a ?? false);
-let f = true && (a ?? false);
+let d = (a && false) ?? true;
+let e = (a || false) ?? true;
+let f = (a ?? false) ?? true;
+let g = true || (a ?? false);
+let h = true && (a ?? false);
+let i = a ?? (a && false);
+let j = a ?? (a || false);
+let k = a ?? (a ?? false);

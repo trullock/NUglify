@@ -404,10 +404,20 @@ namespace NUglify.JavaScript.Visitors
 		                    m_noIn = false;
 						}
 
-	                    var leftNeedsParens = node.Operand1.Precedence < ourPrecedence;
-	                    if (node.Operand1 is UnaryExpression { OperatorToken: JSToken.Yield })
-		                    leftNeedsParens = true;
-	                    AcceptNodeWithParens(node.Operand1, leftNeedsParens);
+						bool leftNeedsParens;
+						if (node.Operand1 is UnaryExpression { OperatorToken: JSToken.Yield })
+						{
+							leftNeedsParens = true;
+						}
+						else if (ourPrecedence == OperatorPrecedence.NullCoalesce && node.Operand1 is BinaryExpression binaryExpression && (binaryExpression.OperatorToken == JSToken.LogicalAnd || binaryExpression.OperatorToken == JSToken.LogicalOr)) // Nullish coalescing: the operands cannot be a logical OR || or logical AND && operator without grouping (see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence [9])
+						{
+							leftNeedsParens = true;
+						}
+						else
+						{
+							leftNeedsParens = node.Operand1.Precedence < ourPrecedence;
+						}
+						AcceptNodeWithParens(node.Operand1, leftNeedsParens);
                         SetContextOutputPosition(node.Context, node.Operand1.Context);
                     }
 
