@@ -3176,6 +3176,10 @@ namespace NUglify.Css
                         parsed = ParseMinMax();
                         break;
 
+                    case "CLAMP(":
+                        parsed = ParseClamp();
+                        break;
+
                     default:
                         // generic function parsing
                         AppendCurrent();
@@ -3867,6 +3871,53 @@ namespace NUglify.Css
                 }
 
                 m_insideCalc = false;
+            }
+
+            return parsed;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification = "we want lower-case output")]
+        Parsed ParseClamp()
+        {
+            var parsed = Parsed.False;
+            if (CurrentTokenType == TokenType.Function
+                && string.Compare(GetRoot(CurrentTokenText), "clamp(", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                Append(CurrentTokenText.ToLowerInvariant());
+                SkipSpace();
+
+                // clamp() has three parameters: min, preferred, max
+                for (int i = 0; i < 3; i++)
+                {
+                    if (ParseSum() != Parsed.True)
+                    {
+                        ReportError(0, CssErrorCode.ExpectedExpression, CurrentTokenText);
+                    }
+
+                    if (i < 2) // Expecting a comma between values
+                    {
+                        if (CurrentTokenType == TokenType.Character && CurrentTokenText == ",")
+                        {
+                            AppendCurrent();
+                            SkipSpace();
+                        }
+                        else
+                        {
+                            ReportError(0, CssErrorCode.ExpectedComma, CurrentTokenText);
+                        }
+                    }
+                }
+
+                if (CurrentTokenType == TokenType.Character && CurrentTokenText == ")")
+                {
+                    AppendCurrent();
+                    SkipSpace();
+                    parsed = Parsed.True;
+                }
+                else
+                {
+                    ReportError(0, CssErrorCode.ExpectedClosingParenthesis, CurrentTokenText);
+                }
             }
 
             return parsed;
