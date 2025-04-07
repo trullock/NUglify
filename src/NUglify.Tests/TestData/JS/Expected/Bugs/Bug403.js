@@ -1,0 +1,1 @@
+﻿class ClassWithJsKeywords{import(n){return n}export(n){return n}with(n){return n+5}}

@@ -76,6 +76,9 @@ namespace NUglify.JavaScript
                 case JSToken.Static: return "static";
                 case JSToken.Yield: return "yield";
                 case JSToken.Delete: return "delete";
+                case JSToken.Import: return "import";
+                case JSToken.Export: return "export";
+                case JSToken.With: return "with";
 
                 // apparently never allowed for Chrome, so we want to treat it
                 // differently, too
