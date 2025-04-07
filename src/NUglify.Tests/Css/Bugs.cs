@@ -206,6 +206,16 @@ body
 	--tw-contain-style:
 }").HasErrors, Is.False);
         }
-        
+
+        [Test]
+        public void Bug424()
+        {
+            var uglifyResult = Uglify.Css(@"h1 {
+                font-size: clamp(1.3rem, 1.4rem + 0.3vw, 1.7rem); }");
+
+            //TestHelper.Instance.RunTest();  //this don't check if HasErrors is true or false! Doing manually
+            Assert.That(uglifyResult.Code, Is.EqualTo("h1{font-size:clamp(1.3rem,1.4rem + .3vw,1.7rem)}"));
+            Assert.That(uglifyResult.HasErrors, Is.False);
+        }
     }
 }
