@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.21.15 (7 April 2025)
+- Added CSS Clamp support
+
 ## v1.21.14 (31 March 2025)
 - Fixed bug with null coalesce and operator precidence
 
