@@ -2284,35 +2284,38 @@ namespace NUglify.JavaScript.Visitors
                 // ANY specifier or identifier is optional
                 if (node.Count > 0)
                 {
-                    if (node.Count == 1 && node[0] is BindingIdentifier)
+                    for (var x = 0; x<node.Count; x++)
                     {
-                        // identifier without braces
-                        node[0].Accept(this);
-                    }
-                    else
-                    {
-                        // specifier list enclosed in braces
-                        OutputPossibleLineBreak('{');
-                        SetContextOutputPosition(node.OpenContext);
-
-                        var first = true;
-                        foreach (var specifier in node.Children)
+                        if (x==0)
                         {
-                            if (first)
+                            if (node[x] is BindingIdentifier)
                             {
-                                first = false;
+                                if (node.AllContext !=null)
+                                    Output("*as ");
                             }
                             else
                             {
-                                OutputPossibleLineBreak(',');
+                                OutputPossibleLineBreak('{');
+                                SetContextOutputPosition(node.OpenContext);
                             }
-
-                            specifier.Accept(this);
                         }
+                        else
+                        {
+                            OutputPossibleLineBreak(',');
+                            if (x==1 && node[0] is BindingIdentifier)
+                            {
 
-                        OutputPossibleLineBreak('}');
-                        SetContextOutputPosition(node.CloseContext);
+                                OutputPossibleLineBreak('{');
+                                SetContextOutputPosition(node.OpenContext);
+                            }
+                        }
+                        node[x].Accept(this);
                     }
+                    if (node.Count>1 || !(node[0] is BindingIdentifier))
+                        OutputPossibleLineBreak('}');
+                    else if (node.Count==0 &&  node[0] is BindingIdentifier)
+                        OutputPossibleLineBreak(' ');
+                    SetContextOutputPosition(node.CloseContext);
 
                     Output("from");
                     SetContextOutputPosition(node.FromContext);
