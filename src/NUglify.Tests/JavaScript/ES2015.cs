@@ -102,7 +102,7 @@ namespace NUglify.Tests.JavaScript
             TestHelper.Instance.RunTest();
         }
 
-        //[Test]
+        [Test]
         public void Modules()
         {
             TestHelper.Instance.RunTest();

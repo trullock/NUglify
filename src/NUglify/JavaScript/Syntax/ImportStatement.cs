@@ -21,6 +21,7 @@ namespace NUglify.JavaScript.Syntax
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public class ImportStatement : ImportExportStatement
     {
+        public SourceContext AllContext { get; set; }
         public ImportStatement(SourceContext context)
             : base(context)
         {
