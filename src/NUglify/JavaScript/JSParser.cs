@@ -2660,8 +2660,84 @@ namespace NUglify.JavaScript
                 importNode.ModuleContext = m_currentToken.Clone();
                 GetNextToken();
             }
-            else
+            else if(m_currentToken.Is(JSToken.LeftParenthesis))
+            { 
+                // this allow for import() async style importing that can occur inline
+                var ast = new LookupExpression(importNode.Context)
+                {
+                    Name = "import",
+                    IsGenerated = true
+                };
+
+                return ParseMemberExpression(ast, null);
+            }else if (m_currentToken.Is(JSToken.AccessField))
             {
+                GetNextToken();
+                if (m_currentToken.Is("meta"))
+                {
+                    var meta = m_currentToken.Clone();
+                    GetNextToken();
+                    if (PeekToken() == JSToken.AccessField)
+                    {
+                        GetNextToken();
+                        GetNextToken();
+                        if (m_currentToken.Is("url"))
+                        {
+                            return new ImportMetaCustomNode(new SourceContext(meta.Document, meta.StartLineNumber, meta.StartLinePosition, meta.StartPosition, m_currentToken.EndLineNumber, m_currentToken.EndLineNumber, m_currentToken.EndPosition, JSToken.Identifier));
+                        }
+                        else if (m_currentToken.Is("resolve"))
+                        {
+                            return ParseMemberExpression(new LookupExpression(m_currentToken.Clone())
+                            {
+                                Name="import.meta.resolve"
+                            }, null);
+                        }
+                        else
+                            ReportError(JSError.UndeclaredVariable);
+                    }
+                    else
+                        return new ImportMetaCustomNode(meta);
+                }
+                else
+                    ReportError(JSError.UndeclaredVariable);
+                return importNode;
+            }
+            else {
+                if (m_currentToken.Is("*"))
+                {
+                    importNode.AllContext = m_currentToken.Clone();
+                    GetNextToken();
+                    if (m_currentToken.Is("as"))
+                    {
+                        GetNextToken();
+                        importNode.Append(new BindingIdentifier(m_currentToken.Clone())
+                        {
+                            Name = m_scanner.Identifier
+                        });
+                        GetNextToken();
+                        if (m_currentToken.Is(JSToken.Comma))
+                        {
+                            GetNextToken();
+                            if (m_currentToken.IsNot(JSToken.LeftCurly))
+                            {
+                                ReportError(JSError.NoIdentifier);
+                            }
+                        }
+                    }
+                }
+                else if (m_currentToken.Is(JSToken.Identifier) || JSKeyword.CanBeIdentifier(m_currentToken.Token) != null)
+                {
+                    // import identifier from "module"
+                    importNode.Append(ParseBinding());
+                    if (m_currentToken.Is(JSToken.Comma))
+                    {
+                        GetNextToken();
+                        if (m_currentToken.IsNot(JSToken.LeftCurly))
+                        {
+                            ReportError(JSError.NoIdentifier);
+                        }
+                    }
+                }
                 if (m_currentToken.Is(JSToken.LeftCurly))
                 {
                     // import { specifier (, specifier)* ,? } from "module"
@@ -2700,9 +2776,9 @@ namespace NUglify.JavaScript
                                 {
                                     // the external name is also the local binding
                                     localIdentifier = new BindingIdentifier(nameContext)
-                                        {
-                                            Name = externalName
-                                        };
+                                    {
+                                        Name = externalName
+                                    };
                                     externalName = null;
                                     nameContext = null;
                                 }
@@ -2740,23 +2816,6 @@ namespace NUglify.JavaScript
                         ReportError(JSError.NoRightCurly);
                     }
                 }
-                else if (m_currentToken.Is(JSToken.Identifier) || JSKeyword.CanBeIdentifier(m_currentToken.Token) != null)
-                {
-                    // import identifier from "module"
-                    importNode.Append(ParseBinding());
-                } 
-                else if (m_currentToken.Is(JSToken.LeftParenthesis))
-                {
-                    // this allows `import` as an identifier where you really shouldnt.
-                    // However, if youve done something that causes this, it will be invalid before and after minification so its kind of not our problem.
-	                var ast = new LookupExpression(importNode.Context)
-	                {
-		                Name = "import"
-	                };
-
-	                return ParseMemberExpression(ast, null);
-                }
-
                 if (m_currentToken.Is("from"))
                 {
                     importNode.FromContext = m_currentToken.Clone();

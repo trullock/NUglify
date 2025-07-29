@@ -3088,7 +3088,8 @@ namespace NUglify.JavaScript.Visitors
                 // check the name of the variable for reserved words that aren't allowed
                 ActivationObject scope = m_scopeStack.Peek();
                 if (JSScanner.IsKeyword(node.Name, scope.UseStrict)
-                    && node.VariableField.IfNotNull(v => v.FieldType != FieldType.Super))
+                    && node.VariableField.IfNotNull(v => v.FieldType != FieldType.Super)
+                    && !node.Name.Equals("import"))
                 {
                     node.Context.HandleError(JSError.KeywordUsedAsIdentifier, true);
                 }
