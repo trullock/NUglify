@@ -1,5 +1,11 @@
 # Changelog
 
+ ## v1.21.17 (29 July 2025)
+ - Fixed bug with import, export and with
+
+ ## v1.21.16 (29 July 2025)
+ - Fixed bug with async import and modules
+
 ## v1.21.15 (7 April 2025)
 - Added CSS Clamp support
 
